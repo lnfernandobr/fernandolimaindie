@@ -22,10 +22,20 @@ module.exports = {
       interpreter: 'none',
       env: {
         NODE_ENV: 'production',
+        // Limita o heap do V8 a 1GB. Evita panic do GC em VMs pequenas.
+        NODE_OPTIONS: '--max-old-space-size=1024',
       },
-      max_memory_restart: '512M',
+      // tsx + mongoose + express normalmente fica em 250–400MB.
+      // Pico (request + GC + log batch) pode chegar a 700MB. Damos folga até 1.2GB.
+      max_memory_restart: '1200M',
+      // Em caso de crash, espera antes de reiniciar (evita loop apertado).
+      restart_delay: 4000,
+      max_restarts: 10,
+      min_uptime: '30s',
       autorestart: true,
       watch: false,
+      merge_logs: true,
+      time: true,
     },
   ],
 };

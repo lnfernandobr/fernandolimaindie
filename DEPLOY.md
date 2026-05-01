@@ -76,6 +76,22 @@ sudo npm i -g pnpm@latest pm2
 # UFW (firewall extra na instância — Lightsail já tem firewall, mas defense in depth)
 sudo ufw allow OpenSSH && sudo ufw allow 80/tcp && sudo ufw allow 443/tcp
 sudo ufw --force enable
+
+# Swap de 2GB — defesa contra OOM em pico de memória.
+# Lightsail/EC2 não vêm com swap por padrão. Sem swap, qualquer pico de
+# RAM dispara o OOM killer e mata processos (incluindo sshd).
+sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+sudo sysctl vm.swappiness=10   # só usa swap em emergência
+
+# pm2-logrotate — sem isso os logs crescem até encher o disco
+sudo pm2 install pm2-logrotate
+sudo pm2 set pm2-logrotate:max_size 50M
+sudo pm2 set pm2-logrotate:retain 5
+sudo pm2 set pm2-logrotate:compress true
 ```
 
 ### 2.3. Subir o código
