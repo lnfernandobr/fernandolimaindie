@@ -28,6 +28,16 @@ const envSchema = z.object({
   ANTHROPIC_API_KEY: z.string().optional(),
   OPENAI_API_KEY: z.string().optional(),
 
+  // Provider de imagem (independente do de texto).
+  // Em produção, mesmo com AI_PROVIDER=claude, recomenda-se IMAGE_PROVIDER=openai
+  // pra usar gpt-image-1 (Anthropic não gera imagem).
+  IMAGE_PROVIDER: z.enum(['mock', 'openai']).default('mock'),
+  IMAGE_MODEL: z.string().optional(),
+
+  // URL pública da API — usada pra montar URLs de imagens em /uploads/.
+  // Dev: http://localhost:4000. Prod: https://api.SEUDOMINIO.com.
+  PUBLIC_API_URL: z.string().optional(),
+
   // Google PageSpeed Insights API.
   // Sem chave: ~1 req/s, sujeito ao rate limit do Google.
   // Com chave (gratuita, sem cartão): 25k req/dia.

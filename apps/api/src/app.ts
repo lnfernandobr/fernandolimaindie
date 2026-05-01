@@ -13,6 +13,7 @@ import { publicRouter } from './routes/public.js';
 import { schedulerRouter } from './routes/schedulerInfo.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import { requestLog } from './middleware/requestLog.js';
+import { uploadsDir } from './services/uploads.js';
 
 export function createApp(): Express {
   const app = express();
@@ -34,6 +35,17 @@ export function createApp(): Express {
 
   app.use(express.json({ limit: '2mb' }));
   app.use(requestLog);
+
+  // Imagens geradas pela camada de IA ficam em apps/api/uploads/.
+  // Cache agressivo (são imutáveis — hash no nome).
+  app.use(
+    '/uploads',
+    express.static(uploadsDir(), {
+      maxAge: '30d',
+      immutable: true,
+      fallthrough: false,
+    }),
+  );
 
   app.get('/health', (_req, res) => {
     res.json({ status: 'ok', uptime: process.uptime() });

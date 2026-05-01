@@ -5,9 +5,11 @@ import { logger } from './config/logger.js';
 import { bootstrapScheduler } from './scheduler/index.js';
 import { bootstrapAdmin } from './seed/bootstrapAdmin.js';
 import { seedDemoContent } from './seed/demoContent.js';
+import { ensureUploadsDir } from './services/uploads.js';
 
 async function main() {
   await connectDb();
+  await ensureUploadsDir();
   await bootstrapAdmin();
   await seedDemoContent();
   await bootstrapScheduler();

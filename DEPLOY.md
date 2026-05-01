@@ -125,15 +125,24 @@ ADMIN_BOOTSTRAP_PASSWORD=<senha forte>
 
 ALLOWED_ORIGINS=https://admin.exemplo.com,https://minhaviola.com,https://cafecommetodo.com.br
 
-AI_PROVIDER=mock
+AI_PROVIDER=claude
 AI_MODEL=
-ANTHROPIC_API_KEY=
-OPENAI_API_KEY=
+ANTHROPIC_API_KEY=<https://console.anthropic.com/settings/keys>
+OPENAI_API_KEY=<https://platform.openai.com/api-keys>
+
+IMAGE_PROVIDER=openai
+IMAGE_MODEL=
+
+PUBLIC_API_URL=https://api.SEUDOMINIO.com
 
 GOOGLE_PAGESPEED_API_KEY=<crie em https://console.cloud.google.com/apis/credentials>
 ```
 
 > O `REVALIDATE_SECRET` precisa ser **igual** no `.env` da API e nos sites/blogs (variável de ambiente na Vercel).
+
+> **Setup de IA pra produção**: `AI_PROVIDER=claude` (Sonnet 4.6, melhor qualidade pra texto longo) + `IMAGE_PROVIDER=openai` (gpt-image-1; Anthropic não gera imagem). Precisa das duas keys.
+
+> `PUBLIC_API_URL` monta as URLs de imagens hospedadas em `/uploads/`. Aponte pro domínio HTTPS da API em prod.
 
 > A chave do **PageSpeed Insights** é gratuita (25k req/dia, sem cartão). Sem ela, o audit ainda funciona mas com rate limit baixo.
 

@@ -15,3 +15,4 @@ coverage
 out
 .idea/
 .vscode/
+apps/api/uploads/

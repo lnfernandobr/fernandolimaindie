@@ -9,10 +9,10 @@ let textProvider: AIProvider | null = null;
 let imageProvider: AIProvider | null = null;
 
 /**
- * Resolve o provider de TEXTO ativo no momento.
- * Cai pra mock se o configurado não estiver habilitado (chave faltando, etc.).
+ * Provider de texto (gerador de artigo, metadata, brainstorm, etc.).
  *
- * O factory cacheia a escolha em memória — em testes, chame `__resetAIProviders()`.
+ * Configurado por AI_PROVIDER=mock|claude|openai. Cai pra mock se a chave
+ * do provider escolhido estiver ausente (defesa contra config incompleto).
  */
 export function getTextProvider(): AIProvider {
   if (textProvider) return textProvider;
@@ -23,7 +23,7 @@ export function getTextProvider(): AIProvider {
       candidate = new ClaudeProvider({ apiKey: env.ANTHROPIC_API_KEY, model: env.AI_MODEL });
       break;
     case 'openai':
-      candidate = new OpenAIProvider({ apiKey: env.OPENAI_API_KEY, model: env.AI_MODEL });
+      candidate = new OpenAIProvider({ apiKey: env.OPENAI_API_KEY, textModel: env.AI_MODEL });
       break;
     case 'mock':
     default:
@@ -34,7 +34,7 @@ export function getTextProvider(): AIProvider {
   if (!candidate.enabled) {
     logger.warn(
       { configured: env.AI_PROVIDER },
-      'AI provider configurado não está habilitado; caindo para mock',
+      'AI text provider não habilitado (chave faltando) — caindo pra mock',
     );
     candidate = new MockProvider();
   }
@@ -45,12 +45,35 @@ export function getTextProvider(): AIProvider {
 }
 
 /**
- * Provider de IMAGEM. Hoje só o mock gera. Quando OpenAI/Imagen entrar,
- * a lógica fica aqui — sem afetar tasks.
+ * Provider de imagem (cover de post).
+ *
+ * Configurado por IMAGE_PROVIDER=mock|openai (independente de AI_PROVIDER).
+ * Em produção típica, AI_PROVIDER=claude + IMAGE_PROVIDER=openai (Anthropic
+ * não gera imagem).
  */
 export function getImageProvider(): AIProvider {
   if (imageProvider) return imageProvider;
-  imageProvider = new MockProvider();
+
+  let candidate: AIProvider;
+  switch (env.IMAGE_PROVIDER) {
+    case 'openai':
+      candidate = new OpenAIProvider({ apiKey: env.OPENAI_API_KEY, imageModel: env.IMAGE_MODEL });
+      break;
+    case 'mock':
+    default:
+      candidate = new MockProvider();
+      break;
+  }
+
+  if (!candidate.enabled) {
+    logger.warn(
+      { configured: env.IMAGE_PROVIDER },
+      'AI image provider não habilitado — caindo pra mock',
+    );
+    candidate = new MockProvider();
+  }
+
+  imageProvider = candidate;
   logger.info({ provider: imageProvider.name }, 'AI image provider ready');
   return imageProvider;
 }
