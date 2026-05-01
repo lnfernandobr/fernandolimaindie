@@ -1,6 +1,9 @@
 'use client';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
+// Vercel injeta string vazia quando a env existe mas nao foi preenchida —
+// o ?? do JS so cobre null/undefined, entao normalizamos manualmente.
+const rawApi = process.env.NEXT_PUBLIC_API_URL ?? '';
+const API_URL = (rawApi.trim() || 'http://localhost:4000').replace(/\/$/, '');
 const TOKEN_KEY = 'bn_admin_token';
 
 export function getToken(): string | null {
