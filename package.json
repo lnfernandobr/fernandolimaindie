@@ -11,7 +11,7 @@
     "dev": "pnpm -r --parallel dev",
     "dev:api": "pnpm --filter @bn/api dev",
     "dev:admin": "pnpm --filter @bn/admin dev",
-    "dev:blog": "pnpm --filter @bn/blog dev",
+    "dev:sonoprofundo": "pnpm --filter @bn/sonoprofundo dev",
     "build": "pnpm -r build",
     "typecheck": "pnpm -r typecheck",
     "lint": "pnpm -r lint",

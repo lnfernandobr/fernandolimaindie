@@ -4,14 +4,14 @@ import { env } from './config/env.js';
 import { logger } from './config/logger.js';
 import { bootstrapScheduler } from './scheduler/index.js';
 import { bootstrapAdmin } from './seed/bootstrapAdmin.js';
-import { seedDemoContent } from './seed/demoContent.js';
+import { seedSonoprofundo } from './seed/sonoprofundoSeed.js';
 import { ensureUploadsDir } from './services/uploads.js';
 
 async function main() {
   await connectDb();
   await ensureUploadsDir();
   await bootstrapAdmin();
-  await seedDemoContent();
+  await seedSonoprofundo();
   await bootstrapScheduler();
   const app = createApp();
   const server = app.listen(env.API_PORT, () => {

@@ -4,9 +4,8 @@ API roda em **AWS Lightsail** (recomendado) ou **EC2**. Admin e cada blog rodam 
 
 ```
 Mongo Atlas  ──►  API (AWS)  ──►  Admin (Vercel)
-                            ├─►  Blog Minha Viola (Vercel)
-                            ├─►  Blog Café com Método (Vercel)
-                            └─►  Blog N (Vercel)
+                            ├─►  Sonoprofundo (Vercel)
+                            └─►  Canal N (Vercel)
 ```
 
 ---
@@ -123,7 +122,7 @@ ADMIN_BOOTSTRAP_NAME=Fernando
 ADMIN_BOOTSTRAP_USERNAME=fernando
 ADMIN_BOOTSTRAP_PASSWORD=<senha forte>
 
-ALLOWED_ORIGINS=https://admin.exemplo.com,https://minhaviola.com,https://cafecommetodo.com.br
+ALLOWED_ORIGINS=https://admin.exemplo.com,https://sonoprofundo.com,https://canal2.com
 
 AI_PROVIDER=claude
 AI_MODEL=
@@ -248,25 +247,53 @@ A partir daí o procedimento é **idêntico** ao Lightsail (seções 2.2 a 2.8).
 
 ## 4. Cada Blog — Vercel (1 projeto por site)
 
-Cada site (Minha Viola, Café com Método, etc.) vive em **seu próprio repositório**, não nesse monorepo. O template `apps/blog` aqui é referência de como consumir a API.
+Existem dois caminhos pra cada novo canal:
 
-Pra cada blog:
+### 4a. Canal dentro do monorepo (`apps/<canal>`)
 
-1. Cria projeto Next.js separado (`pnpm create next-app`) ou parte do template em `apps/blog`.
+Recomendado quando o canal compartilha código com o template ou quando você quer deployar tudo do mesmo repo. Já temos **`apps/sonoprofundo`** como exemplo vivo (sleep blog completo, com quiz, calculadora, checklist e produtos).
+
+1. Cria a pasta `apps/<canal>` (copiar `apps/sonoprofundo` e adaptar é o mais rápido).
+2. No `package.json` do app, usa o nome `@bn/<canal>` e mantém `vercel.json` na raiz dele:
+   ```json
+   {
+     "$schema": "https://openapi.vercel.sh/vercel.json",
+     "framework": "nextjs",
+     "installCommand": "cd ../.. && pnpm install --filter @bn/<canal>...",
+     "buildCommand": "cd ../.. && pnpm --filter @bn/<canal> build",
+     "outputDirectory": ".next"
+   }
+   ```
+3. No root `package.json`, adiciona o atalho `dev:<canal>`:
+   ```json
+   "dev:<canal>": "pnpm --filter @bn/<canal> dev"
+   ```
+4. Vercel → novo projeto apontando pro mesmo GitHub repo.
+5. **Root Directory**: `apps/<canal>` (Vercel detecta o `vercel.json` automaticamente).
+6. **Environment Variables** (mesmas do 4b).
+7. Deploy.
+
+> Vantagem: o build do canal só roda quando arquivos do `apps/<canal>` ou `packages/shared` mudam — Vercel detecta via path filtering automático do monorepo. E qualquer melhoria no template (lib/api, lib/seo) propaga pra todos os canais via shared code.
+
+### 4b. Canal em repositório próprio
+
+Útil quando o canal tem time ou identidade muito separada do resto.
+
+1. Cria projeto Next.js separado a partir de `apps/sonoprofundo` (ver `apps/sonoprofundo/SETUP.md`).
 2. Push num repo próprio.
 3. Vercel → novo projeto.
 4. **Environment Variables**:
    ```
    NEXT_PUBLIC_API_URL=https://api.SEUDOMINIO.com
-   NEXT_PUBLIC_SITE_URL=https://minhaviola.com
-   NEXT_PUBLIC_CHANNEL_SLUG=minhaviola
+   NEXT_PUBLIC_SITE_URL=https://canal.com
+   NEXT_PUBLIC_CHANNEL_SLUG=canal
    REVALIDATE_SECRET=<o mesmo da API>
    ```
 5. Deploy.
-6. **Domains**: aponta `minhaviola.com` → Vercel.
+6. **Domains**: aponta `canal.com` → Vercel.
 
-> ⚠️ No painel do admin (`/canais`), edita o canal e coloca `https://minhaviola.com` no campo **URL do site**.
-> ⚠️ Adiciona `https://minhaviola.com` em `ALLOWED_ORIGINS` da API e reinicia.
+> ⚠️ No painel do admin (`/canais`), edita o canal e coloca `https://canal.com` no campo **URL do site**.
+> ⚠️ Adiciona `https://canal.com` em `ALLOWED_ORIGINS` da API e reinicia.
 
 ### Endpoint de revalidação que cada blog precisa expor
 
@@ -288,7 +315,7 @@ export async function POST(req: Request) {
 }
 ```
 
-(Já existe pronto em `apps/blog/src/app/api/revalidate/route.ts`.)
+(Já existe pronto em `apps/sonoprofundo/src/app/api/revalidate/route.ts`.)
 
 ---
 

@@ -1,12 +1,12 @@
 # Blog Network
 
-Sistema multi-canal de blogs automatizados — monorepo com **API central**, **Admin** e **template de Blog**.
+Sistema multi-canal de blogs automatizados — monorepo com **API central**, **Admin** e **canal-template**.
 
 ## Visão geral
 
 - **`apps/api`** — Backend Express + Mongoose. Modelos, autenticação (JWT), endpoints públicos consumidos pelos blogs, scheduler in-process (node-cron), pipeline modular de geração de conteúdo orquestrando uma camada de IA.
 - **`apps/admin`** — Painel Next.js 16 onde Fernando configura **canais** e monitora **execuções**. Posts, autores, categorias e tags são gerados automaticamente — não há mais CRUD manual no painel.
-- **`apps/blog`** — Template Next.js 16 de site editorial. Renderiza um único canal (definido via env), com SSR/ISR, JSON-LD completo, sitemap, RSS/Atom, `llms.txt`, modo escuro, busca.
+- **`apps/sonoprofundo`** — Canal vivo (sleep blog) **e template de referência para clonar novos canais**. Next.js 16, SSR/ISR, JSON-LD completo, sitemap, RSS/Atom, `llms.txt`, layout responsivo, semântica acessível. Consome o pipeline IA da API. Para clonar este canal num projeto novo, ver `apps/sonoprofundo/SETUP.md`.
 - **`packages/shared`** — Schemas Zod e DTOs compartilhados entre API e clients.
 
 ## Stack
@@ -18,7 +18,7 @@ Sistema multi-canal de blogs automatizados — monorepo com **API central**, **A
 | Linguagem    | TypeScript 5.9 estrito                                   |
 | API          | Express 5, Mongoose 9, node-cron 4, cron-parser 5, JWT   |
 | Admin        | Next.js 16, React 19, Tailwind 4, shadcn-style, sonner   |
-| Blog         | Next.js 16, React 19, Tailwind 4, marked, feed           |
+| Canal-template | Next.js 16, React 19, Tailwind 4, marked, feed         |
 | Validação    | Zod 4                                                    |
 | Auth hash    | bcryptjs                                                 |
 
@@ -30,9 +30,9 @@ A precedência é `.env.local` → `.env` em todos os apps (API inclusive — `a
 
 ```
 apps/api/.env             # produção (preencher antes do deploy)
-apps/api/.env.local       # dev local — pronto pra rodar com Mongo localhost
+apps/api/.env.local       # dev local — sobrescreve com Mongo Atlas no ambiente local
 apps/admin/.env(.local)
-apps/blog/.env(.local)
+apps/sonoprofundo/.env(.local)
 ```
 
 Não existe mais `.env.example` — o `.env` em si serve de template.
@@ -41,23 +41,21 @@ Não existe mais `.env.example` — o `.env` em si serve de template.
 
 - **Node.js 22+** (recomendado 24 LTS via nvm)
 - **pnpm 10+** (`npm i -g pnpm`)
-- **MongoDB**
-  - Local: `mongodb://localhost:27017/blog-network`
-  - Ou MongoDB Atlas — coloque a connection string em `apps/api/.env` (produção) ou `apps/api/.env.local` (dev override)
+- **MongoDB Atlas** — em dev e prod usamos a mesma string. Coloque em `apps/api/.env` (template prod) ou `apps/api/.env.local` (override local).
 
 ## Setup
 
 ```bash
 pnpm install
-pnpm dev            # sobe API (4000), admin (3000), blog (3001) em paralelo
+pnpm dev            # sobe API (4000), admin (3000), sonoprofundo (3002) em paralelo
 
 # Ou individualmente:
 pnpm dev:api
 pnpm dev:admin
-pnpm dev:blog
+pnpm dev:sonoprofundo
 ```
 
-Os arquivos `.env.local` já vêm prontos pra Mongo local. Se for usar Atlas, substitua a `MONGODB_URI` em `apps/api/.env.local`.
+Configure `MONGODB_URI` em `apps/api/.env.local` apontando para o Atlas antes de subir a API.
 
 ## Bootstrap automático
 
@@ -66,9 +64,8 @@ Ao subir a API pela primeira vez:
 1. **Usuário admin Fernando** é criado.
    - Usuário: `fernando`
    - Senha: `Fz9mPx7Kq2vRtY8n`
-2. **Canal de demonstração** `cafe` é criado se ainda não existir.
-3. **3 posts iniciais** são gerados via pipeline de IA (mock por padrão) pra popular o blog.
-4. **Scheduler** carrega todos os canais ativos e registra os crons.
+2. **Canal `sonoprofundo`** é criado se ainda não existir, junto com 1 post mockado para validar o layout localmente. Em produção (`NODE_ENV=production`), só o canal vazio é criado — a pipeline real popula.
+3. **Scheduler** carrega todos os canais ativos e registra os crons.
 
 ## Geração automática de conteúdo
 
@@ -142,19 +139,26 @@ Na edição do canal há o botão **“Gerar post agora”**, que dispara `POST 
 ## Como validar
 
 ```bash
-pnpm typecheck      # typecheck nos 4 pacotes
-pnpm dev            # sobe os 3 apps
+pnpm typecheck      # typecheck em todos os pacotes
+pnpm dev            # sobe API + admin + sonoprofundo em paralelo
 ```
 
-Smoke test (com Mongo + apps rodando):
+Smoke test (com Mongo Atlas + apps rodando):
 
 ```bash
-bash apps/api/.env.local                    # confirma os valores estão certos
 curl http://localhost:4000/health
 curl http://localhost:3000/login            # admin
-curl http://localhost:3001/                 # blog
-curl http://localhost:3001/sitemap.xml
-curl http://localhost:3001/llms.txt
+curl http://localhost:3002/                 # sonoprofundo
+curl http://localhost:3002/sitemap.xml
+curl http://localhost:3002/llms.txt
+```
+
+## Limpeza de canais no Mongo
+
+Para apagar um canal e tudo que pertence a ele (posts, categorias, autores, tags, runs):
+
+```bash
+pnpm --filter @bn/api remove-channel -- <slug>
 ```
 
 ## SEO / GEO
@@ -179,7 +183,7 @@ blog-network/
 │   │       ├── seed/          # bootstrap admin + canal demo + posts iniciais
 │   │       └── utils/         # dto, errors, readingTime
 │   ├── admin/             # Painel Next.js (canais + execuções)
-│   └── blog/              # Template Next.js com SEO/GEO completo
+│   └── sonoprofundo/      # Canal vivo + template Next.js com SEO/GEO completo
 └── packages/
     └── shared/            # Zod schemas (channelInputSchema, publishTimesToCron, ...)
 ```

@@ -1,12 +1,12 @@
 import { connectDb, disconnectDb } from '../config/db.js';
 import { logger } from '../config/logger.js';
 import { bootstrapAdmin } from './bootstrapAdmin.js';
-import { seedDemoContent } from './demoContent.js';
+import { seedSonoprofundo } from './sonoprofundoSeed.js';
 
 async function main() {
   await connectDb();
   await bootstrapAdmin();
-  await seedDemoContent();
+  await seedSonoprofundo();
   logger.info('seed complete');
   await disconnectDb();
 }

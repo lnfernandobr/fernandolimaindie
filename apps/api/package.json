@@ -8,7 +8,8 @@
     "build": "echo 'API roda direto do TS via tsx — sem build necessário'",
     "start": "tsx src/index.ts",
     "typecheck": "tsc --noEmit",
-    "seed": "tsx src/seed/run.ts"
+    "seed": "tsx src/seed/run.ts",
+    "remove-channel": "tsx src/scripts/remove-channel.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "0.92.0",
