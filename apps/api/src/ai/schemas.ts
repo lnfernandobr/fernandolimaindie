@@ -124,3 +124,100 @@ export const analyzeSiteSchema = z.object({
   insights: z.array(siteInsightSchema).max(10),
 });
 export type AnalyzeSiteOutput = z.infer<typeof analyzeSiteSchema>;
+
+// ─── Review article (passe de revisão editorial) ───────────────────────────
+export const reviewIssueSchema = z.object({
+  severity: z.enum(['high', 'medium', 'low']),
+  category: z.enum(['clarity', 'authority', 'flow', 'structure', 'tone', 'seo']),
+  excerpt: z.string().min(3).max(280),
+  problem: z.string().min(5).max(300),
+  suggestion: z.string().min(5).max(400),
+});
+
+export const reviewArticleSchema = z.object({
+  /** Conteúdo final revisado em markdown. */
+  revisedContent: z.string().min(200),
+  /** Lista de issues encontradas e como foram resolvidas. */
+  issues: z.array(reviewIssueSchema).max(20),
+  /** Resumo das mudanças principais. */
+  summary: z.string().min(10).max(400),
+});
+export type ReviewArticleOutput = z.infer<typeof reviewArticleSchema>;
+
+// ─── Optimize SEO (passe focado em SEO) ────────────────────────────────────
+export const optimizeSeoSchema = z.object({
+  /** Conteúdo otimizado em markdown. Mesmo conteúdo essencial, melhor SEO. */
+  optimizedContent: z.string().min(200),
+  /** Mudanças aplicadas (resumo curto). */
+  changes: z.array(z.string().max(280)).max(15),
+  /** Densidade da palavra-chave principal estimada (0-1). Alvo 0.005-0.015. */
+  primaryKeywordDensity: z.number().min(0).max(1),
+});
+export type OptimizeSeoOutput = z.infer<typeof optimizeSeoSchema>;
+
+// ─── Adapt tone (alinhar voz com a marca) ──────────────────────────────────
+export const adaptToneSchema = z.object({
+  adaptedContent: z.string().min(200),
+  changes: z.array(z.string().max(280)).max(15),
+});
+export type AdaptToneOutput = z.infer<typeof adaptToneSchema>;
+
+// ─── Inject CTAs (CTAs naturais no meio do artigo) ─────────────────────────
+export const ctaInsertionSchema = z.object({
+  /** Texto exato que precede a inserção (âncora pra o pipeline localizar). */
+  afterParagraphStart: z.string().min(10).max(200),
+  /** Texto do CTA. Frase única, ação concreta. */
+  ctaText: z.string().min(10).max(200),
+  /** URL alvo (precisa estar em ctaTargets do input). */
+  url: z.string().url(),
+});
+
+export const injectCtasSchema = z.object({
+  insertions: z.array(ctaInsertionSchema).min(1).max(3),
+});
+export type InjectCtasOutput = z.infer<typeof injectCtasSchema>;
+
+// ─── Image briefing (post → conceito visual) ───────────────────────────────
+export const imageBriefingSchema = z.object({
+  /** Conceito visual em uma frase. */
+  concept: z.string().min(10).max(200),
+  /** Sujeito principal (o que aparece na foto). */
+  subject: z.string().min(5).max(200),
+  /** Ambiente (onde acontece a cena). */
+  setting: z.string().min(5).max(200),
+  /** Atmosfera/sensação. */
+  mood: z.string().min(3).max(80),
+  /** Paleta de cores principal. */
+  palette: z.string().min(5).max(200),
+  /** 3 a 6 detalhes-chave que reforçam o conceito. */
+  keyDetails: z.array(z.string().max(120)).min(3).max(6),
+  /** Alt-text em pt-BR para acessibilidade (80-140 chars). */
+  alt: z.string().min(40).max(180),
+});
+export type ImageBriefingOutput = z.infer<typeof imageBriefingSchema>;
+
+// ─── Build image prompt (briefing → prompt em inglês para gerador) ─────────
+export const buildImagePromptSchema = z.object({
+  /** Prompt completo em inglês para o gerador de imagem. */
+  prompt: z.string().min(40).max(1500),
+  /** Negative prompt (já compõe layers do visual.ts; modelo pode estender). */
+  negativePrompt: z.string().min(20).max(800),
+  /** Razão: por que essa composição funciona pro tipo de uso. */
+  rationale: z.string().min(10).max(400),
+});
+export type BuildImagePromptOutput = z.infer<typeof buildImagePromptSchema>;
+
+// ─── Image variations (N variações do mesmo briefing) ──────────────────────
+export const imageVariationSchema = z.object({
+  /** Identificador curto da variação (ex: "wide-angle-morning"). */
+  angle: z.string().min(3).max(80),
+  /** Prompt completo em inglês. */
+  prompt: z.string().min(40).max(1500),
+  /** O que muda nessa variação versus o briefing base. */
+  changeNote: z.string().min(5).max(300),
+});
+
+export const imageVariationsSchema = z.object({
+  variations: z.array(imageVariationSchema).min(1).max(6),
+});
+export type ImageVariationsOutput = z.infer<typeof imageVariationsSchema>;

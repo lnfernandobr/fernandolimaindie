@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { inspectAllPrompts } from '../ai/prompts.js';
+import { inspectAllPrompts } from '../ai/prompts/index.js';
 import { asyncHandler } from '../middleware/errorHandler.js';
 import { requireAuth } from '../middleware/auth.js';
 

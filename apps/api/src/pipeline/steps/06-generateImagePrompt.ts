@@ -14,8 +14,10 @@ export const generateImagePromptStep: PipelineStep = async (ctx) => {
   if (!topic || !article) throw new Error('imagePrompt: topic/article missing');
 
   ctx.imageBrief = await generateImagePromptBrief({
+    channelName: channel.name,
+    niche: channel.niche,
+    language: channel.language,
     articleTitle: topic.refinedTitle,
     articleSummary: article.excerpt,
-    niche: channel.niche,
   });
 };

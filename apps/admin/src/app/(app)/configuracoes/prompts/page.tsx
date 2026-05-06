@@ -9,9 +9,12 @@ import { Badge } from '@/components/ui/badge';
 import { toast } from '@/components/ui/toast';
 import { ArrowLeft, ChevronDown, ChevronRight } from 'lucide-react';
 
+type PromptCategory = 'editorial' | 'refinement' | 'meta' | 'audit' | 'visual';
+
 interface PromptInspection {
   key: string;
   name: string;
+  category: PromptCategory;
   version: string;
   description: string;
   system: string;
@@ -20,6 +23,24 @@ interface PromptInspection {
   userSampleTokens: number;
   totalTokens: number;
 }
+
+const CATEGORY_LABEL: Record<PromptCategory, string> = {
+  editorial: 'Fluxo editorial',
+  refinement: 'Refinamento',
+  meta: 'Metadata',
+  audit: 'Auditoria e taxonomia',
+  visual: 'Imagens',
+};
+
+const CATEGORY_DESC: Record<PromptCategory, string> = {
+  editorial: 'Da pauta ao artigo finalizado: brainstorm, seleção, outline, redação.',
+  refinement: 'Passes que melhoram um artigo já redigido sem refazê-lo do zero.',
+  meta: 'Metadata SEO/GEO: title, description, slug, keywords, excerpt.',
+  audit: 'Análise de site e taxonomia (categoria, tags).',
+  visual: 'Briefing visual e prompts por tipo de imagem (cover, OG, thumbnail, internal, variações).',
+};
+
+const CATEGORY_ORDER: PromptCategory[] = ['editorial', 'refinement', 'meta', 'audit', 'visual'];
 
 export default function PromptsPage() {
   const [items, setItems] = useState<PromptInspection[] | null>(null);
@@ -45,7 +66,15 @@ export default function PromptsPage() {
     };
   }, [items]);
 
-  if (!items) return <PageHeader title="Carregando…" />;
+  const grouped = useMemo(() => {
+    if (!items) return null;
+    return CATEGORY_ORDER.map((cat) => ({
+      category: cat,
+      items: items.filter((p) => p.category === cat),
+    })).filter((g) => g.items.length > 0);
+  }, [items]);
+
+  if (!items || !grouped) return <PageHeader title="Carregando…" />;
 
   function toggle(k: string) {
     setOpen((prev) => ({ ...prev, [k]: !prev[k] }));
@@ -62,67 +91,102 @@ export default function PromptsPage() {
 
       <PageHeader
         title="Prompts da pipeline de IA"
-        description="Visualização read-only de todos os prompts em uso. Para editar, abra apps/api/src/ai/prompts.ts."
+        description="Visualização read-only. Para editar, abra apps/api/src/ai/prompts/. Cada prompt mostra system (cacheável), user (renderizado com sample) e estimativa de tokens."
       />
 
       {totals ? (
         <div className="flex flex-wrap gap-3 text-sm">
           <Badge variant="secondary">{totals.count} prompts</Badge>
-          <Badge variant="secondary">~{totals.systemTokens.toLocaleString('pt-BR')} tokens em system (cacheável)</Badge>
-          <Badge variant="secondary">~{totals.userTokens.toLocaleString('pt-BR')} tokens médios em user (sample)</Badge>
+          <Badge variant="secondary">
+            ~{totals.systemTokens.toLocaleString('pt-BR')} tokens system (cacheável)
+          </Badge>
+          <Badge variant="secondary">
+            ~{totals.userTokens.toLocaleString('pt-BR')} tokens user (sample)
+          </Badge>
         </div>
       ) : null}
 
-      <ol className="space-y-3">
-        {items.map((p, idx) => {
-          const isOpen = !!open[p.key];
-          return (
-            <li key={p.key}>
-              <Card>
-                <button
-                  type="button"
-                  onClick={() => toggle(p.key)}
-                  className="w-full text-left"
-                  aria-expanded={isOpen}
-                >
-                  <CardHeader className="flex flex-row items-start justify-between gap-4">
-                    <div className="flex-1 min-w-0">
-                      <CardTitle className="flex items-center gap-2">
-                        <span className="text-xs font-mono text-[var(--color-muted)]">{idx + 1}.</span>
-                        <span>{p.name}</span>
-                        <Badge variant="default" className="text-[10px]">v{p.version}</Badge>
-                      </CardTitle>
-                      <p className="text-sm text-[var(--color-muted)] mt-1.5">{p.description}</p>
-                    </div>
-                    <div className="flex items-center gap-3 flex-shrink-0">
-                      <div className="text-right text-xs text-[var(--color-muted)]">
-                        <div>~{p.systemTokens} sys</div>
-                        <div>~{p.userSampleTokens} user</div>
-                      </div>
-                      {isOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
-                    </div>
-                  </CardHeader>
-                </button>
-                {isOpen ? (
-                  <CardContent className="pt-0 space-y-4">
-                    <PromptBlock title="System (cacheável)" content={p.system} tokens={p.systemTokens} />
-                    <PromptBlock
-                      title="User (renderizado com sample input)"
-                      content={p.userSample}
-                      tokens={p.userSampleTokens}
-                    />
-                  </CardContent>
-                ) : null}
-              </Card>
-            </li>
-          );
-        })}
-      </ol>
+      <div className="space-y-10">
+        {grouped.map((group) => (
+          <section key={group.category}>
+            <header className="mb-4">
+              <h2 className="text-lg font-semibold tracking-tight">
+                {CATEGORY_LABEL[group.category]}
+              </h2>
+              <p className="text-sm text-[var(--color-muted)] mt-1">
+                {CATEGORY_DESC[group.category]}
+              </p>
+            </header>
+            <ol className="space-y-3">
+              {group.items.map((p) => {
+                const isOpen = !!open[p.key];
+                return (
+                  <li key={p.key}>
+                    <Card>
+                      <button
+                        type="button"
+                        onClick={() => toggle(p.key)}
+                        className="w-full text-left"
+                        aria-expanded={isOpen}
+                      >
+                        <CardHeader className="flex flex-row items-start justify-between gap-4">
+                          <div className="flex-1 min-w-0">
+                            <CardTitle className="flex items-center gap-2 flex-wrap">
+                              <span>{p.name}</span>
+                              <Badge variant="default" className="text-[10px]">
+                                v{p.version}
+                              </Badge>
+                            </CardTitle>
+                            <p className="text-sm text-[var(--color-muted)] mt-1.5">{p.description}</p>
+                          </div>
+                          <div className="flex items-center gap-3 flex-shrink-0">
+                            <div className="text-right text-xs text-[var(--color-muted)] font-mono">
+                              <div>~{p.systemTokens} sys</div>
+                              <div>~{p.userSampleTokens} user</div>
+                            </div>
+                            {isOpen ? (
+                              <ChevronDown className="h-4 w-4" />
+                            ) : (
+                              <ChevronRight className="h-4 w-4" />
+                            )}
+                          </div>
+                        </CardHeader>
+                      </button>
+                      {isOpen ? (
+                        <CardContent className="pt-0 space-y-4">
+                          <PromptBlock
+                            title="System (cacheável)"
+                            content={p.system}
+                            tokens={p.systemTokens}
+                          />
+                          <PromptBlock
+                            title="User (renderizado com sample input)"
+                            content={p.userSample}
+                            tokens={p.userSampleTokens}
+                          />
+                        </CardContent>
+                      ) : null}
+                    </Card>
+                  </li>
+                );
+              })}
+            </ol>
+          </section>
+        ))}
+      </div>
     </div>
   );
 }
 
-function PromptBlock({ title, content, tokens }: { title: string; content: string; tokens: number }) {
+function PromptBlock({
+  title,
+  content,
+  tokens,
+}: {
+  title: string;
+  content: string;
+  tokens: number;
+}) {
   return (
     <div>
       <div className="flex items-center justify-between mb-2">

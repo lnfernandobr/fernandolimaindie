@@ -73,10 +73,20 @@ const MOCK_BUILDERS: Record<string, Builder> = {
   OutlineArticle: outlineArticleBuilder,
   WriteArticle: writeArticleBuilder,
   GenerateMetadata: generateMetadataBuilder,
-  ImageBrief: imageBriefBuilder,
+  ImageBrief: imageBriefBuilder, // legacy single-step
+  ImageBriefing: imageBriefingBuilder,
+  CoverImagePrompt: coverImagePromptBuilder,
+  OgImagePrompt: coverImagePromptBuilder,
+  ThumbnailImagePrompt: coverImagePromptBuilder,
+  InternalImagePrompt: coverImagePromptBuilder,
+  ImageVariations: imageVariationsBuilder,
   GenerateCategory: generateCategoryBuilder,
   GenerateTags: generateTagsBuilder,
   AnalyzeSite: analyzeSiteBuilder,
+  ReviewArticle: reviewArticleBuilder,
+  OptimizeSeo: optimizeSeoBuilder,
+  AdaptTone: adaptToneBuilder,
+  InjectCtas: injectCtasBuilder,
 };
 
 function lastUserMsg(messages: { role: string; content: string }[]): string {
@@ -337,6 +347,114 @@ function analyzeSiteBuilder(userMsg: string) {
         area: 'opportunity',
         title: 'Oportunidade: comparativos lado a lado',
         detail: 'Conteúdo "X vs Y" tem alta intenção de compra e baixa concorrência genérica.',
+      },
+    ],
+  };
+}
+
+// ─── builders novos (visual + refinement) ──────────────────────────────────
+
+function imageBriefingBuilder(userMsg: string) {
+  const niche = nicheOf(userMsg);
+  const titleMatch = /(?:Título do post|Título):\s*(.+)/i.exec(userMsg);
+  const title = (titleMatch?.[1] ?? niche).trim();
+  return {
+    concept: `Momento contemplativo conectando o leitor ao tema "${title}".`,
+    subject: `Pessoa de costas em ambiente coerente com ${niche}, foco em uma ação simples.`,
+    setting: `Ambiente íntimo de ${niche}, luz natural lateral, superfícies táteis.`,
+    mood: 'íntimo, calmo, editorial',
+    palette: 'azuis profundos, âmbar quente do amanhecer, off-white',
+    keyDetails: [
+      'fio de luz dourada na borda do tecido',
+      'objeto pessoal repousando ao lado',
+      'sombra longa marcando a hora',
+    ],
+    alt: `Cena editorial relacionada a ${niche.toLowerCase()} com luz natural quente.`,
+  };
+}
+
+function coverImagePromptBuilder(userMsg: string) {
+  const niche = nicheOf(userMsg);
+  return {
+    prompt: `Editorial photograph in golden-hour natural light. A person seen from behind in an intimate ${niche} setting, soft warm amber tones meeting deep navy shadows, off-white linen surfaces. Shot on full-frame 50mm lens at f/2.0, shallow depth of field. Single subject anchored on the left third of the frame, generous negative space on the right. Quiet mood, slight melancholy, no text, no graphic elements.`,
+    negativePrompt:
+      'text, watermark, logo, cartoon, illustration, 3d render, low quality, blurry, oversaturated, generic stock photography, smiling at camera, fake studio lighting',
+    rationale:
+      'Single subject with negative space allows headline overlay. Warm amber paired with navy reinforces brand identity at thumbnail size.',
+  };
+}
+
+function imageVariationsBuilder(_userMsg: string) {
+  return {
+    variations: [
+      {
+        angle: 'low-angle-blue-hour',
+        prompt:
+          'Editorial photograph at blue hour. Low camera angle looking up at the subject, deep navy sky, faint amber light from a window. 50mm at f/2.0.',
+        changeNote: 'Camera lowered, time shifted to pre-dawn blue hour for cooler mood.',
+      },
+      {
+        angle: 'tight-close-up-detail',
+        prompt:
+          'Editorial close-up of a hand resting on a linen pillow, soft golden side light, off-white textures, shallow focus on the fingers.',
+        changeNote: 'Tight crop on a single key detail instead of the wider scene.',
+      },
+    ],
+  };
+}
+
+function reviewArticleBuilder(userMsg: string) {
+  const md = userMsg.match(/```markdown\n([\s\S]*?)\n```/i)?.[1] ?? userMsg.slice(-1000);
+  return {
+    revisedContent: md,
+    issues: [
+      {
+        severity: 'medium',
+        category: 'clarity',
+        excerpt: 'É importante notar que muitas pessoas',
+        problem: 'Frase-elevador genérica que não acrescenta informação.',
+        suggestion: 'Removida; substituída por afirmação direta com dado específico.',
+      },
+    ],
+    summary: 'Cortes de frases-elevador, troca de voz passiva por ativa em 3 trechos.',
+  };
+}
+
+function optimizeSeoBuilder(userMsg: string) {
+  const md = userMsg.match(/```markdown\n([\s\S]*?)\n```/i)?.[1] ?? userMsg.slice(-1000);
+  return {
+    optimizedContent: md,
+    changes: [
+      'Keyword principal inserida na primeira frase do hook.',
+      'H2 da seção 2 reescrito para incluir long-tail.',
+      'Adicionada FAQ de 3 perguntas no final.',
+    ],
+    primaryKeywordDensity: 0.011,
+  };
+}
+
+function adaptToneBuilder(userMsg: string) {
+  const md = userMsg.match(/```markdown\n([\s\S]*?)\n```/i)?.[1] ?? userMsg.slice(-1000);
+  return {
+    adaptedContent: md,
+    changes: [
+      'Substituído "outrossim" por "além disso" em 2 trechos.',
+      'Convertido pronome formal "o leitor" para "você" em 4 lugares.',
+    ],
+  };
+}
+
+function injectCtasBuilder(userMsg: string) {
+  const ctaMatch = /\d+\.\s+(.+?)\s+\(([^)]+)\)/.exec(userMsg);
+  return {
+    insertions: [
+      {
+        afterParagraphStart:
+          'Esse horário é a transição entre fases do sono. Vulnerável a despertar quando há',
+        ctaText: ctaMatch
+          ? `Use a ${(ctaMatch[1] ?? '').toLowerCase()} para identificar o horário ideal de dormir e fechar o ciclo certo.`
+          : 'Veja a calculadora de ciclos para descobrir seu horário ideal de dormir.',
+        url: ctaMatch?.[2] ?? 'https://sonoprofundo.com/#tool-title',
       },
     ],
   };

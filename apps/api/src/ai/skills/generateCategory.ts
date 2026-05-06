@@ -1,4 +1,4 @@
-import { prompts, type GenerateCategoryInput } from '../prompts.js';
+import { prompts, type GenerateCategoryInput } from '../prompts/index.js';
 import { getTextProvider } from '../providers/index.js';
 import { generateCategorySchema } from '../schemas.js';
 import { slugify } from './shared.js';

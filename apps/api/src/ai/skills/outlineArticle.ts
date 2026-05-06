@@ -1,4 +1,4 @@
-import { prompts, type OutlineArticleInput } from '../prompts.js';
+import { prompts, type OutlineArticleInput } from '../prompts/index.js';
 import { getTextProvider } from '../providers/index.js';
 import { outlineArticleSchema } from '../schemas.js';
 
