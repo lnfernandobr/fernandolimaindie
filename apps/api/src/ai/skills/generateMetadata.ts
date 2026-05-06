@@ -1,4 +1,4 @@
-import { prompts, type GenerateMetadataInput } from '../prompts/index.js';
+import { prompts, type GenerateMetadataInput } from '../prompts.js';
 import { getTextProvider } from '../providers/index.js';
 import { generateMetadataSchema } from '../schemas.js';
 

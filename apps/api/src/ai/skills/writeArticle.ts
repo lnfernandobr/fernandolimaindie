@@ -1,4 +1,4 @@
-import { prompts, type WriteArticleInput } from '../prompts/index.js';
+import { prompts, type WriteArticleInput } from '../prompts.js';
 import { getTextProvider } from '../providers/index.js';
 import { writeArticleSchema } from '../schemas.js';
 

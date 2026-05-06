@@ -1,4 +1,4 @@
-import { prompts, type GenerateImagePromptInput } from '../prompts/index.js';
+import { prompts, type GenerateImagePromptInput } from '../prompts.js';
 import { getTextProvider } from '../providers/index.js';
 import { imageBriefSchema } from '../schemas.js';
 

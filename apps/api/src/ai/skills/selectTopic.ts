@@ -1,4 +1,4 @@
-import { prompts, type SelectTopicInput } from '../prompts/index.js';
+import { prompts, type SelectTopicInput } from '../prompts.js';
 import { getTextProvider } from '../providers/index.js';
 import { selectTopicSchema } from '../schemas.js';
 import type { TopicCandidate } from '../schemas.js';

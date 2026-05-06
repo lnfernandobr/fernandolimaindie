@@ -1,4 +1,4 @@
-import { prompts, type GenerateTagsInput } from '../prompts/index.js';
+import { prompts, type GenerateTagsInput } from '../prompts.js';
 import { getTextProvider } from '../providers/index.js';
 import { generateTagsSchema } from '../schemas.js';
 import { slugify } from './shared.js';

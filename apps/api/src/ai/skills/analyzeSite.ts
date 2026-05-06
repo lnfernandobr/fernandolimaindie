@@ -1,4 +1,4 @@
-import { prompts, type AnalyzeSitePromptInput as SiteAnalysisPromptInput } from '../prompts/index.js';
+import { prompts, type AnalyzeSitePromptInput as SiteAnalysisPromptInput } from '../prompts.js';
 import { getTextProvider } from '../providers/index.js';
 import { analyzeSiteSchema } from '../schemas.js';
 

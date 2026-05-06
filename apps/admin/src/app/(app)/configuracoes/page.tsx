@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { api } from '@/lib/api';
 import {
   AI_MODELS,
@@ -10,7 +11,9 @@ import {
 } from '@bn/shared';
 import { PageHeader } from '@/components/PageHeader';
 import { SettingsForm } from '@/components/SettingsForm';
+import { Card, CardContent } from '@/components/ui/card';
 import { toast } from '@/components/ui/toast';
+import { ScrollText } from 'lucide-react';
 
 export default function ConfiguracoesPage() {
   const [settings, setSettings] = useState<SettingsDto | null>(null);
@@ -60,6 +63,28 @@ export default function ConfiguracoesPage() {
         imageModels={IMAGE_MODELS}
         onSave={handleSave}
       />
+
+      <Card>
+        <CardContent className="py-5">
+          <Link
+            href="/configuracoes/prompts"
+            className="flex items-start gap-4 group"
+          >
+            <span className="rounded-lg bg-[var(--color-accent)]/15 p-2.5 text-[var(--color-accent)]">
+              <ScrollText className="h-5 w-5" />
+            </span>
+            <div className="flex-1">
+              <h2 className="font-semibold group-hover:text-[var(--color-accent)] transition-colors">
+                Prompts da pipeline de IA
+              </h2>
+              <p className="text-sm text-[var(--color-muted)] mt-1">
+                Ver todos os prompts (system + user) com estimativa de tokens. Read-only — para editar, mexa em <code>apps/api/src/ai/prompts.ts</code>.
+              </p>
+            </div>
+            <span className="text-[var(--color-muted)] group-hover:text-[var(--color-fg)] transition-colors">→</span>
+          </Link>
+        </CardContent>
+      </Card>
     </div>
   );
 }

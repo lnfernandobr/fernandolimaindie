@@ -1,4 +1,4 @@
-import { prompts, type BrainstormTopicsInput } from '../prompts/index.js';
+import { prompts, type BrainstormTopicsInput } from '../prompts.js';
 import { getTextProvider } from '../providers/index.js';
 import { brainstormTopicsSchema, type TopicCandidate } from '../schemas.js';
 
