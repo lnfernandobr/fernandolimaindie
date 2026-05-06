@@ -8,7 +8,7 @@ export interface BrainstormResult {
 }
 
 export async function brainstormTopics(input: BrainstormTopicsInput): Promise<BrainstormResult> {
-  const provider = getTextProvider();
+  const provider = await getTextProvider();
   const result = await provider.generateText({
     jsonMode: true,
     messages: [

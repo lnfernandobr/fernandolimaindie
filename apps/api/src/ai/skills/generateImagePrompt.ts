@@ -13,7 +13,7 @@ export interface ImageBrief {
 export async function generateImagePromptBrief(
   input: GenerateImagePromptInput,
 ): Promise<ImageBrief> {
-  const provider = getTextProvider();
+  const provider = await getTextProvider();
   const result = await provider.generateText({
     jsonMode: true,
     messages: [

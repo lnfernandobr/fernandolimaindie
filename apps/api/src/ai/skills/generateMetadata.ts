@@ -13,7 +13,7 @@ export interface ArticleMetadata {
 }
 
 export async function generateMetadata(input: GenerateMetadataInput): Promise<ArticleMetadata> {
-  const provider = getTextProvider();
+  const provider = await getTextProvider();
   const result = await provider.generateText({
     jsonMode: true,
     messages: [

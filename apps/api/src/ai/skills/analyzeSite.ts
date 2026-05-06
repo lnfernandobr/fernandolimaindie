@@ -22,7 +22,7 @@ const VALID_SEVERITY: InsightSeverity[] = ['high', 'medium', 'low'];
 const VALID_AREA: InsightArea[] = ['content', 'structure', 'authority', 'opportunity'];
 
 export async function analyzeSite(input: SiteAnalysisPromptInput): Promise<SiteAnalysis> {
-  const provider = getTextProvider();
+  const provider = await getTextProvider();
   const result = await provider.generateText({
     jsonMode: true,
     messages: [

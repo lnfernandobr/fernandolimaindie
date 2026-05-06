@@ -7,7 +7,7 @@ export interface GeneratedTags {
 }
 
 export async function generateTags(input: GenerateTagsInput): Promise<GeneratedTags> {
-  const provider = getTextProvider();
+  const provider = await getTextProvider();
   const result = await provider.generateText({
     jsonMode: true,
     messages: [

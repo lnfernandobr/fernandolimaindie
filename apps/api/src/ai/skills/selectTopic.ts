@@ -12,7 +12,7 @@ export interface SelectedTopic {
 export async function selectTopic(input: SelectTopicInput): Promise<SelectedTopic> {
   if (input.candidates.length === 0) throw new Error('selectTopic: no candidates');
 
-  const provider = getTextProvider();
+  const provider = await getTextProvider();
   const result = await provider.generateText({
     jsonMode: true,
     messages: [

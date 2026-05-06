@@ -18,7 +18,7 @@ export interface ArticleOutline {
 }
 
 export async function outlineArticle(input: OutlineArticleInput): Promise<ArticleOutline> {
-  const provider = getTextProvider();
+  const provider = await getTextProvider();
   const result = await provider.generateText({
     jsonMode: true,
     messages: [

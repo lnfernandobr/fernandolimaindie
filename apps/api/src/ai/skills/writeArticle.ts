@@ -9,7 +9,7 @@ export interface WrittenArticle {
 }
 
 export async function writeArticle(input: WriteArticleInput): Promise<WrittenArticle> {
-  const provider = getTextProvider();
+  const provider = await getTextProvider();
   const result = await provider.generateText({
     jsonMode: true,
     messages: [

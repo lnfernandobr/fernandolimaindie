@@ -6,3 +6,4 @@ export * from './schemas/tag';
 export * from './schemas/run';
 export * from './schemas/auth';
 export * from './schemas/common';
+export * from './schemas/settings';

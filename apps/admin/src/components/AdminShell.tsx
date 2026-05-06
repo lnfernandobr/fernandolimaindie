@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { LayoutDashboard, Radio, Activity, Gauge, LogOut, Moon, Sun } from 'lucide-react';
+import { LayoutDashboard, Radio, Activity, Gauge, LogOut, Moon, Sun, Settings } from 'lucide-react';
 import { clearToken, getToken } from '@/lib/api';
 import { cn } from '@/lib/cn';
 import { Button } from './ui/button';
@@ -13,6 +13,7 @@ const NAV = [
   { href: '/canais', label: 'Canais', icon: Radio },
   { href: '/overview', label: 'Overview', icon: Gauge },
   { href: '/execucoes', label: 'Execuções', icon: Activity },
+  { href: '/configuracoes', label: 'Configurações', icon: Settings },
 ] as const;
 
 export function AdminShell({ children }: { children: React.ReactNode }) {

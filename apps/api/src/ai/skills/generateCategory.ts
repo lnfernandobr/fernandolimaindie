@@ -10,7 +10,7 @@ export interface GeneratedCategory {
 }
 
 export async function generateCategory(input: GenerateCategoryInput): Promise<GeneratedCategory> {
-  const provider = getTextProvider();
+  const provider = await getTextProvider();
   const result = await provider.generateText({
     jsonMode: true,
     messages: [

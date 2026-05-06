@@ -24,7 +24,7 @@ export interface GeneratedImage {
  * que separa concerns: 1 prompt = 1 LLM call.
  */
 export async function generateImage(input: GenerateImageInput): Promise<GeneratedImage> {
-  const provider = getImageProvider();
+  const provider = await getImageProvider();
   const image = await provider.generateImage({
     prompt: input.prompt,
     aspect: 'wide',

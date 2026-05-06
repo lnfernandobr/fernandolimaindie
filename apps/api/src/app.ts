@@ -11,6 +11,7 @@ import { postsRouter } from './routes/posts.js';
 import { runsRouter } from './routes/runs.js';
 import { publicRouter } from './routes/public.js';
 import { schedulerRouter } from './routes/schedulerInfo.js';
+import { settingsRouter } from './routes/settings.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import { requestLog } from './middleware/requestLog.js';
 import { uploadsDir } from './services/uploads.js';
@@ -59,6 +60,7 @@ export function createApp(): Express {
   app.use('/api/v1/posts', postsRouter);
   app.use('/api/v1/runs', runsRouter);
   app.use('/api/v1/scheduler', schedulerRouter);
+  app.use('/api/v1/settings', settingsRouter);
 
   app.use('/api/v1/public', publicRouter);
 
