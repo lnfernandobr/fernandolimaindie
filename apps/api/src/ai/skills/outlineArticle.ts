@@ -1,6 +1,6 @@
 import { prompts, type OutlineArticleInput } from '../prompts/index.js';
 import { getTextProvider } from '../providers/index.js';
-import { parseJson } from './shared.js';
+import { outlineArticleSchema } from '../schemas.js';
 
 export interface ArticleOutline {
   hook: string;
@@ -19,43 +19,28 @@ export interface ArticleOutline {
 
 export async function outlineArticle(input: OutlineArticleInput): Promise<ArticleOutline> {
   const provider = await getTextProvider();
-  const result = await provider.generateText({
-    jsonMode: true,
+  const { data, provider: providerName } = await provider.generateStructured({
+    schemaName: 'OutlineArticle',
+    schemaDescription: 'Outline editorial: hook + sections (h2 + answer-first + must-include) + faq + wordCountTarget.',
+    schema: outlineArticleSchema,
     messages: [
       { role: 'system', content: prompts.outlineArticle.system },
       { role: 'user', content: prompts.outlineArticle.user(input) },
     ],
   });
-  const data = parseJson<Partial<ArticleOutline>>(result.text);
-
-  if (!Array.isArray(data.sections) || data.sections.length === 0) {
-    throw new Error('outlineArticle: no sections returned');
-  }
 
   return {
-    hook: String(data.hook ?? '').slice(0, 600),
-    sections: data.sections
-      .filter((s) => s.h2 && s.answerFirst)
-      .map((s) => ({
-        h2: String(s.h2),
-        answerFirst: String(s.answerFirst),
-        mustInclude: Array.isArray(s.mustInclude) ? s.mustInclude.map(String).slice(0, 8) : [],
-        h3s: Array.isArray(s.h3s) ? s.h3s.map(String).slice(0, 6) : undefined,
-        useTable: !!s.useTable,
-        useNumberedList: !!s.useNumberedList,
-      }))
-      .slice(0, 8),
-    faq: Array.isArray(data.faq)
-      ? data.faq
-          .filter((f): f is { question: string; answerHint: string } => Boolean(f?.question && f?.answerHint))
-          .slice(0, 6)
-      : [],
-    wordCountTarget: clampWords(Number(data.wordCountTarget) || 1000),
-    provider: result.provider,
+    hook: data.hook,
+    sections: data.sections.map((s) => ({
+      h2: s.h2,
+      answerFirst: s.answerFirst,
+      mustInclude: s.mustInclude,
+      h3s: s.h3s ?? undefined,
+      useTable: s.useTable,
+      useNumberedList: s.useNumberedList,
+    })),
+    faq: data.faq,
+    wordCountTarget: data.wordCountTarget,
+    provider: providerName,
   };
-}
-
-function clampWords(n: number): number {
-  if (!Number.isFinite(n)) return 1000;
-  return Math.max(600, Math.min(2500, Math.round(n)));
 }

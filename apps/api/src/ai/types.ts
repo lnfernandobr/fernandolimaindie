@@ -2,12 +2,16 @@
  * Tipos compartilhados pela camada de IA.
  *
  * A interface aqui é intencionalmente mínima — qualquer provider novo
- * (Claude, OpenAI, Gemini) só precisa implementar `generateText` e,
- * opcionalmente, `generateImage`.
+ * (Claude, OpenAI, Gemini) só precisa implementar `generateText`,
+ * `generateStructured` e, opcionalmente, `generateImage`.
  *
- * Toda a lógica de produto (montar prompts, parsear JSON, escolher modelo
- * por task, etc.) vive nas tasks (./tasks) — providers ficam puros.
+ * Skills que retornam dados estruturados devem usar `generateStructured`:
+ * passa um Zod schema, recebe dado tipado e validado, sem parse manual.
+ * Evite `generateText` + parseJson — frágil quando o output cresce
+ * (truncamento, escape de aspas, formato instável).
  */
+
+import type { z } from 'zod';
 
 export interface AIMessage {
   role: 'system' | 'user' | 'assistant';
@@ -18,9 +22,8 @@ export interface GenerateTextInput {
   /** Mensagens no formato unificado (system/user/assistant). */
   messages: AIMessage[];
   /**
-   * Quando true, o provider deve forçar saída JSON parseável.
-   * Em mock, retorna um objeto pré-fabricado conforme a task identificada
-   * pelo header da primeira mensagem `user`.
+   * @deprecated Use `generateStructured` para output estruturado.
+   * Mantido só para compat com chamadas que ainda esperam texto bruto.
    */
   jsonMode?: boolean;
   /** Override por chamada — útil pra usar Haiku em dev e Sonnet em prod. */
@@ -35,8 +38,28 @@ export interface GenerateTextResult {
   text: string;
   model: string;
   provider: string;
-  /** True quando o provider conseguiu produzir JSON parseável estritamente. */
   isJson?: boolean;
+}
+
+export interface GenerateStructuredInput<T> {
+  /** Mensagens no formato unificado (system/user/assistant). */
+  messages: AIMessage[];
+  /** Identificador curto da operação (vira nome da tool/json_schema). */
+  schemaName: string;
+  /** Descrição opcional — vira `tool.description` no Claude. */
+  schemaDescription?: string;
+  /** Zod schema do output esperado. Provider converte para JSON Schema. */
+  schema: z.ZodType<T>;
+  model?: string;
+  maxTokens?: number;
+  temperature?: number;
+}
+
+export interface GenerateStructuredResult<T> {
+  /** Dado já tipado e validado pelo Zod. */
+  data: T;
+  model: string;
+  provider: string;
 }
 
 export interface GenerateImageInput {
@@ -61,5 +84,6 @@ export interface AIProvider {
   /** Indica se o provider está habilitado/configurado. Falso = não usar. */
   readonly enabled: boolean;
   generateText(input: GenerateTextInput): Promise<GenerateTextResult>;
+  generateStructured<T>(input: GenerateStructuredInput<T>): Promise<GenerateStructuredResult<T>>;
   generateImage(input: GenerateImageInput): Promise<GenerateImageResult>;
 }

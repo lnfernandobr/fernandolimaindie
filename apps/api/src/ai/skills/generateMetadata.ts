@@ -1,6 +1,6 @@
 import { prompts, type GenerateMetadataInput } from '../prompts/index.js';
 import { getTextProvider } from '../providers/index.js';
-import { parseJson, slugify } from './shared.js';
+import { generateMetadataSchema } from '../schemas.js';
 
 export interface ArticleMetadata {
   metaTitle: string;
@@ -14,31 +14,23 @@ export interface ArticleMetadata {
 
 export async function generateMetadata(input: GenerateMetadataInput): Promise<ArticleMetadata> {
   const provider = await getTextProvider();
-  const result = await provider.generateText({
-    jsonMode: true,
+  const { data, provider: providerName } = await provider.generateStructured({
+    schemaName: 'GenerateMetadata',
+    schemaDescription: 'Metadata SEO: metaTitle (<=70), metaDescription (<=180), slug, keywords, suggestedTags, summary.',
+    schema: generateMetadataSchema,
     messages: [
       { role: 'system', content: prompts.generateMetadata.system },
       { role: 'user', content: prompts.generateMetadata.user(input) },
     ],
   });
-  const data = parseJson<Partial<ArticleMetadata>>(result.text);
-
-  const metaTitle = (data.metaTitle ?? input.title).toString().slice(0, 70);
-  const metaDescription = (data.metaDescription ?? '').toString().slice(0, 180);
-  const slug = (data.slug && /^[a-z0-9-]+$/.test(data.slug) ? data.slug : slugify(metaTitle)).slice(0, 80);
-  const keywords = Array.isArray(data.keywords) ? data.keywords.map(String).slice(0, 10) : [];
-  const suggestedTags = Array.isArray(data.suggestedTags)
-    ? data.suggestedTags.map((t) => slugify(String(t))).filter(Boolean).slice(0, 6)
-    : [];
-  const summary = (data.summary ?? '').toString().slice(0, 500);
 
   return {
-    metaTitle,
-    metaDescription,
-    slug,
-    keywords,
-    suggestedTags,
-    summary,
-    provider: result.provider,
+    metaTitle: data.metaTitle.slice(0, 70),
+    metaDescription: data.metaDescription.slice(0, 180),
+    slug: data.slug.slice(0, 80),
+    keywords: data.keywords.slice(0, 10),
+    suggestedTags: data.suggestedTags.slice(0, 6),
+    summary: data.summary.slice(0, 500),
+    provider: providerName,
   };
 }

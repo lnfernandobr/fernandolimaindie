@@ -1,16 +1,7 @@
 import { jsonOutputContract } from './_shared.js';
+import type { TopicCandidate } from '../schemas.js';
 
-export interface TopicCandidate {
-  workingTitle: string;
-  angle: string;
-  intent: string;
-  audienceLevel: string;
-  format: string;
-  primaryKeyword: string;
-  secondaryKeywords?: string[];
-  gapFilled?: string;
-  valueDelivered?: string;
-}
+export type { TopicCandidate };
 
 export interface SelectTopicInput {
   channelName: string;

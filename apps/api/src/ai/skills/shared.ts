@@ -1,28 +1,10 @@
 /**
- * Helpers compartilhados entre tasks.
- * Mantemos pequenos e sem dependências externas — qualquer coisa
- * mais sofisticada deve nascer como módulo dedicado.
+ * Helpers compartilhados entre skills.
+ *
+ * Skills estruturadas usam `provider.generateStructured(...)` — o Zod schema
+ * vira JSON Schema (Anthropic tool / OpenAI Structured Output) e a saída
+ * já chega tipada e validada. Não há mais parse manual de JSON.
  */
-
-export function parseJson<T>(text: string): T {
-  // Tenta JSON puro; se vier embrulhado em ```json ... ```, extrai.
-  const direct = tryParse<T>(text);
-  if (direct !== undefined) return direct;
-  const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/i);
-  if (fenced && fenced[1]) {
-    const inner = tryParse<T>(fenced[1]);
-    if (inner !== undefined) return inner;
-  }
-  throw new Error(`AI response is not parseable JSON: ${text.slice(0, 120)}…`);
-}
-
-function tryParse<T>(s: string): T | undefined {
-  try {
-    return JSON.parse(s.trim()) as T;
-  } catch {
-    return undefined;
-  }
-}
 
 export function slugify(input: string): string {
   return input

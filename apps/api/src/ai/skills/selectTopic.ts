@@ -1,6 +1,7 @@
-import { prompts, type SelectTopicInput, type TopicCandidate } from '../prompts/index.js';
+import { prompts, type SelectTopicInput } from '../prompts/index.js';
 import { getTextProvider } from '../providers/index.js';
-import { parseJson } from './shared.js';
+import { selectTopicSchema } from '../schemas.js';
+import type { TopicCandidate } from '../schemas.js';
 
 export interface SelectedTopic {
   selected: TopicCandidate;
@@ -13,30 +14,23 @@ export async function selectTopic(input: SelectTopicInput): Promise<SelectedTopi
   if (input.candidates.length === 0) throw new Error('selectTopic: no candidates');
 
   const provider = await getTextProvider();
-  const result = await provider.generateText({
-    jsonMode: true,
+  const { data, provider: providerName } = await provider.generateStructured({
+    schemaName: 'SelectTopic',
+    schemaDescription: 'Escolhe um candidato (1-indexed) e justifica.',
+    schema: selectTopicSchema,
     messages: [
       { role: 'system', content: prompts.selectTopic.system },
       { role: 'user', content: prompts.selectTopic.user(input) },
     ],
   });
-  const data = parseJson<{
-    selectedIndex?: number | string;
-    reasoning?: string;
-    refinedTitle?: string;
-  }>(result.text);
 
-  const idx =
-    typeof data.selectedIndex === 'number'
-      ? data.selectedIndex - 1
-      : Math.max(0, Number(String(data.selectedIndex ?? '1').match(/\d+/)?.[0] ?? '1') - 1);
-  const safeIdx = Math.max(0, Math.min(input.candidates.length - 1, idx));
+  const safeIdx = Math.max(0, Math.min(input.candidates.length - 1, data.selectedIndex - 1));
   const selected = input.candidates[safeIdx]!;
 
   return {
     selected,
-    refinedTitle: (data.refinedTitle ?? selected.workingTitle).slice(0, 120),
-    reasoning: data.reasoning ?? 'auto-selected',
-    provider: result.provider,
+    refinedTitle: data.refinedTitle.slice(0, 120),
+    reasoning: data.reasoning,
+    provider: providerName,
   };
 }

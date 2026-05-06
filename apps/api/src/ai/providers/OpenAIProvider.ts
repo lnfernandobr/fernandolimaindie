@@ -1,8 +1,11 @@
 import OpenAI from 'openai';
+import { z } from 'zod';
 import type {
   AIProvider,
   GenerateImageInput,
   GenerateImageResult,
+  GenerateStructuredInput,
+  GenerateStructuredResult,
   GenerateTextInput,
   GenerateTextResult,
 } from '../types.js';
@@ -16,9 +19,14 @@ const DEFAULT_TEMPERATURE = 0.7;
 /**
  * Provider de texto e imagem via OpenAI.
  *
- * - generateText: chat completions com `response_format: json_object` quando
- *   jsonMode (OpenAI tem JSON mode nativo).
- * - generateImage: gpt-image-1 retorna b64_json. Decodificamos, salvamos
+ * - `generateStructured` (recomendado): usa Structured Outputs nativos via
+ *   `response_format: { type: 'json_schema', json_schema: { ..., strict: true } }`.
+ *   OpenAI garante que a resposta cumpre o JSON Schema. Convertemos o Zod
+ *   schema com `target: 'openai'` (additionalProperties=false em todo objeto,
+ *   campos opcionais viram `nullable: true` requeridos).
+ * - `generateText`: chat completions livre (sem JSON forçado). Mantido para
+ *   chamadas que só precisam de texto.
+ * - `generateImage`: gpt-image-1 retorna b64_json. Decodificamos, salvamos
  *   em /uploads/ e devolvemos URL pública.
  */
 export class OpenAIProvider implements AIProvider {
@@ -38,7 +46,6 @@ export class OpenAIProvider implements AIProvider {
     }
   }
 
-  // Alias pra interface — não há "model" único (texto e imagem têm modelos distintos)
   get model(): string {
     return this.textModel;
   }
@@ -57,7 +64,6 @@ export class OpenAIProvider implements AIProvider {
       messages,
       max_tokens: input.maxTokens ?? DEFAULT_MAX_TOKENS,
       temperature: input.temperature ?? DEFAULT_TEMPERATURE,
-      response_format: input.jsonMode ? { type: 'json_object' } : undefined,
     });
 
     const text = response.choices[0]?.message?.content ?? '';
@@ -65,7 +71,58 @@ export class OpenAIProvider implements AIProvider {
       provider: this.name,
       model,
       text,
-      isJson: !!input.jsonMode,
+    };
+  }
+
+  async generateStructured<T>(
+    input: GenerateStructuredInput<T>,
+  ): Promise<GenerateStructuredResult<T>> {
+    if (!this.client) throw new Error('OpenAIProvider not configured (missing OPENAI_API_KEY)');
+
+    const messages = input.messages.map((m) => ({
+      role: m.role as 'system' | 'user' | 'assistant',
+      content: m.content,
+    }));
+
+    const jsonSchema = z.toJSONSchema(input.schema, { target: 'draft-7' });
+
+    const model = input.model || this.textModel;
+    const response = await this.client.chat.completions.create({
+      model,
+      messages,
+      max_tokens: input.maxTokens ?? DEFAULT_MAX_TOKENS,
+      temperature: input.temperature ?? DEFAULT_TEMPERATURE,
+      response_format: {
+        type: 'json_schema',
+        json_schema: {
+          name: input.schemaName,
+          schema: jsonSchema as Record<string, unknown>,
+          strict: true,
+        },
+      },
+    });
+
+    const content = response.choices[0]?.message?.content;
+    if (!content) {
+      const refusal = response.choices[0]?.message?.refusal;
+      throw new Error(
+        `OpenAI ${input.schemaName}: resposta vazia${refusal ? ` (refusal: ${refusal})` : ''}`,
+      );
+    }
+
+    let raw: unknown;
+    try {
+      raw = JSON.parse(content);
+    } catch (err) {
+      throw new Error(
+        `OpenAI ${input.schemaName}: JSON inválido apesar de structured output. ${(err as Error).message}`,
+      );
+    }
+
+    return {
+      data: input.schema.parse(raw),
+      provider: this.name,
+      model,
     };
   }
 
