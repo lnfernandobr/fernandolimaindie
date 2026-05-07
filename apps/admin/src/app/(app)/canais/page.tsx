@@ -3,13 +3,13 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/api';
-import type { ChannelDto } from '@bn/shared';
+import { postsPlanTotal, type ChannelDto } from '@bn/shared';
 import { PageHeader } from '@/components/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Table, TBody, TD, TH, THead, TR } from '@/components/ui/table';
 import { toast } from '@/components/ui/toast';
-import { Plus, Play } from 'lucide-react';
+import { Plus, Play, Pencil } from 'lucide-react';
 
 interface Paginated<T> { items: T[]; total: number }
 
@@ -94,14 +94,28 @@ export default function ChannelsListPage() {
                   <TD>
                     <span className="text-xs text-[var(--color-muted)]">
                       {c.publishTimes.length > 0
-                        ? `${c.publishTimes.join(', ')} · ${c.postsPerSlot}/slot`
+                        ? `${c.publishTimes.join(', ')} · ${postsPlanTotal(c.postsPlan)}/slot`
                         : '—'}
                     </span>
+                    {c.postsPlan.length > 0 ? (
+                      <div className="text-xs text-[var(--color-muted)] mt-0.5">
+                        {c.postsPlan
+                          .map((b) => `${b.count}× até ${b.targetReadingMinutes}min`)
+                          .join(' + ')}
+                      </div>
+                    ) : null}
                   </TD>
                   <TD className="text-right">
-                    <Button size="sm" variant="outline" onClick={() => trigger(c.id)}>
-                      <Play className="h-3 w-3" /> Disparar
-                    </Button>
+                    <div className="flex justify-end gap-1.5">
+                      <Button asChild size="sm" variant="outline">
+                        <Link href={`/canais/${c.id}` as any} aria-label={`Editar ${c.name}`}>
+                          <Pencil className="h-3 w-3" /> Editar
+                        </Link>
+                      </Button>
+                      <Button size="sm" variant="outline" onClick={() => trigger(c.id)}>
+                        <Play className="h-3 w-3" /> Disparar
+                      </Button>
+                    </div>
                   </TD>
                 </TR>
               ))

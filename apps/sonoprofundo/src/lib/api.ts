@@ -39,7 +39,7 @@ const PLACEHOLDER_CHANNEL: ChannelDto = {
   active: false,
   publishFrequency: 'daily',
   publishTimes: [],
-  postsPerSlot: 1,
+  postsPlan: [{ count: 1, targetReadingMinutes: 8 }],
   publishWeekdays: [],
   defaultAuthorName: 'Equipe Sonoprofundo',
   createdAt: new Date(0).toISOString(),

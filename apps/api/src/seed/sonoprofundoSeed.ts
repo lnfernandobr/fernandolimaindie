@@ -171,7 +171,7 @@ async function ensureChannel(): Promise<ChannelDoc & { _id: any }> {
       active: true,
       publishFrequency: 'daily',
       publishTimes: ['09:00'],
-      postsPerSlot: 1,
+      postsPlan: [{ count: 1, targetReadingMinutes: 8 }],
       publishWeekdays: [0, 1, 2, 3, 4, 5, 6],
       defaultAuthorName: 'Equipe Sonoprofundo',
     });

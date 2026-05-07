@@ -19,6 +19,38 @@ export const channelSocialsSchema = z.object({
   email: z.string().email().optional(),
 });
 
+// Velocidade média de leitura em pt-BR. Usada para converter "minutos de leitura"
+// em "alvo de palavras" no outline da IA.
+export const READING_WPM = 200;
+export const READING_TIME_PRESETS = [3, 5, 8, 10, 15, 20] as const;
+export const READING_TIME_MIN = 2;
+export const READING_TIME_MAX = 30;
+
+export function minutesToWordTarget(minutes: number): number {
+  return Math.max(1, Math.round(minutes * READING_WPM));
+}
+
+export function wordsToReadingTime(words: number): number {
+  return Math.max(1, Math.round(words / READING_WPM));
+}
+
+/**
+ * Bucket do plano de geração de um canal: "N posts de até X minutos de leitura".
+ * Permite mix granular (ex: 4 de 8min + 1 de 15min por slot).
+ */
+export const postPlanItemSchema = z.object({
+  count: z.number().int().min(1).max(20),
+  targetReadingMinutes: z.number().int().min(READING_TIME_MIN).max(READING_TIME_MAX),
+});
+export type PostPlanItem = z.infer<typeof postPlanItemSchema>;
+
+export const DEFAULT_POSTS_PLAN: PostPlanItem[] = [{ count: 1, targetReadingMinutes: 8 }];
+
+/** Total de posts por slot (soma dos buckets). */
+export function postsPlanTotal(plan: PostPlanItem[]): number {
+  return plan.reduce((sum, b) => sum + b.count, 0);
+}
+
 /**
  * Canal = um site externo que consome conteúdo gerado por essa API.
  * Mantemos só o essencial: identidade, agenda, autor, ativo.
@@ -34,7 +66,11 @@ export const channelInputSchema = z.object({
 
   publishFrequency: publishFrequencySchema.default('daily'),
   publishTimes: z.array(timeOfDaySchema).default(['09:00']),
-  postsPerSlot: z.number().int().min(1).max(10).default(1),
+  postsPlan: z
+    .array(postPlanItemSchema)
+    .min(1, 'Defina ao menos um bucket no plano de geração')
+    .max(10)
+    .default(DEFAULT_POSTS_PLAN),
   publishWeekdays: z.array(weekdaySchema).default([0, 1, 2, 3, 4, 5, 6]),
 
   defaultAuthorName: z.string().max(120).default('Fernando'),

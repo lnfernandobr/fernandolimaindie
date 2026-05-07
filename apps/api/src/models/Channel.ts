@@ -108,7 +108,21 @@ const channelSchema = new Schema(
 
     publishFrequency: { type: String, enum: ['daily', 'weekly', 'custom'], default: 'daily' },
     publishTimes: { type: [String], default: ['09:00'] },
-    postsPerSlot: { type: Number, default: 1, min: 1, max: 10 },
+    // Plano granular de geração: cada bucket = "N posts de até X min de leitura".
+    postsPlan: {
+      type: [
+        new Schema(
+          {
+            count: { type: Number, required: true, min: 1, max: 20 },
+            targetReadingMinutes: { type: Number, required: true, min: 2, max: 30 },
+          },
+          { _id: false },
+        ),
+      ],
+      default: [{ count: 1, targetReadingMinutes: 8 }],
+    },
+    // Legacy — preservado pra ler dados antigos. Migrado pra postsPlan no DTO.
+    postsPerSlot: { type: Number, min: 1, max: 10 },
     publishWeekdays: { type: [Number], default: [0, 1, 2, 3, 4, 5, 6] },
 
     defaultAuthorName: { type: String, default: 'Fernando' },

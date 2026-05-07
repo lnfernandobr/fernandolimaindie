@@ -60,7 +60,12 @@ const STEPS: PipelineSpec[] = [
 
 export async function runChannelPipeline(
   channel: ChannelDoc & { _id: any },
-  opts: { trigger: 'cron' | 'manual'; cronExpression?: string } = { trigger: 'manual' },
+  opts: {
+    trigger: 'cron' | 'manual';
+    cronExpression?: string;
+    /** Quando definido, instrui o outline a mirar nesse comprimento de leitura. */
+    targetReadingMinutes?: number;
+  } = { trigger: 'manual' },
 ) {
   const run = await Run.create({
     channelId: channel._id,
@@ -71,7 +76,7 @@ export async function runChannelPipeline(
     steps: [],
   });
 
-  const ctx: PipelineContext = { channel, run };
+  const ctx: PipelineContext = { channel, run, targetReadingMinutes: opts.targetReadingMinutes };
   const startedAt = Date.now();
   let overall: 'success' | 'error' | 'partial' = 'success';
   let firstError: string | undefined;

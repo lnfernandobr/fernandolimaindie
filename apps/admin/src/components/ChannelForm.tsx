@@ -7,8 +7,15 @@ import { api } from '@/lib/api';
 import {
   channelInputSchema,
   publishTimesToCron,
+  postsPlanTotal,
+  minutesToWordTarget,
+  READING_TIME_PRESETS,
+  READING_TIME_MIN,
+  READING_TIME_MAX,
+  DEFAULT_POSTS_PLAN,
   type ChannelDto,
   type ChannelInput,
+  type PostPlanItem,
 } from '@bn/shared';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,9 +23,16 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/components/ui/toast';
-import { Trash2, Plus } from 'lucide-react';
+import { Trash2, Plus, Clock } from 'lucide-react';
 
-const TIMEZONES = ['America/Sao_Paulo', 'America/Recife', 'America/Manaus', 'UTC'];
+const TIMEZONES: { value: string; label: string }[] = [
+  { value: 'America/Sao_Paulo', label: 'São Paulo / Brasília (UTC-3)' },
+  { value: 'America/Recife', label: 'Recife / Nordeste (UTC-3)' },
+  { value: 'America/Campo_Grande', label: 'Campo Grande / MS (UTC-4)' },
+  { value: 'America/Cuiaba', label: 'Cuiabá / MT (UTC-4)' },
+  { value: 'America/Manaus', label: 'Manaus / AM (UTC-4)' },
+  { value: 'UTC', label: 'UTC' },
+];
 const WEEKDAYS = [
   { value: 0, label: 'Dom' },
   { value: 1, label: 'Seg' },
@@ -45,7 +59,7 @@ export function ChannelForm({ initial, channelId }: { initial?: ChannelDto; chan
           active: true,
           publishFrequency: 'daily',
           publishTimes: ['09:00'],
-          postsPerSlot: 1,
+          postsPlan: [...DEFAULT_POSTS_PLAN],
           publishWeekdays: [0, 1, 2, 3, 4, 5, 6],
           defaultAuthorName: 'Fernando',
           notes: '',
@@ -133,6 +147,34 @@ export function ChannelForm({ initial, channelId }: { initial?: ChannelDto; chan
     patch('publishWeekdays', next);
   }
 
+  function patchPlanItem(i: number, partial: Partial<PostPlanItem>) {
+    const next = form.postsPlan.map((b, idx) => (idx === i ? { ...b, ...partial } : b));
+    patch('postsPlan', next);
+  }
+
+  function addPlanBucket() {
+    const last = form.postsPlan[form.postsPlan.length - 1];
+    patch('postsPlan', [
+      ...form.postsPlan,
+      { count: 1, targetReadingMinutes: last?.targetReadingMinutes === 15 ? 8 : 15 },
+    ]);
+  }
+
+  function removePlanBucket(i: number) {
+    if (form.postsPlan.length <= 1) return;
+    patch('postsPlan', form.postsPlan.filter((_, idx) => idx !== i));
+  }
+
+  const postsPerSlotTotal = postsPlanTotal(form.postsPlan);
+  const totalPerDay = form.publishTimes.length * postsPerSlotTotal;
+  const avgMinutes =
+    postsPerSlotTotal > 0
+      ? Math.round(
+          form.postsPlan.reduce((sum, b) => sum + b.count * b.targetReadingMinutes, 0) /
+            postsPerSlotTotal,
+        )
+      : 0;
+
   return (
     <form onSubmit={onSubmit} className="space-y-6">
       <Card>
@@ -162,11 +204,17 @@ export function ChannelForm({ initial, channelId }: { initial?: ChannelDto; chan
             <Field label="Idioma">
               <Input value={form.language} onChange={(e) => patch('language', e.target.value)} />
             </Field>
-            <Field label="Timezone">
+            <Field label="Timezone" hint="Define o horário de disparo do scheduler.">
               <select value={form.timezone} onChange={(e) => patch('timezone', e.target.value)}>
                 {TIMEZONES.map((tz) => (
-                  <option key={tz} value={tz}>{tz}</option>
+                  <option key={tz.value} value={tz.value}>
+                    {tz.label}
+                  </option>
                 ))}
+                {/* Mantém visível um valor salvo fora da lista (não perde a config). */}
+                {TIMEZONES.find((tz) => tz.value === form.timezone) ? null : (
+                  <option value={form.timezone}>{form.timezone}</option>
+                )}
               </select>
             </Field>
             <Field label="Autor padrão" hint="Aparece em todos os posts gerados.">
@@ -195,7 +243,7 @@ export function ChannelForm({ initial, channelId }: { initial?: ChannelDto; chan
           <CardTitle>Agenda de publicação automática</CardTitle>
         </CardHeader>
         <CardContent className="space-y-5">
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2">
             <Field label="Frequência">
               <select
                 value={form.publishFrequency}
@@ -206,19 +254,10 @@ export function ChannelForm({ initial, channelId }: { initial?: ChannelDto; chan
                 <option value="custom">Personalizada</option>
               </select>
             </Field>
-            <Field label="Posts por slot" hint="Quantos posts a IA gera em cada horário (1–10)">
-              <Input
-                type="number"
-                min={1}
-                max={10}
-                value={form.postsPerSlot}
-                onChange={(e) => patch('postsPerSlot', Math.max(1, Math.min(10, Number(e.target.value) || 1)))}
-              />
-            </Field>
             <Field label="Total estimado" hint="Calculado automaticamente">
               <div className="h-9 flex items-center text-sm text-[var(--color-muted)]">
-                {form.publishTimes.length * form.postsPerSlot} post(s)/dia
-                {form.publishWeekdays.length < 7 ? ` em ${form.publishWeekdays.length} dia(s)/semana` : ''}
+                {totalPerDay} post(s)/dia · ~{avgMinutes} min de leitura média
+                {form.publishWeekdays.length < 7 ? ` · ${form.publishWeekdays.length} dia(s)/semana` : ''}
               </div>
             </Field>
           </div>
@@ -290,6 +329,113 @@ export function ChannelForm({ initial, channelId }: { initial?: ChannelDto; chan
 
       <Card>
         <CardHeader>
+          <CardTitle>Plano de geração por slot</CardTitle>
+          <p className="text-sm text-[var(--color-muted)] mt-1">
+            Em cada horário acima, a IA gera os posts abaixo. Misture comprimentos para
+            cobrir leituras rápidas e aprofundadas no mesmo dia.
+          </p>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            {form.postsPlan.map((bucket, i) => {
+              const targetWords = minutesToWordTarget(bucket.targetReadingMinutes);
+              const isPreset = (READING_TIME_PRESETS as readonly number[]).includes(
+                bucket.targetReadingMinutes,
+              );
+              return (
+                <div
+                  key={i}
+                  className="flex flex-wrap items-center gap-2 rounded-md border bg-[var(--color-card)] p-3"
+                >
+                  <Input
+                    type="number"
+                    min={1}
+                    max={20}
+                    value={bucket.count}
+                    onChange={(e) =>
+                      patchPlanItem(i, {
+                        count: Math.max(1, Math.min(20, Number(e.target.value) || 1)),
+                      })
+                    }
+                    className="w-20"
+                    aria-label="Quantidade de posts"
+                  />
+                  <span className="text-sm text-[var(--color-muted)]">
+                    {bucket.count === 1 ? 'post de até' : 'posts de até'}
+                  </span>
+                  <select
+                    value={isPreset ? String(bucket.targetReadingMinutes) : 'custom'}
+                    onChange={(e) => {
+                      const v = e.target.value;
+                      if (v === 'custom') return;
+                      patchPlanItem(i, { targetReadingMinutes: Number(v) });
+                    }}
+                    className="w-28"
+                    aria-label="Tempo de leitura"
+                  >
+                    {READING_TIME_PRESETS.map((m) => (
+                      <option key={m} value={m}>
+                        {m} min
+                      </option>
+                    ))}
+                    <option value="custom">Outro…</option>
+                  </select>
+                  {!isPreset ? (
+                    <Input
+                      type="number"
+                      min={READING_TIME_MIN}
+                      max={READING_TIME_MAX}
+                      value={bucket.targetReadingMinutes}
+                      onChange={(e) =>
+                        patchPlanItem(i, {
+                          targetReadingMinutes: Math.max(
+                            READING_TIME_MIN,
+                            Math.min(READING_TIME_MAX, Number(e.target.value) || READING_TIME_MIN),
+                          ),
+                        })
+                      }
+                      className="w-20"
+                      aria-label="Minutos personalizados"
+                    />
+                  ) : null}
+                  <span className="flex items-center gap-1 text-xs text-[var(--color-muted)] flex-1">
+                    <Clock className="h-3 w-3" />
+                    ≈ {targetWords.toLocaleString('pt-BR')} palavras por post
+                  </span>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => removePlanBucket(i)}
+                    aria-label="Remover variação"
+                    disabled={form.postsPlan.length <= 1}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              );
+            })}
+          </div>
+          <div className="flex items-center justify-between gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={addPlanBucket}
+              disabled={form.postsPlan.length >= 10}
+            >
+              <Plus className="h-4 w-4" /> Adicionar variação
+            </Button>
+            <p className="text-xs text-[var(--color-muted)]">
+              <strong className="text-[var(--color-fg)]">{postsPerSlotTotal}</strong> post(s)/slot ·
+              ~{avgMinutes} min de leitura média
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
           <CardTitle>Notas internas (opcional)</CardTitle>
         </CardHeader>
         <CardContent>
@@ -352,6 +498,10 @@ function Field({
 }
 
 function sanitizeForForm(c: ChannelDto): ChannelInput {
+  const plan =
+    c.postsPlan && c.postsPlan.length > 0
+      ? c.postsPlan.map((b) => ({ count: b.count, targetReadingMinutes: b.targetReadingMinutes }))
+      : [...DEFAULT_POSTS_PLAN];
   return {
     slug: c.slug,
     name: c.name,
@@ -362,7 +512,7 @@ function sanitizeForForm(c: ChannelDto): ChannelInput {
     active: c.active,
     publishFrequency: c.publishFrequency ?? 'daily',
     publishTimes: c.publishTimes && c.publishTimes.length > 0 ? c.publishTimes : ['09:00'],
-    postsPerSlot: c.postsPerSlot ?? 1,
+    postsPlan: plan,
     publishWeekdays:
       c.publishWeekdays && c.publishWeekdays.length > 0 ? c.publishWeekdays : [0, 1, 2, 3, 4, 5, 6],
     defaultAuthorName: c.defaultAuthorName ?? 'Fernando',

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
-import type { ChannelDto, PostDto, RunDto } from '@bn/shared';
+import { postsPlanTotal, type ChannelDto, type PostDto, type RunDto } from '@bn/shared';
 import { PageHeader } from '@/components/PageHeader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -120,7 +120,7 @@ export default function DashboardPage() {
                             {ch.name}
                           </Link>
                           <div className="text-xs text-[var(--color-muted)]">
-                            /{ch.slug} · {ch.timezone} · {ch.publishTimes.length * ch.postsPerSlot}/dia
+                            /{ch.slug} · {ch.timezone} · {ch.publishTimes.length * postsPlanTotal(ch.postsPlan)}/dia
                           </div>
                         </div>
                         <Button size="sm" variant="outline" onClick={() => trigger(ch.id)}>

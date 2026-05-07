@@ -109,7 +109,8 @@ export const outlineArticleSchema = z.object({
   hook: z.string().min(3).max(LIMIT.hookText),
   sections: z.array(outlineSectionSchema).min(1).max(12),
   faq: z.array(outlineFaqSchema).max(10),
-  wordCountTarget: z.number().int().min(400).max(3500),
+  // Faixa larga para acomodar de leituras curtas (~2min) a longas (~30min).
+  wordCountTarget: z.number().int().min(300).max(6500),
 });
 export type OutlineArticleOutput = z.infer<typeof outlineArticleSchema>;
 

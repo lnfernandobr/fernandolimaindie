@@ -23,5 +23,6 @@ export const outlineArticleStep: PipelineStep = async (ctx) => {
     niche: channel.niche,
     language: channel.language || 'pt-BR',
     channelName: channel.name,
+    targetReadingMinutes: ctx.targetReadingMinutes,
   });
 };

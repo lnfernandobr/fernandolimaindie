@@ -38,6 +38,11 @@ export interface OutlineArticleInput extends BrandContext {
   intent: string;
   format: string;
   audienceLevel: string;
+  /**
+   * Alvo de tempo de leitura (em minutos). Quando presente, vira instrução
+   * dura no prompt e overrides do wordCountTarget após a resposta da IA.
+   */
+  targetReadingMinutes?: number;
 }
 
 export interface WriteArticleInput extends BrandContext {

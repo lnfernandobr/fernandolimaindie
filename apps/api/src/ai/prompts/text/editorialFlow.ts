@@ -1,3 +1,4 @@
+import { minutesToWordTarget } from '@bn/shared';
 import { compose, EDITORIAL, OUTPUT_DISCIPLINE, PERSONA, SEO_GEO, CLARITY, AUTHORITY, TONE_DEFAULT } from '../blocks.js';
 import { buildBrandProfile } from '../brand.js';
 import type {
@@ -130,6 +131,13 @@ Regras:
     lines.push(`Keyword principal: ${input.primaryKeyword}`);
     if (input.secondaryKeywords?.length) lines.push(`Secundárias: ${input.secondaryKeywords.join(', ')}`);
     lines.push(`Intent: ${input.intent} | Format: ${input.format} | Level: ${input.audienceLevel}`);
+    if (input.targetReadingMinutes) {
+      const targetWords = minutesToWordTarget(input.targetReadingMinutes);
+      lines.push('');
+      lines.push(
+        `Alvo de comprimento: ~${input.targetReadingMinutes} min de leitura (~${targetWords} palavras). Defina wordCountTarget próximo a ${targetWords} e dimensione H2s/FAQ pra caber sem encher linguiça.`,
+      );
+    }
     lines.push('');
     lines.push('Crie o outline detalhado.');
     return lines.join('\n');

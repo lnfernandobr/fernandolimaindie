@@ -17,6 +17,9 @@ export interface PipelineContext {
   channel: ChannelDoc & { _id: any };
   run: RunDoc & { _id: any };
 
+  /** Alvo de tempo de leitura solicitado por quem disparou o pipeline. Opcional. */
+  targetReadingMinutes?: number;
+
   // Saídas dos steps (preenchidas conforme avançam)
   candidates?: TopicCandidate[];
   topic?: SelectedTopic;

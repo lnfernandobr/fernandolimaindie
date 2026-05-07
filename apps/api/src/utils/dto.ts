@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { DEFAULT_POSTS_PLAN, type PostPlanItem } from '@bn/shared';
 import type { ChannelDoc } from '../models/Channel.js';
 import type { AuthorDoc } from '../models/Author.js';
 import type { CategoryDoc } from '../models/Category.js';
@@ -10,6 +11,23 @@ const toIso = (d: Date | string | undefined | null): string | undefined =>
   d ? (d instanceof Date ? d.toISOString() : new Date(d).toISOString()) : undefined;
 
 const idOf = (v: any): string => (typeof v === 'string' ? v : v?.toString?.() ?? '');
+
+function resolvePostsPlan(c: any): PostPlanItem[] {
+  const plan = (c.postsPlan ?? []).filter(
+    (b: any) => b && Number.isFinite(b.count) && Number.isFinite(b.targetReadingMinutes),
+  );
+  if (plan.length > 0) {
+    return plan.map((b: any) => ({
+      count: Math.max(1, Math.min(20, Math.trunc(b.count))),
+      targetReadingMinutes: Math.max(2, Math.min(30, Math.trunc(b.targetReadingMinutes))),
+    }));
+  }
+  // Migra legado: postsPerSlot vira um único bucket de 8min.
+  if (Number.isFinite(c.postsPerSlot) && c.postsPerSlot > 0) {
+    return [{ count: Math.max(1, Math.min(20, Math.trunc(c.postsPerSlot))), targetReadingMinutes: 8 }];
+  }
+  return DEFAULT_POSTS_PLAN;
+}
 
 export function channelToDto(c: ChannelDoc & { _id: any; createdAt?: Date; updatedAt?: Date }) {
   return {
@@ -23,7 +41,7 @@ export function channelToDto(c: ChannelDoc & { _id: any; createdAt?: Date; updat
     active: c.active,
     publishFrequency: (c.publishFrequency ?? 'daily') as 'daily' | 'weekly' | 'custom',
     publishTimes: c.publishTimes ?? [],
-    postsPerSlot: c.postsPerSlot ?? 1,
+    postsPlan: resolvePostsPlan(c),
     publishWeekdays: c.publishWeekdays ?? [0, 1, 2, 3, 4, 5, 6],
     defaultAuthorName: c.defaultAuthorName ?? 'Fernando',
     notes: c.notes ?? undefined,
