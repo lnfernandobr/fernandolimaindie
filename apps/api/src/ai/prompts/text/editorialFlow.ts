@@ -14,19 +14,28 @@ import type { PromptDef } from '../types.js';
 export const brainstormTopicsPrompt: PromptDef<BrainstormTopicsInput> = {
   name: 'brainstorm-topics',
   category: 'editorial',
-  version: '3.0.0',
-  description: 'Gera 8 a 10 candidatos de pauta diversificados em ângulo, intenção e nível, com foco em SEO long-tail e gap de cobertura.',
+  version: '4.0.0',
+  description: 'Gera 8 a 10 candidatos diversificados em "buckets temáticos" (clínico, lifestyle, cultural, curiosidade, narrativa) — não só conteúdo técnico.',
   system: compose(
     PERSONA,
-    `Tarefa: gerar candidatos de pauta diversificados, considerando o que já foi publicado e o que o público busca.
+    `Tarefa: gerar candidatos de pauta diversificados COBRINDO O ESPECTRO INTEIRO do tema, não apenas o lado clínico/técnico.
 
-Critérios:
-- Cada candidato com ângulo único (formato, recorte, ponto de vista). Sem 5 variações da mesma pergunta.
+REGRA CRÍTICA — distribuição por buckets temáticos. Os 8 a 10 candidatos DEVEM se distribuir entre:
+1. **Clínico/Saúde** (máximo 30% dos candidatos): doses, distúrbios, comparativo clínico, troubleshooting médico.
+2. **Prático/Lifestyle** (mínimo 30%): hábitos, rotina, escolhas de produto comum (travesseiro, colchão, fones), ergonomia, ambiente do quarto.
+3. **Cultural/Curiosidade** (mínimo 20%): história, antropologia, ciência leve curiosa, comportamento, animais, mitos populares.
+4. **Pessoal/Narrativo** (até 20%): perfil, depoimento estruturado, opinião editorial, ensaio de observação.
+
+Se o canal só tem posts clínicos recentes, FORCE a maior parte dos candidatos para os buckets 2-3-4. Repetir o lado clínico é o erro mais comum.
+
+Critérios adicionais:
+- Cada candidato com ângulo único. Sem 5 variações da mesma pergunta clínica.
 - Diversifique intenção: informational, comparison, how-to, opinion, troubleshooting, review.
-- Diversifique nível: alguns para iniciante, outros intermediário ou avançado.
-- Long-tail: tema específico (3 a 5 palavras) ranqueia mais fácil que termo genérico.
+- Diversifique nível: pelo menos metade DEVE ser beginner. Avançado só se há gap real.
+- Long-tail (3 a 5 palavras) ranqueia mais fácil que termo genérico.
 - Rejeite tema que repete slug recente ou ângulo de slug recente.
-- Para cada candidato, declare o gap que preenche e a intenção primária de busca.`,
+- Títulos de trabalho preferem ser conversacionais ("Por que a gente acorda 3h da manhã sem motivo?") em vez de clínicos ("Despertares noturnos: causas e tratamento").
+- Para cada candidato, declare gap que preenche e intenção de busca.`,
     OUTPUT_DISCIPLINE,
   ),
   user: (input) => {
@@ -133,9 +142,10 @@ Regras:
     lines.push(`Intent: ${input.intent} | Format: ${input.format} | Level: ${input.audienceLevel}`);
     if (input.targetReadingMinutes) {
       const targetWords = minutesToWordTarget(input.targetReadingMinutes);
+      const maxWords = Math.round(targetWords * 1.1);
       lines.push('');
       lines.push(
-        `Alvo de comprimento: ~${input.targetReadingMinutes} min de leitura (~${targetWords} palavras). Defina wordCountTarget próximo a ${targetWords} e dimensione H2s/FAQ pra caber sem encher linguiça.`,
+        `RESTRIÇÃO DURA de comprimento: ${input.targetReadingMinutes} min de leitura = ${targetWords} palavras (NUNCA passe de ${maxWords}). wordCountTarget DEVE estar entre ${Math.round(targetWords * 0.9)} e ${targetWords}. Dimensione H2s e FAQ pra caber: artigo curto (≤5min) tem 3-4 H2s e FAQ de 3 perguntas; médio (6-10min) tem 4-6 H2s e FAQ de 3-5; longo (>10min) tem 5-7 H2s e FAQ de 4-5. Cortar conteúdo é melhor que estourar.`,
       );
     }
     lines.push('');
@@ -149,29 +159,31 @@ Regras:
 export const writeArticlePrompt: PromptDef<WriteArticleInput> = {
   name: 'write-article',
   category: 'editorial',
-  version: '3.1.0',
-  description: 'Executa o outline produzindo o post completo em markdown editorial. Esse é o prompt principal de redação.',
+  version: '4.0.0',
+  description: 'Executa o outline produzindo o post completo em markdown editorial. Prompt principal de redação — voz natural e conversacional priorizada.',
   system: compose(
     PERSONA,
-    `Tarefa: executar o outline com qualidade alta. Não decida estrutura (já está decidida) nem edite (vem depois). Escreva markdown que cumpre o que cada seção promete.
+    `Tarefa: executar o outline com voz natural e conversacional. Texto que parece escrito por humano experiente, não por IA citando estudos. Escreva markdown que cumpre o que cada seção promete SEM virar paper acadêmico.
 
 Execução:
 - Siga o outline exatamente. Cada h2 vira ##. Cada h3 vira ###. Não adicione nem remova seções.
-- Cada seção começa com a frase answer-first do outline (pode reescrever pra fluir, mantenha a essência), depois aprofunda.
-- Cubra todos os "mustInclude" da seção. Se faltar, o artigo fica raso.
-- useTable=true gera tabela markdown real. useNumberedList=true gera lista numerada com passos concretos.
-- Tom: especialista falando com leigo informado. Direto, sem condescender.
-- Comprimento: ±15% do wordCountTarget. Não enche linguiça.
-- FAQ: 2 a 4 frases por resposta, específicas.
+- Cada seção começa com a frase answer-first do outline (pode reescrever pra fluir, mantenha a essência), depois aprofunda em prosa fluida.
+- Cubra os "mustInclude" da seção, mas integrados em prosa — não em listão de bullets.
+- useTable=true gera tabela markdown real. useNumberedList=true gera lista numerada com passos concretos. Sem essas flags, FAVOREÇA prosa em vez de bullets.
+- Tom: amigo informado conversando, NÃO médico em consulta. NÃO professor em aula expositiva. Comece seções com observação, pergunta, ou cena concreta sempre que possível.
+- COMPRIMENTO É RESTRIÇÃO DURA: total entre 90% e 110% de wordCountTarget. Conte palavras antes de fechar. Excedeu? Corte adjetivos, redundâncias, citações que dá pra omitir, fechamento óbvio. Faltou? Aprofunde com analogia ou exemplo concreto, NUNCA encha linguiça.
+- FAQ: 1 a 3 frases por resposta. Direto e específico. Nada de explicação longa.
+- Citações de estudo: máximo 2 a 3 no artigo todo, e SÓ quando alegação clínica forte exige. Lifestyle/curiosidade/opinião = ZERO citação.
 - Markdown permitido: # ## ### **bold** *italic* listas tabelas \`code\` > blockquote. Nada além.
 - Nunca insira links no texto (a UI insere depois).
-- Nunca use travessão (em-dash). Use ponto, vírgula ou parênteses.`,
-    EDITORIAL,
-    SEO_GEO,
-    CLARITY,
+- Nunca use travessão (em-dash). Use ponto, vírgula ou parênteses.
+- Tudo em pt-BR contemporâneo conversacional.`,
     NATURAL_VOICE,
-    AUTHORITY,
     TONE_DEFAULT,
+    EDITORIAL,
+    CLARITY,
+    SEO_GEO,
+    AUTHORITY,
     OUTPUT_DISCIPLINE,
   ),
   user: (input) => {

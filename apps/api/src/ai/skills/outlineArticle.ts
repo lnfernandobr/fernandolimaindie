@@ -30,14 +30,17 @@ export async function outlineArticle(input: OutlineArticleInput): Promise<Articl
     ],
   });
 
-  // Quando o canal pediu um alvo de leitura, ele manda no wordCountTarget.
-  // Mantemos a margem do prompt ("±15%") preservando o que a IA respondeu se ela
-  // já está dentro de ±20% do alvo derivado dos minutos.
+  // Quando o canal pediu um alvo de leitura, esse valor MANDA. Ignoramos o que
+  // a IA decidiu se passa de ±10%. O bug anterior aceitava ±20% e ainda assim
+  // a IA na escrita driftava mais — resultando em posts de 14-15 min quando o
+  // canal pedia 8. Agora trampamos no alvo exato sempre que extrapola o teto.
   let wordCountTarget = data.wordCountTarget;
   if (input.targetReadingMinutes) {
     const target = minutesToWordTarget(input.targetReadingMinutes);
-    const drift = Math.abs(data.wordCountTarget - target) / target;
-    if (drift > 0.2) wordCountTarget = target;
+    const max = Math.round(target * 1.1);
+    if (data.wordCountTarget > max || data.wordCountTarget < target * 0.9) {
+      wordCountTarget = target;
+    }
   }
 
   return {

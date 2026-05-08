@@ -36,9 +36,12 @@ Output format:
 
 Anti-AI discipline (must be reflected in the prompt itself):
 ${PHOTO_BASE}
-${PHOTO_BRAND_DEFAULT}
 ${PHOTO_TECHNICAL}
 ${PHOTO_HOOK}
+
+Variation discipline:
+${PHOTO_BRAND_DEFAULT}
+- The palette and setting come from the briefing for THIS post — do not copy phrasing from any imagined "channel default". If the briefing says morning kitchen with cool blue, write that. If golden hour bedroom, write that. Never force amber-and-navy on every cover.
 
 Text rule (carry into the prompt verbatim if needed):
 ${TEXT_LANGUAGE_GUARD}

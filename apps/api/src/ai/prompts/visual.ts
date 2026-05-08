@@ -86,14 +86,16 @@ export const IMAGE_SPECS: Record<ImageUsage, ImageSpec> = {
  * still", "candid"), adiciona micro-imperfeições e bloqueia os "AI tells" mais
  * comuns (skin plástica, simetria perfeita, halo, glow, CGI-shine).
  */
-export const PHOTO_BASE = `Documentary editorial photograph. Looks like a real magazine feature still or a published photojournalism frame, NOT an AI render and NOT a glossy stock photo. Authentic candid moment with environmental honesty: real lived-in detail, slight clutter where appropriate, natural asymmetry, imperfect surfaces. If a person appears, they show natural skin texture, pores, fine lines, individual hair strands — never airbrushed, never doll-like. Available light or motivated practical light only (window, lamp, sun). No studio strobe, no ringlight, no beauty lighting, no halo glow around the subject. Single dominant subject with intentional negative space. No graphic-design overlays, no infographics, no 3D renders, no stylized illustrations.`;
+export const PHOTO_BASE = `Documentary editorial photograph that looks like a real magazine feature still or a published photojournalism frame, NOT an AI render and NOT a glossy stock photo. Authentic candid moment with environmental honesty: real lived-in detail, slight clutter where appropriate, natural asymmetry, imperfect surfaces. If a person appears, they show natural skin texture, visible pores, fine lines, individual hair strands, slight imperfections — never airbrushed, never plastic, never doll-like. Available light or motivated practical light only (window, lamp, sun, screen glow). No studio strobe, no ringlight, no beauty lighting, no halo glow around the subject. Single dominant subject with intentional negative space. No graphic-design overlays, no infographics, no 3D renders, no stylized illustrations. Composition has the slight imperfection of a frame caught in a real moment, not a perfectly arranged scene. Subject and surroundings must feel grounded in a specific real-world place — a real bedroom of a real person, not a "stock-photo bedroom".`;
 
 /**
- * Linguagem visual da marca Sonoprofundo (default quando o canal não
- * sobrescreve). Outros canais podem sobrescrever via brand.notes ou
- * extensão futura do BrandProfile.
+ * Linguagem visual neutra: dá direção fotográfica forte SEM travar uma paleta
+ * fixa. Antes daqui ficava a estética do sonoprofundo (warm amber + navy +
+ * aged wood + brass) injetada em TODA imagem de TODOS os posts — resultado:
+ * todas as imagens pareciam variações da mesma cena. Agora a paleta é
+ * decidida pelo briefing, em função do conteúdo de cada post.
  */
-export const PHOTO_BRAND_DEFAULT = `Tone: warm, calm, intimate. Time of day: late golden hour, blue hour, or deep early morning. Color palette: warm amber accent (#e8b66a feel), deep navy and charcoal shadows (#10141d feel), creamy off-white highlights. Surfaces: aged wood with visible grain and worn edges, soft creased linen, glazed ceramic with small imperfections, brass with patina. Avoid sterile minimalism, clinical white, and magazine-cover skin smoothing.`;
+export const PHOTO_BRAND_DEFAULT = `Tone fits the article subject — vary it post to post. Avoid forcing a single mood across all posts of the same channel. Time of day, color, surface and lighting must follow what the article is about: a post about morning routines wants morning light, a post about siesta wants warm afternoon shadow, a post about kids' sleep wants soft twilight, a post about apps and technology wants cooler clean light. NEVER default to a single palette. Avoid sterile minimalism, clinical white, magazine-cover skin smoothing.`;
 
 /**
  * Especificação técnica fotográfica. Calibrada pra parecer foto real, não CGI.

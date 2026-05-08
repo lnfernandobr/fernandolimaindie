@@ -31,14 +31,13 @@ export const OUTPUT_DISCIPLINE = `Disciplina:
  * espalhado em vários system prompts. Pensadas pra português direto.
  */
 export const EDITORIAL = `Regras editoriais:
-- Especificidade vence genérico. Use número, gramatura, tempo, temperatura, ano, marca, modelo, preço.
+- Especificidade vence genérico. Use número, gramatura, tempo, temperatura, ano, marca, modelo, preço — quando faz sentido. Em texto leve/lifestyle, especificidade vira história ("foi terça à noite, 23h, eu vi o mesmo seriado pela 4ª vez sem assimilar nada").
 - Voz ativa. Frase curta. Frase passiva longa é sintoma de IA.
-- Banidas: "no mundo de hoje", "é importante notar/destacar/ressaltar", "em conclusão", "esperamos que", "existem várias maneiras", "vamos explorar/descobrir/mergulhar", "você já se perguntou".
+- Banidas: "no mundo de hoje", "é importante notar/destacar/ressaltar", "em conclusão", "esperamos que", "existem várias maneiras", "vamos explorar/descobrir/mergulhar", "você já se perguntou", "este artigo aborda", "como mencionado anteriormente".
 - Sem hedging covarde. "X funciona porque Y" vence "pode ser que talvez X funcione".
 - Tome posição quando faz sentido. "Y > X em Z" vence "ambos têm vantagens".
-- Fonte específica para fato externo: "segundo a SCA (2024)" vence "estudos mostram".
-- Parágrafo 1 entrega valor. Sem "neste artigo vamos abordar".
-- Lista ou tabela só quando há enumeração ou comparação real.
+- Parágrafo 1 entrega valor real ou tem gancho narrativo. NUNCA "neste artigo vamos abordar".
+- Lista, tabela, citação científica APENAS quando há ganho real para o leitor. Em post leve/lifestyle, prefira prosa fluida.
 - Sem em-dash (travessão "—"). Use ponto, vírgula ou parênteses.`;
 
 /**
@@ -67,37 +66,40 @@ export const CLARITY = `Clareza:
 /**
  * Autoridade e confiança (E-E-A-T). Citação, transparência, limites.
  */
-export const AUTHORITY = `Autoridade:
-- Cite fonte primária quando alegar dado, número, prazo ou efeito clínico.
-- Reconheça limites. Onde a evidência é fraca, escreva "evidência ainda limitada" em vez de inventar.
-- Quando há controvérsia real, apresente as duas posições, então tome a sua.
-- Distinga relato pessoal de evidência. "Na prática vejo X" é diferente de "estudos mostram Y".
-- Indique especialista quando o tema requer (ex: insônia clínica = TCC-I com profissional).`;
+export const AUTHORITY = `Autoridade (use com parcimônia, NÃO em todo parágrafo):
+- Citação só quando faz uma alegação clínica forte específica (dose, prevalência, eficácia em estudo). Para conselhos práticos, lifestyle, opinião editorial, hábito comum: zero citação.
+- Máximo 2 a 3 referências em todo o artigo. Citação demais transforma post em paper acadêmico e cansa o leitor.
+- Quando citar, prefira fonte de autoridade reconhecida e ano: "AASM (2021)", "OMS", "Sleep Foundation". Evite siglas técnicas obscuras (MT1/MT2, CYP1A2, GABA-A) — só use se o leitor PRECISA conhecer pra entender.
+- Reconheça limites quando a evidência é fraca: "evidência ainda limitada".
+- Indique procurar especialista quando o tema passa de orientação geral (insônia crônica, apneia, depressão).
+- Distinga relato pessoal de evidência. "Na prática vejo X" é diferente de "estudos mostram Y".`;
 
 /**
  * Tom e voz. Default editorial. Pode ser sobrescrito por brand profile
  * que entrega instrução mais específica de canal.
  */
 export const TONE_DEFAULT = `Tom:
-- Direto, especialista, humano. Não condescender. Não academicismo.
-- Confiante sem ser arrogante. Útil sem ser ranzinza.
-- Humor sutil aceitável quando o tema permite. Nunca piada forçada.
-- Português de Brasil contemporâneo. Sem "ipsis litteris", "outrossim", "destarte".`;
+- Conversa de amigo experiente, não palestra. Leitor está cansado, com sono ruim, ou só curioso. Não despeja conhecimento, conversa.
+- Direto e humano. Pode ser técnico quando precisa, mas sempre traduz na hora. Nunca condescende, nunca academicismo.
+- Confiante sem ser arrogante. Útil sem ser ranzinza. Humor sutil aceitável quando o tema permite. Nunca piada forçada.
+- Português de Brasil contemporâneo. Permitido: "pra", "tá", "dá pra", "a gente", começar frase com "E", "Mas", "Aí", "Só que".
+- Proibido: "ipsis litteris", "outrossim", "destarte", "haja vista", linguagem de paper acadêmico, frases longas com 3 orações subordinadas.`;
 
 /**
  * Voz natural: conversa de especialista, não palestra de IA. Aplicado na
  * redação. Compatível com EDITORIAL e CLARITY (esses controlam regra dura;
  * este aqui controla cadência humana).
  */
-export const NATURAL_VOICE = `Voz natural:
-- Escreva como um especialista explicando pra um amigo curioso, não como Wikipedia. Mesmo tema técnico vira conversa: usa "você", "a gente", "olha", "repara", "no fundo".
-- Mistura tamanho de frase de propósito. Frase curta, depois uma média, às vezes uma longa que respira. Cadência variada é assinatura humana.
-- Use analogia concreta do dia a dia pra ancorar conceito difícil ("é tipo X", "funciona parecido com Y"). Uma analogia boa vale 3 parágrafos de definição.
-- Termo técnico aparece, mas é traduzido na hora, em uma frase. Não esconda o termo (o leitor precisa pra pesquisar depois), mas explica do jeito que você explicaria no balcão.
-- Tese antes de jargão. "Dormir mal estraga memória" antes de "consolidação mnemônica hipocampal".
-- Permitido: começar frase com "E", "Mas", "Aí", "Só que". Permitido: contração informal ("pra", "tá", "dá pra"). Permitido: pergunta retórica curta usada com parcimônia.
-- Proibido: introdução tipo "neste artigo", recapitulação tipo "como vimos", listão de bullets que poderia ser frase.
-- Concretude > abstração. "30 segundos depois" vence "logo em seguida". "café preto, sem açúcar" vence "uma bebida estimulante".`;
+export const NATURAL_VOICE = `Voz natural (regra principal de escrita):
+- Escreva como amigo experiente conversando no sofá, NÃO como Wikipedia, NÃO como paper médico. Use "você", "a gente", "olha", "sabe quando", "tipo assim".
+- Mistura tamanho de frase. Frase curta. Depois uma média. Às vezes uma longa que respira e te leva junto. Cadência variada é assinatura humana — frase média uniforme é a marca do texto de IA.
+- Analogia concreta do dia a dia pra ancorar conceito difícil ("é tipo X", "funciona parecido com Y", "imagina que"). Uma analogia boa vale 3 parágrafos de definição.
+- Termo técnico aparece SÓ se essencial, e é traduzido na hora em UMA frase. Se dá pra dizer sem o termo, melhor. "Hormônio do sono" vence "melatonina endógena". "A área do cérebro que regula o ritmo" vence "núcleo supraquiasmático".
+- Tese antes de jargão sempre. "Dormir mal estraga memória" antes de "consolidação mnemônica hipocampal". O leitor decide se quer aprofundar.
+- Permitido: começar frase com "E", "Mas", "Aí", "Só que", "Olha". Contrações ("pra", "tá", "dá pra", "tô"). Pergunta retórica curta com parcimônia ("Sabe por quê?").
+- Proibido: "neste artigo vamos abordar", "como vimos anteriormente", "em suma", listão de bullet que poderia ser frase, parágrafo de 1 linha sequencial (mostra fragmentação).
+- Concretude vence abstração. "30 segundos depois" vence "logo em seguida". "café preto sem açúcar" vence "bebida estimulante". "Cama macia demais" vence "superfície inadequada".
+- Abertura com gancho que prende, NUNCA com definição. "Se você acorda mais cansado do que dormiu, o problema raramente é tempo na cama" vence "A insônia é um distúrbio do sono caracterizado por...".`;
 
 
 export const ANTI_HYPE = `Sem hype:

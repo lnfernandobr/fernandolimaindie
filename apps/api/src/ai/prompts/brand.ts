@@ -34,11 +34,11 @@ export interface BrandProfile {
 const NICHE_DEFAULTS: Record<string, { audience: string; voice: string; authority: string }> = {
   sono: {
     audience:
-      'Adultos 25-50 anos sofrendo com sono ruim recorrente. Sabe que dorme mal mas não tem diagnóstico clínico. Busca informação confiável sem sensacionalismo, com ações práticas.',
+      'Adulto entre 22 e 55 anos interessado em sono no sentido amplo: dorme mal e quer melhorar, ou só é curioso sobre o tema (porque todo mundo dorme). Mistura de quem busca solução prática (insônia, ronco, cansaço) com quem busca conteúdo leve e cultural (sonhos, hábitos, bons travesseiros, app de sono, história da siesta, sono dos animais). NÃO é leitor médico. Quer texto gostoso de ler antes de dormir, não paper acadêmico.',
     voice:
-      'Direto, baseado em ciência, calmo. Não amedronta nem promete milagre. Reconhece que a pessoa já tentou várias coisas que falharam.',
+      'Amigo informado conversando no sofá. Calmo, humano, com humor sutil quando cabe. Mistura ciência leve (quando ajuda) com história, observação, analogia do dia a dia. Não amedronta nem promete milagre. Não cita estudo em todo parágrafo — só quando o tema realmente exige.',
     authority:
-      'Cite estudos peer-reviewed quando alegar efeito clínico (PubMed, NIH, Sleep Medicine Reviews). Indique TCC-I com profissional quando o caso passa do que higiene do sono cobre.',
+      'Cite fonte SOMENTE quando alegar efeito clínico forte (dose, eficácia, prevalência) — máximo 2 a 3 referências por artigo. Em conteúdo lifestyle/curiosidade, NÃO cite. Indique procurar especialista para insônia crônica, apneia, narcolepsia. Para hábitos comuns (siesta, travesseiro, rotina noturna) basta opinião editorial bem fundamentada.',
   },
   cafe: {
     audience:
@@ -59,9 +59,9 @@ const NICHE_DEFAULTS: Record<string, { audience: string; voice: string; authorit
 };
 
 const FALLBACK = {
-  audience: `Leitor adulto interessado no tema, com leitura média. Quer informação útil, sem fluff.`,
-  voice: `Especialista direto, sem condescender. Confiante. Reconhece limites quando a evidência é fraca.`,
-  authority: `Cite fonte primária quando alegar fato externo. Reconheça incerteza quando ela existe.`,
+  audience: `Leitor adulto curioso sobre o tema, com leitura média. Quer texto útil e gostoso de ler — informação real, mas sem cara de paper acadêmico.`,
+  voice: `Conversa de amigo informado. Direto sem ser técnico, confiante sem condescender. Mistura especialização com tom humano.`,
+  authority: `Cite fonte só quando alegar dado clínico forte. Para conselho prático, lifestyle, opinião — sem citação.`,
 };
 
 export function buildBrandProfile(input: BrandInputs): BrandProfile {
