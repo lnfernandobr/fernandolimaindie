@@ -125,7 +125,6 @@ const channelSchema = new Schema(
     postsPerSlot: { type: Number, min: 1, max: 10 },
     publishWeekdays: { type: [Number], default: [0, 1, 2, 3, 4, 5, 6] },
 
-    defaultAuthorName: { type: String, default: 'Fernando' },
     notes: { type: String },
 
     lastAudit: { type: auditSchema, default: undefined },

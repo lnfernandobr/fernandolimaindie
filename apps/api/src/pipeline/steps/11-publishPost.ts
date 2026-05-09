@@ -4,14 +4,14 @@ import { revalidateChannel } from '../../services/revalidate.js';
 import type { PipelineStep } from '../types.js';
 
 /**
- * Etapa 11 — Persiste o Post no banco e dispara revalidação no site.
+ * Etapa 10 — Persiste o Post no banco e dispara revalidação no site.
  *
- * Toda saída acumulada no `ctx` (article, metadata, cover, author, category,
- * tagSlugs) entra aqui e vira um documento Post.
+ * Toda saída acumulada no `ctx` (article, metadata, cover, category, tagSlugs)
+ * entra aqui e vira um documento Post.
  */
 export const publishPostStep: PipelineStep = async (ctx) => {
-  const { channel, topic, article, metadata, cover, author, category, tagSlugs } = ctx;
-  if (!topic || !article || !metadata || !cover || !author || !category) {
+  const { channel, topic, article, metadata, cover, category, tagSlugs } = ctx;
+  if (!topic || !article || !metadata || !cover || !category) {
     throw new Error('publishPost: missing required context');
   }
 
@@ -29,7 +29,6 @@ export const publishPostStep: PipelineStep = async (ctx) => {
     content: article.content,
     format: topic.selected.format,
     status: 'published',
-    authorId: author._id,
     categoryId: category._id,
     tags: tagSlugs ?? [],
     coverImage: cover,

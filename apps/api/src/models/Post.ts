@@ -57,7 +57,6 @@ const postSchema = new Schema(
       default: 'draft',
       index: true,
     },
-    authorId: { type: Schema.Types.ObjectId, ref: 'Author', required: true, index: true },
     categoryId: { type: Schema.Types.ObjectId, ref: 'Category', required: true, index: true },
     tags: { type: [String], default: [], index: true },
     coverImage: { type: imageSchema, required: true },
