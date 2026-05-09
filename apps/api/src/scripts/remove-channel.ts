@@ -6,7 +6,6 @@
  * Apaga (em ordem segura):
  *   - Posts do canal
  *   - Categories do canal
- *   - Authors do canal
  *   - Tags do canal
  *   - Runs do canal
  *   - O Channel em si
@@ -19,7 +18,6 @@ import { logger } from '../config/logger.js';
 import { Channel } from '../models/Channel.js';
 import { Post } from '../models/Post.js';
 import { Category } from '../models/Category.js';
-import { Author } from '../models/Author.js';
 import { Tag } from '../models/Tag.js';
 import { Run } from '../models/Run.js';
 
@@ -43,14 +41,12 @@ async function main() {
   const counts = {
     posts: 0,
     categories: 0,
-    authors: 0,
     tags: 0,
     runs: 0,
   };
 
   counts.posts = (await Post.deleteMany({ channelId })).deletedCount ?? 0;
   counts.categories = (await Category.deleteMany({ channelId })).deletedCount ?? 0;
-  counts.authors = (await Author.deleteMany({ channelId })).deletedCount ?? 0;
   counts.tags = (await Tag.deleteMany({ channelId })).deletedCount ?? 0;
   counts.runs = (await Run.deleteMany({ channelId })).deletedCount ?? 0;
   await Channel.deleteOne({ _id: channelId });

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import type { AuthorDto, CategoryDto, ChannelDto, PostDto } from '@bn/shared';
+import type { CategoryDto, ChannelDto, PostDto } from '@bn/shared';
 import { SITE_URL } from './config';
 
 export function abs(path: string): string {
@@ -55,7 +55,7 @@ export function buildBaseMetadata(channel: ChannelDto): Metadata {
   };
 }
 
-export function postMetadata(channel: ChannelDto, post: PostDto, author?: AuthorDto): Metadata {
+export function postMetadata(channel: ChannelDto, post: PostDto): Metadata {
   const url = abs(`/blog/${post.slug}`);
   return {
     title: post.metaTitle,
@@ -70,7 +70,6 @@ export function postMetadata(channel: ChannelDto, post: PostDto, author?: Author
       locale: 'pt_BR',
       publishedTime: post.publishedAt,
       modifiedTime: post.updatedAtContent ?? post.updatedAt,
-      authors: author ? [author.name] : [],
       section: post.category?.name,
       tags: post.tags,
       images: [
@@ -101,12 +100,3 @@ export function categoryMetadata(channel: ChannelDto, category: CategoryDto): Me
   };
 }
 
-export function authorMetadata(channel: ChannelDto, author: AuthorDto): Metadata {
-  const url = abs(`/blog?author=${author.slug}`);
-  return {
-    title: `${author.name} — ${channel.name}`,
-    description: author.shortBio ?? `Artigos por ${author.name} em ${channel.name}.`,
-    alternates: { canonical: url },
-    openGraph: { type: 'profile', url, title: author.name, description: author.shortBio ?? '' },
-  };
-}

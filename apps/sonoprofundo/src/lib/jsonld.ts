@@ -1,4 +1,4 @@
-import type { AuthorDto, ChannelDto, PostDto } from '@bn/shared';
+import type { ChannelDto, PostDto } from '@bn/shared';
 import { abs } from './seo';
 import { SITE_URL } from './config';
 
@@ -47,7 +47,7 @@ export function breadcrumbLd(items: { name: string; url: string }[]) {
   };
 }
 
-export function articleLd(channel: ChannelDto, post: PostDto, author?: AuthorDto) {
+export function articleLd(channel: ChannelDto, post: PostDto) {
   const url = abs(`/blog/${post.slug}`);
   const isHowTo = (post.howToSteps?.length ?? 0) >= 2 || post.format === 'how-to';
   return {
@@ -71,15 +71,6 @@ export function articleLd(channel: ChannelDto, post: PostDto, author?: AuthorDto
     keywords: post.keywords?.length ? post.keywords.join(', ') : undefined,
     articleSection: post.category?.name,
     wordCount: post.wordCount,
-    author: author
-      ? {
-          '@type': 'Person',
-          name: author.name,
-          jobTitle: author.jobTitle,
-          url: abs(`/blog?author=${author.slug}`),
-          sameAs: Object.values(author.socials ?? {}).filter(Boolean),
-        }
-      : undefined,
     publisher: {
       '@type': 'Organization',
       '@id': `${SITE_URL}#org`,
@@ -107,20 +98,6 @@ export function faqLd(post: PostDto) {
       name: f.question,
       acceptedAnswer: { '@type': 'Answer', text: f.answer },
     })),
-  };
-}
-
-export function personLd(author: AuthorDto) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: author.name,
-    jobTitle: author.jobTitle,
-    description: author.shortBio,
-    url: abs(`/blog?author=${author.slug}`),
-    image: author.avatarUrl,
-    knowsAbout: author.expertise,
-    sameAs: Object.values(author.socials ?? {}).filter(Boolean),
   };
 }
 

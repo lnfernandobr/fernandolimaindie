@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DEFAULT_POSTS_PLAN, type PostPlanItem } from '@bn/shared';
 import type { ChannelDoc } from '../models/Channel.js';
-import type { AuthorDoc } from '../models/Author.js';
 import type { CategoryDoc } from '../models/Category.js';
 import type { TagDoc } from '../models/Tag.js';
 import type { PostDoc } from '../models/Post.js';
@@ -43,7 +42,6 @@ export function channelToDto(c: ChannelDoc & { _id: any; createdAt?: Date; updat
     publishTimes: c.publishTimes ?? [],
     postsPlan: resolvePostsPlan(c),
     publishWeekdays: c.publishWeekdays ?? [0, 1, 2, 3, 4, 5, 6],
-    defaultAuthorName: c.defaultAuthorName ?? 'Fernando',
     notes: c.notes ?? undefined,
     lastAudit: c.lastAudit ? auditToDto(c.lastAudit as any) : undefined,
     createdAt: toIso(c.createdAt) ?? new Date().toISOString(),
@@ -90,24 +88,6 @@ function cloneStrategy(s: any) {
   };
 }
 
-export function authorToDto(a: AuthorDoc & { _id: any; createdAt?: Date; updatedAt?: Date }) {
-  return {
-    id: idOf(a._id),
-    channelId: idOf(a.channelId),
-    slug: a.slug,
-    name: a.name,
-    jobTitle: a.jobTitle ?? undefined,
-    shortBio: a.shortBio ?? undefined,
-    bio: a.bio ?? undefined,
-    avatarUrl: a.avatarUrl ?? undefined,
-    expertise: a.expertise ?? [],
-    credentials: a.credentials ?? [],
-    socials: a.socials ?? {},
-    createdAt: toIso(a.createdAt) ?? new Date().toISOString(),
-    updatedAt: toIso(a.updatedAt) ?? new Date().toISOString(),
-  };
-}
-
 export function categoryToDto(c: CategoryDoc & { _id: any; createdAt?: Date; updatedAt?: Date }) {
   return {
     id: idOf(c._id),
@@ -139,10 +119,9 @@ export function postToDto(
     _id: any;
     createdAt?: Date;
     updatedAt?: Date;
-    authorId: any;
     categoryId: any;
   },
-  populated?: { author?: AuthorDoc | null; category?: CategoryDoc | null },
+  populated?: { category?: CategoryDoc | null },
 ) {
   return {
     id: idOf(p._id),
@@ -153,7 +132,6 @@ export function postToDto(
     content: p.content,
     format: p.format,
     status: p.status,
-    authorId: idOf(p.authorId),
     categoryId: idOf(p.categoryId),
     tags: p.tags ?? [],
     coverImage: p.coverImage,
@@ -177,7 +155,6 @@ export function postToDto(
     featured: p.featured ?? false,
     createdAt: toIso(p.createdAt) ?? new Date().toISOString(),
     updatedAt: toIso(p.updatedAt) ?? new Date().toISOString(),
-    author: populated?.author ? authorToDto(populated.author as any) : undefined,
     category: populated?.category ? categoryToDto(populated.category as any) : undefined,
   };
 }

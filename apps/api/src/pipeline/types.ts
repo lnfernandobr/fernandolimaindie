@@ -1,7 +1,6 @@
 import type { ChannelDoc } from '../models/Channel.js';
 import type { RunDoc } from '../models/Run.js';
 import type { PostDoc } from '../models/Post.js';
-import type { AuthorDoc } from '../models/Author.js';
 import type { CategoryDoc } from '../models/Category.js';
 import type {
   ArticleMetadata,
@@ -28,7 +27,6 @@ export interface PipelineContext {
   metadata?: ArticleMetadata;
   imageBrief?: ImageBrief;
   cover?: GeneratedImage;
-  author?: AuthorDoc & { _id: any };
   category?: CategoryDoc & { _id: any };
   tagSlugs?: string[];
   post?: PostDoc & { _id: any };

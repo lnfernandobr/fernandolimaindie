@@ -53,7 +53,7 @@ export function postsPlanTotal(plan: PostPlanItem[]): number {
 
 /**
  * Canal = um site externo que consome conteúdo gerado por essa API.
- * Mantemos só o essencial: identidade, agenda, autor, ativo.
+ * Mantemos só o essencial: identidade, agenda, ativo.
  */
 export const channelInputSchema = z.object({
   slug: slugSchema,
@@ -73,7 +73,6 @@ export const channelInputSchema = z.object({
     .default(DEFAULT_POSTS_PLAN),
   publishWeekdays: z.array(weekdaySchema).default([0, 1, 2, 3, 4, 5, 6]),
 
-  defaultAuthorName: z.string().max(120).default('Fernando'),
   notes: z.string().max(2000).optional(),
 });
 

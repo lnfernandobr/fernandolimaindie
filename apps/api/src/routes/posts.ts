@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import { postInputSchema, paginationQuerySchema } from '@bn/shared';
 import { Post } from '../models/Post.js';
-import { Author } from '../models/Author.js';
 import { Category } from '../models/Category.js';
 import { Conflict, NotFound } from '../utils/errors.js';
 import { asyncHandler } from '../middleware/errorHandler.js';
@@ -67,11 +66,8 @@ postsRouter.get(
   asyncHandler(async (req, res) => {
     const post = await Post.findById(req.params.id).lean();
     if (!post) throw NotFound('Post not found');
-    const [author, category] = await Promise.all([
-      Author.findById(post.authorId).lean(),
-      Category.findById(post.categoryId).lean(),
-    ]);
-    res.json(postToDto(post as any, { author: author as any, category: category as any }));
+    const category = await Category.findById(post.categoryId).lean();
+    res.json(postToDto(post as any, { category: category as any }));
   }),
 );
 

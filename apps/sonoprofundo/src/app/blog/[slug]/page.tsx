@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const [channel, post] = await Promise.all([getChannel(), getPost(slug)]);
   if (!post) return { title: 'Não encontrado', robots: { index: false, follow: false } };
-  return postMetadata(channel, post, post.author);
+  return postMetadata(channel, post);
 }
 
 export default async function PostPage({ params }: PageProps) {
@@ -46,7 +46,7 @@ export default async function PostPage({ params }: PageProps) {
         : []),
       { name: post.title, url: abs(`/blog/${post.slug}`) },
     ]),
-    articleLd(channel, post, post.author),
+    articleLd(channel, post),
   ];
   const faq = faqLd(post);
   if (faq) ld.push(faq);
@@ -97,22 +97,6 @@ export default async function PostPage({ params }: PageProps) {
           </p>
         ) : null}
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-6 pt-5 border-t border-[var(--color-border)] text-sm text-[var(--color-muted)]">
-          {post.author ? (
-            <span className="flex items-center gap-2.5">
-              {post.author.avatarUrl ? (
-                <Image
-                  src={post.author.avatarUrl}
-                  alt={post.author.name}
-                  width={32}
-                  height={32}
-                  className="rounded-full"
-                />
-              ) : (
-                <span className="w-8 h-8 rounded-full bg-[var(--color-ink-fog)]" aria-hidden />
-              )}
-              <span className="text-[var(--color-fg)] font-medium">{post.author.name}</span>
-            </span>
-          ) : null}
           {post.publishedAt ? (
             <span>
               <time dateTime={post.publishedAt}>
@@ -239,36 +223,6 @@ export default async function PostPage({ params }: PageProps) {
               </li>
             ))}
           </ul>
-        </section>
-      ) : null}
-
-      {/* AUTOR */}
-      {post.author && post.author.bio ? (
-        <section
-          aria-label={`Sobre o autor ${post.author.name}`}
-          className="mt-12 max-w-3xl rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] p-6"
-        >
-          <div className="flex items-start gap-4">
-            {post.author.avatarUrl ? (
-              <Image
-                src={post.author.avatarUrl}
-                alt={post.author.name}
-                width={56}
-                height={56}
-                className="rounded-full"
-              />
-            ) : (
-              <span className="w-14 h-14 rounded-full bg-[var(--color-ink-fog)]" aria-hidden />
-            )}
-            <div>
-              <p className="kicker mb-1">Sobre o autor</p>
-              <h2 className="serif text-xl font-normal">{post.author.name}</h2>
-              {post.author.jobTitle ? (
-                <p className="text-sm text-[var(--color-muted)] mt-0.5">{post.author.jobTitle}</p>
-              ) : null}
-              <p className="text-sm mt-3 text-[var(--color-muted)] leading-relaxed">{post.author.shortBio}</p>
-            </div>
-          </div>
         </section>
       ) : null}
 

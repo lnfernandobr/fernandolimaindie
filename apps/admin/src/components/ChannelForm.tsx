@@ -62,7 +62,6 @@ export function ChannelForm({ initial, channelId }: { initial?: ChannelDto; chan
           publishTimes: ['09:00'],
           postsPlan: [...DEFAULT_POSTS_PLAN],
           publishWeekdays: [0, 1, 2, 3, 4, 5, 6],
-          defaultAuthorName: 'Fernando',
           notes: '',
         },
   );
@@ -225,12 +224,6 @@ export function ChannelForm({ initial, channelId }: { initial?: ChannelDto; chan
                   <option value={form.timezone}>{form.timezone}</option>
                 )}
               </select>
-            </Field>
-            <Field label="Autor padrão" hint="Aparece em todos os posts gerados.">
-              <Input
-                value={form.defaultAuthorName}
-                onChange={(e) => patch('defaultAuthorName', e.target.value)}
-              />
             </Field>
           </div>
 
@@ -535,7 +528,6 @@ function sanitizeForForm(c: ChannelDto): ChannelInput {
     postsPlan: plan,
     publishWeekdays:
       c.publishWeekdays && c.publishWeekdays.length > 0 ? c.publishWeekdays : [0, 1, 2, 3, 4, 5, 6],
-    defaultAuthorName: c.defaultAuthorName ?? 'Fernando',
     notes: c.notes ?? '',
   };
 }

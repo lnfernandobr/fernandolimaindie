@@ -2,12 +2,11 @@ import { Router } from 'express';
 import { paginationQuerySchema } from '@bn/shared';
 import { Channel } from '../models/Channel.js';
 import { Post } from '../models/Post.js';
-import { Author } from '../models/Author.js';
 import { Category } from '../models/Category.js';
 import { Tag } from '../models/Tag.js';
 import { NotFound } from '../utils/errors.js';
 import { asyncHandler } from '../middleware/errorHandler.js';
-import { authorToDto, categoryToDto, channelToDto, postToDto, tagToDto } from '../utils/dto.js';
+import { categoryToDto, channelToDto, postToDto, tagToDto } from '../utils/dto.js';
 
 export const publicRouter: Router = Router();
 
@@ -31,7 +30,6 @@ publicRouter.get(
     const channel = await getChannelBySlugOrFail(String(req.params.slug));
     const { page, limit, q } = paginationQuerySchema.parse(req.query);
     const categorySlug = (req.query.category as string) || undefined;
-    const authorSlug = (req.query.author as string) || undefined;
     const tag = (req.query.tag as string) || undefined;
     const featured = req.query.featured === 'true';
 
@@ -45,30 +43,22 @@ publicRouter.get(
       if (!cat) throw NotFound('Category not found');
       filter.categoryId = cat._id;
     }
-    if (authorSlug) {
-      const author = await Author.findOne({ channelId: channel._id, slug: authorSlug } as any).lean();
-      if (!author) throw NotFound('Author not found');
-      filter.authorId = author._id;
-    }
 
-    const [items, total, authors, categories] = await Promise.all([
+    const [items, total, categories] = await Promise.all([
       Post.find(filter)
         .sort({ publishedAt: -1, createdAt: -1 })
         .skip((page - 1) * limit)
         .limit(limit)
         .lean(),
       Post.countDocuments(filter),
-      Author.find({ channelId: channel._id } as any).lean(),
       Category.find({ channelId: channel._id } as any).lean(),
     ]);
 
-    const aMap = new Map(authors.map((a) => [String(a._id), a]));
     const cMap = new Map(categories.map((c) => [String(c._id), c]));
 
     res.json({
       items: items.map((p) =>
         postToDto(p as any, {
-          author: aMap.get(String(p.authorId)) as any,
           category: cMap.get(String(p.categoryId)) as any,
         }),
       ),
@@ -90,11 +80,8 @@ publicRouter.get(
       status: 'published',
     } as any).lean();
     if (!post) throw NotFound('Post not found');
-    const [author, category] = await Promise.all([
-      Author.findById(post.authorId).lean(),
-      Category.findById(post.categoryId).lean(),
-    ]);
-    res.json(postToDto(post as any, { author: author as any, category: category as any }));
+    const category = await Category.findById(post.categoryId).lean();
+    res.json(postToDto(post as any, { category: category as any }));
   }),
 );
 
@@ -117,14 +104,11 @@ publicRouter.get(
       .sort({ publishedAt: -1 })
       .limit(limit)
       .lean();
-    const authors = await Author.find({ _id: { $in: items.map((i) => i.authorId) } }).lean();
     const categories = await Category.find({ _id: { $in: items.map((i) => i.categoryId) } }).lean();
-    const aMap = new Map(authors.map((a) => [String(a._id), a]));
     const cMap = new Map(categories.map((c) => [String(c._id), c]));
     res.json({
       items: items.map((p) =>
         postToDto(p as any, {
-          author: aMap.get(String(p.authorId)) as any,
           category: cMap.get(String(p.categoryId)) as any,
         }),
       ),
@@ -148,25 +132,6 @@ publicRouter.get(
     const cat = await Category.findOne({ channelId: channel._id, slug: req.params.catSlug } as any).lean();
     if (!cat) throw NotFound('Category not found');
     res.json(categoryToDto(cat as any));
-  }),
-);
-
-publicRouter.get(
-  '/channels/:slug/authors',
-  asyncHandler(async (req, res) => {
-    const channel = await getChannelBySlugOrFail(String(req.params.slug));
-    const items = await Author.find({ channelId: channel._id } as any).sort({ name: 1 }).lean();
-    res.json({ items: items.map((a) => authorToDto(a as any)) });
-  }),
-);
-
-publicRouter.get(
-  '/channels/:slug/authors/:authorSlug',
-  asyncHandler(async (req, res) => {
-    const channel = await getChannelBySlugOrFail(String(req.params.slug));
-    const author = await Author.findOne({ channelId: channel._id, slug: req.params.authorSlug } as any).lean();
-    if (!author) throw NotFound('Author not found');
-    res.json(authorToDto(author as any));
   }),
 );
 
@@ -203,14 +168,11 @@ publicRouter.get(
         .lean(),
       Post.countDocuments(filter),
     ]);
-    const authors = await Author.find({ _id: { $in: items.map((i) => i.authorId) } }).lean();
     const categories = await Category.find({ _id: { $in: items.map((i) => i.categoryId) } }).lean();
-    const aMap = new Map(authors.map((a) => [String(a._id), a]));
     const cMap = new Map(categories.map((c) => [String(c._id), c]));
     res.json({
       items: items.map((p) =>
         postToDto(p as any, {
-          author: aMap.get(String(p.authorId)) as any,
           category: cMap.get(String(p.categoryId)) as any,
         }),
       ),
@@ -226,13 +188,12 @@ publicRouter.get(
   '/channels/:slug/sitemap',
   asyncHandler(async (req, res) => {
     const channel = await getChannelBySlugOrFail(String(req.params.slug));
-    const [posts, categories, authors] = await Promise.all([
+    const [posts, categories] = await Promise.all([
       Post.find({ channelId: channel._id, status: 'published' } as any)
         .select({ slug: 1, updatedAt: 1, publishedAt: 1 })
         .sort({ publishedAt: -1 })
         .lean(),
       Category.find({ channelId: channel._id } as any).select({ slug: 1, updatedAt: 1 }).lean(),
-      Author.find({ channelId: channel._id } as any).select({ slug: 1, updatedAt: 1 }).lean(),
     ]);
     res.json({
       posts: posts.map((p) => ({
@@ -242,10 +203,6 @@ publicRouter.get(
       categories: categories.map((c) => ({
         slug: c.slug,
         updatedAt: (c.updatedAt ?? new Date()).toISOString(),
-      })),
-      authors: authors.map((a) => ({
-        slug: a.slug,
-        updatedAt: (a.updatedAt ?? new Date()).toISOString(),
       })),
     });
   }),

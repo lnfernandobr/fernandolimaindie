@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import { slugSchema } from './common';
-import { authorDtoSchema } from './author';
 import { categoryDtoSchema } from './category';
 
 export const postStatusSchema = z.enum(['draft', 'scheduled', 'published', 'archived']);
@@ -46,7 +45,6 @@ export const postInputSchema = z.object({
   content: z.string().min(1),
   format: postFormatSchema.default('article'),
   status: postStatusSchema.default('draft'),
-  authorId: z.string(),
   categoryId: z.string(),
   tags: z.array(z.string()).default([]),
   coverImage: postImageSchema,
@@ -71,7 +69,6 @@ export const postDtoSchema = postInputSchema.extend({
   id: z.string(),
   createdAt: z.string(),
   updatedAt: z.string(),
-  author: authorDtoSchema.optional(),
   category: categoryDtoSchema.optional(),
 });
 
@@ -95,11 +92,9 @@ export const postListItemSchema = postDtoSchema.pick({
   updatedAtContent: true,
   featured: true,
   channelId: true,
-  authorId: true,
   categoryId: true,
   createdAt: true,
   updatedAt: true,
-  author: true,
   category: true,
 });
 

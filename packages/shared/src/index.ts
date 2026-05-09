@@ -1,6 +1,5 @@
 export * from './schemas/channel';
 export * from './schemas/post';
-export * from './schemas/author';
 export * from './schemas/category';
 export * from './schemas/tag';
 export * from './schemas/run';

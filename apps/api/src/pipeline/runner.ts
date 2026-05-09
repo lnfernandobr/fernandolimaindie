@@ -10,7 +10,6 @@ import {
   generateMetadataStep,
   generateImagePromptStep,
   generateImageStep,
-  resolveAuthorStep,
   resolveCategoryStep,
   resolveTagsStep,
   publishPostStep,
@@ -25,7 +24,7 @@ interface PipelineSpec {
 }
 
 /**
- * Pipeline de geração de conteúdo, em 12 etapas modulares.
+ * Pipeline de geração de conteúdo, em 11 etapas modulares.
  *
  * 1. brainstorm-topics    → 8-10 candidatos de pauta
  * 2. select-topic         → escolhe 1 com critérios (gap, intent, balanceamento)
@@ -34,13 +33,12 @@ interface PipelineSpec {
  * 5. generate-metadata    → title/slug/meta/keywords/tags
  * 6. generate-image-prompt → brief visual + alt-text
  * 7. generate-image       → URL da imagem (provider de imagem)
- * 8. resolve-author       → autor padrão do canal
- * 9. resolve-category     → IA escolhe/cria categoria
- * 10. resolve-tags        → cria tags faltantes
- * 11. publish-post        → grava no DB + revalida site
- * 12. publish-instagram   → stub (logaria publicação)
+ * 8. resolve-category     → IA escolhe/cria categoria
+ * 9. resolve-tags         → cria tags faltantes
+ * 10. publish-post        → grava no DB + revalida site
+ * 11. publish-instagram   → stub (logaria publicação)
  *
- * Etapas 1-7 e 11 são CRITICAL (falha = aborta). 8-10 e 12 não são (uma falha
+ * Etapas 1-7 e 10 são CRITICAL (falha = aborta). 8, 9 e 11 não são (uma falha
  * em tags não pode impedir publicação que já tem tudo o resto).
  */
 const STEPS: PipelineSpec[] = [
@@ -51,7 +49,6 @@ const STEPS: PipelineSpec[] = [
   { name: 'generate-metadata', fn: generateMetadataStep, critical: true },
   { name: 'generate-image-prompt', fn: generateImagePromptStep, critical: true },
   { name: 'generate-image', fn: generateImageStep, critical: true },
-  { name: 'resolve-author', fn: resolveAuthorStep, critical: false },
   { name: 'resolve-category', fn: resolveCategoryStep, critical: false },
   { name: 'resolve-tags', fn: resolveTagsStep, critical: false },
   { name: 'publish-post', fn: publishPostStep, critical: true },

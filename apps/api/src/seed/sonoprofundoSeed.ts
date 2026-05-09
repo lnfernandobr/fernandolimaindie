@@ -12,7 +12,6 @@
  */
 
 import { Channel, type ChannelDoc } from '../models/Channel.js';
-import { Author, type AuthorDoc } from '../models/Author.js';
 import { Category, type CategoryDoc } from '../models/Category.js';
 import { Tag } from '../models/Tag.js';
 import { Post } from '../models/Post.js';
@@ -173,7 +172,6 @@ async function ensureChannel(): Promise<ChannelDoc & { _id: any }> {
       publishTimes: ['09:00'],
       postsPlan: [{ count: 1, targetReadingMinutes: 8 }],
       publishWeekdays: [0, 1, 2, 3, 4, 5, 6],
-      defaultAuthorName: 'Equipe Sonoprofundo',
     });
     logger.info({ slug: channel.slug }, 'sonoprofundo channel created');
   }
@@ -200,25 +198,6 @@ async function ensureFixedDevPosts(channel: ChannelDoc & { _id: any }): Promise<
     );
     if (cat) categoriesBySlug.set(c.slug, cat as any);
   }
-
-  const authorSlug = 'fernando';
-  const author = (await Author.findOneAndUpdate(
-    { channelId: channel._id, slug: authorSlug } as any,
-    {
-      $set: {
-        channelId: channel._id,
-        slug: authorSlug,
-        name: 'Fernando',
-        jobTitle: 'Editor-chefe',
-        shortBio: `Editor-chefe do ${channel.name}. Cuida da curadoria e revisão dos conteúdos.`,
-        bio: `# Fernando\n\nEditor-chefe do ${channel.name}. Curador editorial responsável pela seleção e revisão dos conteúdos publicados.`,
-        expertise: [channel.niche],
-        credentials: [],
-        socials: {},
-      },
-    },
-    { upsert: true, new: true },
-  )) as AuthorDoc & { _id: any };
 
   const allTagSlugs = Array.from(new Set(FIXED_POSTS.flatMap((p) => p.tags)));
   for (const slug of allTagSlugs) {
@@ -247,7 +226,6 @@ async function ensureFixedDevPosts(channel: ChannelDoc & { _id: any }): Promise<
           content: p.content,
           format: p.format,
           status: 'published',
-          authorId: author._id,
           categoryId: cat._id,
           tags: p.tags,
           coverImage: {

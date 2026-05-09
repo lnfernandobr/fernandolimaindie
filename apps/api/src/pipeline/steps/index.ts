@@ -17,7 +17,6 @@ export { writeArticleStep } from './04-writeArticle.js';
 export { generateMetadataStep } from './05-generateMetadata.js';
 export { generateImagePromptStep } from './06-generateImagePrompt.js';
 export { generateImageStep } from './07-generateImage.js';
-export { resolveAuthorStep } from './08-resolveAuthor.js';
 export { resolveCategoryStep } from './09-resolveCategory.js';
 export { resolveTagsStep } from './10-resolveTags.js';
 export { publishPostStep } from './11-publishPost.js';

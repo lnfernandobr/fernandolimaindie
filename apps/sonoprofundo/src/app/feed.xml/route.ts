@@ -30,7 +30,6 @@ export async function buildFeed(kind: 'rss' | 'atom'): Promise<string> {
       link: `${SITE_URL}/blog/${p.slug}`,
       description: p.excerpt,
       content: p.excerpt,
-      author: p.author ? [{ name: p.author.name }] : undefined,
       date: new Date(p.publishedAt ?? p.updatedAt ?? p.createdAt),
       image: p.coverImage.url,
       category: p.tags.map((t) => ({ name: t })),

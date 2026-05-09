@@ -1,6 +1,5 @@
 import { API_URL, CHANNEL_SLUG, HAS_API_CONFIG, SITE_URL } from './config';
 import type {
-  AuthorDto,
   CategoryDto,
   ChannelDto,
   PostDto,
@@ -41,7 +40,6 @@ const PLACEHOLDER_CHANNEL: ChannelDto = {
   publishTimes: [],
   postsPlan: [{ count: 1, targetReadingMinutes: 8 }],
   publishWeekdays: [],
-  defaultAuthorName: 'Equipe Sonoprofundo',
   createdAt: new Date(0).toISOString(),
   updatedAt: new Date(0).toISOString(),
 };
@@ -83,7 +81,6 @@ export async function listPosts(
     page?: number;
     limit?: number;
     category?: string;
-    author?: string;
     tag?: string;
     q?: string;
     featured?: boolean;
@@ -134,23 +131,6 @@ export async function getCategory(slug: string): Promise<CategoryDto | null> {
   );
 }
 
-export async function listAuthors(): Promise<AuthorDto[]> {
-  const data = await safeGet<{ items: AuthorDto[] }>(
-    `/api/v1/public/channels/${CHANNEL_SLUG}/authors`,
-    { items: [] },
-    { next: { tags: baseTag(), revalidate: 600 } },
-  );
-  return data.items;
-}
-
-export async function getAuthor(slug: string): Promise<AuthorDto | null> {
-  return safeGet<AuthorDto | null>(
-    `/api/v1/public/channels/${CHANNEL_SLUG}/authors/${slug}`,
-    null,
-    { next: { tags: baseTag(), revalidate: 600 } },
-  );
-}
-
 export async function listTags(): Promise<TagDto[]> {
   const data = await safeGet<{ items: TagDto[] }>(
     `/api/v1/public/channels/${CHANNEL_SLUG}/tags`,
@@ -172,11 +152,10 @@ export async function searchPosts(q: string, page = 1, limit = 20): Promise<Pagi
 export async function getSitemapData(): Promise<{
   posts: { slug: string; updatedAt: string }[];
   categories: { slug: string; updatedAt: string }[];
-  authors: { slug: string; updatedAt: string }[];
 }> {
   return safeGet(
     `/api/v1/public/channels/${CHANNEL_SLUG}/sitemap`,
-    { posts: [], categories: [], authors: [] },
+    { posts: [], categories: [] },
     { next: { tags: ['posts', ...baseTag()], revalidate: 300 } },
   );
 }

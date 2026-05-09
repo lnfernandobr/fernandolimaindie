@@ -45,7 +45,6 @@ export interface UiPost {
   tone: ImageTone;
   minutes: number;
   date: string; // formatado em pt-BR
-  author: string;
   coverUrl?: string;
   coverAlt?: string;
 }
@@ -64,7 +63,6 @@ export function adaptPost(p: PostDto): UiPost {
     tone: imageToneOf(p.slug),
     minutes: p.readingTimeMinutes ?? 5,
     date: formatDate(p.publishedAt ?? p.createdAt),
-    author: p.author?.name ?? 'Equipe sonoprofundo',
     coverUrl: p.coverImage?.url,
     coverAlt: p.coverImage?.alt,
   };
