@@ -2,6 +2,7 @@ import { Feed } from 'feed';
 import { getChannel, listPosts } from '@/lib/api';
 import { SITE_URL } from '@/lib/config';
 
+export const dynamic = 'force-static';
 export const revalidate = 600;
 
 export async function GET() {
