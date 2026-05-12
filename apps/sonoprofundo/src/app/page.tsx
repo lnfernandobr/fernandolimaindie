@@ -73,6 +73,32 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* FERRAMENTAS */}
+      <section
+        aria-label="Ferramentas"
+        className="border-t border-[var(--color-border)]"
+      >
+        <div className="container mx-auto max-w-screen-xl px-4 sm:px-6 py-10 sm:py-12">
+          <p className="kicker mb-4">Ferramentas</p>
+          <Link
+            href="/teste"
+            className="group flex items-center justify-between gap-6 rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] p-6 sm:p-8 hover:border-[var(--color-amber-glow)]/40 transition-colors"
+          >
+            <div>
+              <h2 className="serif text-xl sm:text-2xl font-normal leading-snug tracking-tight group-hover:text-[var(--color-amber-glow)] transition-colors">
+                Teste de Qualidade do Sono
+              </h2>
+              <p className="text-sm text-[var(--color-muted)] mt-2 leading-relaxed">
+                33 perguntas baseadas nas escalas PSQI, ESS e ISI. Resultado detalhado em menos de 5 minutos.
+              </p>
+            </div>
+            <span className="text-[var(--color-amber-glow)] text-xl flex-shrink-0 group-hover:translate-x-1 transition-transform">
+              →
+            </span>
+          </Link>
+        </div>
+      </section>
+
       {/* DESTAQUE + RECENTES */}
       {heroPost ? (
         <section

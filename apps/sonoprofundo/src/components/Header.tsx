@@ -18,6 +18,12 @@ export function Header({ channel }: { channel: ChannelDto }) {
             <Link href="/blog" className="text-[var(--color-muted)] hover:text-[var(--color-fg)] transition-colors">
               Blog
             </Link>
+            <Link
+              href="/teste"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[var(--color-amber-glow)]/30 text-[var(--color-amber-glow)] hover:bg-[var(--color-amber-ember)] transition-colors"
+            >
+              Teste do sono
+            </Link>
           </nav>
         </div>
       </div>
