@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import Moon from '@/components/Moon';
-import SleepCycleCalculator from '@/components/SleepCycleCalculator';
 import { getChannel, listCategories, listPosts } from '@/lib/api';
 import { adaptCategory, adaptPost } from '@/lib/adapt';
 import { abs, jsonLd } from '@/lib/seo';
@@ -74,15 +73,67 @@ export default async function HomePage() {
             <Link className="btn-primary" href="/blog">
               Ler artigos →
             </Link>
-            <a className="btn-ghost" href="#tool-title">
-              Calculadora de sono
-            </a>
           </div>
         </div>
       </section>
 
-      {/* FERRAMENTA — calculadora de ciclos de sono */}
-      <SleepCycleCalculator />
+      {/* FATOS EDITORIAIS */}
+      <section
+        aria-label="O que a ciência diz sobre sono"
+        className="border-t border-[var(--color-border)]"
+      >
+        <div className="container mx-auto max-w-screen-xl px-4 sm:px-6 py-14 sm:py-20">
+          <p className="kicker mb-4">O que a ciência diz</p>
+          <div className="grid gap-px bg-[var(--color-border)] sm:grid-cols-3 rounded-2xl overflow-hidden">
+            {[
+              {
+                n: '01',
+                title: 'Dormir 8 horas não é a meta certa',
+                body: 'A quantidade ideal de sono varia por pessoa, genética e fase da vida. O que importa é acordar restaurado — não bater um número.',
+                href: '/blog',
+              },
+              {
+                n: '02',
+                title: 'Insônia começa muito antes de você deitar',
+                body: 'O que acontece nas 6 horas antes de dormir determina a noite inteira. Luz, ansiedade, cafeína e ritmo circadiano constroem (ou destroem) o sono.',
+                href: '/blog',
+              },
+              {
+                n: '03',
+                title: 'Suplementos não resolvem insônia real',
+                body: 'Melatonina, magnésio e chás funcionam para ajuste de fase — não para insônia crônica. O tratamento de primeira linha é comportamental, não farmacológico.',
+                href: '/blog',
+              },
+            ].map(({ n, title, body, href }) => (
+              <article
+                key={n}
+                className="bg-[var(--color-card)] p-7 sm:p-8 flex flex-col gap-5"
+              >
+                <span
+                  aria-hidden
+                  className="font-mono text-xs text-[var(--color-text-faint)] tracking-widest"
+                >
+                  {n}
+                </span>
+                <div className="flex-1">
+                  <h3 className="serif text-xl sm:text-2xl font-normal leading-snug tracking-tight">
+                    {title}
+                  </h3>
+                  <p className="serif text-sm sm:text-base text-[var(--color-muted)] mt-3 leading-relaxed">
+                    {body}
+                  </p>
+                </div>
+                <Link
+                  href={href}
+                  className="text-sm font-medium text-[var(--color-amber-glow)] hover:underline underline-offset-2 self-start"
+                >
+                  Explorar artigos →
+                </Link>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* DESTAQUE + RECENTES */}
       {heroPost ? (

@@ -15,15 +15,12 @@ export async function GET() {
   const lines: string[] = [];
   lines.push(`# ${channel.name}`);
   lines.push('');
-  lines.push(`> Conteúdo editorial sobre ${channel.niche}, baseado em ciência.`);
+  lines.push('> Dormir mal não é destino. É um problema com solução.');
+  lines.push('');
+  lines.push(`Conteúdo baseado em ciência para você voltar a ter noites de verdade.`);
   lines.push('');
   lines.push(`Idioma: ${channel.language}`);
   lines.push(`Site: ${SITE_URL}`);
-  lines.push('');
-  lines.push('## Ferramentas');
-  lines.push('');
-  lines.push(`- Calculadora de ciclos de sono: ${SITE_URL}/#tool-title — sugere horários ideais de dormir/acordar com base em ciclos de 90 min.`);
-  lines.push('');
 
   if (featured.items.length > 0) {
     lines.push('## Posts em destaque');
