@@ -49,8 +49,11 @@ export function buildBaseMetadata(channel: ChannelDto): Metadata {
       },
     },
     icons: {
-      icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
-      apple: '/apple-touch-icon.svg',
+      icon: [
+        { url: '/favicon.ico', sizes: 'any' },
+        { url: '/favicon.svg', type: 'image/svg+xml' },
+      ],
+      apple: '/apple-touch-icon.png',
     },
   };
 }

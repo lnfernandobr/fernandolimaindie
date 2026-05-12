@@ -1,6 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180">
-  <rect width="180" height="180" rx="40" fill="#10141d"/>
-  <circle cx="90" cy="90" r="62" fill="none" stroke="#e8b66a" stroke-width="3" stroke-opacity="0.4"/>
-  <path d="M90 28a62 62 0 0 0 0 124 48 48 0 0 1 0-124z" fill="#e8b66a"/>
+  <defs><linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0a0e17"></stop><stop offset="100%" stop-color="#1d2640"></stop></linearGradient></defs>
+  <rect width="180" height="180" fill="url(#g3)"></rect>
+  <g transform="translate(10 10) scale(0.8)">
+  <line x1="40" y1="60" x2="120" y2="60" stroke="#cfd9ff" stroke-width="16" stroke-linecap="round"></line>
+  <line x1="30" y1="90" x2="150" y2="90" stroke="#cfd9ff" stroke-width="16" stroke-linecap="round"></line>
+  <line x1="50" y1="120" x2="170" y2="120" stroke="#cfd9ff" stroke-width="16" stroke-linecap="round"></line>
+  <line x1="80" y1="150" x2="160" y2="150" stroke="#cfd9ff" stroke-width="16" stroke-linecap="round"></line></g>
 </svg>

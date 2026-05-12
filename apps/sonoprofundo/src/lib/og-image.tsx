@@ -23,39 +23,43 @@ export async function renderOgImage(): Promise<ImageResponse> {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          padding: '80px',
-          backgroundImage: 'linear-gradient(135deg, #0a0d14 0%, #171c27 100%)',
-          color: '#e8e4d8',
+          padding: '80px 96px',
+          background: '#0a0e17',
+          color: '#e8ecf5',
           fontFamily: 'serif',
         }}
       >
+        {/* Camadas mark — top right */}
         <div
           style={{
             position: 'absolute',
-            right: '60px',
-            top: '60px',
-            width: '160px',
-            height: '160px',
-            borderRadius: '80px',
-            background:
-              'radial-gradient(circle at 70% 35%, #e8b66a 0%, #c89456 60%, transparent 70%)',
-            opacity: 0.85,
+            right: '80px',
+            top: '72px',
+            display: 'flex',
           }}
-        />
+        >
+          <svg width="90" height="90" viewBox="0 0 200 200" fill="none">
+            <line x1="40" y1="60" x2="120" y2="60" stroke="#cfd9ff" strokeWidth="14" strokeLinecap="round"/>
+            <line x1="30" y1="90" x2="150" y2="90" stroke="#cfd9ff" strokeWidth="14" strokeLinecap="round"/>
+            <line x1="50" y1="120" x2="170" y2="120" stroke="#cfd9ff" strokeWidth="14" strokeLinecap="round"/>
+            <line x1="80" y1="150" x2="160" y2="150" stroke="#cfd9ff" strokeWidth="14" strokeLinecap="round"/>
+          </svg>
+        </div>
+
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <div
             style={{
               fontFamily: 'sans-serif',
               fontSize: 26,
               letterSpacing: 6,
-              color: '#e8b66a',
+              color: '#cfd9ff',
               textTransform: 'uppercase',
               fontWeight: 600,
             }}
           >
             {title}
           </div>
-          <div style={{ marginTop: 50, fontSize: 64, lineHeight: 1.1, maxWidth: 880 }}>
+          <div style={{ marginTop: 50, fontSize: 64, lineHeight: 1.1, maxWidth: 880, color: '#e8ecf5' }}>
             Dormir mal não é destino.
           </div>
           <div
@@ -64,18 +68,19 @@ export async function renderOgImage(): Promise<ImageResponse> {
               lineHeight: 1.1,
               maxWidth: 880,
               fontStyle: 'italic',
-              color: '#e8b66a',
+              color: '#cfd9ff',
             }}
           >
             É um problema com solução.
           </div>
         </div>
+
         <div
           style={{
             display: 'flex',
             fontFamily: 'sans-serif',
             fontSize: 22,
-            color: 'rgba(232,228,216,0.62)',
+            color: '#7a8294',
           }}
         >
           Conteúdo baseado em ciência — sonoprofundo.com
