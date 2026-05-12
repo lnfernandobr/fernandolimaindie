@@ -80,22 +80,53 @@ export default async function HomePage() {
       >
         <div className="container mx-auto max-w-screen-xl px-4 sm:px-6 py-10 sm:py-12">
           <p className="kicker mb-4">Ferramentas</p>
-          <Link
-            href="/teste"
-            className="group flex items-center justify-between gap-6 rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] p-6 sm:p-8 hover:border-[var(--color-amber-glow)]/40 transition-colors"
-          >
-            <div>
-              <h2 className="serif text-xl sm:text-2xl font-normal leading-snug tracking-tight group-hover:text-[var(--color-amber-glow)] transition-colors">
-                Teste de Qualidade do Sono
-              </h2>
-              <p className="text-sm text-[var(--color-muted)] mt-2 leading-relaxed">
-                33 perguntas baseadas nas escalas PSQI, ESS e ISI. Resultado detalhado em menos de 5 minutos.
-              </p>
-            </div>
-            <span className="text-[var(--color-amber-glow)] text-xl flex-shrink-0 group-hover:translate-x-1 transition-transform">
-              →
-            </span>
-          </Link>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                href: '/teste',
+                title: 'Teste de Qualidade do Sono',
+                desc: '33 perguntas baseadas nas escalas PSQI, ESS e ISI. Resultado com análise detalhada em menos de 5 minutos.',
+              },
+              {
+                href: '/ciclos',
+                title: 'Calculadora de Ciclos de Sono',
+                desc: 'Descubra o horário exato de dormir ou acordar para completar ciclos inteiros de 90 minutos.',
+              },
+              {
+                href: '/cronotipo',
+                title: 'Calculadora de Cronotipo',
+                desc: 'Descubra se você é matutino, vespertino ou intermediário e qual é seu pico natural de rendimento.',
+              },
+              {
+                href: '/divida-de-sono',
+                title: 'Calculadora de Dívida de Sono',
+                desc: 'Informe as horas de sono de cada dia e veja a dívida acumulada na semana e o tempo para recuperar.',
+              },
+              {
+                href: '/apneia',
+                title: 'Triagem de Apneia do Sono',
+                desc: '8 perguntas do questionário STOP-BANG para estimar seu risco de apneia obstrutiva do sono.',
+              },
+            ].map((tool) => (
+              <Link
+                key={tool.href}
+                href={tool.href}
+                className="group flex items-center justify-between gap-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] p-5 sm:p-6 hover:border-[var(--color-amber-glow)]/40 transition-colors"
+              >
+                <div>
+                  <h2 className="serif text-base sm:text-lg font-normal leading-snug tracking-tight group-hover:text-[var(--color-amber-glow)] transition-colors">
+                    {tool.title}
+                  </h2>
+                  <p className="text-sm text-[var(--color-muted)] mt-1.5 leading-relaxed">
+                    {tool.desc}
+                  </p>
+                </div>
+                <span className="text-[var(--color-amber-glow)] text-lg flex-shrink-0 group-hover:translate-x-1 transition-transform">
+                  →
+                </span>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 

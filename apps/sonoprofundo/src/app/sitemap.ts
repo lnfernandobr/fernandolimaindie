@@ -12,6 +12,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/`, lastModified: now, changeFrequency: 'daily', priority: 1 },
     { url: `${SITE_URL}/blog`, lastModified: now, changeFrequency: 'daily', priority: 0.9 },
     { url: `${SITE_URL}/teste`, lastModified: now, changeFrequency: 'monthly', priority: 0.85 },
+    { url: `${SITE_URL}/ciclos`, lastModified: now, changeFrequency: 'monthly', priority: 0.85 },
+    { url: `${SITE_URL}/cronotipo`, lastModified: now, changeFrequency: 'monthly', priority: 0.85 },
+    { url: `${SITE_URL}/divida-de-sono`, lastModified: now, changeFrequency: 'monthly', priority: 0.85 },
+    { url: `${SITE_URL}/apneia`, lastModified: now, changeFrequency: 'monthly', priority: 0.85 },
   ];
   const posts: MetadataRoute.Sitemap = data.posts.map((p) => ({
     url: `${SITE_URL}/blog/${p.slug}`,
