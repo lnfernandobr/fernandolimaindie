@@ -46,8 +46,7 @@ export async function GET() {
   lines.push('## Posts recentes');
   lines.push('');
   for (const p of recent.items) {
-    const author = p.author ? ` — por ${p.author.name}` : '';
-    lines.push(`- [${p.title}](${SITE_URL}/blog/${p.slug})${author}: ${p.excerpt}`);
+    lines.push(`- [${p.title}](${SITE_URL}/blog/${p.slug}): ${p.excerpt}`);
   }
   lines.push('');
 

@@ -4,7 +4,6 @@ import helmet from 'helmet';
 import { env } from './config/env.js';
 import { authRouter } from './routes/auth.js';
 import { channelsRouter } from './routes/channels.js';
-import { authorsRouter } from './routes/authors.js';
 import { categoriesRouter } from './routes/categories.js';
 import { tagsRouter } from './routes/tags.js';
 import { postsRouter } from './routes/posts.js';
@@ -55,7 +54,6 @@ export function createApp(): Express {
 
   app.use('/api/v1/auth', authRouter);
   app.use('/api/v1/channels', channelsRouter);
-  app.use('/api/v1/authors', authorsRouter);
   app.use('/api/v1/categories', categoriesRouter);
   app.use('/api/v1/tags', tagsRouter);
   app.use('/api/v1/posts', postsRouter);
