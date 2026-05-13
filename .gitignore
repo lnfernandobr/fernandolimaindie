@@ -2,10 +2,10 @@ node_modules
 .next
 dist
 build
+.env
 .env.local
 .env.local.bak
 .env.dopplerpulled.local
-# .env é commitado como template de produção (preencher antes de subir)
 *.log
 .logs/
 .DS_Store

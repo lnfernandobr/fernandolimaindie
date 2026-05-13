@@ -72,12 +72,12 @@ jobs:
             set -euo pipefail
             cd /opt/blog-network
 
-            echo "→ Activating new .env"
-            mv apps/api/deploy.env apps/api/.env
-
             echo "→ Fetching latest main"
             git fetch origin main
             git reset --hard origin/main
+
+            echo "→ Activating new .env"
+            mv apps/api/deploy.env apps/api/.env
 
             echo "→ Installing dependencies (api only)"
             pnpm install --filter @bn/api... --frozen-lockfile
