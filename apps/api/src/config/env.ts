@@ -7,13 +7,22 @@ import { z } from 'zod';
 dotenv.config({ path: path.resolve(process.cwd(), '.env.local'), override: true });
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
+// Strings vazias ("") exportadas pelo Doppler/CI contam como "não definidas"
+// para fins de validação — o .default() precisa estar DENTRO do preprocess
+// porque z.string() rejeita undefined.
+const envStr = (minLen: number, defaultVal: string) =>
+  z.preprocess(
+    (v) => (v === '' ? undefined : v),
+    z.string().min(minLen).default(defaultVal),
+  );
+
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   API_PORT: z.coerce.number().int().positive().default(4000),
-  MONGODB_URI: z.string().min(1).default('mongodb://localhost:27017/blog-network'),
-  JWT_SECRET: z.string().min(16).default('dev-secret-change-me-please-32chars'),
+  MONGODB_URI: envStr(1, 'mongodb://localhost:27017/blog-network'),
+  JWT_SECRET: envStr(16, 'dev-secret-change-me-please-32chars'),
   JWT_EXPIRES_IN: z.string().default('7d'),
-  REVALIDATE_SECRET: z.string().min(8).default('dev-revalidate-secret'),
+  REVALIDATE_SECRET: envStr(8, 'dev-revalidate-secret'),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
   ADMIN_BOOTSTRAP_NAME: z.string().default('Fernando'),
   ADMIN_BOOTSTRAP_USERNAME: z.string().default('fernando'),
