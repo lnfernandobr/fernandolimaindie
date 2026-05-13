@@ -68,9 +68,7 @@ export default function RunsPage() {
         ) : (
           items.map((run) => {
             const canRetry =
-              !!run.postId &&
-              (run.status === 'partial' || run.status === 'error') &&
-              run.status !== 'running';
+              !!run.postId && (run.status === 'partial' || run.status === 'error');
             return (
               <Card key={run.id}>
                 <CardContent className="py-4">

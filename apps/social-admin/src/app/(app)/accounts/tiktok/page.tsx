@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { api } from '@/lib/api';
 import { PageHeader } from '@/components/PageHeader';
@@ -10,6 +10,14 @@ import { toast } from '@/components/ui/toast';
 import { ExternalLink, CheckCircle, XCircle, Loader2 } from 'lucide-react';
 
 export default function TikTokConnectPage() {
+  return (
+    <Suspense fallback={<p className="text-sm text-[var(--color-muted)]">Loading…</p>}>
+      <TikTokConnectContent />
+    </Suspense>
+  );
+}
+
+function TikTokConnectContent() {
   const searchParams = useSearchParams();
   const status = searchParams.get('status');
   const message = searchParams.get('message');

@@ -38,7 +38,7 @@ async function executePipeline(
   ctx: SocialPipelineContext,
   opts: { trigger: 'cron' | 'manual' | 'retry'; cronExpression?: string },
 ) {
-  const run = ctx.run;
+  const run = ctx.run as any;
   const startedAt = Date.now();
   let overall: 'success' | 'error' | 'partial' = 'success';
   let firstError: string | undefined;

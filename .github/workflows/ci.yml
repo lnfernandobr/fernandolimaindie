@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Cancela jobs antigos do mesmo PR/branch quando um novo push chega
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: Typecheck, Lint, Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      # TODO: lint está como placeholder até resolvermos o bug de FlatCompat com
+      # eslint-config-next v16 (circular structure em next/typescript).
+      - name: Lint
+        run: pnpm lint
+
+      # API não tem build (roda direto do TS via tsx). Os outros apps Next.js sim.
+      - name: Build
+        run: pnpm build
+        env:
+          # Builds Next.js precisam saber o destino da API. Em CI usa placeholder.
+          NEXT_PUBLIC_API_URL: https://api.example.com
+          REVALIDATE_SECRET: ci-placeholder-secret

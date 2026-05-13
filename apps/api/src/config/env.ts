@@ -38,6 +38,18 @@ const envSchema = z.object({
   // Dev: http://localhost:4000. Prod: https://api.SEUDOMINIO.com.
   PUBLIC_API_URL: z.string().optional(),
 
+  // Storage S3 das imagens geradas. Se `UPLOADS_S3_BUCKET` for setado,
+  // usa S3; senão cai pra disco local em apps/api/uploads/.
+  UPLOADS_S3_BUCKET: z.string().optional(),
+  UPLOADS_S3_REGION: z.string().optional(),
+  // Base URL pública das imagens. Default: URL direta S3.
+  // Set se usar CloudFront ou domínio customizado (ex: https://cdn.SEUDOMINIO.com).
+  UPLOADS_PUBLIC_BASE_URL: z.string().optional(),
+  // Credenciais AWS. Em VPS com IAM role anexada, deixe em branco.
+  // Em dev/CI use access key/secret.
+  AWS_ACCESS_KEY_ID: z.string().optional(),
+  AWS_SECRET_ACCESS_KEY: z.string().optional(),
+
   // Google PageSpeed Insights API.
   // Sem chave: ~1 req/s, sujeito ao rate limit do Google.
   // Com chave (gratuita, sem cartão): 25k req/dia.

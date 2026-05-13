@@ -1,0 +1,64 @@
+name: Deploy API
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/api/**'
+      - 'packages/shared/**'
+      - 'pnpm-lock.yaml'
+      - 'package.json'
+      - '.github/workflows/deploy-api.yml'
+  workflow_dispatch: # permite trigger manual pelo painel do GitHub
+
+# Apenas um deploy por vez. Se um novo push chega durante deploy, espera o atual terminar.
+concurrency:
+  group: deploy-api
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: SSH deploy to VPS
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    # Só roda se o CI passou — encadeamento defensivo via "needs" requer que o CI
+    # esteja no mesmo workflow file. Aqui usamos check de status do CI.
+    steps:
+      - name: Wait for CI to succeed
+        uses: lewagon/wait-on-check-action@v1.3.4
+        with:
+          ref: ${{ github.sha }}
+          check-name: 'Typecheck, Lint, Build'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 15
+          allowed-conclusions: success
+
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          # 10 min é mais que suficiente: git pull + pnpm install + pm2 reload
+          command_timeout: 10m
+          script: |
+            set -euo pipefail
+            cd /opt/blog-network
+
+            echo "→ Fetching latest main"
+            git fetch origin main
+            git reset --hard origin/main
+
+            echo "→ Installing dependencies (api only)"
+            pnpm install --filter @bn/api... --frozen-lockfile
+
+            echo "→ Reloading PM2 (zero-downtime if cluster mode, restart if fork)"
+            pm2 reload bn-api --update-env
+
+            echo "→ Smoke test"
+            sleep 3
+            curl -fsS http://localhost:4000/health
+
+            echo "✓ Deploy completed at $(date -u +%FT%TZ)"

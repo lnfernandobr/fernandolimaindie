@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "0.92.0",
+    "@aws-sdk/client-s3": "^3.1045.0",
     "@bn/shared": "workspace:*",
     "bcryptjs": "3.0.3",
     "cors": "2.8.6",

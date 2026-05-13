@@ -12,7 +12,7 @@ socialPostsRouter.use(requireAuth);
 socialPostsRouter.post(
   '/:id/retry',
   asyncHandler(async (req, res) => {
-    const run = await retrySocialPost(req.params.id!);
+    const run = await retrySocialPost(String(req.params.id));
     const r: any = (run as any).toObject ? (run as any).toObject() : run;
     res.json({
       id: String(r._id),

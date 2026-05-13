@@ -1,67 +1,149 @@
 # Deploy
 
-API roda em **AWS Lightsail** (recomendado) ou **EC2**. Admin e cada blog rodam na **Vercel**.
+```
+Mongo Atlas  ──►  API (AWS Lightsail/EC2)  ──►  Admin (Vercel)
+                                          ├─►   Social Admin (Vercel)
+                                          ├─►   Sonoprofundo (Vercel)
+                                          └─►   Canal N (Vercel)
 
+S3 ◄── API saves generated images (TikTok pulls from here)
 ```
-Mongo Atlas  ──►  API (AWS)  ──►  Admin (Vercel)
-                            ├─►  Sonoprofundo (Vercel)
-                            └─►  Canal N (Vercel)
-```
+
+| Camada            | Onde                            | Auto-deploy            |
+| ----------------- | ------------------------------- | ---------------------- |
+| **API**           | AWS Lightsail/EC2 (PM2 + Caddy) | GitHub Actions (SSH)   |
+| **Admin**         | Vercel                          | Vercel (push to main)  |
+| **Social Admin**  | Vercel                          | Vercel (push to main)  |
+| **Sonoprofundo**  | Vercel                          | Vercel (push to main)  |
+| **Mongo**         | Atlas (free M0 ou M10)          | n/a                    |
+| **Uploads (S3)**  | AWS S3 + CloudFront (opcional)  | n/a                    |
 
 ---
 
 ## 1. Banco — MongoDB Atlas
 
-Atlas porque AWS DocumentDB cobra $200+/mês mínimo e é só compatível parcialmente com a API do Mongo (mexe com Mongoose). Atlas free tier resolve durante toda a fase inicial.
+Atlas porque AWS DocumentDB cobra $200+/mês mínimo e é só compatível parcialmente com a API do Mongo. Atlas free tier resolve durante toda a fase inicial.
 
 1. https://cloud.mongodb.com → cria projeto + cluster M0 (free) ou M10.
 2. **Database Access**: cria usuário/senha. Anota.
 3. **Network Access**: adiciona o IP da instância AWS (depois de provisionar). Em dev, `0.0.0.0/0` temporariamente.
-4. Pega a connection string:
+4. Connection string:
    ```
    mongodb+srv://USUARIO:SENHA@cluster0.xxxxx.mongodb.net/blog-network?retryWrites=true&w=majority
    ```
 
 ---
 
-## 2. API — AWS Lightsail (recomendado)
+## 2. Storage de imagens — AWS S3
+
+A API gera imagens via DALL-E e precisa hospedá-las em um lugar persistente. Local disk é frágil em redeploy/snapshot. **Em produção, sempre S3.**
+
+### 2.1. Criar bucket
+
+1. AWS Console → **S3** → **Create bucket**
+2. **Name**: `blog-network-uploads` (precisa ser único globalmente — adicione um sufixo se necessário)
+3. **Region**: a mesma da instância EC2/Lightsail
+4. **Block Public Access**: **desmarcar** ("Block all public access" → off). Confirma o aviso.
+5. **Bucket Versioning**: off (não precisa)
+6. **Create bucket**
+
+### 2.2. Bucket policy (leitura pública das imagens)
+
+Bucket → **Permissions** → **Bucket policy** → cola:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "PublicReadGetObject",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::blog-network-uploads/*"
+    }
+  ]
+}
+```
+
+> Sem isso o TikTok não consegue puxar as imagens (PULL_FROM_URL exige acesso público).
+
+### 2.3. CORS (opcional — se o admin for mostrar imagens via fetch)
+
+Bucket → **Permissions** → **Cross-origin resource sharing (CORS)**:
+
+```json
+[
+  {
+    "AllowedHeaders": ["*"],
+    "AllowedMethods": ["GET"],
+    "AllowedOrigins": ["https://admin.SEUDOMINIO.com", "https://social.SEUDOMINIO.com"],
+    "ExposeHeaders": []
+  }
+]
+```
+
+### 2.4. Permissões do app
+
+Duas opções:
+
+**A) IAM Role anexada à instância EC2/Lightsail (recomendado em prod):**
+- IAM → **Roles** → **Create role** → AWS service → EC2
+- Permissions: **anexa policy custom** com `s3:PutObject`, `s3:GetObject` no resource `arn:aws:s3:::blog-network-uploads/*`
+- Anexa a role à instância (EC2 → Actions → Security → Modify IAM role)
+- No `.env` deixa `AWS_ACCESS_KEY_ID` e `AWS_SECRET_ACCESS_KEY` em branco — o SDK pega a credencial via metadata service.
+
+**B) Access key dedicada (mais simples mas menos seguro):**
+- IAM → **Users** → **Create user**: `blog-network-api`
+- Anexa policy igual à descrita acima
+- Gera access key/secret
+- Cola no `.env`
+
+### 2.5. Domínio customizado (opcional)
+
+Sem CloudFront, as URLs vão ser `https://blog-network-uploads.s3.us-east-1.amazonaws.com/...`. Funciona e é o suficiente.
+
+Pra usar `https://cdn.SEUDOMINIO.com`:
+1. CloudFront → **Create distribution** → origin = bucket S3
+2. **Alternate domain names**: `cdn.SEUDOMINIO.com`
+3. **SSL certificate**: solicita um em ACM (us-east-1 obrigatoriamente)
+4. **Default behavior**: redirecionar HTTP→HTTPS, cache 30d
+5. Aponta CNAME `cdn` → domain do CloudFront
+6. No `.env` da API: `UPLOADS_PUBLIC_BASE_URL=https://cdn.SEUDOMINIO.com`
+
+---
+
+## 3. API — AWS Lightsail (recomendado)
 
 Por que Lightsail e não EC2/ECS/App Runner:
 
-- **Lightsail** = VPS gerenciado, preço fixo (~$5/mês), IP estático grátis, snapshots fáceis. Equivalente direto da Vultr/DigitalOcean. Zero burocracia de VPC/Security Group.
-- **EC2** dá mais controle e tem Free Tier (12 meses de t3.micro grátis), mas exige VPC + SG + Elastic IP. Faz sentido se você já usa AWS pra outras coisas.
-- **ECS/Fargate** = container serverless, mas precisa de ALB pra HTTPS — fica $20+/mês.
-- **App Runner** = simples mas $25+/mês.
-- **Lambda** **NÃO serve**: a API tem `node-cron` rodando em memória, exige instância sempre on.
+- **Lightsail** = VPS gerenciado, preço fixo (~$5/mês), IP estático grátis, snapshots fáceis.
+- **EC2** dá mais controle e tem Free Tier (12 meses de t3.micro grátis), mas exige VPC + SG + Elastic IP.
+- **ECS/Fargate** = container serverless, mas precisa de ALB pra HTTPS — $20+/mês.
+- **Lambda** **NÃO serve**: a API tem `node-cron` rodando em memória.
 
-### 2.1. Criar a instância Lightsail
+### 3.1. Criar a instância Lightsail
 
 1. https://lightsail.aws.amazon.com → **Create instance**
 2. **Region**: `us-east-1` (mais barata) ou `sa-east-1` se quer ping menor pro BR
 3. **Platform**: Linux/Unix
 4. **Blueprint**: OS Only → **Ubuntu 24.04 LTS**
-5. **Plan**: $5/mês (1 GB RAM, 2 vCPU, 60 GB SSD) — suficiente pra começar
+5. **Plan**: $5/mês (1 GB RAM, 2 vCPU, 60 GB SSD)
 6. **Identifier**: `blog-network-api`
 7. Create instance
 
 Na aba **Networking**:
-- **Create static IP** → attach à instância. **Anota o IP**, é o que aponta o DNS depois.
+- **Create static IP** → attach à instância. Anota o IP.
 
 Na aba **Networking → Firewall**:
-- TCP 22 (SSH) — já vem aberto
-- TCP 80 (HTTP) — já vem aberto
-- TCP 443 (HTTPS) — adicionar
+- TCP 22 (SSH), 80 (HTTP), 443 (HTTPS) — abre todos
 - TCP 4000 — **não abrir**: a API fica atrás do Caddy
 
-### 2.2. SSH e setup base
-
-Botão **Connect using SSH** no console Lightsail abre terminal direto no browser. Ou baixa a chave `.pem` em **Account → SSH keys** e:
+### 3.2. SSH e setup base
 
 ```bash
 ssh -i lightsail_default.pem ubuntu@<seu-ip-estatico>
 ```
-
-Como `ubuntu` (já tem sudo passwordless):
 
 ```bash
 # Atualiza e instala dependências
@@ -72,28 +154,29 @@ curl -fsSL https://deb.nodesource.com/setup_24.x | sudo -E bash -
 sudo apt-get install -y nodejs
 sudo npm i -g pnpm@latest pm2
 
-# UFW (firewall extra na instância — Lightsail já tem firewall, mas defense in depth)
+# UFW firewall
 sudo ufw allow OpenSSH && sudo ufw allow 80/tcp && sudo ufw allow 443/tcp
 sudo ufw --force enable
 
-# Swap de 2GB — defesa contra OOM em pico de memória.
-# Lightsail/EC2 não vêm com swap por padrão. Sem swap, qualquer pico de
-# RAM dispara o OOM killer e mata processos (incluindo sshd).
+# Swap 2GB — defense contra OOM
 sudo fallocate -l 2G /swapfile
 sudo chmod 600 /swapfile
 sudo mkswap /swapfile
 sudo swapon /swapfile
 echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
-sudo sysctl vm.swappiness=10   # só usa swap em emergência
+sudo sysctl vm.swappiness=10
 
-# pm2-logrotate — sem isso os logs crescem até encher o disco
+# pm2-logrotate
 sudo pm2 install pm2-logrotate
 sudo pm2 set pm2-logrotate:max_size 50M
 sudo pm2 set pm2-logrotate:retain 5
 sudo pm2 set pm2-logrotate:compress true
+
+# Diretório de logs (referenciado no ecosystem.config.cjs)
+sudo mkdir -p /var/log/bn-api && sudo chown ubuntu /var/log/bn-api
 ```
 
-### 2.3. Subir o código
+### 3.3. Subir o código
 
 ```bash
 sudo mkdir -p /opt/blog-network && sudo chown ubuntu:ubuntu /opt/blog-network
@@ -102,50 +185,22 @@ cd /opt/blog-network
 pnpm install --filter @bn/api...
 ```
 
-### 2.4. Configurar `.env` de produção
+### 3.4. Configurar `.env` de produção
 
 ```bash
-nano /opt/blog-network/apps/api/.env
+cp apps/api/.env apps/api/.env.local   # se quiser mexer apenas com overrides locais
+nano apps/api/.env
 ```
 
-```
-NODE_ENV=production
-API_PORT=4000
-
-MONGODB_URI=mongodb+srv://USUARIO:SENHA@cluster0.xxxxx.mongodb.net/blog-network?retryWrites=true&w=majority
-JWT_SECRET=<gere com `openssl rand -hex 32`>
-JWT_EXPIRES_IN=7d
-REVALIDATE_SECRET=<gere com `openssl rand -hex 16`>
-
-LOG_LEVEL=info
-ADMIN_BOOTSTRAP_NAME=Fernando
-ADMIN_BOOTSTRAP_USERNAME=fernando
-ADMIN_BOOTSTRAP_PASSWORD=<senha forte>
-
-ALLOWED_ORIGINS=https://admin.exemplo.com,https://sonoprofundo.com,https://canal2.com
-
-AI_PROVIDER=claude
-AI_MODEL=
-ANTHROPIC_API_KEY=<https://console.anthropic.com/settings/keys>
-OPENAI_API_KEY=<https://platform.openai.com/api-keys>
-
-IMAGE_PROVIDER=openai
-IMAGE_MODEL=
-
-PUBLIC_API_URL=https://api.SEUDOMINIO.com
-
-GOOGLE_PAGESPEED_API_KEY=<crie em https://console.cloud.google.com/apis/credentials>
+Preenche cada campo. Geração de segredos:
+```bash
+openssl rand -hex 32   # JWT_SECRET
+openssl rand -hex 16   # REVALIDATE_SECRET
 ```
 
-> O `REVALIDATE_SECRET` precisa ser **igual** no `.env` da API e nos sites/blogs (variável de ambiente na Vercel).
+Para TikTok (ver seção 6) e S3 (seção 2).
 
-> **Setup de IA pra produção**: `AI_PROVIDER=claude` (Sonnet 4.6, melhor qualidade pra texto longo) + `IMAGE_PROVIDER=openai` (gpt-image-1; Anthropic não gera imagem). Precisa das duas keys.
-
-> `PUBLIC_API_URL` monta as URLs de imagens hospedadas em `/uploads/`. Aponte pro domínio HTTPS da API em prod.
-
-> A chave do **PageSpeed Insights** é gratuita (25k req/dia, sem cartão). Sem ela, o audit ainda funciona mas com rate limit baixo.
-
-### 2.5. Subir com PM2
+### 3.5. Subir com PM2
 
 ```bash
 cd /opt/blog-network
@@ -154,15 +209,13 @@ pm2 save
 pm2 startup    # imprime um comando — copie e rode com sudo
 ```
 
-Smoke:
-
+Smoke test:
 ```bash
 curl http://localhost:4000/health
+tail -f /var/log/bn-api/out.log
 ```
 
-### 2.6. HTTPS via Caddy
-
-Caddy resolve TLS sozinho via Let's Encrypt:
+### 3.6. HTTPS via Caddy
 
 ```bash
 sudo apt-get install -y debian-keyring debian-archive-keyring apt-transport-https
@@ -178,177 +231,174 @@ EOF
 sudo systemctl reload caddy
 ```
 
-Aponta o A record `api.SEUDOMINIO.com` → IP estático da Lightsail. Em ~30s a API está em `https://api.SEUDOMINIO.com`.
+Aponta DNS A record `api.SEUDOMINIO.com` → IP estático. Em ~30s a API está em `https://api.SEUDOMINIO.com`.
 
-### 2.7. Atualizações posteriores
+### 3.7. Backup
+
+Console Lightsail → instância → **Auto snapshots** → habilita (1/dia, 7 retidos, ~$0.05/GB/mês). Atlas faz backup do banco por padrão.
+
+---
+
+## 4. CI/CD — GitHub Actions
+
+Pipeline em `.github/workflows/`:
+
+- **`ci.yml`** roda em todo PR/push: `typecheck`, `lint`, `build` de todos os apps.
+- **`deploy-api.yml`** roda em push pra `main` que toque em `apps/api/**` ou `packages/shared/**`: espera o CI passar, depois SSH no VPS, `git pull`, `pnpm install --filter @bn/api...`, `pm2 reload bn-api`.
+
+### 4.1. Secrets necessários
+
+No repo GitHub → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**:
+
+| Nome              | Valor                                                                                       |
+| ----------------- | ------------------------------------------------------------------------------------------- |
+| `SSH_HOST`        | IP estático da Lightsail (ex: `54.123.45.67`)                                               |
+| `SSH_USER`        | `ubuntu`                                                                                     |
+| `SSH_PRIVATE_KEY` | Conteúdo inteiro do `.pem` baixado no Lightsail (cola incluindo `-----BEGIN ...-----`)       |
+| `SSH_PORT`        | Opcional (default 22)                                                                       |
+
+### 4.2. Setup da chave SSH no VPS
+
+No GitHub Actions usamos a chave default do Lightsail. Se preferir uma chave dedicada pro CI:
 
 ```bash
-cd /opt/blog-network
-git pull
-pnpm install --filter @bn/api...
-pm2 restart bn-api
+# Na sua máquina local:
+ssh-keygen -t ed25519 -C "github-actions" -f ~/.ssh/bn-deploy
+cat ~/.ssh/bn-deploy.pub
+# Cola o conteúdo no VPS:
+ssh ubuntu@<ip> "mkdir -p ~/.ssh && echo 'CONTEUDO_PUB_AQUI' >> ~/.ssh/authorized_keys"
+# Adiciona o conteúdo de ~/.ssh/bn-deploy (privada) como SSH_PRIVATE_KEY no GitHub
 ```
 
-### 2.8. Backup mínimo
+### 4.3. Como funciona
 
-Console Lightsail → instância → **Snapshots** → **Create snapshot manual** ou habilita **Auto snapshots** (1 por dia, 7 retidos, ~$0.05/GB/mês). MongoDB Atlas faz backup do banco por padrão — você só precisa cuidar do servidor.
+1. Você dá push em `main`
+2. `ci.yml` roda typecheck + build em paralelo
+3. Se passou, `deploy-api.yml` espera o CI terminar (via `wait-on-check-action`)
+4. SSH no VPS → `git pull` → `pnpm install` → `pm2 reload bn-api --update-env`
+5. Smoke test no `/health`
 
----
-
-## 2-alt. API — AWS EC2 (alternativa)
-
-Use só se quer **Free Tier** (12 meses de t3.micro grátis = ~$0/mês durante o primeiro ano) ou já mantém VPCs/SGs por outros motivos.
-
-### Provisionar
-
-1. EC2 → **Launch instance**
-2. **Name**: `blog-network-api`
-3. **AMI**: Ubuntu Server 24.04 LTS (HVM, SSD)
-4. **Instance type**: `t3.micro` (Free Tier elegível) ou `t3.small` (~$15/mês)
-5. **Key pair**: cria um e baixa o `.pem`
-6. **Network**:
-   - Security Group novo:
-     - SSH (22) from My IP
-     - HTTP (80) from anywhere
-     - HTTPS (443) from anywhere
-   - **Não abre 4000** — fica atrás do Caddy
-7. **Storage**: 20 GB gp3
-8. Launch
-
-Na seção **Elastic IPs**:
-- **Allocate Elastic IP** → **Associate** com a instância. Anota o IP.
-
-> Lembre: Elastic IP só é grátis enquanto associado a uma instância running. Se desligar a instância sem liberar o IP, AWS cobra.
-
-### Setup do servidor
-
-A partir daí o procedimento é **idêntico** ao Lightsail (seções 2.2 a 2.8). O usuário SSH é `ubuntu`, sudo passwordless, todos os comandos rodam iguais.
+Trigger manual disponível em **Actions → Deploy API → Run workflow** se precisar redeployar sem novos commits.
 
 ---
 
-## 3. Admin — Vercel
+## 5. Apps Next.js — Vercel
 
-1. Push do repo no GitHub.
-2. Vercel → **Add New → Project** → seleciona o repo.
-3. Configurar:
-   - **Root Directory**: `apps/admin`
-   - **Framework Preset**: Next.js (detecta sozinho)
-   - Demais campos: deixa em branco (o `vercel.json` cuida)
+Tudo igual entre Admin, Social Admin e Sonoprofundo. Vercel detecta o `vercel.json` automaticamente.
+
+### 5.1. Cada app
+
+1. Vercel → **Add New → Project** → seleciona o repo
+2. **Root Directory**: `apps/admin` (ou `apps/social-admin`, ou `apps/sonoprofundo`)
+3. **Framework Preset**: Next.js (detecta sozinho)
 4. **Environment Variables**:
-   ```
-   NEXT_PUBLIC_API_URL=https://api.SEUDOMINIO.com
-   ```
-5. Deploy.
-6. **Domains**: aponta `admin.SEUDOMINIO.com` → Vercel.
 
-> ⚠️ Adiciona `https://admin.SEUDOMINIO.com` em `ALLOWED_ORIGINS` da API. `pm2 restart bn-api`.
-
----
-
-## 4. Cada Blog — Vercel (1 projeto por site)
-
-Existem dois caminhos pra cada novo canal:
-
-### 4a. Canal dentro do monorepo (`apps/<canal>`)
-
-Recomendado quando o canal compartilha código com o template ou quando você quer deployar tudo do mesmo repo. Já temos **`apps/sonoprofundo`** como exemplo vivo (sleep blog completo, com quiz, calculadora, checklist e produtos).
-
-1. Cria a pasta `apps/<canal>` (copiar `apps/sonoprofundo` e adaptar é o mais rápido).
-2. No `package.json` do app, usa o nome `@bn/<canal>` e mantém `vercel.json` na raiz dele:
-   ```json
-   {
-     "$schema": "https://openapi.vercel.sh/vercel.json",
-     "framework": "nextjs",
-     "installCommand": "cd ../.. && pnpm install --filter @bn/<canal>...",
-     "buildCommand": "cd ../.. && pnpm --filter @bn/<canal> build",
-     "outputDirectory": ".next"
-   }
-   ```
-3. No root `package.json`, adiciona o atalho `dev:<canal>`:
-   ```json
-   "dev:<canal>": "pnpm --filter @bn/<canal> dev"
-   ```
-4. Vercel → novo projeto apontando pro mesmo GitHub repo.
-5. **Root Directory**: `apps/<canal>` (Vercel detecta o `vercel.json` automaticamente).
-6. **Environment Variables** (mesmas do 4b).
-7. Deploy.
-
-> Vantagem: o build do canal só roda quando arquivos do `apps/<canal>` ou `packages/shared` mudam — Vercel detecta via path filtering automático do monorepo. E qualquer melhoria no template (lib/api, lib/seo) propaga pra todos os canais via shared code.
-
-### 4b. Canal em repositório próprio
-
-Útil quando o canal tem time ou identidade muito separada do resto.
-
-1. Cria projeto Next.js separado a partir de `apps/sonoprofundo` (ver `apps/sonoprofundo/SETUP.md`).
-2. Push num repo próprio.
-3. Vercel → novo projeto.
-4. **Environment Variables**:
-   ```
-   NEXT_PUBLIC_API_URL=https://api.SEUDOMINIO.com
-   NEXT_PUBLIC_SITE_URL=https://canal.com
-   NEXT_PUBLIC_CHANNEL_SLUG=canal
-   REVALIDATE_SECRET=<o mesmo da API>
-   ```
-5. Deploy.
-6. **Domains**: aponta `canal.com` → Vercel.
-
-> ⚠️ No painel do admin (`/canais`), edita o canal e coloca `https://canal.com` no campo **URL do site**.
-> ⚠️ Adiciona `https://canal.com` em `ALLOWED_ORIGINS` da API e reinicia.
-
-### Endpoint de revalidação que cada blog precisa expor
-
-A API chama `POST {siteUrl}/api/revalidate?secret=...` quando publica/edita post. O Next.js do blog precisa de:
-
-```ts
-// app/api/revalidate/route.ts
-import { revalidateTag } from 'next/cache';
-import { NextResponse } from 'next/server';
-
-export async function POST(req: Request) {
-  const url = new URL(req.url);
-  if (url.searchParams.get('secret') !== process.env.REVALIDATE_SECRET) {
-    return NextResponse.json({ ok: false }, { status: 401 });
-  }
-  const { tags = [] } = await req.json().catch(() => ({}));
-  for (const tag of tags) revalidateTag(tag, 'default');
-  return NextResponse.json({ revalidated: true, tags });
-}
+**Admin** (`apps/admin`):
+```
+NEXT_PUBLIC_API_URL=https://api.SEUDOMINIO.com
 ```
 
-(Já existe pronto em `apps/sonoprofundo/src/app/api/revalidate/route.ts`.)
+**Social Admin** (`apps/social-admin`):
+```
+NEXT_PUBLIC_API_URL=https://api.SEUDOMINIO.com
+```
+
+**Sonoprofundo** (`apps/sonoprofundo`):
+```
+NEXT_PUBLIC_API_URL=https://api.SEUDOMINIO.com
+NEXT_PUBLIC_SITE_URL=https://sonoprofundo.com
+NEXT_PUBLIC_CHANNEL_SLUG=sonoprofundo
+REVALIDATE_SECRET=<mesmo valor da API>
+```
+
+5. **Deploy**
+6. **Domains**: aponta domínio próprio
+   - `admin.SEUDOMINIO.com` → Admin
+   - `social.SEUDOMINIO.com` → Social Admin
+   - `sonoprofundo.com` → Sonoprofundo
+
+7. ⚠️ Adiciona todos esses domínios em `ALLOWED_ORIGINS` da API e reinicia.
+
+### 5.2. Push → auto-deploy
+
+Vercel reconstrói automaticamente ao detectar push em `main` que toque em `apps/<app>/**` ou `packages/shared/**`.
 
 ---
 
-## 5. Checklist final
+## 6. TikTok — Setup do Content Posting API
+
+Os passos abaixo só importam pra `apps/social-admin`. Skip se não vai usar.
+
+### 6.1. App TikTok
+
+1. https://developers.tiktok.com/ → **Manage Apps** → **Create app**
+2. **Add products**: **Login Kit** + **Content Posting API**
+3. Em **Content Posting API**: habilita **Direct Post** (toggle on)
+4. **Redirect URI**: adiciona `https://api.SEUDOMINIO.com/api/v1/social/accounts/tiktok/callback`
+5. Anota **Client Key** e **Client Secret** → cola em `TIKTOK_CLIENT_KEY` e `TIKTOK_CLIENT_SECRET` no `.env`
+
+### 6.2. Domain verification (URL ownership)
+
+Posts de PHOTO usam `PULL_FROM_URL` — TikTok puxa as imagens do nosso S3/CDN. Precisa verificar a propriedade do domínio.
+
+1. Portal TikTok → **Content Posting API → Verify domains** → adiciona o domínio onde as imagens são servidas:
+   - Se usa S3 direto: `<bucket>.s3.<region>.amazonaws.com` (TikTok aceita; verificação fica permanente)
+   - Se usa CloudFront com domínio custom: `cdn.SEUDOMINIO.com`
+2. Escolhe método **File-based**
+3. TikTok mostra: `tiktok-developers-site-verification=ABC123XYZ`
+4. Pega só a parte depois do `=` → cola em `.env` como `TIKTOK_DOMAIN_VERIFICATION_KEY=ABC123XYZ`
+5. `pm2 reload bn-api`
+6. A API agora serve `GET /tiktok<KEY>.txt` com o conteúdo correto
+
+> Se o domínio das imagens for diferente do domínio da API (ex: S3 ou CloudFront), você precisa servir o arquivo de verificação **nesse outro domínio**. Pra S3, faça upload do arquivo direto: `aws s3 cp tiktokABC.txt s3://blog-network-uploads/`.
+
+7. Clica **Verify** no portal → fica como ✅ Verified
+
+### 6.3. Sandbox vs Production
+
+- **Sandbox** (default ao criar): só funciona pra usuários adicionados como "tester" no portal. `photo.publish` scope geralmente não está disponível.
+- **Production review**: necessária pra liberar `photo.publish` e abrir uso público. Demora ~3 dias.
+
+Por enquanto a API usa scope `video.upload` + `MEDIA_UPLOAD` mode — que cai como rascunho no inbox do TikTok do usuário (o que é o comportamento desejado: usuário adiciona música e publica manualmente).
+
+---
+
+## 7. Checklist final
 
 - [ ] Mongo Atlas: cluster + usuário + IP da AWS whitelisted
+- [ ] S3 bucket criado, policy pública, IAM role/keys configurados
 - [ ] AWS: instância Lightsail (ou EC2) criada com IP estático
-- [ ] Node + pnpm + pm2 instalados
+- [ ] Node + pnpm + pm2 instalados, swap 2GB
+- [ ] `/var/log/bn-api` criado
 - [ ] API rodando via pm2 (`pm2 ls` → `bn-api online`)
 - [ ] Caddy + HTTPS em `api.SEUDOMINIO.com`
-- [ ] DNS apontando pro IP estático
-- [ ] Admin deployado em `admin.SEUDOMINIO.com` com `NEXT_PUBLIC_API_URL` correto
-- [ ] Login admin (Fernando) funciona em produção
-- [ ] Cada blog: Vercel + variáveis + domínio próprio
-- [ ] `ALLOWED_ORIGINS` da API contém todos os domínios (admin + blogs)
+- [ ] DNS A record apontando pro IP estático
+- [ ] Secrets do GitHub Actions: `SSH_HOST`, `SSH_USER`, `SSH_PRIVATE_KEY`
+- [ ] Workflow `ci.yml` passa
+- [ ] Workflow `deploy-api.yml` faz deploy e smoke test passa
+- [ ] Admin/Social Admin/Sonoprofundo deployados na Vercel com env vars
+- [ ] `ALLOWED_ORIGINS` da API contém todos os domínios
+- [ ] TikTok: app criado, redirect URI cadastrada, domain verificado
 - [ ] No admin, cada canal tem `siteUrl` apontando pro domínio público
-- [ ] `GOOGLE_PAGESPEED_API_KEY` configurada (audit funciona sem, mas com rate limit)
 - [ ] Trigger manual no admin gera post → blog revalida em segundos
+- [ ] Trigger manual no social-admin gera carousel → cai no inbox do TikTok
 
 ---
 
-## 6. Custos estimados (mensais)
+## 8. Custos estimados (mensais)
 
 | Serviço                     | Custo                                  |
 | --------------------------- | -------------------------------------- |
 | **AWS Lightsail 1GB**       | $5                                     |
-| AWS Lightsail Auto Snapshot | ~$1 (opcional)                         |
+| Lightsail Auto Snapshot     | ~$1 (opcional)                         |
 | **OU EC2 t3.micro**         | $0 nos primeiros 12 meses, depois ~$8  |
 | Elastic IP (EC2)            | $0 enquanto associada                  |
+| **S3** (uploads)            | $0.02/GB armazenado + $0.09/GB egress |
+| CloudFront                  | $0 primeiros 1TB/mês egress           |
 | MongoDB Atlas M0            | $0 (free tier)                         |
-| Vercel Hobby                | $0                                     |
+| Vercel Hobby (×3 apps)      | $0                                     |
 | Domínios                    | ~R$40/ano cada                         |
 | Anthropic / OpenAI          | só quando trocar de `mock` pra real    |
 | PageSpeed Insights          | $0 (25k req/dia free)                  |
 
-Total fixo no começo: **~$5/mês (~R$30) na AWS Lightsail**, ou praticamente zero no Free Tier do EC2 durante o primeiro ano.
+Total fixo no começo: **~$5–6/mês** na AWS Lightsail. S3 quase de graça enquanto não tiver milhares de imagens.

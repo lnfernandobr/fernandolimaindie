@@ -15,7 +15,7 @@ import { promptsRouter } from './routes/prompts.js';
 import { socialRouter } from './routes/social/index.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import { requestLog } from './middleware/requestLog.js';
-import { uploadsDir } from './services/uploads.js';
+import { uploadsDir, isUsingS3 } from './services/uploads.js';
 
 export function createApp(): Express {
   const app = express();
@@ -38,16 +38,20 @@ export function createApp(): Express {
   app.use(express.json({ limit: '2mb' }));
   app.use(requestLog);
 
-  // Imagens geradas pela camada de IA ficam em apps/api/uploads/.
-  // Cache agressivo (são imutáveis — hash no nome).
-  app.use(
-    '/uploads',
-    express.static(uploadsDir(), {
-      maxAge: '30d',
-      immutable: true,
-      fallthrough: false,
-    }),
-  );
+  // Imagens geradas pela camada de IA.
+  // Em prod com UPLOADS_S3_BUCKET setado, ficam em S3 e essa rota não é
+  // necessária. Em dev (ou prod sem S3) ficam em apps/api/uploads/.
+  // Cache agressivo (imutáveis — hash no nome).
+  if (!isUsingS3()) {
+    app.use(
+      '/uploads',
+      express.static(uploadsDir(), {
+        maxAge: '30d',
+        immutable: true,
+        fallthrough: false,
+      }),
+    );
+  }
 
   app.get('/health', (_req, res) => {
     res.json({ status: 'ok', uptime: process.uptime() });

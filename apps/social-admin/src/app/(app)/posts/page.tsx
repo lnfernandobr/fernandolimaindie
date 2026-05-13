@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { api } from '@/lib/api';
@@ -28,6 +28,14 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 export default function PostsPage() {
+  return (
+    <Suspense fallback={<p className="text-sm text-[var(--color-muted)]">Loading…</p>}>
+      <PostsContent />
+    </Suspense>
+  );
+}
+
+function PostsContent() {
   const searchParams = useSearchParams();
   const statusFilter = searchParams.get('status') ?? '';
   const [items, setItems] = useState<SocialPostDto[]>([]);

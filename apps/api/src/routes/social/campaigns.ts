@@ -64,8 +64,8 @@ socialCampaignsRouter.post(
   asyncHandler(async (req, res) => {
     const campaign = await SocialCampaign.findById(req.params.id);
     if (!campaign) throw NotFound('Campaign not found');
-    const run = await runSocialPipeline(campaign as any, { trigger: 'manual' });
-    res.json(runToDto(run.toObject()));
+    const run = (await runSocialPipeline(campaign as any, { trigger: 'manual' })) as any;
+    res.json(runToDto(run.toObject ? run.toObject() : run));
   }),
 );
 
