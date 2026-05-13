@@ -47,6 +47,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       className={`${newsreader.variable} ${interTight.variable} ${jetbrains.variable}`}
     >
       <head>
+        <meta name="msvalidate.01" content="BAAE23D59A15D0951FFCECDF3BE468FA" />
         <link rel="alternate" type="application/rss+xml" title={`${channel.name} · RSS`} href="/feed.xml" />
         <link rel="alternate" type="application/atom+xml" title={`${channel.name} · Atom`} href="/atom.xml" />
         <script
