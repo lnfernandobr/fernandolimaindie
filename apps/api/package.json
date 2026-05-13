@@ -2,6 +2,7 @@
   "name": "@bn/api",
   "version": "0.1.0",
   "private": true,
+  "description": "Blog Network API — multi-channel automated content + TikTok carousel automation",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
