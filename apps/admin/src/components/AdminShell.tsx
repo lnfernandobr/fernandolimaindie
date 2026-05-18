@@ -57,7 +57,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-dvh">
       <aside className="hidden w-64 flex-col border-r bg-[var(--color-card)] lg:flex">
         <div className="flex h-14 items-center px-5 border-b">
-          <span className="text-lg font-semibold tracking-tight">Blog Network</span>
+          <span className="text-lg font-semibold tracking-tight">fernandolimaindie</span>
         </div>
         <nav className="flex-1 px-3 py-4 space-y-1">
           {NAV.map((item) => {
@@ -95,7 +95,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       </aside>
       <main className="flex-1 min-w-0">
         <div className="lg:hidden border-b bg-[var(--color-card)] px-4 py-3 flex items-center justify-between">
-          <span className="font-semibold">Blog Network</span>
+          <span className="font-semibold">fernandolimaindie</span>
           <div className="flex gap-2">
             <Button variant="outline" size="icon" onClick={toggleTheme}>
               {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}

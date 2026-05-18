@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/api';
-import { postsPlanTotal, type ChannelDto, type RunDto } from '@bn/shared';
+import { postsPlanTotal, type ChannelDto, type RunDto } from '@fernandolimaindie/shared';
 import { PageHeader } from '@/components/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';

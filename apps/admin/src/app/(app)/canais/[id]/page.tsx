@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { api } from '@/lib/api';
-import type { ChannelDto } from '@bn/shared';
+import type { ChannelDto } from '@fernandolimaindie/shared';
 import { ChannelForm } from '@/components/ChannelForm';
 import { ChannelPosts } from '@/components/ChannelPosts';
 import { PageHeader } from '@/components/PageHeader';

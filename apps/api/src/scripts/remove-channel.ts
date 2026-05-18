@@ -1,7 +1,7 @@
 /**
  * CLI: apaga um canal e tudo que pertence a ele.
  *
- *   pnpm --filter @bn/api remove-channel -- <slug>
+ *   pnpm --filter @fernandolimaindie/api remove-channel -- <slug>
  *
  * Apaga (em ordem segura):
  *   - Posts do canal
@@ -24,7 +24,7 @@ import { Run } from '../models/Run.js';
 async function main() {
   const slug = process.argv[2];
   if (!slug) {
-    console.error('Uso: pnpm --filter @bn/api remove-channel -- <slug>');
+    console.error('Uso: pnpm --filter @fernandolimaindie/api remove-channel -- <slug>');
     process.exit(2);
   }
 

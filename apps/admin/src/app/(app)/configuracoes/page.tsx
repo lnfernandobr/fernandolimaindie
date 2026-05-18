@@ -8,7 +8,7 @@ import {
   IMAGE_MODELS,
   type SettingsDto,
   type SettingsInput,
-} from '@bn/shared';
+} from '@fernandolimaindie/shared';
 import { PageHeader } from '@/components/PageHeader';
 import { SettingsForm } from '@/components/SettingsForm';
 import { Card, CardContent } from '@/components/ui/card';

@@ -1,4 +1,4 @@
-import type { ChannelDto, PostDto } from '@bn/shared';
+import type { ChannelDto, PostDto } from '@fernandolimaindie/shared';
 import { abs } from './seo';
 import { SITE_URL } from './config';
 

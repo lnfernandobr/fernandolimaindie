@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { settingsInputSchema, type SettingsDto } from '@bn/shared';
+import { settingsInputSchema, type SettingsDto } from '@fernandolimaindie/shared';
 import { Setting, SETTINGS_KEY } from '../models/Setting.js';
 import { asyncHandler } from '../middleware/errorHandler.js';
 import { requireAuth } from '../middleware/auth.js';

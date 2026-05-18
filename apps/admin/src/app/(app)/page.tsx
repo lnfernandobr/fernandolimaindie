@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
-import { postsPlanTotal, type ChannelDto, type PostDto, type RunDto } from '@bn/shared';
+import { postsPlanTotal, type ChannelDto, type PostDto, type RunDto } from '@fernandolimaindie/shared';
 import { PageHeader } from '@/components/PageHeader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';

@@ -1,4 +1,4 @@
-import type { AuditMetrics, GeoCheck, LighthouseStrategy, PagespeedReport } from '@bn/shared';
+import type { AuditMetrics, GeoCheck, LighthouseStrategy, PagespeedReport } from '@fernandolimaindie/shared';
 import { logger } from '../config/logger.js';
 import { analyzeSite } from '../ai/index.js';
 import { runPagespeed } from './pagespeed.js';
@@ -160,7 +160,7 @@ async function fetchTimed(url: string): Promise<TimedFetch> {
   try {
     const res = await fetch(url, {
       signal: ctrl.signal,
-      headers: { 'user-agent': 'BlogNetworkAudit/1.0 (+https://github.com/blog-network)' },
+      headers: { 'user-agent': 'FernandolimaindieAudit/1.0 (+https://github.com/fernandolimaindie)' },
       redirect: 'follow',
     });
     const text = await res.text().catch(() => '');

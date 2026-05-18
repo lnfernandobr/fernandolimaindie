@@ -1,6 +1,6 @@
 {
-  "name": "@bn/sonoprofundo",
-  "version": "0.1.0",
+  "name": "@fernandolimaindie/sonoprofundo",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -11,7 +11,7 @@
     "lint": "echo 'TODO: ESLint flat config — next/typescript tem bug de circular structure em eslint 9. Tracked.'"
   },
   "dependencies": {
-    "@bn/shared": "workspace:*",
+    "@fernandolimaindie/shared": "workspace:*",
     "feed": "5.2.1",
     "github-slugger": "2.0.0",
     "marked": "18.0.2",

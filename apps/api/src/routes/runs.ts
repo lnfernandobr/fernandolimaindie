@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { DEFAULT_POSTS_PLAN, paginationQuerySchema, type PostPlanItem } from '@bn/shared';
+import { DEFAULT_POSTS_PLAN, paginationQuerySchema, type PostPlanItem } from '@fernandolimaindie/shared';
 import { Run } from '../models/Run.js';
 import { asyncHandler } from '../middleware/errorHandler.js';
 import { requireAuth } from '../middleware/auth.js';

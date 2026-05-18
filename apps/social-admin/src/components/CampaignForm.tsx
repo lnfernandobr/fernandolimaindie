@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
-import type { SocialAccountDto, SocialCampaignDto } from '@bn/shared';
+import type { SocialAccountDto, SocialCampaignDto } from '@fernandolimaindie/shared';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

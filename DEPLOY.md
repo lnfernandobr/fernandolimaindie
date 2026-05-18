@@ -29,7 +29,7 @@ Atlas porque AWS DocumentDB cobra $200+/mês mínimo e é só compatível parcia
 3. **Network Access**: adiciona o IP da instância AWS (depois de provisionar). Em dev, `0.0.0.0/0` temporariamente.
 4. Connection string:
    ```
-   mongodb+srv://USUARIO:SENHA@cluster0.xxxxx.mongodb.net/blog-network?retryWrites=true&w=majority
+   mongodb+srv://USUARIO:SENHA@cluster0.xxxxx.mongodb.net/fernandolimaindie?retryWrites=true&w=majority
    ```
 
 ---
@@ -41,7 +41,7 @@ A API gera imagens via DALL-E e precisa hospedá-las em um lugar persistente. Lo
 ### 2.1. Criar bucket
 
 1. AWS Console → **S3** → **Create bucket**
-2. **Name**: `blog-network-uploads` (precisa ser único globalmente — adicione um sufixo se necessário)
+2. **Name**: `fernandolimaindie-uploads` (precisa ser único globalmente — adicione um sufixo se necessário)
 3. **Region**: a mesma da instância EC2/Lightsail
 4. **Block Public Access**: **desmarcar** ("Block all public access" → off). Confirma o aviso.
 5. **Bucket Versioning**: off (não precisa)
@@ -60,7 +60,7 @@ Bucket → **Permissions** → **Bucket policy** → cola:
       "Effect": "Allow",
       "Principal": "*",
       "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::blog-network-uploads/*"
+      "Resource": "arn:aws:s3:::fernandolimaindie-uploads/*"
     }
   ]
 }
@@ -89,19 +89,19 @@ Duas opções:
 
 **A) IAM Role anexada à instância EC2/Lightsail (recomendado em prod):**
 - IAM → **Roles** → **Create role** → AWS service → EC2
-- Permissions: **anexa policy custom** com `s3:PutObject`, `s3:GetObject` no resource `arn:aws:s3:::blog-network-uploads/*`
+- Permissions: **anexa policy custom** com `s3:PutObject`, `s3:GetObject` no resource `arn:aws:s3:::fernandolimaindie-uploads/*`
 - Anexa a role à instância (EC2 → Actions → Security → Modify IAM role)
 - No `.env` deixa `AWS_ACCESS_KEY_ID` e `AWS_SECRET_ACCESS_KEY` em branco — o SDK pega a credencial via metadata service.
 
 **B) Access key dedicada (mais simples mas menos seguro):**
-- IAM → **Users** → **Create user**: `blog-network-api`
+- IAM → **Users** → **Create user**: `fernandolimaindie-api`
 - Anexa policy igual à descrita acima
 - Gera access key/secret
 - Cola no `.env`
 
 ### 2.5. Domínio customizado (opcional)
 
-Sem CloudFront, as URLs vão ser `https://blog-network-uploads.s3.us-east-1.amazonaws.com/...`. Funciona e é o suficiente.
+Sem CloudFront, as URLs vão ser `https://fernandolimaindie-uploads.s3.us-east-1.amazonaws.com/...`. Funciona e é o suficiente.
 
 Pra usar `https://cdn.SEUDOMINIO.com`:
 1. CloudFront → **Create distribution** → origin = bucket S3
@@ -129,7 +129,7 @@ Por que Lightsail e não EC2/ECS/App Runner:
 3. **Platform**: Linux/Unix
 4. **Blueprint**: OS Only → **Ubuntu 24.04 LTS**
 5. **Plan**: $5/mês (1 GB RAM, 2 vCPU, 60 GB SSD)
-6. **Identifier**: `blog-network-api`
+6. **Identifier**: `fernandolimaindie-api`
 7. Create instance
 
 Na aba **Networking**:
@@ -173,16 +173,16 @@ sudo pm2 set pm2-logrotate:retain 5
 sudo pm2 set pm2-logrotate:compress true
 
 # Diretório de logs (referenciado no ecosystem.config.cjs)
-sudo mkdir -p /var/log/bn-api && sudo chown ubuntu /var/log/bn-api
+sudo mkdir -p /var/log/fernandolimaindie-api && sudo chown ubuntu /var/log/fernandolimaindie-api
 ```
 
 ### 3.3. Subir o código
 
 ```bash
-sudo mkdir -p /opt/blog-network && sudo chown ubuntu:ubuntu /opt/blog-network
-git clone https://github.com/SEU_USER/blog-network.git /opt/blog-network
-cd /opt/blog-network
-pnpm install --filter @bn/api...
+sudo mkdir -p /opt/fernandolimaindie && sudo chown ubuntu:ubuntu /opt/fernandolimaindie
+git clone https://github.com/SEU_USER/fernandolimaindie.git /opt/fernandolimaindie
+cd /opt/fernandolimaindie
+pnpm install --filter @fernandolimaindie/api...
 ```
 
 ### 3.4. Configurar `.env` de produção
@@ -203,7 +203,7 @@ Para TikTok (ver seção 6) e S3 (seção 2).
 ### 3.5. Subir com PM2
 
 ```bash
-cd /opt/blog-network
+cd /opt/fernandolimaindie
 pm2 start apps/api/ecosystem.config.cjs
 pm2 save
 pm2 startup    # imprime um comando — copie e rode com sudo
@@ -212,7 +212,7 @@ pm2 startup    # imprime um comando — copie e rode com sudo
 Smoke test:
 ```bash
 curl http://localhost:4000/health
-tail -f /var/log/bn-api/out.log
+tail -f /var/log/fernandolimaindie-api/out.log
 ```
 
 ### 3.6. HTTPS via Caddy
@@ -244,7 +244,7 @@ Console Lightsail → instância → **Auto snapshots** → habilita (1/dia, 7 r
 Pipeline em `.github/workflows/`:
 
 - **`ci.yml`** roda em todo PR/push: `typecheck`, `lint`, `build` de todos os apps.
-- **`deploy-api.yml`** roda em push pra `main` que toque em `apps/api/**` ou `packages/shared/**`: espera o CI passar, depois SSH no VPS, `git pull`, `pnpm install --filter @bn/api...`, `pm2 reload bn-api`.
+- **`deploy-api.yml`** roda em push pra `main` que toque em `apps/api/**` ou `packages/shared/**`: espera o CI passar, depois SSH no VPS, `git pull`, `pnpm install --filter @fernandolimaindie/api...`, `pm2 reload fernandolimaindie-api`.
 
 ### 4.1. Secrets necessários
 
@@ -263,11 +263,11 @@ No GitHub Actions usamos a chave default do Lightsail. Se preferir uma chave ded
 
 ```bash
 # Na sua máquina local:
-ssh-keygen -t ed25519 -C "github-actions" -f ~/.ssh/bn-deploy
-cat ~/.ssh/bn-deploy.pub
+ssh-keygen -t ed25519 -C "github-actions" -f ~/.ssh/fernandolimaindie-deploy
+cat ~/.ssh/fernandolimaindie-deploy.pub
 # Cola o conteúdo no VPS:
 ssh ubuntu@<ip> "mkdir -p ~/.ssh && echo 'CONTEUDO_PUB_AQUI' >> ~/.ssh/authorized_keys"
-# Adiciona o conteúdo de ~/.ssh/bn-deploy (privada) como SSH_PRIVATE_KEY no GitHub
+# Adiciona o conteúdo de ~/.ssh/fernandolimaindie-deploy (privada) como SSH_PRIVATE_KEY no GitHub
 ```
 
 ### 4.3. Como funciona
@@ -275,7 +275,7 @@ ssh ubuntu@<ip> "mkdir -p ~/.ssh && echo 'CONTEUDO_PUB_AQUI' >> ~/.ssh/authorize
 1. Você dá push em `main`
 2. `ci.yml` roda typecheck + build em paralelo
 3. Se passou, `deploy-api.yml` espera o CI terminar (via `wait-on-check-action`)
-4. SSH no VPS → `git pull` → `pnpm install` → `pm2 reload bn-api --update-env`
+4. SSH no VPS → `git pull` → `pnpm install` → `pm2 reload fernandolimaindie-api --update-env`
 5. Smoke test no `/health`
 
 Trigger manual disponível em **Actions → Deploy API → Run workflow** se precisar redeployar sem novos commits.
@@ -347,10 +347,10 @@ Posts de PHOTO usam `PULL_FROM_URL` — TikTok puxa as imagens do nosso S3/CDN. 
 2. Escolhe método **File-based**
 3. TikTok mostra: `tiktok-developers-site-verification=ABC123XYZ`
 4. Pega só a parte depois do `=` → cola em `.env` como `TIKTOK_DOMAIN_VERIFICATION_KEY=ABC123XYZ`
-5. `pm2 reload bn-api`
+5. `pm2 reload fernandolimaindie-api`
 6. A API agora serve `GET /tiktok<KEY>.txt` com o conteúdo correto
 
-> Se o domínio das imagens for diferente do domínio da API (ex: S3 ou CloudFront), você precisa servir o arquivo de verificação **nesse outro domínio**. Pra S3, faça upload do arquivo direto: `aws s3 cp tiktokABC.txt s3://blog-network-uploads/`.
+> Se o domínio das imagens for diferente do domínio da API (ex: S3 ou CloudFront), você precisa servir o arquivo de verificação **nesse outro domínio**. Pra S3, faça upload do arquivo direto: `aws s3 cp tiktokABC.txt s3://fernandolimaindie-uploads/`.
 
 7. Clica **Verify** no portal → fica como ✅ Verified
 
@@ -369,8 +369,8 @@ Por enquanto a API usa scope `video.upload` + `MEDIA_UPLOAD` mode — que cai co
 - [ ] S3 bucket criado, policy pública, IAM role/keys configurados
 - [ ] AWS: instância Lightsail (ou EC2) criada com IP estático
 - [ ] Node + pnpm + pm2 instalados, swap 2GB
-- [ ] `/var/log/bn-api` criado
-- [ ] API rodando via pm2 (`pm2 ls` → `bn-api online`)
+- [ ] `/var/log/fernandolimaindie-api` criado
+- [ ] API rodando via pm2 (`pm2 ls` → `fernandolimaindie-api online`)
 - [ ] Caddy + HTTPS em `api.SEUDOMINIO.com`
 - [ ] DNS A record apontando pro IP estático
 - [ ] Secrets do GitHub Actions: `SSH_HOST`, `SSH_USER`, `SSH_PRIVATE_KEY`

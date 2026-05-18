@@ -7,7 +7,7 @@
  * do slug — a mesma categoria sempre tem a mesma cor entre páginas e canais.
  */
 
-import type { CategoryDto, PostDto } from '@bn/shared';
+import type { CategoryDto, PostDto } from '@fernandolimaindie/shared';
 
 export type CatTone = 'rose' | 'sage' | 'plum' | 'deep';
 export type ImageTone = 'cool' | 'amber' | 'plum' | 'sage';

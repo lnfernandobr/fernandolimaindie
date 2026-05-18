@@ -1,4 +1,4 @@
-import { minutesToWordTarget } from '@bn/shared';
+import { minutesToWordTarget } from '@fernandolimaindie/shared';
 import { compose, EDITORIAL, OUTPUT_DISCIPLINE, PERSONA, SEO_GEO, CLARITY, AUTHORITY, NATURAL_VOICE, TONE_DEFAULT } from '../blocks.js';
 import { buildBrandProfile } from '../brand.js';
 import type {

@@ -10,5 +10,5 @@ export const logger = pino({
           options: { colorize: true, translateTime: 'SYS:HH:MM:ss', ignore: 'pid,hostname' },
         }
       : undefined,
-  base: { service: 'bn-api' },
+  base: { service: 'fernandolimaindie-api' },
 });

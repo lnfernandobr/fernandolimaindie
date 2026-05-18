@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { paginationQuerySchema } from '@bn/shared';
+import { paginationQuerySchema } from '@fernandolimaindie/shared';
 import { Channel } from '../models/Channel.js';
 import { Post } from '../models/Post.js';
 import { Category } from '../models/Category.js';

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { channelInputSchema, paginationQuerySchema } from '@bn/shared';
+import { channelInputSchema, paginationQuerySchema } from '@fernandolimaindie/shared';
 import { Channel } from '../models/Channel.js';
 import { BadRequest, Conflict, NotFound } from '../utils/errors.js';
 import { asyncHandler } from '../middleware/errorHandler.js';

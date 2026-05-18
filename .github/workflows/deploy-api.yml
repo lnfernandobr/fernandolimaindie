@@ -42,18 +42,18 @@ jobs:
           command_timeout: 10m
           script: |
             set -euo pipefail
-            cd /opt/blog-network
+            cd /opt/fernandolimaindie
 
             echo "→ Fetching latest main"
             git fetch origin main
             git reset --hard origin/main
 
             echo "→ Installing dependencies (api only)"
-            pnpm install --filter @bn/api... --frozen-lockfile
+            pnpm install --filter @fernandolimaindie/api... --frozen-lockfile
 
             echo "→ Reloading PM2 (zero-downtime when possible)"
             # Secrets injetados pelo Doppler CLI direto no processo (sem .env)
-            pm2 reload bn-api --update-env
+            pm2 reload fernandolimaindie-api --update-env
 
             echo "→ Smoke test"
             sleep 5

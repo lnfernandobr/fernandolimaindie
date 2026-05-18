@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DEFAULT_POSTS_PLAN, type PostPlanItem } from '@bn/shared';
+import { DEFAULT_POSTS_PLAN, type PostPlanItem } from '@fernandolimaindie/shared';
 import type { ChannelDoc } from '../models/Channel.js';
 import type { CategoryDoc } from '../models/Category.js';
 import type { TagDoc } from '../models/Tag.js';

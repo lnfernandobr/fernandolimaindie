@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { loginInputSchema } from '@bn/shared';
+import { loginInputSchema } from '@fernandolimaindie/shared';
 import { User } from '../models/User.js';
 import { env } from '../config/env.js';
 import { Unauthorized } from '../utils/errors.js';

@@ -6,19 +6,19 @@
  *   curl -fsSL https://deb.nodesource.com/setup_24.x | sudo -E bash -
  *   sudo apt-get install -y nodejs
  *   sudo npm i -g pnpm pm2
- *   git clone <repo> /opt/blog-network && cd /opt/blog-network
- *   pnpm install --filter @bn/api...
+ *   git clone <repo> /opt/fernandolimaindie && cd /opt/fernandolimaindie
+ *   pnpm install --filter @fernandolimaindie/api...
  *   nano apps/api/.env   # preenche os valores de produção
- *   sudo mkdir -p /var/log/bn-api && sudo chown $USER /var/log/bn-api
+ *   sudo mkdir -p /var/log/fernandolimaindie-api && sudo chown $USER /var/log/fernandolimaindie-api
  *   pm2 start apps/api/ecosystem.config.cjs
  *   pm2 save && pm2 startup   # boot automático
  *
- * Reload (CI/CD): `pm2 reload bn-api --update-env` (zero downtime).
+ * Reload (CI/CD): `pm2 reload fernandolimaindie-api --update-env` (zero downtime).
  */
 module.exports = {
   apps: [
     {
-      name: 'bn-api',
+      name: 'fernandolimaindie-api',
       cwd: './apps/api',
       script: 'doppler',
       args: 'run -- pnpm start',
@@ -41,8 +41,8 @@ module.exports = {
       time: true,
       // Logs separados por stream. pm2-logrotate (instalado no DEPLOY.md)
       // faz rotação automática quando passa de 50MB.
-      out_file: '/var/log/bn-api/out.log',
-      error_file: '/var/log/bn-api/err.log',
+      out_file: '/var/log/fernandolimaindie-api/out.log',
+      error_file: '/var/log/fernandolimaindie-api/err.log',
       log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
     },
   ],

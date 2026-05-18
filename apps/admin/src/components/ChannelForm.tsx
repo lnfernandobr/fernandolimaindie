@@ -16,7 +16,7 @@ import {
   type ChannelDto,
   type ChannelInput,
   type PostPlanItem,
-} from '@bn/shared';
+} from '@fernandolimaindie/shared';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';

@@ -13,4 +13,4 @@ const pkg = JSON.parse(readFileSync(pkgPath, 'utf8')) as {
 export const API_NAME = pkg.name;
 export const API_VERSION = pkg.version;
 export const API_DESCRIPTION =
-  pkg.description ?? 'Multi-channel automated blog network: API + Admin + Blog template';
+  pkg.description ?? 'fernandolimaindie — API + Admin + Blog template';

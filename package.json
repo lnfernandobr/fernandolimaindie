@@ -1,8 +1,8 @@
 {
-  "name": "blog-network",
-  "version": "0.1.0",
+  "name": "fernandolimaindie",
+  "version": "1.0.0",
   "private": true,
-  "description": "Multi-channel automated blog network: API + Admin + Blog template",
+  "description": "fernandolimaindie — API + Admin + Blog template",
   "packageManager": "pnpm@10.33.2",
   "engines": {
     "node": ">=22.0.0"
@@ -10,14 +10,14 @@
   "scripts": {
     "_comment": "Scripts de dev passam por `doppler run` — Doppler injeta as env vars no processo. Setup: doppler login && doppler setup. Sem Doppler: cd apps/<app> && pnpm dev (usa .env.local local).",
     "dev": "doppler run -- pnpm -r --parallel dev",
-    "dev:api": "doppler run -- pnpm --filter @bn/api dev",
-    "dev:admin": "doppler run -- pnpm --filter @bn/admin dev",
-    "dev:sonoprofundo": "doppler run -- pnpm --filter @bn/sonoprofundo dev",
-    "dev:social-admin": "doppler run -- pnpm --filter @bn/social-admin dev",
+    "dev:api": "doppler run -- pnpm --filter @fernandolimaindie/api dev",
+    "dev:admin": "doppler run -- pnpm --filter @fernandolimaindie/admin dev",
+    "dev:sonoprofundo": "doppler run -- pnpm --filter @fernandolimaindie/sonoprofundo dev",
+    "dev:social-admin": "doppler run -- pnpm --filter @fernandolimaindie/social-admin dev",
     "build": "pnpm -r build",
     "typecheck": "pnpm -r typecheck",
     "lint": "pnpm -r lint",
-    "seed": "doppler run -- pnpm --filter @bn/api seed",
+    "seed": "doppler run -- pnpm --filter @fernandolimaindie/api seed",
     "format": "prettier --write \"**/*.{ts,tsx,js,json,md,css}\"",
     "secrets:pull": "doppler secrets download --no-file --format=env > .env.dopplerpulled.local && echo '✓ Secrets pulled to .env.dopplerpulled.local (gitignored)'"
   },

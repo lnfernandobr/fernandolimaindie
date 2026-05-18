@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import type { ChannelDto } from '@bn/shared';
+import type { ChannelDto } from '@fernandolimaindie/shared';
 import Logo from './Logo';
 
 export function Header({ channel }: { channel: ChannelDto }) {

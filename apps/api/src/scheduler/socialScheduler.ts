@@ -1,6 +1,6 @@
 import cron, { type ScheduledTask } from 'node-cron';
 import { CronExpressionParser } from 'cron-parser';
-import { publishTimesToCron } from '@bn/shared';
+import { publishTimesToCron } from '@fernandolimaindie/shared';
 import { SocialCampaign, type SocialCampaignDoc } from '../models/SocialCampaign.js';
 import { logger } from '../config/logger.js';
 import { runSocialPipeline } from '../pipeline/social/runner.js';

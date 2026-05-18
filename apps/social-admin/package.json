@@ -1,6 +1,6 @@
 {
-  "name": "@bn/social-admin",
-  "version": "0.1.0",
+  "name": "@fernandolimaindie/social-admin",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -11,7 +11,7 @@
     "lint": "echo 'TODO: ESLint flat config — next/typescript tem bug de circular structure em eslint 9. Tracked.'"
   },
   "dependencies": {
-    "@bn/shared": "workspace:*",
+    "@fernandolimaindie/shared": "workspace:*",
     "@radix-ui/react-label": "2.1.8",
     "@radix-ui/react-select": "2.2.6",
     "@radix-ui/react-slot": "1.2.4",

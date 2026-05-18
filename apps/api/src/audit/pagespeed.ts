@@ -1,4 +1,4 @@
-import type { LighthouseStrategy, PagespeedReport } from '@bn/shared';
+import type { LighthouseStrategy, PagespeedReport } from '@fernandolimaindie/shared';
 import { env } from '../config/env.js';
 import { logger } from '../config/logger.js';
 

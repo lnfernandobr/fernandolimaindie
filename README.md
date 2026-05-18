@@ -1,4 +1,4 @@
-# Blog Network
+# fernandolimaindie
 
 Sistema multi-canal de blogs automatizados — monorepo com **API central**, **Admin** e **canal-template**.
 
@@ -28,7 +28,7 @@ Sistema multi-canal de blogs automatizados — monorepo com **API central**, **A
 
 ```bash
 doppler login                # uma vez
-doppler setup                # escolhe project blog-network + config dev
+doppler setup                # escolhe project fernandolimaindie + config dev
 pnpm dev                     # scripts já passam por `doppler run --`
 ```
 
@@ -159,7 +159,7 @@ curl http://localhost:3002/llms.txt
 Para apagar um canal e tudo que pertence a ele (posts, categorias, autores, tags, runs):
 
 ```bash
-pnpm --filter @bn/api remove-channel -- <slug>
+pnpm --filter @fernandolimaindie/api remove-channel -- <slug>
 ```
 
 ## SEO / GEO
@@ -169,7 +169,7 @@ Mantido inteiro: meta tags, JSON-LD em todas as páginas (`Organization`, `WebSi
 ## Estrutura
 
 ```
-blog-network/
+fernandolimaindie/
 ├── apps/
 │   ├── api/               # Express + Mongoose + scheduler + pipeline + AI
 │   │   └── src/

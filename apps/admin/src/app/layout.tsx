@@ -3,7 +3,7 @@ import { Toaster } from '@/components/ui/toast';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Admin · Blog Network',
+  title: 'Admin · fernandolimaindie',
   description: 'Painel de administração do sistema multi-canal',
   robots: { index: false, follow: false },
 };

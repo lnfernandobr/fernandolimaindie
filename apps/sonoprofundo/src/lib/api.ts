@@ -4,7 +4,7 @@ import type {
   ChannelDto,
   PostDto,
   TagDto,
-} from '@bn/shared';
+} from '@fernandolimaindie/shared';
 
 interface FetchOpts {
   next?: { tags?: string[]; revalidate?: number };

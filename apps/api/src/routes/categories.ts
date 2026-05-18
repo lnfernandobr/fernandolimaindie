@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { categoryInputSchema, paginationQuerySchema } from '@bn/shared';
+import { categoryInputSchema, paginationQuerySchema } from '@fernandolimaindie/shared';
 import { Category } from '../models/Category.js';
 import { Conflict, NotFound } from '../utils/errors.js';
 import { asyncHandler } from '../middleware/errorHandler.js';

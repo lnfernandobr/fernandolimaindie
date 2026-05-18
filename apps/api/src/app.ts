@@ -154,7 +154,7 @@ function renderLandingPage(): string {
 <body>
   <div class="wrap">
     <header>
-      <div class="logo">B</div>
+      <div class="logo">F</div>
       <div>
         <h1>${API_NAME}</h1>
         <span class="badge">v${API_VERSION}</span>

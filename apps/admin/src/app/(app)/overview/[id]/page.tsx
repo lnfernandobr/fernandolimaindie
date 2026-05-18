@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { api } from '@/lib/api';
-import type { AuditMetrics, ChannelDto, LighthouseStrategy } from '@bn/shared';
+import type { AuditMetrics, ChannelDto, LighthouseStrategy } from '@fernandolimaindie/shared';
 import { PageHeader } from '@/components/PageHeader';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';

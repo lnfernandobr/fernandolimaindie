@@ -1,6 +1,6 @@
 import cron, { type ScheduledTask } from 'node-cron';
 import { CronExpressionParser } from 'cron-parser';
-import { DEFAULT_POSTS_PLAN, publishTimesToCron, type PostPlanItem } from '@bn/shared';
+import { DEFAULT_POSTS_PLAN, publishTimesToCron, type PostPlanItem } from '@fernandolimaindie/shared';
 import { Channel, type ChannelDoc } from '../models/Channel.js';
 import { logger } from '../config/logger.js';
 import { runChannelPipeline } from '../pipeline/runner.js';

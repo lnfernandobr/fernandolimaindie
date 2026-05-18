@@ -19,7 +19,7 @@ const envStr = (minLen: number, defaultVal: string) =>
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   API_PORT: z.coerce.number().int().positive().default(4000),
-  MONGODB_URI: envStr(1, 'mongodb://localhost:27017/blog-network'),
+  MONGODB_URI: envStr(1, 'mongodb://localhost:27017/fernandolimaindie'),
   JWT_SECRET: envStr(16, 'dev-secret-change-me-please-32chars'),
   JWT_EXPIRES_IN: z.string().default('7d'),
   REVALIDATE_SECRET: envStr(8, 'dev-revalidate-secret'),

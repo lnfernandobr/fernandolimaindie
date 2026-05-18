@@ -1,8 +1,8 @@
 {
-  "name": "@bn/api",
-  "version": "0.1.0",
+  "name": "@fernandolimaindie/api",
+  "version": "1.0.0",
   "private": true,
-  "description": "Blog Network API — multi-channel automated content + TikTok carousel automation",
+  "description": "fernandolimaindie API — multi-channel automated content + TikTok carousel automation",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
@@ -15,7 +15,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "0.92.0",
     "@aws-sdk/client-s3": "^3.1045.0",
-    "@bn/shared": "workspace:*",
+    "@fernandolimaindie/shared": "workspace:*",
     "bcryptjs": "3.0.3",
     "cors": "2.8.6",
     "cron-parser": "5.5.0",

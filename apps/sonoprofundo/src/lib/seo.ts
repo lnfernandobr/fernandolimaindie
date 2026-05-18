@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import type { CategoryDto, ChannelDto, PostDto } from '@bn/shared';
+import type { CategoryDto, ChannelDto, PostDto } from '@fernandolimaindie/shared';
 import { SITE_URL } from './config';
 
 export function abs(path: string): string {

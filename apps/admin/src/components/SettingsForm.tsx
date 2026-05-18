@@ -6,7 +6,7 @@ import {
   type ImageProviderName,
   type SettingsDto,
   type SettingsInput,
-} from '@bn/shared';
+} from '@fernandolimaindie/shared';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';

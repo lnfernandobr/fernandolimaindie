@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
-import type { SocialCampaignDto } from '@bn/shared';
+import type { SocialCampaignDto } from '@fernandolimaindie/shared';
 import { PageHeader } from '@/components/PageHeader';
 import { CampaignForm } from '@/components/CampaignForm';
 import { Button } from '@/components/ui/button';

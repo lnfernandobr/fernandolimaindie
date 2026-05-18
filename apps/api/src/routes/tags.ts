@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { tagInputSchema, paginationQuerySchema } from '@bn/shared';
+import { tagInputSchema, paginationQuerySchema } from '@fernandolimaindie/shared';
 import { Tag } from '../models/Tag.js';
 import { Conflict, NotFound } from '../utils/errors.js';
 import { asyncHandler } from '../middleware/errorHandler.js';

@@ -17,7 +17,7 @@ importers:
 
   apps/admin:
     dependencies:
-      '@bn/shared':
+      '@fernandolimaindie/shared':
         specifier: workspace:*
         version: link:../../packages/shared
       '@radix-ui/react-checkbox':
@@ -114,7 +114,7 @@ importers:
       '@aws-sdk/client-s3':
         specifier: ^3.1045.0
         version: 3.1045.0
-      '@bn/shared':
+      '@fernandolimaindie/shared':
         specifier: workspace:*
         version: link:../../packages/shared
       bcryptjs:
@@ -178,7 +178,7 @@ importers:
 
   apps/social-admin:
     dependencies:
-      '@bn/shared':
+      '@fernandolimaindie/shared':
         specifier: workspace:*
         version: link:../../packages/shared
       '@radix-ui/react-label':
@@ -251,7 +251,7 @@ importers:
 
   apps/sonoprofundo:
     dependencies:
-      '@bn/shared':
+      '@fernandolimaindie/shared':
         specifier: workspace:*
         version: link:../../packages/shared
       feed:

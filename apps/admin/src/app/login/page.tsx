@@ -45,7 +45,7 @@ export default function LoginPage() {
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>Entrar</CardTitle>
-          <CardDescription>Painel de administração do Blog Network</CardDescription>
+          <CardDescription>Painel de administração do fernandolimaindie</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={onSubmit} className="space-y-4">

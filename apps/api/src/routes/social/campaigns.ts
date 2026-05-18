@@ -1,5 +1,5 @@
 import { Router, type Router as RouterType } from 'express';
-import { socialCampaignInputSchema } from '@bn/shared';
+import { socialCampaignInputSchema } from '@fernandolimaindie/shared';
 import { SocialCampaign } from '../../models/SocialCampaign.js';
 import { asyncHandler } from '../../middleware/errorHandler.js';
 import { requireAuth } from '../../middleware/auth.js';
