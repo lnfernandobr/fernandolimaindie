@@ -2,14 +2,14 @@
 # One-shot server bootstrap for fernandolimaindie-api.
 # Run as the deploy user on a fresh Ubuntu VPS. Idempotent: safe to re-run.
 #
-#   curl -fsSL https://raw.githubusercontent.com/lnfernandobr/blog-network/main/scripts/bootstrap-server.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/lnfernandobr/fernandolimaindie/main/scripts/bootstrap-server.sh | bash
 #
 # Or, after cloning:
 #   bash scripts/bootstrap-server.sh
 
 set -euo pipefail
 
-REPO_URL="${REPO_URL:-git@github.com:lnfernandobr/blog-network.git}"
+REPO_URL="${REPO_URL:-https://github.com/lnfernandobr/fernandolimaindie.git}"
 APP_DIR="${APP_DIR:-/opt/fernandolimaindie}"
 LOG_DIR="${LOG_DIR:-/var/log/fernandolimaindie-api}"
 NODE_MAJOR="${NODE_MAJOR:-24}"

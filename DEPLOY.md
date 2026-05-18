@@ -9,7 +9,7 @@ The deploy workflow expects the repo cloned at `/opt/fernandolimaindie` with PM2
 ```bash
 ssh <deploy-user>@<host>
 sudo apt-get update
-curl -fsSL https://raw.githubusercontent.com/lnfernandobr/blog-network/main/scripts/bootstrap-server.sh -o bootstrap.sh
+curl -fsSL https://raw.githubusercontent.com/lnfernandobr/fernandolimaindie/main/scripts/bootstrap-server.sh -o bootstrap.sh
 bash bootstrap.sh
 ```
 
