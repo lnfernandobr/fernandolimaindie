@@ -64,17 +64,29 @@ curl http://localhost:4000/health
 
 ```
 fernandolimaindie/
+├── docs/                            # architecture, conventions, recipes
 └── apps/
     └── api/
         └── src/
-            ├── config/        # env, db, logger, version
-            ├── models/        # User
-            ├── routes/        # auth
-            ├── middleware/    # auth, error handler, request log
-            ├── schemas/       # Zod input validation
-            ├── seed/          # bootstrap admin
-            └── utils/         # errors
+            ├── index.js              # entry
+            ├── app.js                # express composition
+            ├── server.js             # listen + shutdown + db lifecycle
+            ├── constants/            # every literal lives here
+            ├── config/               # env, logger, database, package info
+            ├── middleware/           # one concern per file
+            ├── errors/               # factory + named factories (no class)
+            ├── lib/                  # framework-agnostic utilities
+            ├── modules/<feature>/    # self-contained feature slice
+            ├── routes/               # composes module routers
+            ├── views/                # server-rendered HTML
+            └── bootstrap/            # startup tasks
 ```
+
+## Contributing
+
+Before touching the code, read [`docs/`](./docs/README.md). Conventions
+are non-negotiable: no `class`, no comments, no magic values, English only,
+functional style.
 
 ## License
 

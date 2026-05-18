@@ -1,0 +1,21 @@
+import { z } from 'zod';
+import { ENV_CONSTRAINTS, ENV_DEFAULTS, LOG_LEVELS, NODE_ENVIRONMENTS } from '../constants/env.js';
+
+export const envSchema = z.object({
+  NODE_ENV: z.enum(NODE_ENVIRONMENTS).default(ENV_DEFAULTS.NODE_ENV),
+  API_PORT: z.coerce.number().int().positive().default(ENV_DEFAULTS.API_PORT),
+  MONGODB_URI: z
+    .string()
+    .min(ENV_CONSTRAINTS.MONGODB_URI_MIN_LENGTH)
+    .default(ENV_DEFAULTS.MONGODB_URI),
+  JWT_SECRET: z
+    .string()
+    .min(ENV_CONSTRAINTS.JWT_SECRET_MIN_LENGTH)
+    .default(ENV_DEFAULTS.JWT_SECRET),
+  JWT_EXPIRES_IN: z.string().default(ENV_DEFAULTS.JWT_EXPIRES_IN),
+  LOG_LEVEL: z.enum(LOG_LEVELS).default(ENV_DEFAULTS.LOG_LEVEL),
+  ADMIN_BOOTSTRAP_NAME: z.string().default(ENV_DEFAULTS.ADMIN_BOOTSTRAP_NAME),
+  ADMIN_BOOTSTRAP_USERNAME: z.string().default(ENV_DEFAULTS.ADMIN_BOOTSTRAP_USERNAME),
+  ADMIN_BOOTSTRAP_PASSWORD: z.string().default(ENV_DEFAULTS.ADMIN_BOOTSTRAP_PASSWORD),
+  ALLOWED_ORIGINS: z.string().default(ENV_DEFAULTS.ALLOWED_ORIGINS),
+});
