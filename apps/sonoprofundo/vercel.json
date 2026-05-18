@@ -1,7 +1,0 @@
-{
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": "nextjs",
-  "installCommand": "cd ../.. && pnpm install --filter @fernandolimaindie/sonoprofundo...",
-  "buildCommand": "cd ../.. && pnpm --filter @fernandolimaindie/sonoprofundo build",
-  "outputDirectory": ".next"
-}

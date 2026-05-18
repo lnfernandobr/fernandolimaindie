@@ -1,7 +1,0 @@
-{
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": "nextjs",
-  "installCommand": "cd ../.. && pnpm install --filter @fernandolimaindie/social-admin...",
-  "buildCommand": "cd ../.. && pnpm --filter @fernandolimaindie/social-admin build",
-  "outputDirectory": ".next"
-}
