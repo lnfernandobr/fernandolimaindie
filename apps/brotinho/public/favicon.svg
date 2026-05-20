@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#FFE9F0"></stop>
+      <stop offset="100%" stop-color="#FFB8C8"></stop>
+    </radialGradient>
+    <radialGradient id="body" cx="35%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#B7E8B0"></stop>
+      <stop offset="50%" stop-color="#6FBF73"></stop>
+      <stop offset="100%" stop-color="#3A8C4C"></stop>
+    </radialGradient>
+    <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#9BD895"></stop>
+      <stop offset="100%" stop-color="#3D8B4E"></stop>
+    </linearGradient>
+    <linearGradient id="pot" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#D87856"></stop>
+      <stop offset="100%" stop-color="#9C4B33"></stop>
+    </linearGradient>
+  </defs>
+
+  <rect width="64" height="64" rx="14" fill="url(#bg)"></rect>
+
+  
+  <path d="M 16 42 L 48 42 L 44 56 Q 32 60 20 56 Z" fill="url(#pot)"></path>
+  <ellipse cx="32" cy="42" rx="17" ry="3" fill="#C76344"></ellipse>
+  
+  <path d="M 28 48 C 26 46, 26 43, 29 43 C 30.5 43, 31 44, 32 45 C 33 44, 33.5 43, 35 43 C 38 43, 38 46, 36 48 L 32 52 Z" fill="#7E3825" opacity="0.55"></path>
+
+  
+  <g transform="translate(32, 22)">
+    <path d="M -8 4 C -14 -4, -10 -14, -2 -12 C 0 -14, 2 -14, 4 -12 C 10 -14, 14 -8, 11 -2 C 14 0, 13 4, 10 5 Z" fill="url(#leaf)" stroke="#26663B" stroke-width="0.8"></path>
+  </g>
+
+  
+  <path d="M 18 38 C 13 32, 13 22, 22 18 C 26 14, 38 14, 42 18 C 51 22, 51 32, 46 38 Z" fill="url(#body)" stroke="#2E7A3F" stroke-width="1"></path>
+
+  
+  <ellipse cx="26" cy="28" rx="2.5" ry="3.2" fill="#1A0F08"></ellipse>
+  <ellipse cx="38" cy="28" rx="2.5" ry="3.2" fill="#1A0F08"></ellipse>
+  <circle cx="27" cy="27" r="1" fill="#fff"></circle>
+  <circle cx="39" cy="27" r="1" fill="#fff"></circle>
+
+  
+  <ellipse cx="22" cy="33" rx="2" ry="1.2" fill="#FF89A8"></ellipse>
+  <ellipse cx="42" cy="33" rx="2" ry="1.2" fill="#FF89A8"></ellipse>
+
+  
+  <path d="M 29 33 Q 32 36 35 33" stroke="#1A0F08" stroke-width="1.2" fill="none" stroke-linecap="round"></path>
+</svg>

@@ -1,0 +1,18 @@
+{
+  "name": "brotinho — cuidem juntos de um broto",
+  "short_name": "brotinho",
+  "description": "Um pet-plantinha pro casal regar, conversar e ver crescer. Lança 12 de junho.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFE3CC",
+  "theme_color": "#FFF1DA",
+  "orientation": "portrait",
+  "lang": "pt-BR",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "categories": ["lifestyle", "social"]
+}

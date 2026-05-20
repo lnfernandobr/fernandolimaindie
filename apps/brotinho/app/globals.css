@@ -1,0 +1,200 @@
+/* Brotinho — design tokens
+   Cute (Tamagotchi/Stardew) + Romantic (Dia dos Namorados)
+   Warm terracotta + leaf green + cream, with hot pink as accent.
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800;900&family=Lilita+One&display=swap');
+
+:root {
+  /* ─── Palette: Brotou warm ─── */
+  --cream-50: #FFF8EE;
+  --cream-100: #FFEFDB;
+  --cream-200: #FCE2C2;
+  --cream-300: #F6CFA0;
+
+  --terra-300: #E89373;
+  --terra-400: #D26A4B;
+  --terra-500: #B85539;
+  --terra-600: #93402A;
+  --terra-700: #6B2C1C;
+
+  --leaf-200: #A8D9A6;
+  --leaf-300: #76C079;
+  --leaf-400: #4DA055;
+  --leaf-500: #2F7A47;
+  --leaf-600: #1F5634;
+
+  --pink-300: #FFB8C8;
+  --pink-400: #FF89A8;
+  --pink-500: #FF5E84;
+  --pink-600: #E83768;
+
+  --sun-300: #FFE39A;
+  --sun-400: #FFC861;
+  --sun-500: #F0A632;
+
+  --ink: #2E1A0F;
+  --ink-soft: #5A3826;
+  --ink-muted: #8E6B4F;
+
+  --bg: var(--cream-100);
+  --bg-card: #FFFFFF;
+  --soil: #6B4A36;
+  --soil-dark: #4A2F1F;
+
+  --font-brand: 'Lilita One', 'Baloo 2', system-ui, sans-serif;
+  --font-display: 'Baloo 2', system-ui, sans-serif;
+  --font-body: 'Nunito', system-ui, sans-serif;
+
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 22px;
+  --r-xl: 32px;
+  --r-pill: 999px;
+
+  --sh-sm: 0 2px 0 rgba(46,26,15,0.08);
+  --sh-md: 0 4px 0 rgba(46,26,15,0.10);
+  --sh-card: 0 8px 24px rgba(184,85,57,0.12), 0 2px 0 rgba(46,26,15,0.06);
+  --sh-bubble: 0 6px 20px rgba(255,94,132,0.20);
+}
+
+html, body {
+  margin: 0; padding: 0;
+  background: #FFE3CC;
+  font-family: 'Nunito', system-ui, sans-serif;
+  color: #2E1A0F;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none;
+}
+
+#__next-root {
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--cream-100);
+  min-height: 100vh;
+  box-shadow: 0 0 60px rgba(46,26,15,0.10);
+  position: relative;
+  z-index: 1;
+}
+
+/* Desktop decoration */
+body::before, body::after {
+  content: ''; position: fixed; pointer-events: none; z-index: 0;
+  opacity: 0; transition: opacity .6s;
+}
+@media (min-width: 720px) {
+  body {
+    background: linear-gradient(135deg, #FFF1DA 0%, #FFE9F0 100%);
+  }
+  body::before {
+    top: 8%; left: 6%; width: 240px; height: 240px;
+    background: radial-gradient(circle, #FFB8C8 0%, transparent 70%);
+    opacity: 0.6;
+  }
+  body::after {
+    bottom: 4%; right: 6%; width: 320px; height: 320px;
+    background: radial-gradient(circle, #A8D9A6 0%, transparent 70%);
+    opacity: 0.4;
+  }
+}
+
+.desk-flair {
+  display: none;
+  position: fixed; pointer-events: none; z-index: 0;
+  font-size: 48px;
+}
+@media (min-width: 720px) {
+  .desk-flair { display: block; }
+}
+.df-1 { top: 12%; left: 8%; animation: bob 3s ease-in-out infinite; }
+.df-2 { top: 28%; right: 10%; animation: bob 3.6s ease-in-out infinite .4s; }
+.df-3 { bottom: 16%; left: 11%; animation: bob 4s ease-in-out infinite .8s; font-size: 36px; }
+.df-4 { bottom: 32%; right: 7%; animation: bob 3.4s ease-in-out infinite 1.2s; font-size: 40px; }
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50%      { transform: translateY(-12px) rotate(3deg); }
+}
+
+/* Reset within brotou screens */
+.brotou, .brotou *, .brotou *::before, .brotou *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.brotou {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--bg);
+}
+
+/* Utility — chunky cute button */
+.brotou .btn-cute {
+  font-family: var(--font-display);
+  font-weight: 700;
+  border: none;
+  border-radius: var(--r-pill);
+  padding: 14px 24px;
+  cursor: pointer;
+  box-shadow: var(--sh-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform .1s;
+}
+.brotou .btn-cute:active { transform: translateY(2px); box-shadow: 0 0 0 rgba(0,0,0,0); }
+
+.brotou .btn-primary { background: var(--terra-500); color: #FFF6E8; }
+.brotou .btn-pink { background: var(--pink-500); color: #FFF; }
+.brotou .btn-leaf { background: var(--leaf-500); color: #FFF8EE; }
+
+/* Speech bubble */
+.brotou .bubble {
+  background: #FFFFFF;
+  border-radius: 20px;
+  padding: 12px 16px;
+  position: relative;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--ink);
+  box-shadow: var(--sh-bubble);
+  border: 2px solid var(--cream-200);
+}
+.brotou .bubble::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  transform: translateX(-50%) rotate(45deg);
+  width: 16px;
+  height: 16px;
+  background: #FFFFFF;
+  border-right: 2px solid var(--cream-200);
+  border-bottom: 2px solid var(--cream-200);
+}
+
+/* Animated wobble for plant */
+@keyframes wobble {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+.brotou .wobble { animation: wobble 3.5s ease-in-out infinite; transform-origin: center bottom; }
+
+/* Float for hearts */
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.brotou .floaty,
+.floaty { animation: floaty 2.4s ease-in-out infinite; }
+
+/* Gentle pulse */
+@keyframes pulseHeart {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+.brotou .pulse { animation: pulseHeart 1.6s ease-in-out infinite; }

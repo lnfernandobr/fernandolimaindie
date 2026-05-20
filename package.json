@@ -10,6 +10,8 @@
   "scripts": {
     "_comment": "Dev scripts go through `doppler run` — Doppler injects env vars into the process. Setup: doppler login && doppler setup. Without Doppler: cd apps/api && pnpm dev (uses local .env.local).",
     "dev": "doppler run -- pnpm --filter @fernandolimaindie/api dev",
+    "dev:web": "pnpm --filter @fernandolimaindie/brotinho dev",
+    "build:web": "pnpm --filter @fernandolimaindie/brotinho build",
     "format": "prettier --write \"**/*.{js,json,md,css}\"",
     "secrets:pull": "doppler secrets download --no-file --format=env > .env.dopplerpulled.local && echo '✓ Secrets pulled to .env.dopplerpulled.local (gitignored)'"
   },
