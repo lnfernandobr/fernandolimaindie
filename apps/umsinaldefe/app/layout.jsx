@@ -2,12 +2,9 @@ import Script from 'next/script';
 import './globals.css';
 import { siteConfig } from '../lib/site-config.js';
 import { buildMetadata } from '../lib/seo/metadata.js';
-import {
-  organizationLd,
-  websiteLd,
-  ldGraph,
-  jsonLdScript,
-} from '../lib/seo/jsonld.js';
+import { organizationLd, websiteLd, ldGraph, jsonLdScript } from '../lib/seo/jsonld.js';
+import { SiteNav } from '../components/SiteNav.jsx';
+import { SiteFooter } from '../components/SiteFooter.jsx';
 
 export const metadata = {
   ...buildMetadata({}),
@@ -31,39 +28,26 @@ export const viewport = {
 
 const rootGraph = ldGraph(organizationLd(), websiteLd());
 
+/* Inline script applied before first paint to avoid theme flash */
+const themeScript = `(function(){try{var t=localStorage.getItem("usdf-theme");if(t==="night"||t==="day")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();`;
+
 export default function RootLayout({ children }) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" data-theme="day" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500;1,6..72,600&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
         />
         <script {...jsonLdScript(rootGraph)} />
       </head>
       <body>
-        <header className="site">
-          <a className="brand" href="/">
-            <span className="flame">✦</span> Um Sinal de Fé
-          </a>
-          <nav aria-label="principal" style={{ fontSize: 14 }}>
-            <a href="/devocional" style={{ marginRight: 16 }}>devocional</a>
-            <a href="/salmo" style={{ marginRight: 16 }}>salmos</a>
-            <a href="/oracao">orações</a>
-          </nav>
-        </header>
+        <SiteNav />
         {children}
-        <footer className="site">
-          <p style={{ margin: 0 }}>
-            Um Sinal de Fé · {siteConfig.brandTagline} · pt-BR
-          </p>
-        </footer>
+        <SiteFooter />
 
         <Script id="sw-register" strategy="afterInteractive">
           {`if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{})`}
@@ -84,13 +68,7 @@ export default function RootLayout({ children }) {
               strategy="afterInteractive"
             />
             <Script id="ga4-init" strategy="afterInteractive">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                window.gtag = gtag;
-                gtag('js', new Date());
-                gtag('config', '${siteConfig.analytics.gaId}', { anonymize_ip: true, send_page_view: true });
-              `}
+              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config','${siteConfig.analytics.gaId}',{anonymize_ip:true,send_page_view:true});`}
             </Script>
           </>
         ) : null}
