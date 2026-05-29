@@ -2,11 +2,11 @@ import { notFound } from 'next/navigation';
 import { listSignals } from '@/lib/content/api.js';
 import {
   slugToKey,
-  keyToSlug,
   INTENT_LABELS,
   INTENT_DESCRIPTIONS,
   INTENT_SLUGS,
 } from '@/lib/content/intents.js';
+import { signalUrl } from '@/lib/content/signal-url.js';
 import { buildMetadata } from '@/lib/seo/metadata.js';
 import { breadcrumbLd, ldGraph, jsonLdScript } from '@/lib/seo/jsonld.js';
 import { AdSlot } from '@/components/AdSlot.jsx';
@@ -82,7 +82,7 @@ export default async function IntentHubPage({ params }) {
             {signals.map((signal) => (
               <a
                 key={signal.slug}
-                href={`/${keyToSlug(signal.intent)}/${signal.slug}`}
+                href={signalUrl(signal)}
                 className="signal-card"
               >
                 <span className="tag" style={{ marginBottom: 'var(--space-3)', display: 'inline-block' }}>

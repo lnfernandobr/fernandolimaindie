@@ -68,9 +68,9 @@ export default function HomePage() {
           <ul>
             <li><a href="/devocional">devocional do dia</a> — uma pausa curta com leitura, reflexão e oração</li>
             <li><a href="/salmo/91">salmo 91</a> — o salmo da proteção, comentado e em áudio</li>
-            <li><a href="/oracao/para/ansiedade">oração pra ansiedade</a> — pra quando o coração aperta</li>
-            <li><a href="/oracao/para/dormir">oração pra dormir</a> — pra encerrar o dia em paz</li>
-            <li><a href="/oracao/santo/judas-tadeu">oração a Santo Judas Tadeu</a> — causas difíceis</li>
+            <li><a href="/oracao/para-ansiedade">oração pra ansiedade</a> — pra quando o coração aperta</li>
+            <li><a href="/oracao/para-dormir-em-paz">oração pra dormir</a> — pra encerrar o dia em paz</li>
+            <li><a href="/oracao/a-santo-judas-tadeu">oração a Santo Judas Tadeu</a> — causas difíceis</li>
           </ul>
         </section>
 

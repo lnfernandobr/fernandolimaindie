@@ -1,5 +1,5 @@
 import { listSignals } from '@/lib/content/api.js';
-import { keyToSlug } from '@/lib/content/intents.js';
+import { signalUrl } from '@/lib/content/signal-url.js';
 
 export async function TopicSignals({ topicSlug, excludeSlug }) {
   let items = [];
@@ -17,7 +17,7 @@ export async function TopicSignals({ topicSlug, excludeSlug }) {
       <ul className="topic-list">
         {items.map((signal) => (
           <li key={signal.slug}>
-            <a href={`/${keyToSlug(signal.intent)}/${signal.slug}`}>
+            <a href={signalUrl(signal)}>
               {signal.title}
             </a>
           </li>

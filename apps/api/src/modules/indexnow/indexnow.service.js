@@ -5,7 +5,12 @@ import { findSignalsBySlugs } from '../signals/signals.repository.js';
 import { submitUrls, pingSitemap } from './indexnow.client.js';
 import { submitUrlsMock, pingSitemapMock } from './indexnow.mock.js';
 
-const buildSignalUrl = (siteUrl, signal) => `${siteUrl}/${signal.intent}/${signal.slug}`;
+const buildSignalUrl = (siteUrl, signal) => {
+  const { kind, slug } = signal;
+  if (kind === 'psalm') return `${siteUrl}/salmo/${slug.replace(/^salmo-/, '')}`;
+  if (kind === 'devotional') return `${siteUrl}/devocional/${slug.replace(/^devocional-/, '')}`;
+  return `${siteUrl}/oracao/${slug.replace(/^oracao-/, '')}`;
+};
 
 export const submitSignalSlugs = async (slugs) => {
   if (!slugs.length) return;

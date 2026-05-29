@@ -1,6 +1,6 @@
 import { absoluteUrl } from '../lib/site-config.js';
 import { listSignals } from '../lib/content/api.js';
-import { keyToSlug } from '../lib/content/intents.js';
+import { signalUrl } from '../lib/content/signal-url.js';
 
 export const revalidate = 86400;
 
@@ -32,7 +32,7 @@ export default async function sitemap() {
       page++;
     }
     signalEntries = allSignals.map((s) => ({
-      url: absoluteUrl(`/${keyToSlug(s.intent)}/${s.slug}`),
+      url: absoluteUrl(signalUrl(s)),
       lastModified: s.publishedAt ?? now,
       changeFrequency: 'weekly',
       priority: 0.7,

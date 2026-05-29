@@ -1,6 +1,7 @@
 import { siteConfig, absoluteUrl } from '@/lib/site-config.js';
 import { listSignals } from '@/lib/content/api.js';
-import { keyToSlug, INTENT_LABELS } from '@/lib/content/intents.js';
+import { INTENT_LABELS } from '@/lib/content/intents.js';
+import { signalUrl } from '@/lib/content/signal-url.js';
 
 export async function GET() {
   const lines = [
@@ -27,7 +28,7 @@ export async function GET() {
     const items = allItems;
 
     for (const signal of items) {
-      const path = `/${keyToSlug(signal.intent)}/${signal.slug}`;
+      const path = signalUrl(signal);
       lines.push(`## ${signal.title}`);
       lines.push('');
       lines.push(

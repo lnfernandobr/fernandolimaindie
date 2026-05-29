@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { getSignal, listSignals } from '@/lib/content/api.js';
-import { slugToKey, keyToSlug, INTENT_LABELS } from '@/lib/content/intents.js';
+import { INTENT_LABELS } from '@/lib/content/intents.js';
 import { buildMetadata } from '@/lib/seo/metadata.js';
 import {
   articleLd,
@@ -29,27 +29,27 @@ export const revalidate = 86400;
 export async function generateStaticParams() {
   try {
     const { items } = await listSignals({ limit: 500 });
-    return items.map((s) => ({ intent: keyToSlug(s.intent), slug: s.slug }));
+    return items
+      .filter((s) => s.slug.startsWith('salmo-'))
+      .map((s) => ({ numero: s.slug.replace(/^salmo-/, '') }));
   } catch {
     return [];
   }
 }
 
 export async function generateMetadata({ params }) {
-  const { intent: intentSlug, slug } = await params;
-  const intentKey = slugToKey(intentSlug);
-  if (!intentKey) return {};
+  const { numero } = await params;
+  const slug = `salmo-${numero}`;
   let signal;
   try {
     signal = await getSignal(slug);
   } catch {
     return {};
   }
-  if (signal.intent !== intentKey) return {};
   return buildMetadata({
     title: signal.title,
     description: signal.answer,
-    path: `/${intentSlug}/${slug}`,
+    path: `/salmo/${numero}`,
     image: signal.imageUrl ?? undefined,
     type: 'article',
     publishedTime: signal.publishedAt?.toISOString(),
@@ -57,10 +57,9 @@ export async function generateMetadata({ params }) {
   });
 }
 
-export default async function SignalPage({ params }) {
-  const { intent: intentSlug, slug } = await params;
-  const intentKey = slugToKey(intentSlug);
-  if (!intentKey) notFound();
+export default async function PsalmPage({ params }) {
+  const { numero } = await params;
+  const slug = `salmo-${numero}`;
 
   let signal;
   try {
@@ -69,14 +68,12 @@ export default async function SignalPage({ params }) {
     notFound();
   }
 
-  if (signal.intent !== intentKey) notFound();
-
-  const path = `/${intentSlug}/${slug}`;
-  const intentLabel = INTENT_LABELS[intentKey];
+  const path = `/salmo/${numero}`;
+  const intentLabel = INTENT_LABELS[signal.intent] ?? 'Salmos';
 
   const breadcrumbs = [
     { name: 'Início', path: '/' },
-    { name: intentLabel, path: `/${intentSlug}` },
+    { name: 'Salmos', path: '/salmo' },
     { name: signal.title, path },
   ];
 
@@ -123,10 +120,10 @@ export default async function SignalPage({ params }) {
       <article>
         <header style={{ marginBottom: 'var(--space-5)' }}>
           <div style={{ marginBottom: 'var(--space-3)' }}>
-            <a className="tag" href={`/${intentSlug}`} style={{ textDecoration: 'none' }}>
-              {intentLabel}
+            <a className="tag" href="/salmo" style={{ textDecoration: 'none' }}>
+              Salmos
             </a>
-            <span className="tag">{signal.kind}</span>
+            <span className="tag">{intentLabel}</span>
           </div>
           <h1>{signal.title}</h1>
         </header>
@@ -154,7 +151,7 @@ export default async function SignalPage({ params }) {
 
         {signal.audioUrl && (
           <section id="audio" className="chunk">
-            <h2>Ouça esta oração</h2>
+            <h2>Ouça este salmo</h2>
             <audio controls src={signal.audioUrl} preload="none">
               <track kind="captions" label="Transcrição" srcLang="pt" />
             </audio>
@@ -168,7 +165,7 @@ export default async function SignalPage({ params }) {
         <TopicSignals topicSlug={signal.topicSlug} excludeSlug={slug} />
       </article>
 
-      <IntentNav currentKey={intentKey} />
+      <IntentNav currentKey={signal.intent} />
     </main>
   );
 }

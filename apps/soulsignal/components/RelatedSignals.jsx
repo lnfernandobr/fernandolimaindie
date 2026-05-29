@@ -1,5 +1,5 @@
 import { getRelatedSignals } from '@/lib/content/api.js';
-import { keyToSlug } from '@/lib/content/intents.js';
+import { signalUrl } from '@/lib/content/signal-url.js';
 
 export async function RelatedSignals({ slug }) {
   let items = [];
@@ -17,7 +17,7 @@ export async function RelatedSignals({ slug }) {
         {items.map((signal) => (
           <a
             key={signal.slug}
-            href={`/${keyToSlug(signal.intent)}/${signal.slug}`}
+            href={signalUrl(signal)}
             className="signal-card"
           >
             <h3>{signal.title}</h3>
