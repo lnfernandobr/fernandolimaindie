@@ -406,13 +406,13 @@ const run = async () => {
     await upsertMany(TopicModel, TOPICS, 'topics');
     await upsertMany(EntityModel, ENTITIES, 'entities');
     await upsertMany(SignalModel, SIGNALS, 'signals');
-    logger.info('soulsignal seed complete');
+    logger.info('umsinaldefe seed complete');
   } finally {
     await disconnectDatabase();
   }
 };
 
 run().catch((err) => {
-  logger.error({ err }, 'soulsignal seed failed');
+  logger.error({ err }, 'umsinaldefe seed failed');
   process.exitCode = 1;
 });

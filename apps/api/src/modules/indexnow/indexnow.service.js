@@ -19,20 +19,20 @@ export const submitSignalSlugs = async (slugs) => {
     logger.warn(INDEXNOW_ERRORS.KEY_MISSING);
     return;
   }
-  if (!env.SOULSIGNAL_SITE_URL) {
+  if (!env.UMSINALDEFE_SITE_URL) {
     logger.warn(INDEXNOW_ERRORS.SITE_URL_MISSING);
     return;
   }
 
   const signals = await findSignalsBySlugs(slugs);
-  const urls = signals.map((s) => buildSignalUrl(env.SOULSIGNAL_SITE_URL, s));
+  const urls = signals.map((s) => buildSignalUrl(env.UMSINALDEFE_SITE_URL, s));
 
   if (!urls.length) return;
 
   try {
     const result = env.INDEXNOW_MOCK_MODE
       ? submitUrlsMock(urls)
-      : await submitUrls({ key: env.INDEXNOW_KEY, siteUrl: env.SOULSIGNAL_SITE_URL, urls });
+      : await submitUrls({ key: env.INDEXNOW_KEY, siteUrl: env.UMSINALDEFE_SITE_URL, urls });
 
     logger.info({ count: urls.length, status: result.status }, 'indexnow: URLs submitted');
   } catch (err) {
@@ -41,9 +41,9 @@ export const submitSignalSlugs = async (slugs) => {
 };
 
 export const submitSitemapPing = async () => {
-  if (!env.SOULSIGNAL_SITE_URL) return;
+  if (!env.UMSINALDEFE_SITE_URL) return;
 
-  const sitemapUrl = `${env.SOULSIGNAL_SITE_URL}/sitemap.xml`;
+  const sitemapUrl = `${env.UMSINALDEFE_SITE_URL}/sitemap.xml`;
 
   try {
     const result = env.INDEXNOW_MOCK_MODE

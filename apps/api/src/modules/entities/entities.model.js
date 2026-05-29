@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { ENTITY_KINDS, DEFAULT_LANG } from '../../constants/soulsignal.js';
+import { ENTITY_KINDS, DEFAULT_LANG } from '../../constants/content.js';
 
 const ENTITY_COLLECTION = 'Entity';
 

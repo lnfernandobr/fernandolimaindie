@@ -2,7 +2,7 @@ import { conflict, notFound } from '../../errors/factories.js';
 import {
   MONGO_DUPLICATE_KEY,
   ENTITY_ERRORS,
-} from '../../constants/soulsignal.js';
+} from '../../constants/content.js';
 import {
   countEntities,
   createEntity as insertEntity,

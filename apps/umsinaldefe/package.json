@@ -1,8 +1,8 @@
 {
-  "name": "@fernandolimaindie/soulsignal",
+  "name": "@fernandolimaindie/umsinaldefe",
   "version": "0.1.0",
   "private": true,
-  "description": "SoulSignal — plataforma devocional cristã PT-BR (codename temporário).",
+  "description": "Um Sinal de Fé — plataforma devocional cristã PT-BR).",
   "scripts": {
     "dev": "next dev -p 3001",
     "build": "next build",

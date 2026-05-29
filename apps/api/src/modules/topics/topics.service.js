@@ -2,7 +2,7 @@ import { conflict, notFound } from '../../errors/factories.js';
 import {
   MONGO_DUPLICATE_KEY,
   TOPIC_ERRORS,
-} from '../../constants/soulsignal.js';
+} from '../../constants/content.js';
 import {
   countTopics,
   createTopic as insertTopic,

@@ -1,5 +1,5 @@
 import { SignalModel } from './signals.model.js';
-import { LIMITS } from '../../constants/soulsignal.js';
+import { LIMITS } from '../../constants/content.js';
 
 const PUBLISHED = 'published';
 

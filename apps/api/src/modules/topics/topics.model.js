@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { INTENT_KEYS, DEFAULT_LANG } from '../../constants/soulsignal.js';
+import { INTENT_KEYS, DEFAULT_LANG } from '../../constants/content.js';
 
 const TOPIC_COLLECTION = 'Topic';
 

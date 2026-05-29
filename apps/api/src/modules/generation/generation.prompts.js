@@ -1,4 +1,4 @@
-import { INTENT_KEYS, LIMITS } from '../../constants/soulsignal.js';
+import { INTENT_KEYS, LIMITS } from '../../constants/content.js';
 import { GENERATION_ERRORS } from '../../constants/generation.js';
 import { badRequest } from '../../errors/factories.js';
 

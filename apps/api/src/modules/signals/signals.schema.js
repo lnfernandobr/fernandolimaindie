@@ -6,7 +6,7 @@ import {
   LIMITS,
   SLUG_PATTERN,
   DEFAULT_LANG,
-} from '../../constants/soulsignal.js';
+} from '../../constants/content.js';
 
 const slugString = z
   .string()

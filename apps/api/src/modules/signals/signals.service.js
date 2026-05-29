@@ -2,7 +2,7 @@ import { conflict, notFound } from '../../errors/factories.js';
 import {
   MONGO_DUPLICATE_KEY,
   SIGNAL_ERRORS,
-} from '../../constants/soulsignal.js';
+} from '../../constants/content.js';
 import {
   countSignals,
   createSignal as insertSignal,

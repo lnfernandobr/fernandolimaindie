@@ -3,7 +3,7 @@ import {
   INTENT_KEYS,
   LIMITS,
   SLUG_PATTERN,
-} from '../../constants/soulsignal.js';
+} from '../../constants/content.js';
 import {
   SEED_KINDS,
   GENERATION_DEFAULTS,

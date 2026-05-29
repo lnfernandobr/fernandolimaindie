@@ -4,7 +4,7 @@ import {
   SIGNAL_STATUSES,
   INTENT_KEYS,
   DEFAULT_LANG,
-} from '../../constants/soulsignal.js';
+} from '../../constants/content.js';
 
 const SIGNAL_COLLECTION = 'Signal';
 

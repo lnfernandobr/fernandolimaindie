@@ -8,5 +8,5 @@ export const INDEXNOW_DEFAULTS = Object.freeze({
 export const INDEXNOW_ERRORS = Object.freeze({
   SUBMIT_FAILED: 'IndexNow submission failed',
   KEY_MISSING: 'INDEXNOW_KEY is not configured',
-  SITE_URL_MISSING: 'SOULSIGNAL_SITE_URL is not configured',
+  SITE_URL_MISSING: 'UMSINALDEFE_SITE_URL is not configured',
 });

@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "node --watch src/index.js",
     "start": "node src/index.js",
-    "seed:soulsignal": "node scripts/seed-soulsignal.js"
+    "seed:umsinaldefe": "node scripts/seed.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1056.0",

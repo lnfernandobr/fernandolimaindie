@@ -26,9 +26,9 @@ export const ENV_DEFAULTS = Object.freeze({
   AWS_S3_BUCKET: '',
   AWS_S3_PUBLIC_URL: '',
   MEDIA_MOCK_MODE: 'true',
-  SOULSIGNAL_REVALIDATE_URL: '',
-  SOULSIGNAL_REVALIDATE_TOKEN: '',
-  SOULSIGNAL_SITE_URL: 'https://umsinaldefe.com.br',
+  UMSINALDEFE_REVALIDATE_URL: '',
+  UMSINALDEFE_REVALIDATE_TOKEN: '',
+  UMSINALDEFE_SITE_URL: 'https://umsinaldefe.com.br',
   INDEXNOW_KEY: '',
   INDEXNOW_MOCK_MODE: 'true',
 });

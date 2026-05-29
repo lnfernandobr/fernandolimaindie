@@ -5,7 +5,7 @@ import {
   GENERATION_ERRORS,
 } from '../../constants/generation.js';
 import { CRON_DEFAULTS, CRON_JOB_NAMES } from '../../constants/cron.js';
-import { DEFAULT_LANG } from '../../constants/soulsignal.js';
+import { DEFAULT_LANG } from '../../constants/content.js';
 import { badRequest } from '../../errors/factories.js';
 import {
   findSignalBySlugAnyStatus,

@@ -1,4 +1,4 @@
-import { INTENT_KEYS } from '../../constants/soulsignal.js';
+import { INTENT_KEYS } from '../../constants/content.js';
 
 const pickRelated = (intent) =>
   INTENT_KEYS.filter((k) => k !== intent).slice(0, 2);
