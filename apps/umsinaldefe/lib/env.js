@@ -11,13 +11,13 @@ const schema = z.object({
   NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: z.string().optional(),
   NEXT_PUBLIC_BING_SITE_VERIFICATION: z.string().optional(),
   NEXT_PUBLIC_ADSENSE_CLIENT: z.string().optional(),
-  SOULSIGNAL_API_URL: z.string().url().default('http://localhost:4000'),
+  UMSINALDEFE_API_URL: z.string().url().default('http://localhost:4000'),
   REVALIDATE_TOKEN: z.string().default('dev-revalidate-token'),
   INDEXNOW_KEY: z.string().default(''),
 });
 
 const parsed = schema.parse({
-  SOULSIGNAL_API_URL: process.env.SOULSIGNAL_API_URL,
+  UMSINALDEFE_API_URL: process.env.UMSINALDEFE_API_URL,
   NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
   NEXT_PUBLIC_SITE_NAME: process.env.NEXT_PUBLIC_SITE_NAME,
   NEXT_PUBLIC_SITE_LOCALE: process.env.NEXT_PUBLIC_SITE_LOCALE,

@@ -11,7 +11,7 @@ import {
 
 const relatedResponseSchema = z.object({ items: z.array(signalSummarySchema) });
 
-const API_BASE = env.SOULSIGNAL_API_URL.replace(/\/$/, '');
+const API_BASE = env.UMSINALDEFE_API_URL.replace(/\/$/, '');
 const PREFIX = '/api/v1';
 
 const buildUrl = (path, params) => {
