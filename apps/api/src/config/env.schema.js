@@ -18,4 +18,34 @@ export const envSchema = z.object({
   ADMIN_BOOTSTRAP_USERNAME: z.string().default(ENV_DEFAULTS.ADMIN_BOOTSTRAP_USERNAME),
   ADMIN_BOOTSTRAP_PASSWORD: z.string().default(ENV_DEFAULTS.ADMIN_BOOTSTRAP_PASSWORD),
   ALLOWED_ORIGINS: z.string().default(ENV_DEFAULTS.ALLOWED_ORIGINS),
+  OPENAI_API_KEY: z.string().default(ENV_DEFAULTS.OPENAI_API_KEY),
+  OPENAI_MODEL: z.string().default(ENV_DEFAULTS.OPENAI_MODEL),
+  OPENAI_MOCK_MODE: z
+    .union([z.literal('true'), z.literal('false')])
+    .default(ENV_DEFAULTS.OPENAI_MOCK_MODE)
+    .transform((v) => v === 'true'),
+  CRON_ENABLED: z
+    .union([z.literal('true'), z.literal('false')])
+    .default(ENV_DEFAULTS.CRON_ENABLED)
+    .transform((v) => v === 'true'),
+  CRON_GENERATION_SCHEDULE: z.string().default(ENV_DEFAULTS.CRON_GENERATION_SCHEDULE),
+  CRON_GENERATION_DAILY_LIMIT: z.coerce
+    .number()
+    .int()
+    .min(1)
+    .max(20)
+    .default(ENV_DEFAULTS.CRON_GENERATION_DAILY_LIMIT),
+  ELEVENLABS_API_KEY: z.string().default(ENV_DEFAULTS.ELEVENLABS_API_KEY),
+  ELEVENLABS_VOICE_ID: z.string().default(ENV_DEFAULTS.ELEVENLABS_VOICE_ID),
+  AWS_ACCESS_KEY_ID: z.string().default(ENV_DEFAULTS.AWS_ACCESS_KEY_ID),
+  AWS_SECRET_ACCESS_KEY: z.string().default(ENV_DEFAULTS.AWS_SECRET_ACCESS_KEY),
+  AWS_REGION: z.string().default(ENV_DEFAULTS.AWS_REGION),
+  AWS_S3_BUCKET: z.string().default(ENV_DEFAULTS.AWS_S3_BUCKET),
+  AWS_S3_PUBLIC_URL: z.string().default(ENV_DEFAULTS.AWS_S3_PUBLIC_URL),
+  MEDIA_MOCK_MODE: z
+    .union([z.literal('true'), z.literal('false')])
+    .default(ENV_DEFAULTS.MEDIA_MOCK_MODE)
+    .transform((v) => v === 'true'),
+  SOULSIGNAL_REVALIDATE_URL: z.string().default(ENV_DEFAULTS.SOULSIGNAL_REVALIDATE_URL),
+  SOULSIGNAL_REVALIDATE_TOKEN: z.string().default(ENV_DEFAULTS.SOULSIGNAL_REVALIDATE_TOKEN),
 });

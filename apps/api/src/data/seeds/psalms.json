@@ -1,0 +1,222 @@
+[
+  {
+    "slug": "salmo-1",
+    "intent": "faith",
+    "topicSlug": "fe",
+    "entitySlugs": ["salmos"],
+    "subject": {
+      "psalmNumber": 1,
+      "theme": "o caminho do justo",
+      "hookWord": "salmo 1"
+    }
+  },
+  {
+    "slug": "salmo-23",
+    "intent": "faith",
+    "topicSlug": "fe",
+    "entitySlugs": ["salmos"],
+    "subject": {
+      "psalmNumber": 23,
+      "theme": "o Senhor e meu pastor",
+      "hookWord": "salmo 23"
+    }
+  },
+  {
+    "slug": "salmo-27",
+    "intent": "fear",
+    "topicSlug": "fe",
+    "entitySlugs": ["salmos"],
+    "subject": {
+      "psalmNumber": 27,
+      "theme": "luz e salvacao contra o medo",
+      "hookWord": "salmo 27"
+    }
+  },
+  {
+    "slug": "salmo-46",
+    "intent": "fear",
+    "topicSlug": "fe",
+    "entitySlugs": ["salmos"],
+    "subject": {
+      "psalmNumber": 46,
+      "theme": "refugio e fortaleza diante do caos",
+      "hookWord": "salmo 46"
+    }
+  },
+  {
+    "slug": "salmo-51",
+    "intent": "forgiveness",
+    "topicSlug": "fe",
+    "entitySlugs": ["salmos"],
+    "subject": {
+      "psalmNumber": 51,
+      "theme": "pedido de perdao e coracao novo",
+      "hookWord": "salmo 51"
+    }
+  },
+  {
+    "slug": "salmo-103",
+    "intent": "gratitude",
+    "topicSlug": "gratidao",
+    "entitySlugs": ["salmos"],
+    "subject": {
+      "psalmNumber": 103,
+      "theme": "bendize a Deus por todos os beneficios",
+      "hookWord": "salmo 103"
+    }
+  },
+  {
+    "slug": "salmo-121",
+    "intent": "protection",
+    "topicSlug": "protecao",
+    "entitySlugs": ["salmos"],
+    "subject": {
+      "psalmNumber": 121,
+      "theme": "o meu auxilio vem do Senhor",
+      "hookWord": "salmo 121"
+    }
+  },
+  {
+    "slug": "salmo-130",
+    "intent": "hope",
+    "topicSlug": "fe",
+    "entitySlugs": ["salmos"],
+    "subject": {
+      "psalmNumber": 130,
+      "theme": "das profundezas clamo a ti",
+      "hookWord": "salmo 130"
+    }
+  },
+  {
+    "slug": "salmo-139",
+    "intent": "faith",
+    "topicSlug": "fe",
+    "entitySlugs": ["salmos"],
+    "subject": {
+      "psalmNumber": 139,
+      "theme": "Senhor, tu me sondas e me conheces",
+      "hookWord": "salmo 139"
+    }
+  },
+  {
+    "slug": "salmo-37",
+    "intent": "anxiety",
+    "topicSlug": "ansiedade",
+    "entitySlugs": ["salmos"],
+    "subject": {
+      "psalmNumber": 37,
+      "theme": "nao te irrites, confia no Senhor e aquieta o coracao",
+      "hookWord": "salmo 37"
+    }
+  },
+  {
+    "slug": "salmo-4",
+    "intent": "sleep",
+    "topicSlug": "sono",
+    "entitySlugs": ["salmos"],
+    "subject": {
+      "psalmNumber": 4,
+      "theme": "em paz me deito e logo durmo",
+      "hookWord": "salmo 4"
+    }
+  },
+  {
+    "slug": "salmo-66",
+    "intent": "gratitude",
+    "topicSlug": "gratidao",
+    "entitySlugs": ["salmos"],
+    "subject": {
+      "psalmNumber": 66,
+      "theme": "aclamai a Deus com alegria por suas obras",
+      "hookWord": "salmo 66"
+    }
+  },
+  {
+    "slug": "salmo-126",
+    "intent": "hope",
+    "topicSlug": "fe",
+    "entitySlugs": ["salmos"],
+    "subject": {
+      "psalmNumber": 126,
+      "theme": "os que semeiam em lagrimas colhem com alegria",
+      "hookWord": "salmo 126"
+    }
+  },
+  {
+    "slug": "salmo-5",
+    "intent": "morning",
+    "topicSlug": "fe",
+    "entitySlugs": ["salmos"],
+    "subject": {
+      "psalmNumber": 5,
+      "theme": "de manha ouviras a minha voz",
+      "hookWord": "salmo 5"
+    }
+  },
+  {
+    "slug": "salmo-128",
+    "intent": "family",
+    "topicSlug": "familia",
+    "entitySlugs": ["salmos"],
+    "subject": {
+      "psalmNumber": 128,
+      "theme": "bencao sobre a casa de quem teme ao Senhor",
+      "hookWord": "salmo 128"
+    }
+  },
+  {
+    "slug": "salmo-127",
+    "intent": "family",
+    "topicSlug": "familia",
+    "entitySlugs": ["salmos"],
+    "subject": {
+      "psalmNumber": 127,
+      "theme": "se o Senhor nao edificar a casa, em vao trabalham os pedreiros",
+      "hookWord": "salmo 127"
+    }
+  },
+  {
+    "slug": "salmo-41",
+    "intent": "healing",
+    "topicSlug": "cura",
+    "entitySlugs": ["salmos"],
+    "subject": {
+      "psalmNumber": 41,
+      "theme": "o Senhor o sustenta no leito da enfermidade",
+      "hookWord": "salmo 41"
+    }
+  },
+  {
+    "slug": "salmo-70",
+    "intent": "hope",
+    "topicSlug": "fe",
+    "entitySlugs": ["salmos"],
+    "subject": {
+      "psalmNumber": 70,
+      "theme": "apressa-te, o Deus, em me livrar",
+      "hookWord": "salmo 70"
+    }
+  },
+  {
+    "slug": "salmo-90",
+    "intent": "faith",
+    "topicSlug": "fe",
+    "entitySlugs": ["salmos"],
+    "subject": {
+      "psalmNumber": 90,
+      "theme": "ensina-nos a contar os nossos dias",
+      "hookWord": "salmo 90"
+    }
+  },
+  {
+    "slug": "salmo-35",
+    "intent": "protection",
+    "topicSlug": "protecao",
+    "entitySlugs": ["salmos"],
+    "subject": {
+      "psalmNumber": 35,
+      "theme": "o Senhor combate os que me combatem",
+      "hookWord": "salmo 35"
+    }
+  }
+]

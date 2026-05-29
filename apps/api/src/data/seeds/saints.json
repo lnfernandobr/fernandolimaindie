@@ -1,0 +1,182 @@
+[
+  {
+    "slug": "oracao-a-santo-antonio",
+    "intent": "hope",
+    "topicSlug": "fe",
+    "entitySlugs": [],
+    "subject": {
+      "saintName": "Santo Antonio",
+      "saintTitle": "padroeiro dos pobres, dos perdidos e dos casamentos",
+      "feastDay": "13 de junho",
+      "causes": ["objetos perdidos", "casamento", "causas dos pobres", "pao dos pobres"]
+    }
+  },
+  {
+    "slug": "oracao-a-sao-jorge",
+    "intent": "protection",
+    "topicSlug": "protecao",
+    "entitySlugs": [],
+    "subject": {
+      "saintName": "Sao Jorge",
+      "saintTitle": "santo guerreiro, padroeiro dos militares",
+      "feastDay": "23 de abril",
+      "causes": ["protecao contra inimigos visiveis e invisiveis", "coragem", "vitorias dificeis"]
+    }
+  },
+  {
+    "slug": "oracao-a-santa-rita",
+    "intent": "hope",
+    "topicSlug": "fe",
+    "entitySlugs": [],
+    "subject": {
+      "saintName": "Santa Rita de Cassia",
+      "saintTitle": "santa das causas impossiveis e dos casamentos dificeis",
+      "feastDay": "22 de maio",
+      "causes": ["causas impossiveis", "casamentos em crise", "doencas graves"]
+    }
+  },
+  {
+    "slug": "oracao-a-nossa-senhora-aparecida",
+    "intent": "faith",
+    "topicSlug": "fe",
+    "entitySlugs": ["nossa-senhora-aparecida"],
+    "subject": {
+      "saintName": "Nossa Senhora Aparecida",
+      "saintTitle": "padroeira do Brasil",
+      "feastDay": "12 de outubro",
+      "causes": ["protecao da familia", "intercessao por causas urgentes", "fe do povo brasileiro"]
+    }
+  },
+  {
+    "slug": "oracao-a-sao-jose",
+    "intent": "family",
+    "topicSlug": "familia",
+    "entitySlugs": [],
+    "subject": {
+      "saintName": "Sao Jose",
+      "saintTitle": "padroeiro da Igreja, dos pais e dos trabalhadores",
+      "feastDay": "19 de marco",
+      "causes": ["familia", "trabalho honesto", "uma boa morte", "casa propria"]
+    }
+  },
+  {
+    "slug": "oracao-a-santa-clara",
+    "intent": "sleep",
+    "topicSlug": "sono",
+    "entitySlugs": [],
+    "subject": {
+      "saintName": "Santa Clara",
+      "saintTitle": "fundadora das clarissas, santa do tempo bom",
+      "feastDay": "11 de agosto",
+      "causes": ["tempo bom em dias importantes", "noites de paz", "luz interior"]
+    }
+  },
+  {
+    "slug": "oracao-a-sao-bento",
+    "intent": "protection",
+    "topicSlug": "protecao",
+    "entitySlugs": ["sao-bento"],
+    "subject": {
+      "saintName": "Sao Bento",
+      "saintTitle": "patriarca dos monges, protetor contra o mal",
+      "feastDay": "11 de julho",
+      "causes": ["protecao contra o mal", "tentacoes", "paz no lar", "afastar inveja"]
+    }
+  },
+  {
+    "slug": "oracao-a-sao-miguel-arcanjo",
+    "intent": "protection",
+    "topicSlug": "protecao",
+    "entitySlugs": ["sao-miguel-arcanjo"],
+    "subject": {
+      "saintName": "Sao Miguel Arcanjo",
+      "saintTitle": "principe das milicias celestes",
+      "feastDay": "29 de setembro",
+      "causes": ["protecao contra o mal", "batalha espiritual", "defesa da fe"]
+    }
+  },
+  {
+    "slug": "oracao-a-santo-expedito",
+    "intent": "hope",
+    "topicSlug": "fe",
+    "entitySlugs": ["santo-expedito"],
+    "subject": {
+      "saintName": "Santo Expedito",
+      "saintTitle": "santo das causas urgentes e justas",
+      "feastDay": "19 de abril",
+      "causes": ["causas urgentes", "decisoes rapidas", "trabalho e emprego"]
+    }
+  },
+  {
+    "slug": "oracao-a-sao-francisco-de-assis",
+    "intent": "faith",
+    "topicSlug": "fe",
+    "entitySlugs": ["sao-francisco"],
+    "subject": {
+      "saintName": "Sao Francisco de Assis",
+      "saintTitle": "santo da paz, dos pobres e da criacao",
+      "feastDay": "4 de outubro",
+      "causes": ["paz interior", "amor aos animais", "simplicidade de vida"]
+    }
+  },
+  {
+    "slug": "oracao-a-santa-teresinha",
+    "intent": "faith",
+    "topicSlug": "fe",
+    "entitySlugs": ["santa-teresinha"],
+    "subject": {
+      "saintName": "Santa Teresinha do Menino Jesus",
+      "saintTitle": "doutora da Igreja e santa do pequeno caminho",
+      "feastDay": "1 de outubro",
+      "causes": ["confianca no pequeno caminho", "missoes", "gracas pelas rosas"]
+    }
+  },
+  {
+    "slug": "oracao-a-nossa-senhora-das-gracas",
+    "intent": "protection",
+    "topicSlug": "protecao",
+    "entitySlugs": ["nossa-senhora-das-gracas"],
+    "subject": {
+      "saintName": "Nossa Senhora das Gracas",
+      "saintTitle": "Virgem da Medalha Milagrosa",
+      "feastDay": "27 de novembro",
+      "causes": ["protecao da medalha milagrosa", "conversao", "gracas urgentes"]
+    }
+  },
+  {
+    "slug": "oracao-a-nossa-senhora-desatadora-dos-nos",
+    "intent": "hope",
+    "topicSlug": "fe",
+    "entitySlugs": ["nossa-senhora-desatadora-dos-nos"],
+    "subject": {
+      "saintName": "Nossa Senhora Desatadora dos Nos",
+      "saintTitle": "Maria que desata os nos da vida",
+      "feastDay": "28 de setembro",
+      "causes": ["nos da familia", "situacoes sem saida", "reconciliacao"]
+    }
+  },
+  {
+    "slug": "oracao-ao-espirito-santo",
+    "intent": "faith",
+    "topicSlug": "fe",
+    "entitySlugs": ["espirito-santo"],
+    "subject": {
+      "saintName": "Espirito Santo",
+      "saintTitle": "terceira pessoa da Santissima Trindade",
+      "feastDay": "Pentecostes",
+      "causes": ["sabedoria", "discernimento", "forca na fraqueza"]
+    }
+  },
+  {
+    "slug": "oracao-ao-anjo-da-guarda",
+    "intent": "protection",
+    "topicSlug": "protecao",
+    "entitySlugs": ["anjo-da-guarda"],
+    "subject": {
+      "saintName": "Santo Anjo da Guarda",
+      "saintTitle": "anjo que Deus designou para te guardar",
+      "feastDay": "2 de outubro",
+      "causes": ["protecao no dia a dia", "guarda das criancas", "companhia na noite"]
+    }
+  }
+]

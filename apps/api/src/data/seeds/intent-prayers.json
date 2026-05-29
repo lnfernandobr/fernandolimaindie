@@ -1,0 +1,122 @@
+[
+  {
+    "slug": "oracao-para-medo",
+    "intent": "fear",
+    "topicSlug": "fe",
+    "entitySlugs": ["jesus"],
+    "subject": {
+      "focus": "medo",
+      "situation": "alguem que esta com medo de um exame, de uma decisao ou da noite"
+    }
+  },
+  {
+    "slug": "oracao-para-gratidao",
+    "intent": "gratitude",
+    "topicSlug": "gratidao",
+    "entitySlugs": [],
+    "subject": {
+      "focus": "gratidao",
+      "situation": "alguem que quer agradecer pelo dia, pela vida ou por uma graca alcancada"
+    }
+  },
+  {
+    "slug": "oracao-para-cura",
+    "intent": "healing",
+    "topicSlug": "cura",
+    "entitySlugs": ["jesus"],
+    "subject": {
+      "focus": "cura",
+      "situation": "alguem doente, ou um familiar pedindo cura por outra pessoa"
+    }
+  },
+  {
+    "slug": "oracao-para-perdao",
+    "intent": "forgiveness",
+    "topicSlug": "fe",
+    "entitySlugs": [],
+    "subject": {
+      "focus": "perdao",
+      "situation": "alguem com magoa antiga querendo perdoar ou ser perdoado"
+    }
+  },
+  {
+    "slug": "oracao-para-financas",
+    "intent": "finances",
+    "topicSlug": "fe",
+    "entitySlugs": [],
+    "subject": {
+      "focus": "financas em aperto",
+      "situation": "alguem com contas atrasadas pedindo luz e providencia, sem prosperidade"
+    }
+  },
+  {
+    "slug": "oracao-para-luto",
+    "intent": "grief",
+    "topicSlug": "fe",
+    "entitySlugs": [],
+    "subject": {
+      "focus": "luto",
+      "situation": "alguem que perdeu uma pessoa querida e busca consolo cristao"
+    }
+  },
+  {
+    "slug": "oracao-da-noite",
+    "intent": "night",
+    "topicSlug": "sono",
+    "entitySlugs": [],
+    "subject": {
+      "focus": "noite tranquila",
+      "situation": "alguem fechando o dia antes de dormir"
+    }
+  },
+  {
+    "slug": "oracao-da-manha",
+    "intent": "morning",
+    "topicSlug": "fe",
+    "entitySlugs": [],
+    "subject": {
+      "focus": "comeco do dia",
+      "situation": "alguem comecando a manha com a fe antes da rotina"
+    }
+  },
+  {
+    "slug": "oracao-de-protecao",
+    "intent": "protection",
+    "topicSlug": "protecao",
+    "entitySlugs": [],
+    "subject": {
+      "focus": "protecao",
+      "situation": "alguem pedindo protecao para si, para a casa e para quem ama"
+    }
+  },
+  {
+    "slug": "oracao-de-protecao-aos-filhos",
+    "intent": "family",
+    "topicSlug": "familia",
+    "entitySlugs": ["maria"],
+    "subject": {
+      "focus": "protecao dos filhos",
+      "situation": "um pai ou mae pedindo protecao e bencao sobre os filhos"
+    }
+  },
+  {
+    "slug": "oracao-para-dormir",
+    "intent": "sleep",
+    "topicSlug": "sono",
+    "entitySlugs": [],
+    "subject": {
+      "focus": "dormir em paz",
+      "situation": "alguem com dificuldade para dormir querendo descansar tranquilo a noite toda"
+    }
+  },
+  {
+    "slug": "oracao-de-cura-interior",
+    "intent": "healing",
+    "topicSlug": "cura",
+    "entitySlugs": ["jesus"],
+    "subject": {
+      "focus": "cura interior",
+      "situation": "alguem com feridas emocionais antigas pedindo cura do coracao"
+    }
+  }
+]

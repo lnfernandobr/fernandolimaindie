@@ -1,0 +1,123 @@
+[
+  {
+    "slug": "devocional-confianca",
+    "intent": "faith",
+    "topicSlug": "fe",
+    "entitySlugs": ["jesus"],
+    "subject": {
+      "theme": "confianca em Deus mesmo no escuro",
+      "verseRef": "Provérbios 3:5-6",
+      "dayMoment": "manha"
+    }
+  },
+  {
+    "slug": "devocional-paciencia",
+    "intent": "hope",
+    "topicSlug": "fe",
+    "entitySlugs": [],
+    "subject": {
+      "theme": "paciencia com Deus e com voce mesmo",
+      "verseRef": "Tiago 1:2-4",
+      "dayMoment": "qualquer"
+    }
+  },
+  {
+    "slug": "devocional-pequenas-coisas",
+    "intent": "gratitude",
+    "topicSlug": "gratidao",
+    "entitySlugs": [],
+    "subject": {
+      "theme": "a santidade nas pequenas coisas do dia",
+      "verseRef": "Lucas 16:10",
+      "dayMoment": "manha"
+    }
+  },
+  {
+    "slug": "devocional-descanso",
+    "intent": "sleep",
+    "topicSlug": "sono",
+    "entitySlugs": ["jesus"],
+    "subject": {
+      "theme": "descansar em Deus no fim do dia",
+      "verseRef": "Mateus 11:28",
+      "dayMoment": "noite"
+    }
+  },
+  {
+    "slug": "devocional-presenca",
+    "intent": "faith",
+    "topicSlug": "fe",
+    "entitySlugs": [],
+    "subject": {
+      "theme": "a presenca de Deus no comum",
+      "verseRef": "Salmo 139:7-10",
+      "dayMoment": "qualquer"
+    }
+  },
+  {
+    "slug": "devocional-ansiedade",
+    "intent": "anxiety",
+    "topicSlug": "ansiedade",
+    "entitySlugs": ["jesus"],
+    "subject": {
+      "theme": "entregar a ansiedade a Deus um dia de cada vez",
+      "verseRef": "Filipenses 4:6-7",
+      "dayMoment": "qualquer"
+    }
+  },
+  {
+    "slug": "devocional-recomeco",
+    "intent": "hope",
+    "topicSlug": "fe",
+    "entitySlugs": [],
+    "subject": {
+      "theme": "as misericordias do Senhor se renovam a cada manha",
+      "verseRef": "Lamentações 3:22-23",
+      "dayMoment": "manha"
+    }
+  },
+  {
+    "slug": "devocional-perdao",
+    "intent": "forgiveness",
+    "topicSlug": "fe",
+    "entitySlugs": [],
+    "subject": {
+      "theme": "perdoar setenta vezes sete e se libertar da magoa",
+      "verseRef": "Mateus 18:21-22",
+      "dayMoment": "qualquer"
+    }
+  },
+  {
+    "slug": "devocional-provisao",
+    "intent": "finances",
+    "topicSlug": "fe",
+    "entitySlugs": [],
+    "subject": {
+      "theme": "buscar primeiro o Reino e confiar na provisao de Deus",
+      "verseRef": "Mateus 6:31-33",
+      "dayMoment": "manha"
+    }
+  },
+  {
+    "slug": "devocional-noite",
+    "intent": "night",
+    "topicSlug": "sono",
+    "entitySlugs": [],
+    "subject": {
+      "theme": "entregar o dia e dormir em paz",
+      "verseRef": "Salmo 4:8",
+      "dayMoment": "noite"
+    }
+  },
+  {
+    "slug": "devocional-cura",
+    "intent": "healing",
+    "topicSlug": "cura",
+    "entitySlugs": ["jesus"],
+    "subject": {
+      "theme": "Deus cura os de coracao quebrantado",
+      "verseRef": "Salmo 147:3",
+      "dayMoment": "qualquer"
+    }
+  }
+]
