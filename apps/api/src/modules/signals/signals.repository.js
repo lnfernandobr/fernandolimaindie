@@ -24,6 +24,9 @@ export const createSignal = (input) => SignalModel.create(input);
 export const updateSignalBySlug = (slug, patch) =>
   SignalModel.findOneAndUpdate({ slug }, patch, { new: true }).lean();
 
+export const findSignalsBySlugs = (slugs) =>
+  SignalModel.find({ slug: { $in: slugs }, status: PUBLISHED }).lean();
+
 export const findRelatedSignals = ({ excludeSlug, topicSlug, entitySlugs, intentKeys }) => {
   const orClauses = [{ topicSlug }];
   if (entitySlugs?.length) orClauses.push({ entitySlugs: { $in: entitySlugs } });

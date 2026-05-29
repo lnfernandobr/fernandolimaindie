@@ -28,6 +28,9 @@ export const ENV_DEFAULTS = Object.freeze({
   MEDIA_MOCK_MODE: 'true',
   SOULSIGNAL_REVALIDATE_URL: '',
   SOULSIGNAL_REVALIDATE_TOKEN: '',
+  SOULSIGNAL_SITE_URL: '',
+  INDEXNOW_KEY: '',
+  INDEXNOW_MOCK_MODE: 'true',
 });
 
 export const ENV_CONSTRAINTS = Object.freeze({

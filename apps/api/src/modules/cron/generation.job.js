@@ -5,6 +5,7 @@ import { GENERATION_OUTCOMES } from '../../constants/generation.js';
 import { generateBatch } from '../generation/generation.service.js';
 import { saveRun } from './cron-run.repository.js';
 import { triggerRevalidation } from '../../lib/revalidate.js';
+import { submitSignalSlugs, submitSitemapPing } from '../indexnow/index.js';
 
 const tallyOutcomes = (results) =>
   results.reduce(
@@ -45,6 +46,16 @@ export const runGenerationJob = async (triggeredBy = CRON_DEFAULTS.TRIGGER_CRON)
 
     if (counts.created > 0 || counts.regenerated > 0) {
       void triggerRevalidation(['signals']);
+
+      const publishedSlugs = results
+        .filter((r) =>
+          r.outcome === GENERATION_OUTCOMES.CREATED ||
+          r.outcome === GENERATION_OUTCOMES.REGENERATED_DRAFT,
+        )
+        .map((r) => r.signalSlug);
+
+      void submitSignalSlugs(publishedSlugs);
+      void submitSitemapPing();
     }
 
     return run;

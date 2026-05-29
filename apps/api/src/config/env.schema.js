@@ -48,4 +48,10 @@ export const envSchema = z.object({
     .transform((v) => v === 'true'),
   SOULSIGNAL_REVALIDATE_URL: z.string().default(ENV_DEFAULTS.SOULSIGNAL_REVALIDATE_URL),
   SOULSIGNAL_REVALIDATE_TOKEN: z.string().default(ENV_DEFAULTS.SOULSIGNAL_REVALIDATE_TOKEN),
+  SOULSIGNAL_SITE_URL: z.string().default(ENV_DEFAULTS.SOULSIGNAL_SITE_URL),
+  INDEXNOW_KEY: z.string().default(ENV_DEFAULTS.INDEXNOW_KEY),
+  INDEXNOW_MOCK_MODE: z
+    .union([z.literal('true'), z.literal('false')])
+    .default(ENV_DEFAULTS.INDEXNOW_MOCK_MODE)
+    .transform((v) => v === 'true'),
 });

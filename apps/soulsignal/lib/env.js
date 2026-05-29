@@ -13,6 +13,7 @@ const schema = z.object({
   NEXT_PUBLIC_ADSENSE_CLIENT: z.string().optional(),
   SOULSIGNAL_API_URL: z.string().url().default('http://localhost:4000'),
   REVALIDATE_TOKEN: z.string().default('dev-revalidate-token'),
+  INDEXNOW_KEY: z.string().default(''),
 });
 
 const parsed = schema.parse({
@@ -25,6 +26,7 @@ const parsed = schema.parse({
   NEXT_PUBLIC_BING_SITE_VERIFICATION: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION,
   NEXT_PUBLIC_ADSENSE_CLIENT: process.env.NEXT_PUBLIC_ADSENSE_CLIENT,
   REVALIDATE_TOKEN: process.env.REVALIDATE_TOKEN,
+  INDEXNOW_KEY: process.env.INDEXNOW_KEY,
 });
 
 export const env = parsed;
