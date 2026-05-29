@@ -2,7 +2,7 @@ import { buildMetadata } from '../lib/seo/metadata.js';
 import { faqLd, speakableLd, ldGraph, jsonLdScript } from '../lib/seo/jsonld.js';
 
 export const metadata = buildMetadata({
-  title: 'SoulSignal — devocional diário, salmos e orações em português',
+  title: 'Um Sinal de Fé — devocional diário, salmos e orações em português',
   description:
     'Um devocional curto todo dia. Salmos, orações por intenção e versículos pra te acompanhar em momentos de fé, ansiedade, sono e gratidão. Em português, simples, todo dia.',
   path: '/',
@@ -10,14 +10,14 @@ export const metadata = buildMetadata({
 
 const FAQ = [
   {
-    question: 'O que é o SoulSignal?',
+    question: 'O que é o Um Sinal de Fé?',
     answer:
-      'O SoulSignal é um devocional cristão diário em português. Cada dia você encontra um salmo, uma oração curta e um versículo pra acompanhar momentos como ansiedade, sono, proteção, gratidão e fé.',
+      'O Um Sinal de Fé é um devocional cristão diário em português. Cada dia você encontra um salmo, uma oração curta e um versículo pra acompanhar momentos como ansiedade, sono, proteção, gratidão e fé.',
   },
   {
     question: 'Preciso pagar?',
     answer:
-      'Não. O SoulSignal é gratuito. O site é mantido por anúncios discretos.',
+      'Não. O Um Sinal de Fé é gratuito. O site é mantido por anúncios discretos.',
   },
   {
     question: 'Tem áudio das orações?',
@@ -27,7 +27,7 @@ const FAQ = [
   {
     question: 'É de alguma igreja específica?',
     answer:
-      'Não. O SoulSignal é interconfessional cristão, com conteúdo respeitoso à tradição católica e cristã em geral, em linguagem brasileira simples.',
+      'Não. O Um Sinal de Fé é interconfessional cristão, com conteúdo respeitoso à tradição católica e cristã em geral, em linguagem brasileira simples.',
   },
 ];
 
@@ -45,7 +45,7 @@ export default function HomePage() {
         </p>
 
         <section className="answer" id="answer" aria-labelledby="answer-h">
-          <h2 id="answer-h">o que é o SoulSignal</h2>
+          <h2 id="answer-h">o que é o Um Sinal de Fé</h2>
           <p>
             Um devocional cristão diário em português. Salmos, orações por
             intenção (ansiedade, sono, proteção, gratidão, fé) e versículos

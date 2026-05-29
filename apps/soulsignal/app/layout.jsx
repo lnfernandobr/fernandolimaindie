@@ -50,7 +50,7 @@ export default function RootLayout({ children }) {
       <body>
         <header className="site">
           <a className="brand" href="/">
-            <span className="flame">✦</span> SoulSignal
+            <span className="flame">✦</span> Um Sinal de Fé
           </a>
           <nav aria-label="principal" style={{ fontSize: 14 }}>
             <a href="/devocional" style={{ marginRight: 16 }}>devocional</a>
@@ -61,7 +61,7 @@ export default function RootLayout({ children }) {
         {children}
         <footer className="site">
           <p style={{ margin: 0 }}>
-            SoulSignal · {siteConfig.brandTagline} · pt-BR
+            Um Sinal de Fé · {siteConfig.brandTagline} · pt-BR
           </p>
         </footer>
 

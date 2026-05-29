@@ -4,8 +4,8 @@ const schema = z.object({
   NEXT_PUBLIC_SITE_URL: z
     .string()
     .url()
-    .default('https://soulsignal.com.br'),
-  NEXT_PUBLIC_SITE_NAME: z.string().default('SoulSignal'),
+    .default('https://umsinaldefe.com.br'),
+  NEXT_PUBLIC_SITE_NAME: z.string().default('Um Sinal de Fé'),
   NEXT_PUBLIC_SITE_LOCALE: z.string().default('pt-BR'),
   NEXT_PUBLIC_GA_ID: z.string().optional(),
   NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: z.string().optional(),
