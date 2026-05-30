@@ -5,7 +5,7 @@ import { signalUrl } from '@/lib/content/signal-url.js';
 
 export async function GET() {
   const lines = [
-    `# ${siteConfig.name} — conteúdo completo`,
+    `# ${siteConfig.name}: conteúdo completo`,
     '',
     `> ${siteConfig.description}`,
     '',

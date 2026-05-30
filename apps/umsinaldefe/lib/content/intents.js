@@ -35,7 +35,7 @@ export const INTENT_LABELS = {
 export const INTENT_DESCRIPTIONS = {
   anxiety: 'Orações curtas, salmos e respirações pra acalmar o coração quando a ansiedade aperta.',
   sleep: 'Orações da noite pra dormir em paz, agradecer pelo dia e entregar amanhã.',
-  fear: 'Salmos e orações pra momentos de medo — pra si e por quem você ama.',
+  fear: 'Salmos e orações pra momentos de medo, pra você e por quem você ama.',
   gratitude: 'Devocionais e orações de agradecimento pra começar e terminar o dia.',
   protection: 'Salmos, orações e devocionais pra pedir proteção pra você, sua casa e quem você ama.',
   faith: 'Orações, reflexões e versículos pra fortalecer a fé nos momentos de dúvida.',
@@ -46,7 +46,7 @@ export const INTENT_DESCRIPTIONS = {
   morning: 'Orações da manhã pra começar o dia com fé, gratidão e disposição.',
   night: 'Orações da noite, salmos pra dormir e reflexões antes de descansar.',
   healing: 'Orações de cura física, emocional e espiritual.',
-  forgiveness: 'Orações sobre perdão — pra pedir, pra receber e pra conceder.',
+  forgiveness: 'Orações sobre perdão: pra pedir, pra receber e pra conceder.',
 };
 
 const slugToKeyMap = Object.fromEntries(

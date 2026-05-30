@@ -12,7 +12,7 @@ export function ShareButton({ title, url }) {
         await navigator.share({ title, url });
         return;
       } catch {
-        // user cancelled or unsupported — fall through
+        // usuário cancelou ou não há suporte: segue adiante
       }
     }
 

@@ -15,7 +15,7 @@ export function PrayersList() {
             <h2 className="display sec-title on-pine">Pra ter na ponta da língua</h2>
           </div>
           <p className="sec-lead on-pine-soft">
-            Orações curtas pra rezar de cor — antes de dormir, ao acordar, ou quando a causa
+            Orações curtas pra rezar de cor, antes de dormir, ao acordar, ou quando a causa
             parece impossível.
           </p>
         </div>
@@ -37,6 +37,7 @@ export function PrayersList() {
                 <AudioPlayer
                   title={pr.title.replace('Oração ', '')}
                   duration={pr.audio}
+                  src={`/api/tts/oracao-${pr.slug}`}
                   variant="row"
                 />
               </div>

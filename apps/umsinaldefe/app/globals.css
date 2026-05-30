@@ -1,6 +1,6 @@
 /* ============================================================
-   Um Sinal de Fé — design tokens & base
-   Sereno · editorial · sagrado atemporal
+   Um Sinal de Fé: design tokens e base
+   Sereno, editorial, sagrado atemporal
    ============================================================ */
 
 @property --paper       { syntax: "<color>"; inherits: true; initial-value: #FBF6EE; }

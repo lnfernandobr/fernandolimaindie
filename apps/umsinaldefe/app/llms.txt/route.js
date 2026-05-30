@@ -5,7 +5,7 @@ export async function GET() {
   const lines = [
     `# ${siteConfig.name}`,
     '',
-    `> ${siteConfig.brandTagline} — ${siteConfig.description}`,
+    `> ${siteConfig.brandTagline}: ${siteConfig.description}`,
     '',
     `${siteConfig.name} é uma plataforma de conteúdo devocional cristão em português brasileiro. Orações, salmos, reflexões e versículos organizados por intenção espiritual, publicados diariamente.`,
     '',

@@ -15,7 +15,7 @@ export function SubscribeForm() {
         <p className="eyebrow reveal"><span className="star">✦</span> Todo dia, de manhã</p>
         <h2 className="display subscribe-title reveal">Um sinal de fé na sua caixa de entrada</h2>
         <p className="subscribe-lead t-soft reveal">
-          Um versículo, uma reflexão curta e uma oração — três minutos pra começar o dia com
+          Um versículo, uma reflexão curta e uma oração. Três minutos pra começar o dia com
           o coração mais leve. Sem barulho, sem cobrança. Quando quiser, é só sair.
         </p>
 

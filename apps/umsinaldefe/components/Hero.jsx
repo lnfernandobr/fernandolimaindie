@@ -30,7 +30,7 @@ export function Hero() {
           </h1>
 
           <p className="hero-ref">
-            — {d.ref} · <span className="t-gold">{d.theme}</span>
+            {d.ref} · <span className="t-gold">{d.theme}</span>
           </p>
 
           <p className="hero-reflection t-soft">{d.reflection}</p>
@@ -49,6 +49,7 @@ export function Hero() {
               title={d.audio.title}
               subtitle={d.audio.subtitle}
               duration={d.audio.duration}
+              src="/api/tts/salmo-91"
               variant="feature"
             />
           </div>

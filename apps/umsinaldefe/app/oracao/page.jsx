@@ -9,9 +9,9 @@ import { IntentNav } from '@/components/IntentNav.jsx';
 export const revalidate = 86400;
 
 export const metadata = buildMetadata({
-  title: 'Orações — por intenção e por santos, em português',
+  title: 'Orações por intenção e por santos, em português',
   description:
-    'Orações curtas e completas em português — pra ansiedade, sono, proteção, família, fé e muito mais. Inclui orações a santos e novenas.',
+    'Orações curtas e completas em português, pra ansiedade, sono, proteção, família, fé e muito mais. Inclui orações a santos e novenas.',
   path: '/oracao',
 });
 
@@ -50,7 +50,7 @@ export default async function PrayerListPage() {
       <header style={{ marginBottom: 'var(--space-6)' }}>
         <h1>Orações</h1>
         <p className="lede">
-          Orações curtas e completas em português — por intenção (ansiedade, sono, proteção,
+          Orações curtas e completas em português, por intenção (ansiedade, sono, proteção,
           família) e por santos. Pra rezar agora ou guardar pro momento certo.
         </p>
       </header>

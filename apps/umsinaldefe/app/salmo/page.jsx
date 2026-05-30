@@ -8,9 +8,9 @@ import { IntentNav } from '@/components/IntentNav.jsx';
 export const revalidate = 86400;
 
 export const metadata = buildMetadata({
-  title: 'Salmos — comentados em português para oração diária',
+  title: 'Salmos comentados em português para oração diária',
   description:
-    'Salmos bíblicos comentados e em áudio. Salmo 91 (proteção), Salmo 23 (paz), Salmo 27 (coragem) e outros — em português, pra rezar todo dia.',
+    'Salmos bíblicos comentados e em áudio. Salmo 91 (proteção), Salmo 23 (paz), Salmo 27 (coragem) e outros, em português, pra rezar todo dia.',
   path: '/salmo',
 });
 
@@ -49,7 +49,7 @@ export default async function PsalmListPage() {
       <header style={{ marginBottom: 'var(--space-6)' }}>
         <h1>Salmos</h1>
         <p className="lede">
-          Salmos bíblicos comentados em português — pra oração diária, pra momentos de fé,
+          Salmos bíblicos comentados em português, pra oração diária, pra momentos de fé,
           proteção, gratidão e consolo.
         </p>
       </header>

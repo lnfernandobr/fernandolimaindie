@@ -14,6 +14,12 @@ const schema = z.object({
   UMSINALDEFE_API_URL: z.string().url().default('http://localhost:4000'),
   REVALIDATE_TOKEN: z.string().default('dev-revalidate-token'),
   INDEXNOW_KEY: z.string().default(''),
+  // ElevenLabs (text-to-speech). Server-only: nunca expor com NEXT_PUBLIC.
+  // A chave entra via Docker/env em produção; em dev fica vazia e o player
+  // cai no modo simulado sem quebrar.
+  ELEVENLABS_API_KEY: z.string().default(''),
+  ELEVENLABS_VOICE_ID: z.string().default('pNInz6obpgDQGcFmaJgB'),
+  ELEVENLABS_MODEL: z.string().default('eleven_multilingual_v2'),
 });
 
 const parsed = schema.parse({
@@ -27,6 +33,9 @@ const parsed = schema.parse({
   NEXT_PUBLIC_ADSENSE_CLIENT: process.env.NEXT_PUBLIC_ADSENSE_CLIENT,
   REVALIDATE_TOKEN: process.env.REVALIDATE_TOKEN,
   INDEXNOW_KEY: process.env.INDEXNOW_KEY,
+  ELEVENLABS_API_KEY: process.env.ELEVENLABS_API_KEY,
+  ELEVENLABS_VOICE_ID: process.env.ELEVENLABS_VOICE_ID,
+  ELEVENLABS_MODEL: process.env.ELEVENLABS_MODEL,
 });
 
 export const env = parsed;

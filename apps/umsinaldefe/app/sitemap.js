@@ -1,6 +1,7 @@
 import { absoluteUrl } from '../lib/site-config.js';
 import { listSignals } from '../lib/content/api.js';
 import { signalUrl } from '../lib/content/signal-url.js';
+import { INTENT_SLUGS } from '../lib/content/intents.js';
 
 export const revalidate = 86400;
 
@@ -18,6 +19,13 @@ export default async function sitemap() {
     lastModified: now,
     changeFrequency: entry.changeFrequency,
     priority: entry.priority,
+  }));
+
+  const intentEntries = Object.values(INTENT_SLUGS).map((intent) => ({
+    url: absoluteUrl(`/${intent}`),
+    lastModified: now,
+    changeFrequency: 'weekly',
+    priority: 0.8,
   }));
 
   let signalEntries = [];
@@ -38,8 +46,8 @@ export default async function sitemap() {
       priority: 0.7,
     }));
   } catch {
-    // API unavailable at build time — signal URLs excluded from sitemap
+    // Sem conteúdo no build: URLs de signals ficam de fora do sitemap
   }
 
-  return [...coreEntries, ...signalEntries];
+  return [...coreEntries, ...intentEntries, ...signalEntries];
 }

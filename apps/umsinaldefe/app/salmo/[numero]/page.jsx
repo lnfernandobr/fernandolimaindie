@@ -23,6 +23,7 @@ import { EntityLinks } from '@/components/EntityLinks.jsx';
 import { IntentNav } from '@/components/IntentNav.jsx';
 import { FavoriteButton } from '@/components/FavoriteButton.jsx';
 import { ShareButton } from '@/components/ShareButton.jsx';
+import { AudioPlayer } from '@/components/AudioPlayer.jsx';
 
 export const revalidate = 86400;
 
@@ -149,14 +150,14 @@ export default async function PsalmPage({ params }) {
 
         <SemanticFAQ entries={signal.faq} />
 
-        {signal.audioUrl && (
-          <section id="audio" className="chunk">
-            <h2>Ouça este salmo</h2>
-            <audio controls src={signal.audioUrl} preload="none">
-              <track kind="captions" label="Transcrição" srcLang="pt" />
-            </audio>
-          </section>
-        )}
+        <section id="audio" className="chunk">
+          <h2>Ouça este salmo</h2>
+          <AudioPlayer
+            title={signal.title}
+            src={signal.audioUrl ?? `/api/tts/${slug}`}
+            variant="feature"
+          />
+        </section>
 
         <EntityLinks entitySlugs={signal.entitySlugs} />
 

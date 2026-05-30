@@ -24,7 +24,7 @@ export async function generateMetadata({ params }) {
   if (!intentKey) return {};
   const label = INTENT_LABELS[intentKey];
   return buildMetadata({
-    title: `${label} — orações e reflexões`,
+    title: `${label}: orações e reflexões`,
     description: INTENT_DESCRIPTIONS[intentKey],
     path: `/${intentSlug}`,
   });
@@ -43,7 +43,7 @@ export default async function IntentHubPage({ params }) {
     const result = await listSignals({ intent: intentKey, limit: 20 });
     signals = result.items;
   } catch {
-    // API unavailable — show hub shell without listing
+    // Sem conteúdo: mostra a casca do hub sem listagem
   }
 
   const breadcrumbs = [

@@ -7,7 +7,7 @@ import { PrayersList } from '../components/PrayersList.jsx';
 import { SubscribeForm } from '../components/SubscribeForm.jsx';
 
 export const metadata = buildMetadata({
-  title: 'Um Sinal de Fé — devocional diário, salmos e orações em português',
+  title: 'Um Sinal de Fé: devocional diário, salmos e orações em português',
   description:
     'Um devocional curto todo dia. Salmos, orações por intenção e versículos pra te acompanhar em momentos de fé, ansiedade, sono e gratidão. Em português, simples, todo dia.',
   path: '/',

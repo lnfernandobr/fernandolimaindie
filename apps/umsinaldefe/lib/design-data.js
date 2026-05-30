@@ -2,7 +2,7 @@ export const TODAY = {
   theme: "Descansar à sombra",
   ref: "Salmo 91, 1",
   scripture: "Aquele que habita no abrigo do Altíssimo descansa à sombra do Todo-Poderoso.",
-  reflection: "Quando o dia é forte, você não combate o sol — procura sombra. Hoje, deixa Deus ser esse lugar de descanso. Uma frase de cada vez.",
+  reflection: "Quando o dia é forte, você não combate o sol, procura sombra. Hoje, deixa Deus ser esse lugar de descanso. Uma frase de cada vez.",
   readMins: 2,
   audio: { title: "Salmo 91", subtitle: "o salmo da proteção", duration: 192 },
 };
@@ -36,14 +36,14 @@ export const PSALMS = [
     num: 23, slug: "23", tag: "Confiança",
     title: "o Senhor é meu pastor",
     line: "O Senhor é o meu pastor; nada me faltará.",
-    blurb: "O salmo do descanso e da provisão — verdes pastos, águas tranquilas, uma mesa preparada.",
+    blurb: "O salmo do descanso e da provisão: verdes pastos, águas tranquilas, uma mesa preparada.",
     audio: 138,
   },
   {
     num: 121, slug: "121", tag: "Caminho",
     title: "o socorro vem do Senhor",
     line: "Elevo os meus olhos para os montes: de onde me virá o socorro?",
-    blurb: "O salmo da viagem e da guarda — para quem sai e para quem espera em casa.",
+    blurb: "O salmo da viagem e da guarda, para quem sai e para quem espera em casa.",
     audio: 121,
   },
   {
@@ -57,7 +57,7 @@ export const PSALMS = [
     num: 51, slug: "51", tag: "Perdão",
     title: "cria em mim um coração puro",
     line: "Cria em mim, ó Deus, um coração puro e renova em mim um espírito firme.",
-    blurb: "O salmo do recomeço — pra quando o peso é o que a gente mesmo carregou.",
+    blurb: "O salmo do recomeço, pra quando o peso é o que a gente mesmo carregou.",
     audio: 170,
   },
   {
@@ -99,14 +99,14 @@ export const PRAYERS = [
 export const SALMO_91 = {
   num: 91,
   tag: "Proteção",
-  title: "Salmo 91 — o salmo da proteção",
+  title: "Salmo 91, o salmo da proteção",
   direct: "O Salmo 91 é a oração de quem se abriga em Deus como num esconderijo: “Aquele que habita no abrigo do Altíssimo descansa à sombra do Todo-Poderoso”. Pode ser rezado de manhã, à noite ou em momentos de medo.",
   intro: "O Salmo 91 atravessa séculos como oração de proteção. Cobertura, refúgio, anjos. Reze devagar, uma frase de cada vez.",
   audio: { title: "Salmo 91", subtitle: "o salmo da proteção", duration: 192 },
   passages: [
     {
       verse: "Aquele que habita no abrigo do Altíssimo, descansa à sombra do Todo-Poderoso.",
-      note: "A imagem é de uma sombra protetora. Quando o dia é forte, você não combate o sol — você procura sombra. Salmo 91 chama essa sombra de morada.",
+      note: "A imagem é de uma sombra protetora. Quando o dia é forte, você não combate o sol, você procura sombra. Salmo 91 chama essa sombra de morada.",
     },
     {
       verse: "Sob suas asas encontras refúgio.",
@@ -114,7 +114,7 @@ export const SALMO_91 = {
     },
     {
       verse: "Não temerás os terrores da noite.",
-      note: "A noite assusta porque você não vê o que vem. O Salmo 91 não nega o terror — ele oferece outra companhia pra dentro dele.",
+      note: "A noite assusta porque você não vê o que vem. O Salmo 91 não nega o terror, ele oferece outra companhia pra dentro dele.",
     },
   ],
   faq: [

@@ -60,7 +60,7 @@ export function Intentions() {
           ))}
           {filtered.length === 0 && (
             <p className="int-empty t-faint">
-              Nada encontrado pra &ldquo;{q}&rdquo;. Tenta outra palavra — ou{' '}
+              Nada encontrado pra &ldquo;{q}&rdquo;. Tenta outra palavra, ou{' '}
               <button className="linkish" onClick={() => setQ('')}>ver todas</button>.
             </p>
           )}

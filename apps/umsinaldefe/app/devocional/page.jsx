@@ -9,9 +9,9 @@ import { IntentNav } from '@/components/IntentNav.jsx';
 export const revalidate = 86400;
 
 export const metadata = buildMetadata({
-  title: 'Devocionais — reflexão e oração para o dia a dia',
+  title: 'Devocionais: reflexão e oração para o dia a dia',
   description:
-    'Devocionais cristãos curtos em português. Reflexão, versículo e oração — pra começar o dia com fé, lidar com ansiedade, encontrar esperança e crescer espiritualmente.',
+    'Devocionais cristãos curtos em português. Reflexão, versículo e oração pra começar o dia com fé, lidar com ansiedade, encontrar esperança e crescer espiritualmente.',
   path: '/devocional',
 });
 
@@ -50,7 +50,7 @@ export default async function DevotionalListPage() {
       <header style={{ marginBottom: 'var(--space-6)' }}>
         <h1>Devocionais</h1>
         <p className="lede">
-          Uma reflexão curta com versículo e oração — pra começar o dia com fé, atravessar
+          Uma reflexão curta com versículo e oração pra começar o dia com fé, atravessar
           momentos difíceis e crescer espiritualmente, um dia de cada vez.
         </p>
       </header>
