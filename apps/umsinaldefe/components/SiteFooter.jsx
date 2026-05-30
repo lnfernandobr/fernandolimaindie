@@ -3,12 +3,12 @@ import { Glyph } from './Glyph.jsx';
 
 const COLS = [
   {
-    h: 'Devocional',
+    h: 'Bíblia',
     items: [
-      { label: 'Devocional de hoje', href: '/salmo/91' },
-      { label: 'Por intenção',       href: '/#intencoes' },
-      { label: 'Manhã',              href: '/ansiedade'  },
-      { label: 'Noite',              href: '/noite'      },
+      { label: 'Versículos sobre o amor',     href: '/biblia/amor'      },
+      { label: 'Versículos sobre a família',  href: '/biblia/familia'   },
+      { label: 'Versículos sobre ansiedade',  href: '/biblia/ansiedade' },
+      { label: 'Versículos por tema',         href: '/biblia'           },
     ],
   },
   {
@@ -23,10 +23,19 @@ const COLS = [
   {
     h: 'Orações',
     items: [
-      { label: 'Para dormir em paz',     href: '/oracao/para-dormir-em-paz'     },
-      { label: 'Da manhã',               href: '/oracao/da-manha'               },
-      { label: 'Contra a ansiedade',     href: '/oracao/contra-a-ansiedade'     },
-      { label: 'Todas as orações',       href: '/oracao'                        },
+      { label: 'Pelos filhos',           href: '/oracao/pelos-filhos'       },
+      { label: 'Para dormir em paz',     href: '/oracao/para-dormir-em-paz' },
+      { label: 'São Miguel Arcanjo',     href: '/oracao/sao-miguel-arcanjo' },
+      { label: 'Todas as orações',       href: '/oracao'                    },
+    ],
+  },
+  {
+    h: 'Blog',
+    items: [
+      { label: 'Vencer a ansiedade com fé', href: '/blog/como-vencer-a-ansiedade-com-fe' },
+      { label: 'Como ler a Bíblia',         href: '/blog/como-ler-a-biblia-do-zero'      },
+      { label: 'Fortalecer o casamento',    href: '/blog/como-fortalecer-o-casamento-com-fe' },
+      { label: 'Todos os artigos',          href: '/blog'                                },
     ],
   },
 ];

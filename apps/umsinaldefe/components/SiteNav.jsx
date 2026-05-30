@@ -33,9 +33,11 @@ export function SiteNav() {
   };
 
   const links = [
+    { href: '/biblia',     label: 'Bíblia'     },
     { href: '/devocional', label: 'Devocional' },
     { href: '/salmo',      label: 'Salmos'     },
     { href: '/oracao',     label: 'Orações'    },
+    { href: '/blog',       label: 'Blog'       },
   ];
 
   return (

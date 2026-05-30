@@ -563,6 +563,49 @@ const PRAYERS = [
     ],
   },
   {
+    slug: 'oracao-pelos-filhos',
+    kind: 'prayer',
+    intent: 'family',
+    topicSlug: 'familia',
+    relatedIntents: ['protection', 'faith', 'healing'],
+    title: 'Oração pelos filhos: proteção, saúde e bom caminho',
+    answer:
+      'Uma oração de mãe e de pai pra entregar os filhos a Deus todos os dias. Você pede proteção, saúde e sabedoria pra eles, e calma pra você confiar no que não consegue controlar.',
+    summary:
+      'Uma oração pelos filhos: pedir proteção, bom caminho e fé, dos primeiros passos à vida adulta, mesmo quando eles estão longe.',
+    chunks: [
+      c(
+        'oracao',
+        `<h2>A oração pelos filhos</h2>
+        <p class="scripture">Senhor, eu te entrego os meus filhos. Guarda cada passo deles, no caminho de casa e longe dos meus olhos.</p>
+        <p class="scripture">Dá saúde ao corpo, paz ao coração e boas companhias. Que eles cresçam sabendo o que é certo, e que sintam, mesmo sem eu estar perto, que são amados por ti e por mim. Me ajuda a confiar quando eu não puder proteger. Amém.</p>`,
+      ),
+      c(
+        'soltar-e-confiar',
+        `<h2>Rezar é também aprender a soltar</h2>
+        <p>Tem uma hora em que a gente não consegue mais ir junto: a escola, a rua, a vida adulta, as escolhas que são só deles. Rezar pelos filhos é entregar o que o nosso braço já não alcança. Não é deixar de cuidar, é cuidar do jeito que ainda dá, com oração e presença.</p>
+        <p>Você pode rezar trocando "os meus filhos" pelo nome de cada um, um por um. Reze também pelos que estão em fase difícil, distantes ou em conflito. O amor não desiste, e a oração mantém a porta aberta.</p>`,
+      ),
+    ],
+    faq: [
+      {
+        question: 'Como rezar pelos filhos todos os dias?',
+        answer:
+          'Reze pelo nome de cada um, peça proteção, saúde e bom caminho, e entregue a Deus o que você não controla. Muita mãe e pai rezam de manhã, ao acordar os filhos, ou à noite, antes de dormir.',
+      },
+      {
+        question: 'Qual versículo rezar pelos filhos?',
+        answer:
+          'Provérbios 22, 6 ("ensina a criança no caminho em que deve andar") e Salmo 127, 3 ("os filhos são herança do Senhor") são dos mais rezados pela vida dos filhos.',
+      },
+      {
+        question: 'Existe oração por um filho distante ou rebelde?',
+        answer:
+          'Sim. Esta mesma oração serve: você apresenta o filho a Deus pelo nome, pede que ele encontre bom caminho e boas companhias, e pede pra você a paciência de amar sem desistir.',
+      },
+    ],
+  },
+  {
     slug: 'oracao-pelas-financas',
     kind: 'prayer',
     intent: 'finances',
