@@ -5,6 +5,7 @@ import { Intentions } from '../components/Intentions.jsx';
 import { FeaturedPsalms } from '../components/FeaturedPsalms.jsx';
 import { PrayersList } from '../components/PrayersList.jsx';
 import { SubscribeForm } from '../components/SubscribeForm.jsx';
+import { isTtsConfigured } from '../lib/media/elevenlabs.js';
 
 export const metadata = buildMetadata({
   title: 'Um Sinal de Fé: devocional diário, salmos e orações em português',
@@ -38,13 +39,14 @@ const FAQ = [
 const pageGraph = ldGraph(faqLd(FAQ), speakableLd(['#devocional', '#intencoes']));
 
 export default function HomePage() {
+  const audioEnabled = isTtsConfigured();
   return (
     <>
       <script {...jsonLdScript(pageGraph)} />
-      <Hero />
+      <Hero audioEnabled={audioEnabled} />
       <Intentions />
       <FeaturedPsalms />
-      <PrayersList />
+      <PrayersList audioEnabled={audioEnabled} />
       <SubscribeForm />
     </>
   );

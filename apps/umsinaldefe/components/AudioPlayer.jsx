@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import { Glyph } from './Glyph.jsx';
 
 const fmt = (s) => {
@@ -21,84 +21,68 @@ const waveHeights = (n, seed = 7) => {
 };
 
 /**
- * Player de áudio. Quando recebe `src` (ex.: /api/tts/<slug>), toca o áudio
- * real da ElevenLabs e dirige a onda pela tag <audio>. Sem `src`, ou se o
- * áudio real falhar (ex.: chave ausente em dev), cai no modo simulado, com a
- * onda animada e o tempo correndo, pra nunca ficar com cara de quebrado.
+ * Player de áudio real. Toca o que vier em `src` (ex.: /api/tts/<slug>),
+ * gerado pela ElevenLabs. Não simula nada: a onda e o tempo refletem o áudio
+ * de verdade. Se a página não tiver áudio disponível, ela simplesmente não
+ * renderiza este componente (ver `audioEnabled` nas páginas).
  */
-export function AudioPlayer({ title, subtitle, src, duration = 180, variant = 'feature', bars = 48 }) {
-  const [playing, setPlaying] = useState(false);
+export function AudioPlayer({ title, subtitle, src, duration = 0, variant = 'feature', bars = 48 }) {
+  const [status, setStatus] = useState('idle'); // idle | loading | playing | paused | error
   const [t, setT] = useState(0);
-  const [realDur, setRealDur] = useState(null);
-  const [failed, setFailed] = useState(false);
-  const heights = useMemo(() => waveHeights(bars, title.length + duration), [bars, title, duration]);
+  const [dur, setDur] = useState(duration || 0);
+  const heights = useMemo(() => waveHeights(bars, title.length + (duration || 120)), [bars, title, duration]);
   const ref = useRef(null);
   const audioRef = useRef(null);
 
-  const useReal = Boolean(src) && !failed;
-  const effDur = realDur ?? duration;
-
-  // Modo simulado: só roda quando não há áudio real tocando.
-  useEffect(() => {
-    if (!playing || useReal) return;
-    const id = setInterval(() => {
-      setT((p) => {
-        if (p >= effDur) { setPlaying(false); return effDur; }
-        return p + 0.1;
-      });
-    }, 100);
-    return () => clearInterval(id);
-  }, [playing, useReal, effDur]);
-
-  const pct = Math.min(1, t / effDur);
+  const playing = status === 'playing';
+  const loading = status === 'loading';
+  const error = status === 'error';
+  const effDur = dur || duration || 0;
+  const pct = effDur ? Math.min(1, t / effDur) : 0;
 
   const toggle = async () => {
-    if (useReal) {
-      const a = audioRef.current;
-      if (!a) return;
-      if (a.paused) {
-        try {
-          await a.play();
-          setPlaying(true);
-        } catch {
-          // Áudio real indisponível: assume simulado a partir daqui.
-          setFailed(true);
-          setPlaying(true);
-        }
-      } else {
-        a.pause();
-        setPlaying(false);
+    const a = audioRef.current;
+    if (!a || error) return;
+    if (a.paused) {
+      setStatus('loading');
+      try {
+        await a.play();
+      } catch {
+        setStatus('error');
       }
     } else {
-      setPlaying((p) => !p);
+      a.pause();
     }
   };
 
   const seek = (e) => {
+    const a = audioRef.current;
     const el = ref.current;
-    if (!el) return;
+    if (!a || !el || !effDur) return;
     const rect = el.getBoundingClientRect();
     const clientX = e.clientX ?? e.touches?.[0]?.clientX;
     const x = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
-    const nt = x * effDur;
-    setT(nt);
-    if (useReal && audioRef.current) audioRef.current.currentTime = nt;
+    a.currentTime = x * effDur;
+    setT(a.currentTime);
   };
 
-  const audioEl = src ? (
+  const audioEl = (
     <audio
       ref={audioRef}
       src={src}
       preload="none"
       onLoadedMetadata={(e) => {
         const d = e.currentTarget.duration;
-        if (Number.isFinite(d) && d > 0) setRealDur(d);
+        if (Number.isFinite(d) && d > 0) setDur(d);
       }}
+      onPlaying={() => setStatus('playing')}
+      onWaiting={() => setStatus('loading')}
+      onPause={() => setStatus((s) => (s === 'playing' || s === 'loading' ? 'paused' : s))}
       onTimeUpdate={(e) => setT(e.currentTarget.currentTime)}
-      onEnded={() => setPlaying(false)}
-      onError={() => { setFailed(true); }}
+      onEnded={() => { setStatus('paused'); setT(0); }}
+      onError={() => setStatus('error')}
     />
-  ) : null;
+  );
 
   const pine = variant === 'pine';
   const accent    = pine ? 'var(--gold-soft)' : 'var(--gold)';
@@ -106,23 +90,29 @@ export function AudioPlayer({ title, subtitle, src, duration = 180, variant = 'f
   const sub       = pine ? 'var(--on-pine-soft)' : 'var(--ink-faint)';
   const trackBg   = pine ? 'rgba(239,231,214,.18)' : 'var(--line-strong)';
   const playedTo  = Math.round(pct * bars);
+  const icon      = playing ? 'pause' : 'play';
 
   if (variant === 'row') {
+    const rowTime = error
+      ? 'indisponível'
+      : loading
+        ? 'carregando…'
+        : `${(playing || t > 0) ? `${fmt(t)} / ` : ''}${effDur ? fmt(effDur) : ''}`;
     return (
       <button
         className="ap-row"
         onClick={toggle}
+        disabled={error}
+        aria-busy={loading}
         aria-label={(playing ? 'Pausar ' : 'Ouvir ') + title}
       >
         {audioEl}
         <span className="ap-row-btn">
-          <Glyph name={playing ? 'pause' : 'play'} size={18} />
+          <Glyph name={icon} size={18} />
         </span>
         <span className="ap-row-meta">
           <span className="ap-row-title">{title}</span>
-          <span className="ap-row-time">
-            {(playing || t > 0) ? `${fmt(t)} / ` : ''}{fmt(effDur)}
-          </span>
+          <span className="ap-row-time">{rowTime}</span>
         </span>
         <span className="ap-row-wave" aria-hidden="true">
           {heights.slice(0, 14).map((h, i) => (
@@ -140,15 +130,21 @@ export function AudioPlayer({ title, subtitle, src, duration = 180, variant = 'f
   return (
     <div className={`ap ${pine ? 'ap-pine' : 'ap-feature'}`}>
       {audioEl}
-      <button className="ap-play" onClick={toggle} aria-label={playing ? 'Pausar' : 'Ouvir'}>
-        <Glyph name={playing ? 'pause' : 'play'} size={26} />
+      <button
+        className="ap-play"
+        onClick={toggle}
+        disabled={error}
+        aria-busy={loading}
+        aria-label={playing ? 'Pausar' : 'Ouvir'}
+      >
+        <Glyph name={icon} size={26} />
         <span className="ap-play-ring" />
       </button>
 
       <div className="ap-body">
         <div className="ap-head">
           <span className="ap-label" style={{ color: sub }}>
-            <Glyph name="headphones" size={14} /> Ouvir agora
+            <Glyph name="headphones" size={14} /> {error ? 'Áudio indisponível' : loading ? 'Carregando áudio…' : 'Ouvir agora'}
           </span>
           <span className="ap-title" style={{ color: txt }}>
             {title}{subtitle && <em style={{ color: sub }}> · {subtitle}</em>}
@@ -179,7 +175,7 @@ export function AudioPlayer({ title, subtitle, src, duration = 180, variant = 'f
 
         <div className="ap-time" style={{ color: sub }}>
           <span>{fmt(t)}</span>
-          <span>−{fmt(effDur - t)}</span>
+          <span>{effDur ? `−${fmt(effDur - t)}` : ''}</span>
         </div>
       </div>
     </div>

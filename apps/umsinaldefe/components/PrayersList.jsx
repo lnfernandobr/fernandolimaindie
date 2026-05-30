@@ -4,7 +4,7 @@ import { Glyph } from './Glyph.jsx';
 import { AudioPlayer } from './AudioPlayer.jsx';
 import { PRAYERS } from '@/lib/design-data.js';
 
-export function PrayersList() {
+export function PrayersList({ audioEnabled = false }) {
   const router = useRouter();
   return (
     <section className="section prayers pine" id="oracoes">
@@ -33,14 +33,16 @@ export function PrayersList() {
                 <h3 className="prayer-title">{pr.title}</h3>
                 <p className="prayer-line scripture">&ldquo;{pr.line}&rdquo;</p>
               </div>
-              <div className="prayer-player" onClick={(e) => e.stopPropagation()}>
-                <AudioPlayer
-                  title={pr.title.replace('Oração ', '')}
-                  duration={pr.audio}
-                  src={`/api/tts/oracao-${pr.slug}`}
-                  variant="row"
-                />
-              </div>
+              {audioEnabled && (
+                <div className="prayer-player" onClick={(e) => e.stopPropagation()}>
+                  <AudioPlayer
+                    title={pr.title.replace('Oração ', '')}
+                    duration={pr.audio}
+                    src={`/api/tts/oracao-${pr.slug}`}
+                    variant="row"
+                  />
+                </div>
+              )}
             </article>
           ))}
         </div>

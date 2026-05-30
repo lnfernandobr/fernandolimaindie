@@ -11,7 +11,7 @@ function getTodayLabel() {
   });
 }
 
-export function Hero() {
+export function Hero({ audioEnabled = false }) {
   const d = TODAY;
   const dateStr = getTodayLabel();
   const psalmNum = d.ref.replace(/Salmo\s*/i, '').replace(/,.*/, '');
@@ -44,15 +44,17 @@ export function Hero() {
             </a>
           </div>
 
-          <div className="hero-audio">
-            <AudioPlayer
-              title={d.audio.title}
-              subtitle={d.audio.subtitle}
-              duration={d.audio.duration}
-              src="/api/tts/salmo-91"
-              variant="feature"
-            />
-          </div>
+          {audioEnabled && (
+            <div className="hero-audio">
+              <AudioPlayer
+                title={d.audio.title}
+                subtitle={d.audio.subtitle}
+                duration={d.audio.duration}
+                src="/api/tts/salmo-91"
+                variant="feature"
+              />
+            </div>
+          )}
         </div>
 
         <div className="hero-art reveal">
