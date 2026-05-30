@@ -15,6 +15,8 @@ import { AdSlot } from '@/components/AdSlot.jsx';
 import { SemanticFAQ } from '@/components/SemanticFAQ.jsx';
 import { ShareButton } from '@/components/ShareButton.jsx';
 import { IntentNav } from '@/components/IntentNav.jsx';
+import { AudioPlayer } from '@/components/AudioPlayer.jsx';
+import { isTtsConfigured } from '@/lib/media/elevenlabs.js';
 
 export const revalidate = 86400;
 
@@ -110,6 +112,17 @@ export default async function VerseTopicPage({ params }) {
         </section>
 
         <section className="chunk" dangerouslySetInnerHTML={{ __html: topic.reflectionHtml }} />
+
+        {isTtsConfigured() && (
+          <section id="audio" className="chunk">
+            <h2>Ouça estes versículos</h2>
+            <AudioPlayer
+              title={`Versículos sobre ${topic.tag.toLowerCase()}`}
+              src={`/api/tts/${tema}`}
+              variant="feature"
+            />
+          </section>
+        )}
 
         <SemanticFAQ entries={topic.faq} />
 

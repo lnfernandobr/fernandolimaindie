@@ -27,7 +27,7 @@ const waveHeights = (n, seed = 7) => {
  * renderiza este componente (ver `audioEnabled` nas páginas).
  */
 export function AudioPlayer({ title, subtitle, src, duration = 0, variant = 'feature', bars = 48 }) {
-  const [status, setStatus] = useState('idle'); // idle | loading | playing | paused | error
+  const [status, setStatus] = useState('idle'); // idle | loading | playing | paused | error | hidden
   const [t, setT] = useState(0);
   const [dur, setDur] = useState(duration || 0);
   const heights = useMemo(() => waveHeights(bars, title.length + (duration || 120)), [bars, title, duration]);
@@ -37,8 +37,13 @@ export function AudioPlayer({ title, subtitle, src, duration = 0, variant = 'fea
   const playing = status === 'playing';
   const loading = status === 'loading';
   const error = status === 'error';
+  const hidden = status === 'hidden';
   const effDur = dur || duration || 0;
   const pct = effDur ? Math.min(1, t / effDur) : 0;
+
+  // Se o player está escondido (ex.: server retornou 413 = conteúdo longo),
+  // simplesmente não renderiza nada.
+  if (hidden) return null;
 
   const toggle = async () => {
     const a = audioRef.current;
@@ -80,7 +85,7 @@ export function AudioPlayer({ title, subtitle, src, duration = 0, variant = 'fea
       onPause={() => setStatus((s) => (s === 'playing' || s === 'loading' ? 'paused' : s))}
       onTimeUpdate={(e) => setT(e.currentTarget.currentTime)}
       onEnded={() => { setStatus('paused'); setT(0); }}
-      onError={() => setStatus('error')}
+      onError={() => setStatus('hidden')}
     />
   );
 

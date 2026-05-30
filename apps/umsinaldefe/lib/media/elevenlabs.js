@@ -8,6 +8,11 @@ const ELEVENLABS_TTS_URL = 'https://api.elevenlabs.io/v1/text-to-speech';
 // e leituras devocionais não precisam ser longas.
 const MAX_NARRATION_CHARS = 2800;
 
+// ElevenLabs multilingual_v2 em PT-BR fala ~150 palavras/minuto.
+// Se o texto narrado tiver mais de ~150 palavras, o áudio passa de 1 minuto.
+const MAX_WORDS_FOR_AUDIO = 150;
+const WORDS_PER_MINUTE = 150;
+
 const VOICE_SETTINGS = {
   stability: 0.5,
   similarity_boost: 0.75,
@@ -66,6 +71,15 @@ export const buildNarration = (signal) => {
 };
 
 export const isTtsConfigured = () => Boolean(env.ELEVENLABS_API_KEY);
+
+/** Conta palavras de um texto limpo. */
+const wordCount = (text) => text.split(/\s+/).filter(Boolean).length;
+
+/** Estima a duração em segundos de uma narração. */
+export const estimateDuration = (text) => Math.round((wordCount(text) / WORDS_PER_MINUTE) * 60);
+
+/** Retorna true se o texto cabe no limite de 1 minuto de áudio. */
+export const fitsAudioLimit = (text) => wordCount(text) <= MAX_WORDS_FOR_AUDIO;
 
 /**
  * Chama a ElevenLabs e devolve o áudio (audio/mpeg) como ArrayBuffer.
