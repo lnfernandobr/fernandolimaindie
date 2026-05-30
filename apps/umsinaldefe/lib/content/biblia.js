@@ -35,7 +35,8 @@ const TOPICS = [
       v('Romanos 13, 10', 'O amor não faz mal ao próximo. O amor, portanto, é o cumprimento da lei.'),
     ],
     reflectionHtml: `<p>Quando a Bíblia fala de amor, quase nunca está falando de um sentimento que vai e volta. Está falando de uma decisão diária: ter paciência, ser bondoso, não guardar rancor. Por isso 1 Coríntios 13 é lido em tantos casamentos. Não é poesia romântica, é um manual de como amar gente de verdade, com defeitos e dias ruins.</p>
-    <p>Se você procura um versículo pra dedicar a alguém ou pra rezar pensando em quem ama, comece por um só. Leia devagar, deixe a frase descer, e veja como ela cabe na sua vida hoje.</p>`,
+    <p>Se você procura um versículo pra dedicar a alguém ou pra rezar pensando em quem ama, comece por um só. Leia devagar, deixe a frase descer, e veja como ela cabe na sua vida hoje.</p>
+    <p>Se o que você busca é o amor de Deus por você, veja a página de <a href="/biblia/amor-de-deus">versículos sobre o amor de Deus</a>.</p>`,
     faq: [
       {
         question: 'Qual o versículo mais conhecido sobre o amor?',
@@ -46,6 +47,47 @@ const TOPICS = [
         question: 'O que a Bíblia diz que é o amor?',
         answer:
           'Que o amor é paciente, bondoso, não invejoso nem orgulhoso, e que tudo suporta (1 Coríntios 13). A Bíblia também diz que "Deus é amor" (1 João 4, 8).',
+      },
+    ],
+  },
+  {
+    slug: 'amor-de-deus',
+    intent: 'faith',
+    tag: 'Amor de Deus',
+    title: 'Versículos sobre o amor de Deus',
+    answer:
+      'O amor de Deus na Bíblia é incondicional e eterno, e a sua maior prova é Jesus: "Deus amou o mundo de tal maneira que deu o seu Filho" (João 3, 16). Aqui estão os versículos mais marcantes sobre o amor de Deus por você.',
+    summary:
+      'Versículos sobre o amor de Deus por nós: incondicional, eterno e provado em Cristo. Pra lembrar que nada pode separar você desse amor.',
+    verses: [
+      v('João 3, 16', 'Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna.'),
+      v('Romanos 5, 8', 'Mas Deus prova o seu amor para conosco: Cristo morreu por nós quando ainda éramos pecadores.'),
+      v('Romanos 8, 38-39', 'Tenho certeza de que nem a morte, nem a vida, nem coisa alguma na criação poderá nos separar do amor de Deus, que está em Cristo Jesus, nosso Senhor.'),
+      v('1 João 4, 9-10', 'Nisto se manifestou o amor de Deus: em que enviou o seu Filho ao mundo para que por ele vivamos. Nisto está o amor: não em que nós tenhamos amado a Deus, mas em que ele nos amou primeiro.'),
+      v('1 João 4, 16', 'Nós conhecemos e cremos no amor que Deus nos tem. Deus é amor, e quem permanece no amor permanece em Deus.'),
+      v('Jeremias 31, 3', 'Com amor eterno eu te amei; por isso, com bondade, eu te atraí.'),
+      v('Efésios 2, 4-5', 'Mas Deus, rico em misericórdia, pelo grande amor com que nos amou, deu-nos vida juntamente com Cristo.'),
+      v('Sofonias 3, 17', 'O Senhor, teu Deus, está no meio de ti; ele se alegra em ti com grande alegria.'),
+      v('Salmo 136, 26', 'Dai graças ao Deus dos céus, porque o seu amor dura para sempre.'),
+    ],
+    reflectionHtml: `<p>Tem dia em que a gente duvida de ser amado, por Deus ou por quem quer que seja. A Bíblia responde a essa dúvida do jeito mais concreto possível: o amor de Deus não é uma frase bonita, é uma entrega. "Deus prova o seu amor: Cristo morreu por nós quando ainda éramos pecadores" (Romanos 5, 8). Não foi um amor merecido, foi um amor primeiro.</p>
+    <p>O versículo mais conhecido sobre isso é João 3, 16, decorado por gerações. Mas talvez o mais consolador seja Romanos 8: nada, nem a morte, nem os seus piores dias, te separa desse amor. Se você está num momento difícil, leia esse devagar.</p>
+    <p>Se procura também versículos sobre amar as pessoas, veja a página de <a href="/biblia/amor">versículos sobre o amor</a>.</p>`,
+    faq: [
+      {
+        question: 'Qual o maior versículo sobre o amor de Deus?',
+        answer:
+          'João 3, 16: "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito". É o versículo mais conhecido sobre o amor de Deus pela humanidade.',
+      },
+      {
+        question: 'O amor de Deus é incondicional?',
+        answer:
+          'A Bíblia diz que sim. Romanos 5, 8 mostra que Deus amou e entregou Cristo por nós quando ainda éramos pecadores, ou seja, antes de qualquer mérito nosso.',
+      },
+      {
+        question: 'O que pode nos separar do amor de Deus?',
+        answer:
+          'Segundo Romanos 8, 38-39, nada: nem a morte, nem a vida, nem nenhuma circunstância pode nos separar do amor de Deus que está em Cristo Jesus.',
       },
     ],
   },
