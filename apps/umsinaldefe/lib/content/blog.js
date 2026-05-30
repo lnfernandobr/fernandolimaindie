@@ -9,7 +9,11 @@
  *   - Português do Brasil, caloroso e direto, conversa de gente pra gente.
  *   - Sem travessão. Vírgula, ponto, parênteses ou dois-pontos.
  *   - Answer-first: `excerpt` resolve a busca em 1 a 2 linhas.
+ *
+ * Posts gerados pelo cron (scripts/generate-post.mjs) entram via
+ * generated-posts.json e são mesclados aos posts fixos abaixo.
  */
+import generatedFile from './generated-posts.json';
 
 const PUB = '2026-05-01T08:00:00.000Z';
 const UPD = '2026-05-25T08:00:00.000Z';
@@ -20,12 +24,16 @@ export const BLOG_CATEGORIES = [
   { slug: 'superacao', label: 'Superação', description: 'Ansiedade, medo, luto e recomeços com fé.' },
   { slug: 'vida-crista', label: 'Vida cristã', description: 'Oração, leitura da Bíblia e crescimento espiritual.' },
   { slug: 'financas', label: 'Finanças com fé', description: 'Dívidas, trabalho e provisão sem desespero.' },
+  { slug: 'biblia-explicada', label: 'Bíblia explicada', description: 'Versículos por tema e passagens explicadas com simplicidade.' },
+  { slug: 'salmos', label: 'Salmos explicados', description: 'O sentido dos salmos, um a um, pra rezar com entendimento.' },
+  { slug: 'oracoes', label: 'Orações', description: 'Orações tradicionais, aos santos e para cada momento.' },
 ];
 
 const POSTS = [
   {
     slug: 'como-vencer-a-ansiedade-com-fe',
     category: 'superacao',
+    image: { src: 'https://loremflickr.com/1200/630/candle,calm,light?lock=11', alt: 'Vela acesa, símbolo de paz e oração' },
     title: 'Como vencer a ansiedade com fé (sem fingir que está tudo bem)',
     excerpt:
       'Vencer a ansiedade com fé não é ignorar o que você sente. É juntar oração, atitude e, quando preciso, ajuda profissional, pra entregar o que não dá pra controlar e cuidar do que dá.',
@@ -61,6 +69,7 @@ const POSTS = [
   {
     slug: 'como-ler-a-biblia-do-zero',
     category: 'vida-crista',
+    image: { src: 'https://loremflickr.com/1200/630/bible,book,light?lock=22', alt: 'Bíblia aberta sobre a mesa, à luz da manhã' },
     title: 'Como ler a Bíblia do zero: um guia simples pra começar',
     excerpt:
       'Pra começar a ler a Bíblia, não comece do Gênesis tentando ler tudo. Comece por um Evangelho, leia poucos versículos por dia e use um plano simples. O importante é a constância, não a velocidade.',
@@ -98,6 +107,7 @@ const POSTS = [
   {
     slug: 'como-fortalecer-o-casamento-com-fe',
     category: 'casamento',
+    image: { src: 'https://loremflickr.com/1200/630/couple,hands,love?lock=33', alt: 'Casal de mãos dadas' },
     title: 'Como fortalecer o casamento com fé e pequenos hábitos',
     excerpt:
       'Casamento forte não se faz de grandes gestos, e sim de pequenos hábitos repetidos: escutar, perdoar rápido, orar juntos e cuidar do "nós". A fé entra como o terceiro fio que segura a corda.',
@@ -130,6 +140,7 @@ const POSTS = [
   {
     slug: 'criar-os-filhos-na-fe',
     category: 'familia',
+    image: { src: 'https://loremflickr.com/1200/630/family,children,sunset?lock=44', alt: 'Família reunida ao pôr do sol' },
     title: 'Como criar os filhos na fé sem precisar ser o pai perfeito',
     excerpt:
       'Criar os filhos na fé é menos sobre regras e mais sobre exemplo, presença e conversa. Você não precisa ter todas as respostas, só precisa caminhar junto e deixar a fé ser parte natural da casa.',
@@ -161,10 +172,17 @@ const POSTS = [
 
 const withDates = (p) => ({ publishedAt: PUB, updatedAt: UPD, ...p });
 
-export const listPosts = () => POSTS.map(withDates);
+// Posts fixos (curados à mão) + posts gerados pelo cron, sem duplicar slug.
+const GENERATED = Array.isArray(generatedFile?.posts) ? generatedFile.posts : [];
+const fixedSlugs = new Set(POSTS.map((p) => p.slug));
+const ALL_POSTS = [...POSTS, ...GENERATED.filter((p) => p && p.slug && !fixedSlugs.has(p.slug))];
+
+const byNewest = (a, b) => new Date(b.publishedAt || 0) - new Date(a.publishedAt || 0);
+
+export const listPosts = () => ALL_POSTS.map(withDates).sort(byNewest);
 
 export const getPost = (slug) => {
-  const p = POSTS.find((x) => x.slug === slug);
+  const p = ALL_POSTS.find((x) => x.slug === slug);
   return p ? withDates(p) : null;
 };
 
@@ -173,6 +191,6 @@ export const listPostsByCategory = (categorySlug) =>
 
 export const getCategory = (slug) => BLOG_CATEGORIES.find((c) => c.slug === slug) ?? null;
 
-export const POST_SLUGS = POSTS.map((p) => p.slug);
+export const POST_SLUGS = ALL_POSTS.map((p) => p.slug);
 
 export const categoryLabel = (slug) => getCategory(slug)?.label ?? slug;

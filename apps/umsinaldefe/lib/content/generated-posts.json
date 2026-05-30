@@ -1,0 +1,4 @@
+{
+  "_comment": "Posts gerados automaticamente pelo cron (scripts/generate-post.mjs). Cada item segue o mesmo formato dos posts fixos em blog.js (slug, category, title, excerpt, bodyHtml, faq, readMins, image, relatedIntent, keyword, publishedAt, updatedAt). Não editar à mão a menos que precise corrigir algo.",
+  "posts": []
+}

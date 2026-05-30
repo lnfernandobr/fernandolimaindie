@@ -31,8 +31,28 @@ export async function generateMetadata({ params }) {
     description: post.excerpt,
     path: `/blog/${slug}`,
     type: 'article',
+    image: post.image?.src ?? undefined,
     publishedTime: post.publishedAt,
     modifiedTime: post.updatedAt,
+  });
+}
+
+/** Extrai os H2s do bodyHtml pra montar o índice (TOC). */
+function extractHeadings(html) {
+  const matches = [...(html ?? '').matchAll(/<h2[^>]*>(.*?)<\/h2>/gi)];
+  return matches.map((m, i) => {
+    const text = m[1].replace(/<[^>]+>/g, '');
+    const id = `s${i + 1}`;
+    return { id, text };
+  });
+}
+
+/** Injeta ids nos H2 do body pra ancoragem do TOC. */
+function injectHeadingIds(html) {
+  let i = 0;
+  return (html ?? '').replace(/<h2([^>]*)>/gi, () => {
+    i++;
+    return `<h2 id="s${i}">`;
   });
 }
 
@@ -45,6 +65,8 @@ export default async function BlogPostPage({ params }) {
   const catLabel = categoryLabel(post.category);
   const intentSlug = post.relatedIntent ? INTENT_SLUGS[post.relatedIntent] : null;
   const intentLabel = post.relatedIntent ? INTENT_LABELS[post.relatedIntent] : null;
+  const headings = extractHeadings(post.bodyHtml);
+  const bodyWithIds = injectHeadingIds(post.bodyHtml);
 
   const breadcrumbs = [
     { name: 'Início', path: '/' },
@@ -58,10 +80,11 @@ export default async function BlogPostPage({ params }) {
       headline: post.title,
       description: post.excerpt,
       path,
+      image: post.image?.src,
       datePublished: post.publishedAt,
       dateModified: post.updatedAt,
     }),
-    speakableLd(['#answer']),
+    speakableLd(['#answer', '#key-takeaways']),
     post.faq?.length ? faqLd(post.faq) : null,
   ];
 
@@ -83,29 +106,66 @@ export default async function BlogPostPage({ params }) {
         </ol>
       </nav>
 
-      <article>
-        <header style={{ marginBottom: 'var(--space-5)' }}>
+      <article itemScope itemType="https://schema.org/Article">
+        <header className="post-header">
           <div style={{ marginBottom: 'var(--space-3)' }}>
-            <a className="tag" href="/blog" style={{ textDecoration: 'none' }}>
-              Blog
-            </a>
+            <a className="tag" href="/blog" style={{ textDecoration: 'none' }}>Blog</a>
             <span className="tag">{catLabel}</span>
           </div>
-          <h1>{post.title}</h1>
+          <h1 itemProp="headline">{post.title}</h1>
           <p className="t-faint" style={{ marginTop: 'var(--space-2)' }}>
             {post.readMins} min de leitura
           </p>
         </header>
 
+        {/* Imagem de capa */}
+        {post.image?.src && (
+          <figure className="post-hero">
+            <img
+              src={post.image.src}
+              alt={post.image.alt || post.title}
+              loading="eager"
+              decoding="async"
+              width={1200}
+              height={630}
+              style={{ width: '100%', height: 'auto', borderRadius: 'var(--radius-lg)', aspectRatio: '1200/630', objectFit: 'cover' }}
+            />
+          </figure>
+        )}
+
         <div className="signal-actions">
           <ShareButton title={post.title} url={absoluteUrl(path)} />
         </div>
 
-        <p id="answer" className="lede">{post.excerpt}</p>
+        {/* Resposta direta (answer-first, speakable) */}
+        <p id="answer" className="lede" itemProp="description">{post.excerpt}</p>
+
+        {/* Pontos-chave (key takeaways) */}
+        {post.keyTakeaways?.length > 0 && (
+          <aside id="key-takeaways" className="key-takeaways" aria-label="Pontos-chave">
+            <strong>Pontos-chave deste artigo:</strong>
+            <ul>
+              {post.keyTakeaways.map((t, i) => <li key={i}>{t}</li>)}
+            </ul>
+          </aside>
+        )}
+
+        {/* Índice (TOC) */}
+        {headings.length >= 3 && (
+          <nav className="toc" aria-label="Índice do artigo">
+            <strong>Neste artigo:</strong>
+            <ol>
+              {headings.map((h) => (
+                <li key={h.id}><a href={`#${h.id}`}>{h.text}</a></li>
+              ))}
+            </ol>
+          </nav>
+        )}
 
         <AdSlot slot="top-article" />
 
-        <section className="chunk" dangerouslySetInnerHTML={{ __html: post.bodyHtml }} />
+        {/* Corpo do artigo (com IDs nos H2 pra ancoragem do TOC) */}
+        <section className="chunk post-body" itemProp="articleBody" dangerouslySetInnerHTML={{ __html: bodyWithIds }} />
 
         <SemanticFAQ entries={post.faq} />
 
