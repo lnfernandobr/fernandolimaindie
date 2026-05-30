@@ -5,9 +5,9 @@ const COLS = [
   {
     h: 'Bíblia',
     items: [
+      { label: 'Versículo do dia',            href: '/versiculo-do-dia' },
       { label: 'Versículos sobre o amor',     href: '/biblia/amor'      },
       { label: 'Versículos sobre a família',  href: '/biblia/familia'   },
-      { label: 'Versículos sobre ansiedade',  href: '/biblia/ansiedade' },
       { label: 'Versículos por tema',         href: '/biblia'           },
     ],
   },

@@ -397,6 +397,174 @@ const TOPICS = [
       },
     ],
   },
+  {
+    slug: 'promessas-de-deus',
+    intent: 'faith',
+    tag: 'Promessas de Deus',
+    title: 'Versículos sobre as promessas de Deus',
+    answer:
+      'A Bíblia está cheia de promessas de Deus: provisão, presença, força e cuidado. São versículos pra lembrar, nos dias de dúvida, daquilo que Deus prometeu e cumpre.',
+    summary:
+      'As principais promessas de Deus na Bíblia: estar presente, suprir, fortalecer e nunca abandonar.',
+    verses: [
+      v('Jeremias 29, 11', 'Eu sei os planos que tenho para vós, planos de paz e não de mal, para vos dar um futuro e uma esperança.'),
+      v('Filipenses 4, 19', 'O meu Deus suprirá todas as vossas necessidades segundo as suas riquezas em glória.'),
+      v('Mateus 28, 20', 'Eis que estou convosco todos os dias, até o fim do mundo.'),
+      v('Hebreus 13, 5', 'Não te deixarei, nem te desampararei.'),
+      v('Isaías 41, 10', 'Não temas, porque eu sou contigo; eu te fortaleço, eu te ajudo, eu te sustento com a minha destra.'),
+      v('2 Coríntios 12, 9', 'A minha graça te basta, porque o meu poder se aperfeiçoa na fraqueza.'),
+      v('Josué 1, 9', 'Sê forte e corajoso; o Senhor, teu Deus, é contigo por onde quer que andares.'),
+      v('Romanos 8, 28', 'Todas as coisas cooperam para o bem daqueles que amam a Deus.'),
+    ],
+    reflectionHtml: `<p>Promessa de Deus não é cheque em branco pros nossos planos, é compromisso do caráter dele com a gente: estar presente, sustentar, não abandonar. Quando a vida aperta, ajuda muito ter uma dessas promessas na ponta da língua.</p>
+    <p>Escolha uma que fale com o seu momento e leia em voz alta. "Não te deixarei, nem te desampararei" cabe em quase todo dia difícil.</p>`,
+    faq: [
+      {
+        question: 'Quais são as maiores promessas de Deus na Bíblia?',
+        answer:
+          'Estar presente sempre (Mateus 28, 20), suprir as necessidades (Filipenses 4, 19), dar força (Isaías 41, 10) e nunca abandonar (Hebreus 13, 5) estão entre as mais lembradas.',
+      },
+      {
+        question: 'Deus cumpre todas as promessas?',
+        answer:
+          'A Bíblia afirma que Deus é fiel e cumpre o que promete, ainda que no tempo dele e nem sempre do jeito que a gente imagina. A fé é confiar nisso mesmo sem ver.',
+      },
+    ],
+  },
+  {
+    slug: 'bom-dia',
+    intent: 'morning',
+    tag: 'Bom dia',
+    title: 'Versículos de bom dia pra começar o dia com Deus',
+    answer:
+      'Versículos de bom dia pra começar a manhã com fé e gratidão, pra você ou pra mandar pra alguém. A Bíblia lembra que as misericórdias de Deus se renovam a cada manhã.',
+    summary:
+      'Versículos de bom dia: começar a manhã com fé, gratidão e ânimo, e abençoar quem você ama.',
+    verses: [
+      v('Lamentações 3, 22-23', 'As misericórdias do Senhor se renovam a cada manhã; grande é a sua fidelidade.'),
+      v('Salmo 118, 24', 'Este é o dia que o Senhor fez; alegremo-nos e regozijemo-nos nele.'),
+      v('Salmo 143, 8', 'Faze-me ouvir da tua bondade pela manhã, pois em ti confio.'),
+      v('Salmo 5, 3', 'Pela manhã ouves a minha voz, ó Senhor; pela manhã apresento a ti a minha oração e espero.'),
+      v('Salmo 90, 14', 'Sacia-nos de manhã com a tua bondade, para que cantemos de alegria todos os nossos dias.'),
+      v('Salmo 30, 5', 'O choro pode durar uma noite, mas a alegria vem pela manhã.'),
+      v('Isaías 33, 2', 'Senhor, tem misericórdia de nós; sê o nosso braço cada manhã.'),
+    ],
+    reflectionHtml: `<p>Começar o dia com um versículo é trocar o primeiro pensamento. Em vez de já acordar pensando no que falta, você abre a manhã lembrando que "as misericórdias se renovam a cada manhã". É um respiro antes de a correria começar.</p>
+    <p>Vale ler um pra você e mandar outro pra alguém que precisa de um bom dia hoje. Uma frase de fé chega mais longe que um "bom dia" qualquer.</p>`,
+    faq: [
+      {
+        question: 'Qual o melhor versículo de bom dia?',
+        answer:
+          'Lamentações 3, 22-23 ("as misericórdias se renovam a cada manhã") e Salmo 118, 24 ("este é o dia que o Senhor fez") são os mais usados pra começar o dia.',
+      },
+      {
+        question: 'Qual salmo ler pela manhã?',
+        answer:
+          'O Salmo 5 e o Salmo 143, 8 falam de apresentar a oração a Deus logo pela manhã. São ótimos pra começar o dia rezando.',
+      },
+    ],
+  },
+  {
+    slug: 'boa-noite',
+    intent: 'night',
+    tag: 'Boa noite',
+    title: 'Versículos de boa noite pra dormir em paz',
+    answer:
+      'Versículos de boa noite pra encerrar o dia entregando tudo a Deus e dormir em paz. A Bíblia diz que Ele dá o sono aos seus amados e guarda quem nele descansa.',
+    summary:
+      'Versículos de boa noite: entregar o dia, descansar sem medo e dormir confiando na guarda de Deus.',
+    verses: [
+      v('Salmo 4, 8', 'Em paz me deito e logo pego no sono, porque só tu, Senhor, me fazes repousar seguro.'),
+      v('Salmo 127, 2', 'Ele dá aos seus amados enquanto dormem.'),
+      v('Provérbios 3, 24', 'Quando te deitares, não terás medo; deitar-te-ás, e o teu sono será suave.'),
+      v('Salmo 3, 5', 'Eu me deito e durmo; acordo, porque o Senhor me sustenta.'),
+      v('Salmo 121, 4', 'Não dormita nem dorme aquele que te guarda.'),
+      v('Mateus 11, 28', 'Vinde a mim todos os que estais cansados e sobrecarregados, e eu vos aliviarei.'),
+      v('Filipenses 4, 7', 'A paz de Deus, que excede todo entendimento, guardará os vossos corações.'),
+    ],
+    reflectionHtml: `<p>A noite assusta quando a gente leva pra cama tudo o que não resolveu. O Salmo 4, 8 propõe outra coisa: "em paz me deito e logo pego no sono". Não é mágica, é entrega. Você fez o que deu hoje, o resto fica com quem "não dormita nem dorme".</p>
+    <p>Leia um desses antes de apagar a luz, respire fundo e solte o dia. Amanhã você cuida do amanhã.</p>`,
+    faq: [
+      {
+        question: 'Qual versículo ler antes de dormir?',
+        answer:
+          'Salmo 4, 8 ("em paz me deito e logo pego no sono") e Provérbios 3, 24 ("o teu sono será suave") são clássicos pra terminar o dia em paz.',
+      },
+      {
+        question: 'O que a Bíblia diz sobre dormir tranquilo?',
+        answer:
+          'Que Deus dá o sono aos seus amados (Salmo 127, 2) e que não dormita aquele que nos guarda (Salmo 121, 4). Dá pra descansar confiando nessa guarda.',
+      },
+    ],
+  },
+  {
+    slug: 'conforto',
+    intent: 'grief',
+    tag: 'Conforto',
+    title: 'Versículos de conforto pra dias de dor e tristeza',
+    answer:
+      'Versículos de conforto pra momentos de dor, perda e tristeza. A Bíblia mostra um Deus que está perto de quem tem o coração quebrantado e que consola em toda aflição.',
+    summary:
+      'Versículos de conforto e consolo: a presença de Deus perto de quem sofre, pra dias de dor, luto e tristeza.',
+    verses: [
+      v('Salmo 34, 18', 'Perto está o Senhor dos que têm o coração quebrantado, e salva os de espírito oprimido.'),
+      v('Mateus 5, 4', 'Bem-aventurados os que choram, porque serão consolados.'),
+      v('2 Coríntios 1, 3-4', 'Bendito seja o Deus de toda consolação, que nos consola em toda a nossa tribulação.'),
+      v('Salmo 147, 3', 'Ele sara os de coração quebrantado e lhes pensa as feridas.'),
+      v('Salmo 23, 4', 'Ainda que eu ande pelo vale da sombra da morte, não temerei mal algum, porque tu estás comigo.'),
+      v('João 14, 27', 'Deixo-vos a paz, a minha paz vos dou. Não se turbe o vosso coração.'),
+      v('Apocalipse 21, 4', 'Deus enxugará dos seus olhos toda lágrima, e não haverá mais morte, nem pranto, nem dor.'),
+      v('Isaías 41, 10', 'Não temas, porque eu sou contigo; eu te fortaleço e te ajudo.'),
+    ],
+    reflectionHtml: `<p>Conforto de verdade não é alguém dizendo "vai passar". É presença. A Bíblia descreve Deus como quem fica "perto dos que têm o coração quebrantado". Não promete tirar a dor na hora, promete não te deixar sozinho dentro dela.</p>
+    <p>Se você está de luto ou num dia de tristeza, leia o Salmo 23, 4 devagar. Repare na palavra "comigo". É ela que sustenta o resto da frase.</p>`,
+    faq: [
+      {
+        question: 'Qual o melhor versículo de conforto?',
+        answer:
+          'Salmo 34, 18 ("perto está o Senhor dos que têm o coração quebrantado") e Mateus 5, 4 ("os que choram serão consolados") estão entre os mais consoladores.',
+      },
+      {
+        question: 'Qual versículo ler em um momento de luto?',
+        answer:
+          'Salmo 23, 4 e Apocalipse 21, 4 ("Deus enxugará toda lágrima") confortam muito em momentos de perda. Veja também nossas orações de luto e consolo.',
+      },
+    ],
+  },
+  {
+    slug: 'forca',
+    intent: 'faith',
+    tag: 'Força',
+    title: 'Versículos de força e coragem pra dias difíceis',
+    answer:
+      'Versículos de força e coragem pra quando bate o cansaço e o medo. A Bíblia repete o convite a "ser forte e corajoso", lembrando que a força vem de Deus, não só da gente.',
+    summary:
+      'Versículos de força e coragem: ânimo pra enfrentar os dias difíceis sabendo que Deus fortalece e caminha junto.',
+    verses: [
+      v('Josué 1, 9', 'Sê forte e corajoso; não temas, nem te espantes, porque o Senhor, teu Deus, é contigo por onde quer que andares.'),
+      v('Filipenses 4, 13', 'Tudo posso naquele que me fortalece.'),
+      v('Isaías 40, 31', 'Os que esperam no Senhor renovam as suas forças, sobem com asas como águias.'),
+      v('Isaías 41, 10', 'Não temas, porque eu sou contigo; eu te fortaleço e te sustento com a minha destra.'),
+      v('2 Timóteo 1, 7', 'Deus não nos deu espírito de covardia, mas de força, de amor e de equilíbrio.'),
+      v('Salmo 46, 1', 'Deus é o nosso refúgio e fortaleza, socorro bem presente na angústia.'),
+      v('Salmo 27, 1', 'O Senhor é a minha luz e a minha salvação; a quem temerei?'),
+      v('Deuteronômio 31, 6', 'Sede fortes e corajosos; o Senhor, teu Deus, é quem vai contigo, não te deixará nem te desamparará.'),
+    ],
+    reflectionHtml: `<p>"Sê forte e corajoso" aparece várias vezes na Bíblia, quase sempre seguido de um motivo: "porque o Senhor é contigo". A coragem que a Bíblia pede não vem de fingir que não tem medo, vem de não estar sozinho no medo.</p>
+    <p>Num dia em que você se sentir sem força, leia Filipenses 4, 13 e Isaías 40, 31. A força que falta em você pode ser pedida, não só fabricada.</p>`,
+    faq: [
+      {
+        question: 'Qual versículo dá força e coragem?',
+        answer:
+          'Josué 1, 9 ("sê forte e corajoso") e Filipenses 4, 13 ("tudo posso naquele que me fortalece") são os mais lembrados pra dias difíceis.',
+      },
+      {
+        question: 'O que a Bíblia diz sobre ter medo?',
+        answer:
+          '2 Timóteo 1, 7 diz que "Deus não nos deu espírito de covardia, mas de força, amor e equilíbrio". A fé não nega o medo, mas oferece coragem pra atravessá-lo.',
+      },
+    ],
+  },
 ];
 
 export const listVerseTopics = () => TOPICS;

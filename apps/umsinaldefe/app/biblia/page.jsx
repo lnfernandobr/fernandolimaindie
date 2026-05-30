@@ -48,6 +48,12 @@ export default function BibliaIndexPage() {
         </p>
       </header>
 
+      <p style={{ marginBottom: 'var(--space-5)' }}>
+        <a className="btn btn-primary" href="/versiculo-do-dia" style={{ textDecoration: 'none' }}>
+          Ver o versículo do dia de hoje
+        </a>
+      </p>
+
       <AdSlot slot="hub-top" />
 
       <section aria-label="Temas">

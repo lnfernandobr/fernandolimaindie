@@ -11,6 +11,7 @@ export default async function sitemap() {
   const now = new Date();
   const core = [
     { path: '/', priority: 1.0, changeFrequency: 'daily' },
+    { path: '/versiculo-do-dia', priority: 0.9, changeFrequency: 'daily' },
     { path: '/biblia', priority: 0.9, changeFrequency: 'weekly' },
     { path: '/devocional', priority: 0.9, changeFrequency: 'daily' },
     { path: '/salmo', priority: 0.8, changeFrequency: 'weekly' },

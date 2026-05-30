@@ -1030,6 +1030,92 @@ const PRAYERS = [
       },
     ],
   },
+  {
+    slug: 'oracao-pai-nosso',
+    kind: 'prayer',
+    intent: 'faith',
+    topicSlug: 'oracoes-essenciais',
+    relatedIntents: ['gratitude', 'forgiveness', 'protection'],
+    title: 'Oração do Pai Nosso: a oração que Jesus ensinou',
+    answer:
+      'O Pai Nosso é a oração que o próprio Jesus ensinou aos discípulos, registrada no Evangelho de Mateus. Em poucas linhas, ela louva a Deus, pede o pão de cada dia, o perdão e a proteção contra o mal.',
+    summary:
+      'A oração do Pai Nosso completa, com a sua origem na Bíblia e o sentido de cada pedido, pra rezar com mais consciência.',
+    chunks: [
+      c(
+        'oracao',
+        `<h2>A oração do Pai Nosso</h2>
+        <p class="scripture">Pai nosso, que estais nos céus, santificado seja o vosso nome. Venha a nós o vosso reino, seja feita a vossa vontade, assim na terra como no céu.</p>
+        <p class="scripture">O pão nosso de cada dia nos dai hoje. Perdoai-nos as nossas ofensas, assim como nós perdoamos a quem nos tem ofendido. E não nos deixeis cair em tentação, mas livrai-nos do mal. Amém.</p>`,
+      ),
+      c(
+        'origem',
+        `<h2>De onde vem o Pai Nosso</h2>
+        <p>O Pai Nosso está no Evangelho de Mateus, capítulo 6, versículos 9 a 13, e também em Lucas 11. Os discípulos pediram a Jesus "ensina-nos a orar", e ele respondeu com essa oração. Por isso ela é chamada de "oração do Senhor": não foi inventada por nós, foi entregue por ele.</p>
+        <p>É a oração mais rezada do mundo cristão, comum a católicos, evangélicos e ortodoxos. Cabe na missa, no culto, no terço e na cama antes de dormir.</p>`,
+      ),
+      c(
+        'significado',
+        `<h2>O sentido de cada pedido</h2>
+        <p>Repare que o Pai Nosso começa olhando pra Deus ("santificado seja o vosso nome") antes de pedir qualquer coisa. Depois vem o essencial: o pão de hoje, não o estoque do ano. Em seguida, o perdão, ligado à nossa disposição de perdoar os outros. E termina pedindo proteção contra o mal.</p>
+        <p>Rezar devagar, parando em cada frase, transforma uma oração decorada num diálogo de verdade. Tente rezar uma vez prestando atenção em cada pedido, como se fosse a primeira.</p>`,
+      ),
+    ],
+    faq: [
+      {
+        question: 'Como se reza o Pai Nosso?',
+        answer:
+          'Reza-se assim: "Pai nosso, que estais nos céus, santificado seja o vosso nome. Venha a nós o vosso reino, seja feita a vossa vontade, assim na terra como no céu. O pão nosso de cada dia nos dai hoje. Perdoai-nos as nossas ofensas, assim como nós perdoamos a quem nos tem ofendido. E não nos deixeis cair em tentação, mas livrai-nos do mal. Amém."',
+      },
+      {
+        question: 'Onde está o Pai Nosso na Bíblia?',
+        answer:
+          'No Evangelho de Mateus, capítulo 6, versículos 9 a 13, e também em Lucas 11, 2-4. Foi o próprio Jesus quem ensinou essa oração aos discípulos.',
+      },
+      {
+        question: 'Qual o significado do Pai Nosso?',
+        answer:
+          'Ele louva a Deus, pede o pão de cada dia (o necessário), o perdão (ligado a perdoarmos os outros) e a proteção contra o mal. É um resumo de como confiar e depender de Deus.',
+      },
+    ],
+  },
+  {
+    slug: 'oracao-da-serenidade',
+    kind: 'prayer',
+    intent: 'anxiety',
+    topicSlug: 'ansiedade-e-paz',
+    relatedIntents: ['faith', 'hope', 'forgiveness'],
+    title: 'Oração da Serenidade: aceitar, mudar e ter sabedoria',
+    answer:
+      'A Oração da Serenidade pede três coisas: serenidade pra aceitar o que não dá pra mudar, coragem pra mudar o que é possível e sabedoria pra saber a diferença. É muito rezada em momentos de ansiedade e recomeço.',
+    summary:
+      'A Oração da Serenidade, pra acalmar o coração diante do que foge ao nosso controle e encontrar paz pra seguir em frente.',
+    chunks: [
+      c(
+        'oracao',
+        `<h2>A Oração da Serenidade</h2>
+        <p class="scripture">Senhor, concedei-me a serenidade necessária para aceitar as coisas que não posso modificar, coragem para modificar aquelas que posso, e sabedoria para distinguir umas das outras. Amém.</p>`,
+      ),
+      c(
+        'sobre',
+        `<h2>De onde vem e por que ajuda</h2>
+        <p>A Oração da Serenidade ficou conhecida no mundo todo no século XX e é rezada por muita gente em processos de recomeço, recuperação e em qualquer momento de ansiedade. O segredo dela está em separar duas coisas que a gente costuma misturar: o que está nas nossas mãos e o que não está.</p>
+        <p>Boa parte da ansiedade nasce de gastar energia tentando controlar o incontrolável. Esta oração devolve o foco: aja no que é seu, entregue o resto e peça discernimento pra saber qual é qual.</p>`,
+      ),
+    ],
+    faq: [
+      {
+        question: 'Como é a Oração da Serenidade completa?',
+        answer:
+          '"Senhor, concedei-me a serenidade necessária para aceitar as coisas que não posso modificar, coragem para modificar aquelas que posso, e sabedoria para distinguir umas das outras." Existem versões mais longas, mas essa é a parte mais conhecida.',
+      },
+      {
+        question: 'Para que serve a Oração da Serenidade?',
+        answer:
+          'Pra acalmar diante do que não se pode controlar, ganhar coragem pra agir no que é possível e pedir sabedoria pra distinguir os dois. É muito usada em momentos de ansiedade e recomeço.',
+      },
+    ],
+  },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -1456,6 +1542,7 @@ const TOPIC_DEFS = [
   ['perdao', 'Perdão', 'forgiveness', 'Orações e salmos pra pedir e oferecer perdão, e soltar o peso da mágoa.'],
   ['gratidao', 'Gratidão', 'gratitude', 'Orações e reflexões pra agradecer e reparar no que já existe de bom.'],
   ['esperanca', 'Esperança', 'hope', 'Reflexões e devocionais pra renovar a esperança nos dias sem luz.'],
+  ['oracoes-essenciais', 'Orações essenciais', 'faith', 'As orações que todo cristão conhece, como o Pai Nosso e a Oração da Serenidade.'],
 ];
 
 const TOPICS = TOPIC_DEFS.map(([slug, name, intent, description]) => ({
