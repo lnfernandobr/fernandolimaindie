@@ -1,41 +1,86 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://umsinaldefe.com.br';
+// ── API hook ─────────────────────────────────────────────────────────
 
-function useApi(path, token) {
+function useApi(path, session) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const refresh = useCallback(async () => {
-    if (!token) return;
+    if (!session) return;
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}${path}`, {
-        headers: { Authorization: `Bearer ${token}` },
+      const res = await fetch(`${session.apiUrl}${path}`, {
+        headers: { Authorization: `Bearer ${session.apiToken}` },
       });
       if (res.ok) setData(await res.json());
       else setData(null);
     } catch { setData(null); }
     setLoading(false);
-  }, [path, token]);
+  }, [path, session]);
   useEffect(() => { refresh(); }, [refresh]);
   return { data, loading, refresh };
 }
 
+// ── Login ────────────────────────────────────────────────────────────
+
 function Login({ onLogin }) {
-  const [url, setUrl] = useState('');
-  const [tok, setTok] = useState('');
+  const [user, setUser] = useState('');
+  const [pass, setPass] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const submit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: user, password: pass }),
+      });
+      const data = await res.json();
+      if (!res.ok) { setError(data.error || 'Erro'); setLoading(false); return; }
+      onLogin(data);
+    } catch {
+      setError('Erro de conexão');
+    }
+    setLoading(false);
+  };
+
   return (
     <div className="login-wrap">
-      <div className="login-box">
+      <form className="login-box" onSubmit={submit}>
         <h1>✦ Admin</h1>
-        <input placeholder="URL da API (ex: https://umsinaldefe.com.br)" value={url} onChange={(e) => setUrl(e.target.value)} />
-        <input placeholder="Token (ADMIN_TOKEN)" type="password" value={tok} onChange={(e) => setTok(e.target.value)} />
-        <button onClick={() => { if (tok) onLogin(url || API_BASE, tok); }}>Entrar</button>
-      </div>
+        <p style={{ color: 'var(--muted)', fontSize: '0.85rem', marginBottom: 20 }}>
+          Um Sinal de Fé
+        </p>
+        <input
+          placeholder="Usuário"
+          value={user}
+          onChange={(e) => setUser(e.target.value)}
+          autoComplete="username"
+          required
+        />
+        <input
+          placeholder="Senha"
+          type="password"
+          value={pass}
+          onChange={(e) => setPass(e.target.value)}
+          autoComplete="current-password"
+          required
+        />
+        {error && <p style={{ color: 'var(--red)', fontSize: '0.82rem', marginBottom: 10 }}>{error}</p>}
+        <button type="submit" disabled={loading}>
+          {loading ? 'Entrando...' : 'Entrar'}
+        </button>
+      </form>
     </div>
   );
 }
+
+// ── Components ───────────────────────────────────────────────────────
 
 function StatCard({ label, value, color }) {
   return (
@@ -55,7 +100,7 @@ function ServiceBadge({ name, on }) {
   );
 }
 
-function QueueTable({ items, token, apiBase, onRefresh }) {
+function QueueTable({ items, session, onRefresh }) {
   const [filter, setFilter] = useState('all');
   const [busy, setBusy] = useState(null);
 
@@ -64,9 +109,9 @@ function QueueTable({ items, token, apiBase, onRefresh }) {
   const updateStatus = async (id, status) => {
     setBusy(id);
     try {
-      await fetch(`${apiBase}/api/admin/queue`, {
+      await fetch(`${session.apiUrl}/api/admin/queue`, {
         method: 'PATCH',
-        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        headers: { Authorization: `Bearer ${session.apiToken}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, status }),
       });
       onRefresh();
@@ -113,19 +158,13 @@ function QueueTable({ items, token, apiBase, onRefresh }) {
                 <td><span className={`status ${item.status}`}>{item.status}</span></td>
                 <td>
                   {item.status === 'error' && (
-                    <button className="btn-sm" disabled={busy === item.id} onClick={() => updateStatus(item.id, 'pending')}>
-                      Retry
-                    </button>
+                    <button className="btn-sm" disabled={busy === item.id} onClick={() => updateStatus(item.id, 'pending')}>Retry</button>
                   )}
                   {item.status === 'pending' && (
-                    <button className="btn-sm" disabled={busy === item.id} onClick={() => updateStatus(item.id, 'skip')}>
-                      Skip
-                    </button>
+                    <button className="btn-sm" disabled={busy === item.id} onClick={() => updateStatus(item.id, 'skip')}>Skip</button>
                   )}
                   {item.status === 'skip' && (
-                    <button className="btn-sm" disabled={busy === item.id} onClick={() => updateStatus(item.id, 'pending')}>
-                      Reativar
-                    </button>
+                    <button className="btn-sm" disabled={busy === item.id} onClick={() => updateStatus(item.id, 'pending')}>Reativar</button>
                   )}
                 </td>
               </tr>
@@ -172,44 +211,41 @@ function PostsTable({ posts }) {
   );
 }
 
-export default function AdminPage() {
-  const [apiBase, setApiBase] = useState('');
-  const [token, setToken] = useState('');
-  const [logged, setLogged] = useState(false);
+// ── Main ─────────────────────────────────────────────────────────────
 
-  // Restaura sessão do sessionStorage
+export default function AdminPage() {
+  const [session, setSession] = useState(null);
+
   useEffect(() => {
     const saved = sessionStorage.getItem('admin-session');
     if (saved) {
-      const { apiBase: a, token: t } = JSON.parse(saved);
-      setApiBase(a); setToken(t); setLogged(true);
+      try { setSession(JSON.parse(saved)); } catch { /* ignore */ }
     }
   }, []);
 
-  const handleLogin = (url, tok) => {
-    setApiBase(url); setToken(tok); setLogged(true);
-    sessionStorage.setItem('admin-session', JSON.stringify({ apiBase: url, token: tok }));
+  const handleLogin = (data) => {
+    const s = { user: data.user, apiUrl: data.apiUrl, apiToken: data.apiToken };
+    setSession(s);
+    sessionStorage.setItem('admin-session', JSON.stringify(s));
   };
 
-  if (!logged) return <Login onLogin={handleLogin} />;
+  const handleLogout = () => {
+    setSession(null);
+    sessionStorage.removeItem('admin-session');
+  };
 
-  return <Dashboard apiBase={apiBase} token={token} onLogout={() => { setLogged(false); sessionStorage.removeItem('admin-session'); }} />;
+  if (!session) return <Login onLogin={handleLogin} />;
+  return <Dashboard session={session} onLogout={handleLogout} />;
 }
 
-function Dashboard({ apiBase, token, onLogout }) {
-  const stats = useApi('/api/admin/stats', token);
-  const queue = useApi('/api/admin/queue', token);
-  const posts = useApi('/api/admin/posts', token);
+function Dashboard({ session, onLogout }) {
+  const stats = useApi('/api/admin/stats', session);
+  const queue = useApi('/api/admin/queue', session);
+  const posts = useApi('/api/admin/posts', session);
 
   const s = stats.data;
   const q = queue.data;
   const p = posts.data;
-
-  // Override fetch base
-  const origFetch = globalThis.fetch;
-  useEffect(() => {
-    // noop
-  }, [apiBase]);
 
   return (
     <>
@@ -217,11 +253,12 @@ function Dashboard({ apiBase, token, onLogout }) {
         <span className="dot" />
         <h1>✦ Um Sinal de Fé · Admin</h1>
         <div style={{ flex: 1 }} />
-        <span style={{ fontSize: '0.75rem', color: 'var(--muted)' }}>{apiBase}</span>
+        <span style={{ fontSize: '0.78rem', color: 'var(--muted)' }}>
+          Logado como <strong>{session.user}</strong>
+        </span>
         <button className="btn-sm" onClick={onLogout}>Sair</button>
       </div>
       <div className="container">
-        {/* Stats */}
         {s && (
           <>
             <div className="stats">
@@ -242,14 +279,10 @@ function Dashboard({ apiBase, token, onLogout }) {
         )}
 
         {stats.loading && <p style={{ color: 'var(--muted)' }}>Carregando...</p>}
-        {!stats.loading && !s && <p style={{ color: 'var(--red)' }}>Erro ao conectar na API. Verifique URL e token.</p>}
+        {!stats.loading && !s && <p style={{ color: 'var(--red)' }}>Erro ao conectar na API. Verifique se o umsinaldefe está rodando.</p>}
 
-        {/* Queue */}
-        {q?.items && (
-          <QueueTable items={q.items} token={token} apiBase={apiBase} onRefresh={queue.refresh} />
-        )}
+        {q?.items && <QueueTable items={q.items} session={session} onRefresh={queue.refresh} />}
 
-        {/* Posts */}
         {p && <PostsTable posts={p.posts} />}
       </div>
     </>
