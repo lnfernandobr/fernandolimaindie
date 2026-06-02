@@ -13,6 +13,8 @@
  *   - Answer-first: the `answer` field resolves the search intent in 1 to 3 lines.
  */
 
+import generatedSignalsFile from './generated-signals.json';
+
 const PUB = '2026-05-01T08:00:00.000Z';
 const UPD = '2026-05-20T08:00:00.000Z';
 
@@ -1564,6 +1566,11 @@ const ENTITIES = [];
 /* EXPORTS                                                             */
 /* ------------------------------------------------------------------ */
 
-export const SIGNALS = [...PSALMS, ...PRAYERS, ...DEVOTIONALS, ...REFLECTIONS].map(mk);
+// Conteúdo curado (acima) + gerado pelo cron (generated-signals.json), sem duplicar slug.
+const CURATED = [...PSALMS, ...PRAYERS, ...DEVOTIONALS, ...REFLECTIONS].map(mk);
+const GENERATED = (Array.isArray(generatedSignalsFile?.signals) ? generatedSignalsFile.signals : []).map(mk);
+const curatedSlugs = new Set(CURATED.map((s) => s.slug));
+
+export const SIGNALS = [...CURATED, ...GENERATED.filter((s) => s && s.slug && !curatedSlugs.has(s.slug))];
 export const TOPIC_LIST = TOPICS;
 export const ENTITY_LIST = ENTITIES;

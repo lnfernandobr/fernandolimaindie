@@ -130,6 +130,20 @@ export default async function PrayerPage({ params }) {
           <h1>{signal.title}</h1>
         </header>
 
+        {signal.imageUrl && (
+          <figure className="post-hero">
+            <img
+              src={signal.imageUrl}
+              alt={signal.title}
+              loading="eager"
+              decoding="async"
+              width={1200}
+              height={630}
+              style={{ width: '100%', height: 'auto', borderRadius: 'var(--radius-lg)', aspectRatio: '1200/630', objectFit: 'cover' }}
+            />
+          </figure>
+        )}
+
         <div className="signal-actions">
           <FavoriteButton slug={slug} />
           <ShareButton title={signal.title} url={absoluteUrl(path)} />

@@ -26,8 +26,7 @@ function resolveNarration(slug) {
   // 2. Versículos por tema (biblia)
   const topic = getVerseTopic(slug);
   if (topic) {
-    const versesText = topic.verses.map((v) => `${v.text} (${v.ref})`).join('. ');
-    const full = `${topic.title}. ${topic.answer}. ${versesText}`;
+    const full = [topic.title, topic.answer, topic.summary].filter(Boolean).join('. ');
     return { title: topic.title, text: full };
   }
 

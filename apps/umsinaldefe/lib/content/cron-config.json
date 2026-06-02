@@ -1,0 +1,12 @@
+{
+  "enabled": true,
+  "imageProvider": "openai",
+  "perSection": {
+    "salmo": 2,
+    "oracao": 2,
+    "biblia": 2,
+    "blog": 2,
+    "devocional": 2,
+    "reflexao": 2
+  }
+}

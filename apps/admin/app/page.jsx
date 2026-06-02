@@ -213,6 +213,94 @@ function PostsTable({ posts }) {
 
 // ── Main ─────────────────────────────────────────────────────────────
 
+function CronConfigPanel({ session }) {
+  const { data, refresh } = useApi('/api/admin/cron-config', session);
+  const [draft, setDraft] = useState(null);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  useEffect(() => { if (data) setDraft(data); }, [data]);
+  if (!draft) return null;
+
+  const sections = ['salmo', 'oracao', 'biblia', 'blog', 'devocional', 'reflexao'];
+  const labels = {
+    salmo: 'Salmos', oracao: 'Orações', biblia: 'Bíblia (temas)',
+    blog: 'Blog', devocional: 'Devocionais', reflexao: 'Reflexões',
+  };
+  const total = sections.reduce((a, s) => a + (Number(draft.perSection?.[s]) || 0), 0);
+
+  const setN = (s, v) =>
+    setDraft((d) => ({
+      ...d,
+      perSection: { ...d.perSection, [s]: Math.max(0, Math.min(20, parseInt(v, 10) || 0)) },
+    }));
+
+  const save = async () => {
+    setSaving(true);
+    setSaved(false);
+    try {
+      const res = await fetch(`${session.apiUrl}/api/admin/cron-config`, {
+        method: 'PATCH',
+        headers: { Authorization: `Bearer ${session.apiToken}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ enabled: draft.enabled, imageProvider: draft.imageProvider, perSection: draft.perSection }),
+      });
+      if (res.ok) { setSaved(true); refresh(); }
+    } catch { /* ignore */ }
+    setSaving(false);
+  };
+
+  return (
+    <div className="section">
+      <div className="section-title">
+        Geração automática (cron) <span className="badge">{total} por execução</span>
+      </div>
+      <p style={{ color: 'var(--muted)', fontSize: '0.82rem', marginBottom: 14 }}>
+        Quantos itens o cron gera por seção a cada execução. Use 0 pra pausar uma seção.
+      </p>
+      <label style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16, fontSize: '0.9rem' }}>
+        <input
+          type="checkbox"
+          checked={!!draft.enabled}
+          onChange={(e) => setDraft((d) => ({ ...d, enabled: e.target.checked }))}
+        />
+        Geração ativada
+      </label>
+      <label style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16, fontSize: '0.9rem' }}>
+        Imagem:
+        <select
+          value={draft.imageProvider || 'openai'}
+          onChange={(e) => setDraft((d) => ({ ...d, imageProvider: e.target.value }))}
+          style={{ padding: '4px 8px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)', color: 'inherit' }}
+        >
+          <option value="openai">OpenAI (gerada, qualidade)</option>
+          <option value="pexels">Pexels (banco grátis)</option>
+          <option value="none">Sem imagem</option>
+        </select>
+      </label>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: 12, marginBottom: 16 }}>
+        {sections.map((s) => (
+          <div key={s} className="stat" style={{ opacity: draft.enabled ? 1 : 0.5 }}>
+            <div className="stat-label">{labels[s]}</div>
+            <input
+              type="number"
+              min="0"
+              max="20"
+              value={draft.perSection?.[s] ?? 0}
+              disabled={!draft.enabled}
+              onChange={(e) => setN(s, e.target.value)}
+              style={{ width: '100%', marginTop: 6, padding: '6px 8px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)', color: 'inherit', fontSize: '1.1rem' }}
+            />
+          </div>
+        ))}
+      </div>
+      <button className="btn-sm" disabled={saving} onClick={save}>
+        {saving ? 'Salvando...' : 'Salvar configuração'}
+      </button>
+      {saved && <span style={{ color: '#46a758', marginLeft: 10, fontSize: '0.82rem' }}>Salvo ✓</span>}
+    </div>
+  );
+}
+
 export default function AdminPage() {
   const [session, setSession] = useState(null);
 
@@ -280,6 +368,8 @@ function Dashboard({ session, onLogout }) {
 
         {stats.loading && <p style={{ color: 'var(--muted)' }}>Carregando...</p>}
         {!stats.loading && !s && <p style={{ color: 'var(--red)' }}>Erro ao conectar na API. Verifique se o umsinaldefe está rodando.</p>}
+
+        <CronConfigPanel session={session} />
 
         {q?.items && <QueueTable items={q.items} session={session} onRefresh={queue.refresh} />}
 

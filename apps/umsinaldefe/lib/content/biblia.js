@@ -12,6 +12,8 @@
  *   - Versículos conferidos, em tradução de uso comum no Brasil.
  */
 
+import generatedTopicsFile from './generated-verse-topics.json';
+
 const v = (ref, text) => ({ ref, text });
 
 const TOPICS = [
@@ -567,8 +569,13 @@ const TOPICS = [
   },
 ];
 
-export const listVerseTopics = () => TOPICS;
+// Temas curados (acima) + temas gerados pelo cron (generated-verse-topics.json), sem duplicar slug.
+const GENERATED_TOPICS = Array.isArray(generatedTopicsFile?.topics) ? generatedTopicsFile.topics : [];
+const curatedTopicSlugs = new Set(TOPICS.map((t) => t.slug));
+const ALL_TOPICS = [...TOPICS, ...GENERATED_TOPICS.filter((t) => t && t.slug && !curatedTopicSlugs.has(t.slug))];
 
-export const getVerseTopic = (slug) => TOPICS.find((t) => t.slug === slug) ?? null;
+export const listVerseTopics = () => ALL_TOPICS;
 
-export const VERSE_TOPIC_SLUGS = TOPICS.map((t) => t.slug);
+export const getVerseTopic = (slug) => ALL_TOPICS.find((t) => t.slug === slug) ?? null;
+
+export const VERSE_TOPIC_SLUGS = ALL_TOPICS.map((t) => t.slug);

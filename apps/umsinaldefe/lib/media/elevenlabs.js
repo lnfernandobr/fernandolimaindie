@@ -57,17 +57,13 @@ export const buildNarration = (signal) => {
   const parts = [];
   if (signal.title) parts.push(`${signal.title.trim()}.`);
   if (signal.answer) parts.push(signal.answer.trim());
+  if (signal.summary) parts.push(signal.summary.trim());
 
-  for (const chunk of signal.chunks ?? []) {
-    const text = stripHtml(chunk.html);
-    if (text) parts.push(text);
-    if (parts.join(' ').length > MAX_NARRATION_CHARS) break;
-  }
-
-  const full = parts.join('\n\n').replace(/\.\s*\./g, '.');
-  return full.length > MAX_NARRATION_CHARS
-    ? `${full.slice(0, MAX_NARRATION_CHARS).replace(/\s+\S*$/, '')}…`
-    : full;
+  let full = parts.join('\n\n').replace(/\.\s*\./g, '.');
+  // Cabe no limite de ~1 min de áudio: corta em ~140 palavras.
+  const words = full.split(/\s+/).filter(Boolean);
+  if (words.length > 140) full = `${words.slice(0, 140).join(' ')}…`;
+  return full;
 };
 
 export const isTtsConfigured = () => Boolean(env.ELEVENLABS_API_KEY);
