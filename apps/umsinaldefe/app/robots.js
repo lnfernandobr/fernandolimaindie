@@ -3,6 +3,7 @@ import { siteConfig, absoluteUrl } from '../lib/site-config.js';
 export default function robots() {
   return {
     rules: [
+      // Bloqueia crawlers nas URLs staging/vercel.app pra evitar duplicatas canônicas
       {
         userAgent: '*',
         allow: '/',
