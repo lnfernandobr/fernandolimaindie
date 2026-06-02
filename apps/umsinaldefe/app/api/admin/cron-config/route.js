@@ -8,6 +8,8 @@ const SECTIONS = ['salmo', 'oracao', 'biblia', 'blog', 'devocional', 'reflexao']
 const DEFAULT = {
   enabled: true,
   imageProvider: 'openai',
+  scheduleHourUtc: 6,
+  audio: { enabled: true, maxMinutes: 2 },
   perSection: { salmo: 2, oracao: 2, biblia: 2, blog: 2, devocional: 2, reflexao: 2 },
 };
 
@@ -20,7 +22,12 @@ function load() {
   try {
     if (existsSync(CONFIG_PATH)) {
       const cfg = JSON.parse(readFileSync(CONFIG_PATH, 'utf-8'));
-      return { ...DEFAULT, ...cfg, perSection: { ...DEFAULT.perSection, ...(cfg.perSection || {}) } };
+      return {
+        ...DEFAULT,
+        ...cfg,
+        audio: { ...DEFAULT.audio, ...(cfg.audio || {}) },
+        perSection: { ...DEFAULT.perSection, ...(cfg.perSection || {}) },
+      };
     }
   } catch {
     // cai no default
@@ -44,6 +51,16 @@ export async function PATCH(req) {
     if (typeof body.enabled === 'boolean') next.enabled = body.enabled;
     if (typeof body.imageProvider === 'string' && ['openai', 'pexels', 'none'].includes(body.imageProvider)) {
       next.imageProvider = body.imageProvider;
+    }
+    if (body.scheduleHourUtc != null && Number.isFinite(Number(body.scheduleHourUtc))) {
+      next.scheduleHourUtc = Math.min(23, Math.max(0, parseInt(body.scheduleHourUtc, 10) || 0));
+    }
+    if (body.audio && typeof body.audio === 'object') {
+      next.audio = { ...next.audio };
+      if (typeof body.audio.enabled === 'boolean') next.audio.enabled = body.audio.enabled;
+      if (body.audio.maxMinutes != null) {
+        next.audio.maxMinutes = Math.min(10, Math.max(1, parseInt(body.audio.maxMinutes, 10) || 1));
+      }
     }
 
     if (body.perSection && typeof body.perSection === 'object') {

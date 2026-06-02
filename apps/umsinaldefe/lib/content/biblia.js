@@ -569,10 +569,10 @@ const TOPICS = [
   },
 ];
 
-// Temas curados (acima) + temas gerados pelo cron (generated-verse-topics.json), sem duplicar slug.
+// Temas curados DESATIVADOS: populado pelo cron (generated-verse-topics.json).
+// O array TOPICS fica como seed/histórico. Pra reativar: [...TOPICS, ...GENERATED_TOPICS].
 const GENERATED_TOPICS = Array.isArray(generatedTopicsFile?.topics) ? generatedTopicsFile.topics : [];
-const curatedTopicSlugs = new Set(TOPICS.map((t) => t.slug));
-const ALL_TOPICS = [...TOPICS, ...GENERATED_TOPICS.filter((t) => t && t.slug && !curatedTopicSlugs.has(t.slug))];
+const ALL_TOPICS = [...GENERATED_TOPICS];
 
 export const listVerseTopics = () => ALL_TOPICS;
 

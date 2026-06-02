@@ -100,30 +100,107 @@ function ServiceBadge({ name, on }) {
   );
 }
 
+function AddItemForm({ session, onAdded }) {
+  const [open, setOpen] = useState(false);
+  const [type, setType] = useState('biblia');
+  const [keyword, setKeyword] = useState('');
+  const [title, setTitle] = useState('');
+  const [brief, setBrief] = useState('');
+  const [busy, setBusy] = useState(false);
+
+  const field = { padding: '6px 8px', borderRadius: 6, border: '1px solid rgba(0,0,0,0.15)', background: 'rgba(0,0,0,0.03)', color: 'inherit', width: '100%' };
+
+  const submit = async () => {
+    if (!keyword.trim()) return;
+    setBusy(true);
+    try {
+      await fetch(`${session.apiUrl}/api/admin/queue`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${session.apiToken}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type, keyword, title, brief }),
+      });
+      setKeyword(''); setTitle(''); setBrief(''); setOpen(false);
+      onAdded();
+    } catch { /* ignore */ }
+    setBusy(false);
+  };
+
+  if (!open) {
+    return <button className="btn-sm" onClick={() => setOpen(true)} style={{ marginBottom: 12 }}>+ Adicionar item à fila</button>;
+  }
+  return (
+    <div className="section" style={{ marginBottom: 12 }}>
+      <div className="section-title">Novo item na fila</div>
+      <div style={{ display: 'grid', gap: 8, gridTemplateColumns: '1fr 1fr', marginBottom: 8 }}>
+        <select value={type} onChange={(e) => setType(e.target.value)} style={field}>
+          <option value="biblia">Bíblia (versículos por tema)</option>
+          <option value="salmo">Salmo</option>
+          <option value="oracao">Oração</option>
+          <option value="devocional">Devocional</option>
+          <option value="blog">Blog</option>
+        </select>
+        <input placeholder="Keyword-alvo (ex.: versículos sobre paz)" value={keyword} onChange={(e) => setKeyword(e.target.value)} style={field} />
+        <input placeholder="Título (opcional)" value={title} onChange={(e) => setTitle(e.target.value)} style={field} />
+        <input placeholder="Brief (opcional)" value={brief} onChange={(e) => setBrief(e.target.value)} style={field} />
+      </div>
+      <button className="btn-sm" disabled={busy || !keyword.trim()} onClick={submit}>{busy ? 'Adicionando...' : 'Adicionar'}</button>
+      <button className="btn-sm" onClick={() => setOpen(false)} style={{ marginLeft: 8 }}>Cancelar</button>
+    </div>
+  );
+}
+
 function QueueTable({ items, session, onRefresh }) {
   const [filter, setFilter] = useState('all');
   const [busy, setBusy] = useState(null);
 
   const filtered = filter === 'all' ? items : items.filter((i) => i.status === filter);
 
-  const updateStatus = async (id, status) => {
+  const patchItem = async (id, body) => {
     setBusy(id);
     try {
       await fetch(`${session.apiUrl}/api/admin/queue`, {
         method: 'PATCH',
         headers: { Authorization: `Bearer ${session.apiToken}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, status }),
+        body: JSON.stringify({ id, ...body }),
       });
       onRefresh();
     } catch { /* ignore */ }
     setBusy(null);
   };
 
+  const removeItem = async (id) => {
+    if (!window.confirm('Remover este item da fila?')) return;
+    setBusy(id);
+    try {
+      await fetch(`${session.apiUrl}/api/admin/queue`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${session.apiToken}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      });
+      onRefresh();
+    } catch { /* ignore */ }
+    setBusy(null);
+  };
+
+  const reschedule = (id) => {
+    const v = window.prompt('Reagendar para (AAAA-MM-DD). Deixe vazio para gerar normalmente:');
+    if (v === null) return;
+    patchItem(id, { scheduledFor: v ? new Date(`${v}T06:00:00Z`).toISOString() : null });
+  };
+
+  const cycleAudio = (item) => {
+    const next = { auto: 'on', on: 'off', off: 'auto' };
+    patchItem(item.id, { audio: next[item.audio || 'auto'] });
+  };
+
+  const audioLabel = (a) => (a === 'off' ? '🔇 off' : a === 'on' ? '🔊 on' : '🎧 auto');
+
   return (
     <div className="section">
       <div className="section-title">
         Fila de conteúdo <span className="badge">{items.length} temas</span>
       </div>
+      <AddItemForm session={session} onAdded={onRefresh} />
       <div className="tabs">
         {['all', 'pending', 'done', 'error', 'skip'].map((t) => (
           <button key={t} className={`tab ${filter === t ? 'active' : ''}`} onClick={() => setFilter(t)}>
@@ -135,11 +212,11 @@ function QueueTable({ items, session, onRefresh }) {
         <table>
           <thead>
             <tr>
-              <th>#</th>
+              <th>Prior.</th>
               <th>Keyword</th>
               <th>Tipo</th>
-              <th>Volume</th>
-              <th>SD</th>
+              <th>Áudio</th>
+              <th>Agenda</th>
               <th>Status</th>
               <th>Ações</th>
             </tr>
@@ -147,25 +224,35 @@ function QueueTable({ items, session, onRefresh }) {
           <tbody>
             {filtered.map((item) => (
               <tr key={item.id}>
-                <td>{item.id}</td>
+                <td style={{ whiteSpace: 'nowrap' }}>
+                  {item.priority ?? '—'}{' '}
+                  <button className="btn-sm" disabled={busy === item.id} onClick={() => patchItem(item.id, { action: 'up' })} title="Subir prioridade">▲</button>
+                  <button className="btn-sm" disabled={busy === item.id} onClick={() => patchItem(item.id, { action: 'down' })} title="Descer prioridade">▼</button>
+                </td>
                 <td title={item.title}>
                   <strong>{item.keyword}</strong>
                   <br /><span style={{ color: 'var(--muted)', fontSize: '0.75rem' }}>{item.slug}</span>
                 </td>
                 <td>{item.type}</td>
-                <td>{item.volume ? `${(item.volume / 1000).toFixed(0)}k` : '—'}</td>
-                <td>{item.sd ?? '—'}</td>
-                <td><span className={`status ${item.status}`}>{item.status}</span></td>
                 <td>
+                  <button className="btn-sm" disabled={busy === item.id} onClick={() => cycleAudio(item)} title="Alternar áudio (auto/on/off)">
+                    {audioLabel(item.audio)}
+                  </button>
+                </td>
+                <td style={{ fontSize: '0.72rem', color: 'var(--muted)' }}>
+                  {item.scheduledFor ? new Date(item.scheduledFor).toLocaleDateString('pt-BR') : '—'}
+                </td>
+                <td><span className={`status ${item.status}`}>{item.status}</span></td>
+                <td style={{ whiteSpace: 'nowrap' }}>
+                  <button className="btn-sm" disabled={busy === item.id} onClick={() => patchItem(item.id, { action: 'runNow' })} title="Gerar a seguir (vai pro topo da fila)">▶ Agora</button>
+                  {item.status === 'skip'
+                    ? <button className="btn-sm" disabled={busy === item.id} onClick={() => patchItem(item.id, { action: 'reactivate' })}>Reativar</button>
+                    : <button className="btn-sm" disabled={busy === item.id} onClick={() => patchItem(item.id, { action: 'skip' })}>Pular</button>}
                   {item.status === 'error' && (
-                    <button className="btn-sm" disabled={busy === item.id} onClick={() => updateStatus(item.id, 'pending')}>Retry</button>
+                    <button className="btn-sm" disabled={busy === item.id} onClick={() => patchItem(item.id, { action: 'reactivate' })}>Retry</button>
                   )}
-                  {item.status === 'pending' && (
-                    <button className="btn-sm" disabled={busy === item.id} onClick={() => updateStatus(item.id, 'skip')}>Skip</button>
-                  )}
-                  {item.status === 'skip' && (
-                    <button className="btn-sm" disabled={busy === item.id} onClick={() => updateStatus(item.id, 'pending')}>Reativar</button>
-                  )}
+                  <button className="btn-sm" disabled={busy === item.id} onClick={() => reschedule(item.id)} title="Reagendar">📅</button>
+                  <button className="btn-sm" disabled={busy === item.id} onClick={() => removeItem(item.id)} title="Remover">🗑</button>
                 </td>
               </tr>
             ))}
@@ -242,7 +329,7 @@ function CronConfigPanel({ session }) {
       const res = await fetch(`${session.apiUrl}/api/admin/cron-config`, {
         method: 'PATCH',
         headers: { Authorization: `Bearer ${session.apiToken}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ enabled: draft.enabled, imageProvider: draft.imageProvider, perSection: draft.perSection }),
+        body: JSON.stringify({ enabled: draft.enabled, imageProvider: draft.imageProvider, scheduleHourUtc: draft.scheduleHourUtc, audio: draft.audio, perSection: draft.perSection }),
       });
       if (res.ok) { setSaved(true); refresh(); }
     } catch { /* ignore */ }
@@ -277,6 +364,35 @@ function CronConfigPanel({ session }) {
           <option value="none">Sem imagem</option>
         </select>
       </label>
+      <div style={{ display: 'flex', gap: 18, flexWrap: 'wrap', marginBottom: 16, fontSize: '0.9rem' }}>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          Horário do cron (UTC):
+          <input
+            type="number" min="0" max="23"
+            value={draft.scheduleHourUtc ?? 6}
+            onChange={(e) => setDraft((d) => ({ ...d, scheduleHourUtc: Math.max(0, Math.min(23, parseInt(e.target.value, 10) || 0)) }))}
+            style={{ width: 64, padding: '4px 8px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)', color: 'inherit' }}
+          />
+          h
+        </label>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <input
+            type="checkbox"
+            checked={draft.audio?.enabled !== false}
+            onChange={(e) => setDraft((d) => ({ ...d, audio: { ...d.audio, enabled: e.target.checked } }))}
+          />
+          Áudio (ElevenLabs)
+        </label>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          Máx. minutos de áudio:
+          <input
+            type="number" min="1" max="10"
+            value={draft.audio?.maxMinutes ?? 2}
+            onChange={(e) => setDraft((d) => ({ ...d, audio: { ...d.audio, maxMinutes: Math.max(1, Math.min(10, parseInt(e.target.value, 10) || 1)) } }))}
+            style={{ width: 64, padding: '4px 8px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)', color: 'inherit' }}
+          />
+        </label>
+      </div>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: 12, marginBottom: 16 }}>
         {sections.map((s) => (
           <div key={s} className="stat" style={{ opacity: draft.enabled ? 1 : 0.5 }}>

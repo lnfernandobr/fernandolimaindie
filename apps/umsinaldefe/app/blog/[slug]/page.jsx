@@ -169,7 +169,7 @@ export default async function BlogPostPage({ params }) {
         {/* Corpo do artigo (com IDs nos H2 pra ancoragem do TOC) */}
         <section className="chunk post-body" itemProp="articleBody" dangerouslySetInnerHTML={{ __html: bodyWithIds }} />
 
-        {isTtsConfigured() && (
+        {isTtsConfigured() && post.audioEnabled !== false && (
           <section id="audio" className="chunk">
             <h2>Ouça este artigo</h2>
             <AudioPlayer

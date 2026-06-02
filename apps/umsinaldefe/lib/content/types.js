@@ -54,6 +54,7 @@ export const signalSchema = z.object({
   relatedIntents: z.array(z.string()),
   audioUrl: z.string().nullable(),
   imageUrl: z.string().nullable(),
+  audioEnabled: z.boolean().optional(),
   lang: z.string(),
   status: z.string(),
   publishedAt: z.coerce.date(),

@@ -25,6 +25,7 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { SYSTEM_PROMPTS, buildUserPrompt, buildImagePrompt } from '../lib/content/prompts.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CONTENT_DIR = resolve(__dirname, '../lib/content');
@@ -61,12 +62,15 @@ function parseArgs() {
   if (ci !== -1 && args[ci + 1]) count = Math.min(20, Math.max(1, parseInt(args[ci + 1], 10)));
   const ti = args.indexOf('--type');
   if (ti !== -1 && args[ti + 1]) type = args[ti + 1];
-  return { count, type };
+  const cron = args.includes('--cron');
+  return { count, type, cron };
 }
 
 const DEFAULT_CRON_CONFIG = {
   enabled: true,
   imageProvider: 'openai', // 'openai' | 'pexels' | 'none'
+  scheduleHourUtc: 6,
+  audio: { enabled: true, maxMinutes: 2 },
   perSection: { salmo: 2, oracao: 2, biblia: 2, blog: 2, devocional: 2, reflexao: 2 },
 };
 function loadCronConfig() {
@@ -74,6 +78,7 @@ function loadCronConfig() {
   return {
     ...DEFAULT_CRON_CONFIG,
     ...cfg,
+    audio: { ...DEFAULT_CRON_CONFIG.audio, ...(cfg.audio || {}) },
     perSection: { ...DEFAULT_CRON_CONFIG.perSection, ...(cfg.perSection || {}) },
   };
 }
@@ -116,7 +121,7 @@ async function fetchImage(keyword) {
 async function generateOpenAIImage(item) {
   if (!OPENAI_KEY) return null;
   const subject = String(item.keyword || item.title || '').replace(/["\n]/g, ' ').trim();
-  const prompt = `Imagem editorial serena para um conteudo cristao em portugues sobre "${subject}". Fotografia realista, luz natural suave de fim de tarde, atmosfera de paz, esperanca e acolhimento, tons quentes. Composicao limpa com bastante espaco negativo, boa como capa 3:2. Sem nenhum texto ou letras na imagem, sem rostos em primeiro plano.`;
+  const prompt = buildImagePrompt(item);
   try {
     const res = await fetch('https://api.openai.com/v1/images/generations', {
       method: 'POST',
@@ -148,45 +153,7 @@ async function pickImage(item, provider) {
 
 // ── OpenAI ───────────────────────────────────────────────────────────
 
-const VOICE = `Você é um redator cristão interconfessional brasileiro. Escreve em português do Brasil, caloroso, direto, conversa de gente pra gente, sem moralismo e sem dedo na cara. NUNCA use travessão (—): use vírgula, ponto, dois-pontos ou parênteses. Nunca use "em suma", "portanto", "é importante ressaltar". Versículos sempre precisos e em tradução de uso comum no Brasil. Conteúdo humanizado, sem cara de IA.`;
-
-const PROMPTS = {
-  blog: `${VOICE}
-
-Tarefa: escreva um ARTIGO DE BLOG aprofundado, claro e fácil de ler (1000 a 1400 palavras no corpo), otimizado pra SEO.
-SEO: use a keyword-alvo no título, na primeira frase e em pelo menos 2 dos H2. Escreva pra quem chega pelo Google buscando ajuda de verdade.
-bodyHtml (HTML, sem <html>/<body>):
-- 1º parágrafo: resposta direta à busca (answer-first), já com a keyword.
-- 5 a 7 seções com <h2>. Parágrafos curtos (2 a 4 linhas). Use <ul> ou <ol> quando ajudar a leitura.
-- Pelo menos 3 versículos reais em <blockquote class="scripture"> com <cite> pra referência.
-- Inclua 1 ou 2 links internos com <a href> pra páginas tipo /biblia/<tema>, /salmo/<n> ou /oracao/<slug>, quando fizer sentido.
-excerpt: 1 a 2 frases que resolvem a busca, com a keyword.
-keyTakeaways: 4 a 5 pontos curtos e úteis.
-faq: 4 a 5 perguntas reais (as que a pessoa digitaria), respostas de 2 a 4 linhas.
-Responda SOMENTE JSON:
-{"title":"...","excerpt":"...","readMins":8,"keyTakeaways":["...","...","...","..."],"bodyHtml":"<p>...</p>","faq":[{"question":"...","answer":"..."}]}`,
-
-  signal: `${VOICE}
-
-Tarefa: escreva uma página rica de SALMO, ORAÇÃO ou DEVOCIONAL pra rezar com entendimento, otimizada pra SEO (keyword no título e na primeira frase da answer).
-answer: 2 a 3 linhas que resolvem a busca, trazendo já a essência (answer-first).
-summary: 1 a 2 frases de resumo acolhedor.
-sections: 4 a 6 seções, cada uma com heading (vira H2) e html (1 a 3 parágrafos <p>). Traga o texto do salmo ou da oração em <p class="scripture">, uma seção de significado e uma de "quando e como rezar", com pelo menos 3 versículos reais ao longo do texto. Parágrafos curtos.
-faq: 3 a 4 perguntas e respostas curtas (as que a pessoa busca).
-Responda SOMENTE JSON:
-{"title":"...","answer":"...","summary":"...","sections":[{"heading":"...","html":"<p>...</p>"}],"faq":[{"question":"...","answer":"..."}]}`,
-
-  biblia: `${VOICE}
-
-Tarefa: monte uma página rica de "Versículos sobre <tema>" (coleção temática), otimizada pra SEO (keyword no título e na primeira frase da answer).
-answer: 2 a 3 linhas answer-first sobre o que a Bíblia diz do tema.
-summary: 1 a 2 frases.
-verses: 8 a 12 versículos reais e variados (Antigo e Novo Testamento). Cada um com ref e text. No ref use vírgula (ex.: "João 3, 16").
-reflectionHtml: 3 a 4 parágrafos <p> de reflexão calorosa, com 1 link interno <a href> pra outra página /biblia/<tema> relacionada quando fizer sentido.
-faq: 3 a 4 perguntas e respostas curtas.
-Responda SOMENTE JSON:
-{"title":"...","answer":"...","summary":"...","verses":[{"ref":"João 3, 16","text":"..."}],"reflectionHtml":"<p>...</p>","faq":[{"question":"...","answer":"..."}]}`,
-};
+// Prompts, voz da marca e regras de SEO ficam em lib/content/prompts.mjs (fonte única).
 
 function promptKeyForType(type) {
   if (type === 'biblia') return 'biblia';
@@ -196,13 +163,7 @@ function promptKeyForType(type) {
 
 async function callOpenAI(systemPrompt, item) {
   if (!OPENAI_KEY) throw new Error('OPENAI_API_KEY não configurada');
-  const userPrompt = `Tema: "${item.title}"
-Keyword-alvo pro SEO: "${item.keyword}"
-Brief: ${item.brief || '(sem brief)'}
-Tipo: ${item.type}
-Categoria: ${item.category || ''}
-
-Siga as regras do sistema. Responda somente JSON válido.`;
+  const userPrompt = buildUserPrompt(item);
 
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
@@ -320,8 +281,24 @@ function upsertBySlug(list, obj) {
 // ── Main ─────────────────────────────────────────────────────────────
 
 async function main() {
-  const { count, type } = parseArgs();
-  const imageProvider = loadCronConfig().imageProvider || 'openai';
+  const { count, type, cron } = parseArgs();
+  const cfg = loadCronConfig();
+  const imageProvider = cfg.imageProvider || 'openai';
+  const audioOn = (item) => {
+    if (item.audio === 'off') return false;
+    if (item.audio === 'on') return true;
+    return cfg.audio?.enabled !== false;
+  };
+
+  // Quando chamado pelo cron horario (--cron), só roda na hora agendada.
+  if (cron) {
+    const nowH = new Date().getUTCHours();
+    const target = Number.isFinite(cfg.scheduleHourUtc) ? cfg.scheduleHourUtc : 6;
+    if (nowH !== target) {
+      console.log(`Fora do horario do cron (agora ${nowH}h UTC, agendado ${target}h). Saindo.`);
+      process.exit(3);
+    }
+  }
   const queue = loadJson(QUEUE_PATH, { items: [] });
   const postsFile = loadJson(POSTS_PATH, { posts: [] });
   const signalsFile = loadJson(SIGNALS_PATH, { signals: [] });
@@ -331,8 +308,11 @@ async function main() {
   topicsFile.topics = topicsFile.topics || [];
 
   const sortFn = (a, b) => a.priority - b.priority || (b.volume || 0) - (a.volume || 0);
+  const dueNow = (i) => !i.scheduledFor || new Date(i.scheduledFor) <= new Date();
   const pendingOf = (t) =>
-    queue.items.filter((i) => i.status === 'pending' && (!t || i.type === t)).sort(sortFn);
+    queue.items
+      .filter((i) => i.status === 'pending' && (!t || i.type === t) && dueNow(i))
+      .sort(sortFn);
 
   let batch = [];
   let mode = '';
@@ -342,10 +322,9 @@ async function main() {
     mode = `manual (tipo=${type || 'todos'}, count=${count || 1})`;
   } else {
     // Modo do cron: N itens por seção, configurável via cron-config.json / admin.
-    const cfg = loadCronConfig();
     if (cfg.enabled === false) {
       console.log('Geração desativada na config (cron-config.json).');
-      return;
+      process.exit(3);
     }
     const parts = [];
     for (const [t, n] of Object.entries(cfg.perSection || {})) {
@@ -358,7 +337,7 @@ async function main() {
 
   if (batch.length === 0) {
     console.log('Nada pendente pra gerar.');
-    return;
+    process.exit(3);
   }
   console.log(`Modo: ${mode}. Gerando ${batch.length} item(ns)...`);
 
@@ -370,18 +349,24 @@ async function main() {
     const promptKey = promptKeyForType(item.type);
     console.log(`\n→ [${item.id}] (${item.type}) ${item.keyword}`);
     try {
-      const gen = await callOpenAI(PROMPTS[promptKey], item);
+      const gen = await callOpenAI(SYSTEM_PROMPTS[promptKey], item);
       const now = new Date().toISOString();
       const image = promptKey === 'biblia' ? null : await pickImage(item, imageProvider);
 
       if (promptKey === 'blog') {
-        upsertBySlug(postsFile.posts, buildBlogPost(item, gen, image, now));
+        const obj = buildBlogPost(item, gen, image, now);
+        obj.audioEnabled = audioOn(item);
+        upsertBySlug(postsFile.posts, obj);
         touchedPosts = true;
       } else if (promptKey === 'biblia') {
-        upsertBySlug(topicsFile.topics, buildTopic(item, gen));
+        const obj = buildTopic(item, gen);
+        obj.audioEnabled = audioOn(item);
+        upsertBySlug(topicsFile.topics, obj);
         touchedTopics = true;
       } else {
-        upsertBySlug(signalsFile.signals, buildSignal(item, gen, image, now));
+        const obj = buildSignal(item, gen, image, now);
+        obj.audioEnabled = audioOn(item);
+        upsertBySlug(signalsFile.signals, obj);
         touchedSignals = true;
       }
       console.log(`  ✓ gerado (${promptKey})`);

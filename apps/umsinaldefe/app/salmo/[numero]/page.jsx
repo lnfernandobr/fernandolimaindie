@@ -165,7 +165,7 @@ export default async function PsalmPage({ params }) {
 
         <SemanticFAQ entries={signal.faq} />
 
-        {isTtsConfigured() && (
+        {isTtsConfigured() && signal.audioEnabled !== false && (
           <section id="audio" className="chunk">
             <h2>Ouça este salmo</h2>
             <AudioPlayer

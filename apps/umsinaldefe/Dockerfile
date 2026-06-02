@@ -35,9 +35,12 @@ RUN corepack enable && apk add --no-cache tini
 
 COPY --from=builder /app /app
 
-# Cron: gera 1 post por dia às 6h UTC (o script lê a fila e cria conteúdo)
-# O cron roda generate-post.mjs que atualiza generated-posts.json e roda rebuild.
-RUN echo '0 6 * * * cd /app/apps/umsinaldefe && node scripts/generate-post.mjs >> /var/log/cron.log 2>&1' > /etc/crontabs/root
+# Cron horário: o script (--cron) só gera na hora configurada no admin
+# (cron-config.json -> scheduleHourUtc) e, quando gera, reconstrói o site.
+# O generate sai com código != 0 quando NÃO gera (hora errada, fila vazia, desativado),
+# então o "&& pnpm build" só roda quando há conteúdo novo.
+# Obs.: pra SERVIR o novo build, o container precisa reiniciar o next (ou usar redeploy).
+RUN echo '0 * * * * cd /app/apps/umsinaldefe && node scripts/generate-post.mjs --cron >> /var/log/cron.log 2>&1 && pnpm build >> /var/log/cron.log 2>&1' > /etc/crontabs/root
 
 ENV NODE_ENV=production
 EXPOSE 3001

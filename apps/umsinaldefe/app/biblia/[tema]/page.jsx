@@ -113,7 +113,7 @@ export default async function VerseTopicPage({ params }) {
 
         <section className="chunk" dangerouslySetInnerHTML={{ __html: topic.reflectionHtml }} />
 
-        {isTtsConfigured() && (
+        {isTtsConfigured() && topic.audioEnabled !== false && (
           <section id="audio" className="chunk">
             <h2>Ouça estes versículos</h2>
             <AudioPlayer

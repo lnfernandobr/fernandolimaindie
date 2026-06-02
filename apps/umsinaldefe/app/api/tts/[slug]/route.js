@@ -8,26 +8,38 @@ import {
   fitsAudioLimit,
   estimateDuration,
 } from '@/lib/media/elevenlabs.js';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 export const runtime = 'nodejs';
+
+function loadAudioCfg() {
+  try {
+    const cfg = JSON.parse(readFileSync(resolve(process.cwd(), 'lib/content/cron-config.json'), 'utf-8'));
+    const a = cfg.audio || {};
+    return { enabled: a.enabled !== false, maxMinutes: Math.min(10, Math.max(1, a.maxMinutes || 2)) };
+  } catch {
+    return { enabled: true, maxMinutes: 2 };
+  }
+}
 export const revalidate = 86400;
 
 /**
  * Monta narração pra qualquer tipo de conteúdo.
  * Tenta signal (orações/salmos/devocionais), depois versículos, depois blog.
  */
-function resolveNarration(slug) {
+function resolveNarration(slug, maxWords) {
   // 1. Signal (orações, salmos, devocionais, reflexões)
   try {
     const signal = getSignal(slug);
-    return { title: signal.title, text: buildNarration(signal) };
+    return { title: signal.title, text: buildNarration(signal, maxWords), audioEnabled: signal.audioEnabled };
   } catch { /* não é signal */ }
 
   // 2. Versículos por tema (biblia)
   const topic = getVerseTopic(slug);
   if (topic) {
     const full = [topic.title, topic.answer, topic.summary].filter(Boolean).join('. ');
-    return { title: topic.title, text: full };
+    return { title: topic.title, text: full, audioEnabled: topic.audioEnabled };
   }
 
   // 3. Blog post
@@ -35,7 +47,7 @@ function resolveNarration(slug) {
   if (post) {
     // Blog posts são longos, a narração foca no excerpt (resposta direta)
     const text = `${post.title}. ${post.excerpt}`;
-    return { title: post.title, text };
+    return { title: post.title, text, audioEnabled: post.audioEnabled };
   }
 
   return null;
@@ -51,17 +63,28 @@ export async function GET(_request, { params }) {
     });
   }
 
-  const narration = resolveNarration(slug);
+  const audioCfg = loadAudioCfg();
+  if (!audioCfg.enabled) {
+    return new Response('Áudio desativado', { status: 503, headers: { 'Cache-Control': 'no-store' } });
+  }
+  const maxWords = Math.round(audioCfg.maxMinutes * 150); // ~150 palavras por minuto
+
+  const narration = resolveNarration(slug, maxWords);
   if (!narration || !narration.text) {
     return new Response('Não encontrado', { status: 404 });
   }
+  if (narration.audioEnabled === false) {
+    return new Response('Áudio desativado para este item', {
+      status: 404,
+      headers: { 'Cache-Control': 'public, max-age=3600' },
+    });
+  }
 
-  // Limite de 1 minuto: se o texto é longo demais, retorna 413.
-  // O front simplesmente não mostra o player (o fetch falha sem quebrar nada).
-  if (!fitsAudioLimit(narration.text)) {
+  // Limite configurável (maxMinutes): se o texto é longo demais, retorna 413.
+  if (!fitsAudioLimit(narration.text, maxWords)) {
     const est = estimateDuration(narration.text);
     return new Response(
-      `Conteúdo longo demais pra áudio (~${est}s). Limite: 60s.`,
+      `Conteúdo longo demais pra áudio (~${est}s). Limite: ${audioCfg.maxMinutes}min.`,
       { status: 413, headers: { 'Cache-Control': 'public, max-age=86400' } },
     );
   }

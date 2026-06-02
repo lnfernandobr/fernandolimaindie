@@ -38,6 +38,7 @@ const mk = (s) => ({
   relatedIntents: s.relatedIntents || [],
   audioUrl: s.audioUrl || null,
   imageUrl: s.imageUrl || null,
+  audioEnabled: s.audioEnabled ?? true,
   lang: 'pt-BR',
   status: 'published',
   publishedAt: s.publishedAt || PUB,
@@ -1566,8 +1567,10 @@ const ENTITIES = [];
 /* EXPORTS                                                             */
 /* ------------------------------------------------------------------ */
 
-// Conteúdo curado (acima) + gerado pelo cron (generated-signals.json), sem duplicar slug.
-const CURATED = [...PSALMS, ...PRAYERS, ...DEVOTIONALS, ...REFLECTIONS].map(mk);
+// Conteúdo curado DESATIVADO: o site é populado pelo cron (generated-signals.json).
+// As arrays PSALMS/PRAYERS/DEVOTIONALS/REFLECTIONS ficam como seed/histórico.
+// Pra reativar o curado: const CURATED = [...PSALMS, ...PRAYERS, ...DEVOTIONALS, ...REFLECTIONS].map(mk);
+const CURATED = [];
 const GENERATED = (Array.isArray(generatedSignalsFile?.signals) ? generatedSignalsFile.signals : []).map(mk);
 const curatedSlugs = new Set(CURATED.map((s) => s.slug));
 

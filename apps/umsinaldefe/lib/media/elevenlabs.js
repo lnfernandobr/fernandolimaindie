@@ -53,16 +53,16 @@ const stripHtml = (html = '') =>
  * ouvinte saber o que está ouvindo), depois a resposta direta e, quando há,
  * o corpo dos chunks. Texto limpo, sem HTML, pronto pra narração.
  */
-export const buildNarration = (signal) => {
+export const buildNarration = (signal, maxWords = 280) => {
   const parts = [];
   if (signal.title) parts.push(`${signal.title.trim()}.`);
   if (signal.answer) parts.push(signal.answer.trim());
   if (signal.summary) parts.push(signal.summary.trim());
 
   let full = parts.join('\n\n').replace(/\.\s*\./g, '.');
-  // Cabe no limite de ~1 min de áudio: corta em ~140 palavras.
+  // Cabe no limite configurável de áudio: corta no número de palavras pedido.
   const words = full.split(/\s+/).filter(Boolean);
-  if (words.length > 140) full = `${words.slice(0, 140).join(' ')}…`;
+  if (words.length > maxWords) full = `${words.slice(0, maxWords).join(' ')}…`;
   return full;
 };
 
@@ -75,7 +75,7 @@ const wordCount = (text) => text.split(/\s+/).filter(Boolean).length;
 export const estimateDuration = (text) => Math.round((wordCount(text) / WORDS_PER_MINUTE) * 60);
 
 /** Retorna true se o texto cabe no limite de 1 minuto de áudio. */
-export const fitsAudioLimit = (text) => wordCount(text) <= MAX_WORDS_FOR_AUDIO;
+export const fitsAudioLimit = (text, maxWords = MAX_WORDS_FOR_AUDIO) => wordCount(text) <= maxWords;
 
 /**
  * Chama a ElevenLabs e devolve o áudio (audio/mpeg) como ArrayBuffer.

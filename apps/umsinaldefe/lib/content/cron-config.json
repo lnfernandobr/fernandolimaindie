@@ -1,6 +1,8 @@
 {
   "enabled": true,
   "imageProvider": "openai",
+  "scheduleHourUtc": 6,
+  "audio": { "enabled": true, "maxMinutes": 2 },
   "perSection": {
     "salmo": 2,
     "oracao": 2,
