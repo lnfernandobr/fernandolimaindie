@@ -11,7 +11,7 @@ const schema = z.object({
   NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: z.string().optional(),
   NEXT_PUBLIC_BING_SITE_VERIFICATION: z.string().optional(),
   NEXT_PUBLIC_ADSENSE_CLIENT: z.string().optional(),
-  UMSINALDEFE_API_URL: z.string().url().default('http://localhost:4000'),
+  UMSINALDEFE_API_URL: z.string().url().default('https://api.fazedorismo.com/api/v1'),
   REVALIDATE_TOKEN: z.string().default('dev-revalidate-token'),
   INDEXNOW_KEY: z.string().default(''),
   // ElevenLabs (text-to-speech). Server-only: nunca expor com NEXT_PUBLIC.

@@ -26,18 +26,7 @@ import { ShareButton } from '@/components/ShareButton.jsx';
 import { AudioPlayer } from '@/components/AudioPlayer.jsx';
 import { isTtsConfigured } from '@/lib/media/elevenlabs.js';
 
-export const revalidate = 86400;
-
-export async function generateStaticParams() {
-  try {
-    const { items } = await listSignals({ limit: 500 });
-    return items
-      .filter((s) => s.slug.startsWith('salmo-'))
-      .map((s) => ({ numero: s.slug.replace(/^salmo-/, '') }));
-  } catch {
-    return [];
-  }
-}
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }) {
   const { numero } = await params;
