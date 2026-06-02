@@ -193,6 +193,16 @@ function QueueTable({ items, session, onRefresh }) {
     patchItem(item.id, { audio: next[item.audio || 'auto'] });
   };
 
+  const editItem = (item) => {
+    const title = window.prompt('Título:', item.title || '');
+    if (title === null) return;
+    const keyword = window.prompt('Keyword-alvo (SEO):', item.keyword || '');
+    if (keyword === null) return;
+    const brief = window.prompt('Brief (contexto pra IA):', item.brief || '');
+    if (brief === null) return;
+    patchItem(item.id, { title, keyword, brief });
+  };
+
   const audioLabel = (a) => (a === 'off' ? '🔇 off' : a === 'on' ? '🔊 on' : '🎧 auto');
 
   return (
@@ -251,6 +261,7 @@ function QueueTable({ items, session, onRefresh }) {
                   {item.status === 'error' && (
                     <button className="btn-sm" disabled={busy === item.id} onClick={() => patchItem(item.id, { action: 'reactivate' })}>Retry</button>
                   )}
+                  <button className="btn-sm" disabled={busy === item.id} onClick={() => editItem(item)} title="Editar título/keyword/brief">✎</button>
                   <button className="btn-sm" disabled={busy === item.id} onClick={() => reschedule(item.id)} title="Reagendar">📅</button>
                   <button className="btn-sm" disabled={busy === item.id} onClick={() => removeItem(item.id)} title="Remover">🗑</button>
                 </td>

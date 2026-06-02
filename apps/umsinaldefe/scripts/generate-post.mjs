@@ -251,7 +251,7 @@ function buildSignal(item, gen, image, now) {
   };
 }
 
-function buildTopic(item, gen) {
+function buildTopic(item, gen, image) {
   const tag =
     item.tag ||
     (item.title || item.slug)
@@ -269,6 +269,7 @@ function buildTopic(item, gen) {
     verses: Array.isArray(gen.verses) ? gen.verses.map((x) => ({ ref: x.ref, text: x.text })) : [],
     reflectionHtml: gen.reflectionHtml || '',
     faq: gen.faq || [],
+    imageUrl: image?.src || null,
   };
 }
 
@@ -351,7 +352,7 @@ async function main() {
     try {
       const gen = await callOpenAI(SYSTEM_PROMPTS[promptKey], item);
       const now = new Date().toISOString();
-      const image = promptKey === 'biblia' ? null : await pickImage(item, imageProvider);
+      const image = await pickImage(item, imageProvider);
 
       if (promptKey === 'blog') {
         const obj = buildBlogPost(item, gen, image, now);
@@ -359,7 +360,7 @@ async function main() {
         upsertBySlug(postsFile.posts, obj);
         touchedPosts = true;
       } else if (promptKey === 'biblia') {
-        const obj = buildTopic(item, gen);
+        const obj = buildTopic(item, gen, image);
         obj.audioEnabled = audioOn(item);
         upsertBySlug(topicsFile.topics, obj);
         touchedTopics = true;

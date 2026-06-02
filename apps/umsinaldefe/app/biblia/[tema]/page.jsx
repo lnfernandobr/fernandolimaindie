@@ -91,6 +91,20 @@ export default async function VerseTopicPage({ params }) {
           <h1>{topic.title}</h1>
         </header>
 
+        {topic.imageUrl && (
+          <figure className="post-hero">
+            <img
+              src={topic.imageUrl}
+              alt={topic.title}
+              loading="eager"
+              decoding="async"
+              width={1200}
+              height={630}
+              style={{ width: '100%', height: 'auto', borderRadius: 'var(--radius-lg)', aspectRatio: '1200/630', objectFit: 'cover' }}
+            />
+          </figure>
+        )}
+
         <div className="signal-actions">
           <ShareButton title={topic.title} url={absoluteUrl(path)} />
         </div>
