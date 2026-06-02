@@ -172,10 +172,10 @@ const POSTS = [
 
 const withDates = (p) => ({ publishedAt: PUB, updatedAt: UPD, ...p });
 
-// Posts curados DESATIVADOS: populado pelo cron (generated-posts.json).
-// O array POSTS fica como seed/histórico. Pra reativar: [...POSTS, ...GENERATED].
+// Posts fixos (curados à mão) + posts gerados pelo cron, sem duplicar slug.
 const GENERATED = Array.isArray(generatedFile?.posts) ? generatedFile.posts : [];
-const ALL_POSTS = [...GENERATED];
+const fixedSlugs = new Set(POSTS.map((p) => p.slug));
+const ALL_POSTS = [...POSTS, ...GENERATED.filter((p) => p && p.slug && !fixedSlugs.has(p.slug))];
 
 const byNewest = (a, b) => new Date(b.publishedAt || 0) - new Date(a.publishedAt || 0);
 
