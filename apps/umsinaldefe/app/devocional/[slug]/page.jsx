@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getSignal, listSignals } from '@/lib/content/api.js';
+import { getSignal } from '@/lib/content/api.js';
 import { INTENT_LABELS } from '@/lib/content/intents.js';
 import { buildMetadata } from '@/lib/seo/metadata.js';
 import {
@@ -26,18 +26,7 @@ import { ShareButton } from '@/components/ShareButton.jsx';
 import { AudioPlayer } from '@/components/AudioPlayer.jsx';
 import { isTtsConfigured } from '@/lib/media/elevenlabs.js';
 
-export const revalidate = 86400;
-
-export async function generateStaticParams() {
-  try {
-    const { items } = await listSignals({ limit: 500 });
-    return items
-      .filter((s) => s.slug.startsWith('devocional-'))
-      .map((s) => ({ slug: s.slug.replace(/^devocional-/, '') }));
-  } catch {
-    return [];
-  }
-}
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }) {
   const { slug: slugParam } = await params;
