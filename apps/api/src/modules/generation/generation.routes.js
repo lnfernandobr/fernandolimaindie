@@ -5,6 +5,9 @@ import { requireAuth } from '../../middleware/authenticate.js';
 import {
   handleGetStatus,
   handleListSeeds,
+  handleCreateSeed,
+  handleUpdateSeed,
+  handleDeleteSeed,
   handleRunBatch,
   handleRunOne,
   handleTriggerJob,
@@ -18,6 +21,9 @@ export const createGenerationRouter = () => {
   router.get(GENERATION_PATHS.CONFIG, requireAuth, asyncHandler(handleGetConfig));
   router.patch(GENERATION_PATHS.CONFIG, requireAuth, asyncHandler(handleUpdateConfig));
   router.get(GENERATION_PATHS.SEEDS, requireAuth, asyncHandler(handleListSeeds));
+  router.post(GENERATION_PATHS.SEEDS, requireAuth, asyncHandler(handleCreateSeed));
+  router.patch(GENERATION_PATHS.SEED_SLUG, requireAuth, asyncHandler(handleUpdateSeed));
+  router.delete(GENERATION_PATHS.SEED_SLUG, requireAuth, asyncHandler(handleDeleteSeed));
   router.post(GENERATION_PATHS.RUN, requireAuth, asyncHandler(handleRunOne));
   router.post(GENERATION_PATHS.BATCH, requireAuth, asyncHandler(handleRunBatch));
   router.post(GENERATION_PATHS.TRIGGER, requireAuth, asyncHandler(handleTriggerJob));

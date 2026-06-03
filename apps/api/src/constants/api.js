@@ -24,6 +24,7 @@ export const GENERATION_PATHS = Object.freeze({
   STATUS: '/status',
   TRIGGER: '/trigger',
   CONFIG: '/config',
+  SEED_SLUG: '/seeds/:slug',
 });
 
 export const PUBLIC_ENDPOINTS = Object.freeze([

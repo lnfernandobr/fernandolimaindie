@@ -1,9 +1,15 @@
 import { HTTP_STATUS } from '../../constants/http.js';
 import { CRON_DEFAULTS } from '../../constants/cron.js';
-import { runOneSchema, runBatchSchema, updateGenerationConfigSchema } from './generation.schema.js';
+import {
+  runOneSchema,
+  runBatchSchema,
+  updateGenerationConfigSchema,
+  createSeedSchema,
+  updateSeedSchema,
+} from './generation.schema.js';
 import { generateOne, generateBatch, getGenerationStatus } from './generation.service.js';
 import { getGenerationConfig, updateGenerationConfig } from './generation.config.js';
-import { loadAllSeeds, loadSeedsByKind } from './generation.seeds.js';
+import { listSeedsForAdmin, createSeed, updateSeed, deleteSeed } from './generation.seed.service.js';
 import { toRunReport, toBatchReport, toJobRunReport } from './generation.dto.js';
 import { runGenerationJob } from '../cron/generation.job.js';
 
@@ -20,18 +26,21 @@ export const handleRunBatch = async (req, res) => {
 };
 
 export const handleListSeeds = async (req, res) => {
-  const { kind } = req.query;
-  const seeds = kind ? await loadSeedsByKind(kind) : await loadAllSeeds();
-  res.status(HTTP_STATUS.OK).json({
-    total: seeds.length,
-    items: seeds.map((s) => ({
-      seedSlug: s.seedSlug,
-      seedKind: s.seedKind,
-      signalKind: s.signalKind,
-      intent: s.intent,
-      topicSlug: s.topicSlug,
-    })),
-  });
+  res.status(HTTP_STATUS.OK).json(await listSeedsForAdmin());
+};
+
+export const handleCreateSeed = async (req, res) => {
+  const input = createSeedSchema.parse(req.body);
+  res.status(HTTP_STATUS.CREATED).json(await createSeed(input));
+};
+
+export const handleUpdateSeed = async (req, res) => {
+  const patch = updateSeedSchema.parse(req.body);
+  res.status(HTTP_STATUS.OK).json(await updateSeed(req.params.slug, patch));
+};
+
+export const handleDeleteSeed = async (req, res) => {
+  res.status(HTTP_STATUS.OK).json(await deleteSeed(req.params.slug));
 };
 
 export const handleGetStatus = async (req, res) => {

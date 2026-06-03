@@ -134,6 +134,25 @@ export const updateGenerationConfigSchema = z.object({
   dailyLimit: z.coerce.number().int().min(1).max(50),
 });
 
+export const createSeedSchema = z.object({
+  seedKind: z.enum(SEED_KINDS),
+  intent: z.enum(INTENT_KEYS),
+  keyword: z.string().trim().min(1).max(LIMITS.TITLE_MAX),
+  title: z.string().trim().max(LIMITS.TITLE_MAX).optional(),
+  brief: z.string().trim().max(LIMITS.SUMMARY_MAX).optional(),
+  topicSlug: z.string().trim().max(LIMITS.SLUG_MAX).optional(),
+  priority: z.coerce.number().int().min(1).max(50).optional(),
+});
+
+export const updateSeedSchema = z
+  .object({
+    priority: z.coerce.number().int().min(1).max(50).optional(),
+    status: z.enum(['active', 'skipped']).optional(),
+  })
+  .refine((d) => d.priority !== undefined || d.status !== undefined, {
+    message: 'Informe priority ou status.',
+  });
+
 export const runBatchSchema = z.object({
   seedKind: z.enum(SEED_KINDS).optional(),
   limit: z
