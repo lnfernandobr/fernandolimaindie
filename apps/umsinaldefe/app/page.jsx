@@ -4,7 +4,6 @@ import { Hero } from '../components/Hero.jsx';
 import { Intentions } from '../components/Intentions.jsx';
 import { FeaturedPsalms } from '../components/FeaturedPsalms.jsx';
 import { PrayersList } from '../components/PrayersList.jsx';
-import { SubscribeForm } from '../components/SubscribeForm.jsx';
 import { isTtsConfigured } from '../lib/media/elevenlabs.js';
 import { listSignals } from '../lib/content/api.js';
 import { getVerseOfDay } from '../lib/content/verse-of-day.js';
@@ -70,7 +69,7 @@ export default async function HomePage() {
       <Intentions />
       {psalms.length > 0 && <FeaturedPsalms psalms={psalms} />}
       {prayers.length > 0 && <PrayersList prayers={prayers} audioEnabled={audioEnabled} />}
-      <SubscribeForm />
+      {/* Formulário de inscrição escondido por enquanto (reativar: <SubscribeForm />). */}
     </>
   );
 }

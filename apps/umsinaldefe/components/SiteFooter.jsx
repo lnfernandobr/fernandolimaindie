@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { Glyph } from './Glyph.jsx';
 
 // Só hubs e páginas de sentimento (sempre renderizam). Nada de deep-link pra
 // conteúdo específico, que pode ainda não ter sido gerado pelo cron (evita 404).
@@ -42,9 +41,6 @@ export function SiteFooter() {
             <span className="brand-name">Um Sinal de Fé</span>
           </Link>
           <p className="footer-tag t-soft">um sinal de fé todo dia</p>
-          <Link className="btn btn-ghost footer-cta" href="#receber">
-            <Glyph name="mail" size={16} /> Receber todo dia
-          </Link>
         </div>
         <div className="footer-cols">
           {COLS.map((c) => (
