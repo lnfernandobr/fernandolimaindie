@@ -2,36 +2,58 @@ import { INTENT_KEYS, LIMITS } from '../../constants/content.js';
 import { GENERATION_ERRORS } from '../../constants/generation.js';
 import { badRequest } from '../../errors/factories.js';
 
-const TONE = [
-  'Voce e um escritor devocional catolico em portugues brasileiro.',
-  'Tom: acolhedor, contemplativo, simples, sem prosperidade, sem evangelico-show.',
-  'Voce escreve como um padre de cidade pequena que conhece o povo.',
-  'Sem clicheis ("abracos de luz", "vibracoes positivas"). Sem emojis. Sem travessao.',
-  'Cite versiculos especificos quando relevante. Use voce, nao tu.',
+const VOICE = [
+  'Você é um escritor devocional católico em português brasileiro contemporâneo.',
+  'Voz: a de um padre de cidade pequena que conhece o povo — fala simples, sem rodeio, sem moralismo, sem prosperidade, sem performance evangélica.',
+  'Acolhedor, contemplativo, honesto. Sabe quando ouvir e quando confortar com firmeza.',
+  'Trata o leitor por "você", nunca por "tu".',
 ].join(' ');
 
+const FORBIDDEN = [
+  'Forbidden no texto inteiro (não pode aparecer em nenhuma frase):',
+  '- clichês de coach/autoajuda: "abraços de luz", "vibrações positivas", "energia do universo", "alta vibração".',
+  '- jargão de prosperidade: "decretar bênçãos", "tomar posse", "reivindicar a promessa", "abrir portas financeiras".',
+  '- linguagem de palco evangélico: "uma palavra para você hoje", "Deus está falando comigo agora", "profetizo sobre sua vida".',
+  '- emoji, hashtag, link, URL, asterisco de markdown, travessão, reticências de suspense ("...").',
+  '- abreviações tipo "Sr.", "vc", "tb". Escrever por extenso.',
+  '- referências a "este post", "este artigo", "leia mais abaixo" — texto deve funcionar isolado.',
+].join('\n');
+
+const REFERENCES_RULE = [
+  'Sempre que citar um versículo: dê a referência completa (livro, capítulo, versículo) no formato "João 3,16" e use uma tradução católica usual no Brasil (Bíblia de Aparecida, Ave-Maria ou Pastoral). Não invente versículos.',
+  'Não cite o mesmo versículo duas vezes na mesma peça.',
+].join('\n');
+
 const COMMON_RULES = [
-  `O campo answer responde a pergunta principal de quem chega, no maximo ${LIMITS.ANSWER_MAX} caracteres.`,
-  `O campo summary tem 2 a 3 frases, no maximo ${LIMITS.SUMMARY_MAX} caracteres.`,
-  'faq tem 2 a 4 perguntas que o publico realmente busca, com respostas curtas.',
-  `relatedIntents traz 2 a 3 intents COMPLEMENTARES da lista: ${INTENT_KEYS.join(', ')}. Nunca inclua o intent principal.`,
-];
+  `O campo "answer" responde DIRETAMENTE a pergunta que trouxe o leitor, em uma frase só, máximo ${LIMITS.ANSWER_MAX} caracteres. Sem rodeio, sem "essa é uma ótima pergunta", sem ladainha — vai direto.`,
+  `O campo "summary" tem 2 a 3 frases (máximo ${LIMITS.SUMMARY_MAX} caracteres) que aprofundam a "answer" e dão o tom emocional da peça.`,
+  'O campo "faq" tem 2 a 4 perguntas que o público REALMENTE faria sobre o tema (não perguntas-clichê). Respostas curtas e práticas.',
+  `O campo "relatedIntents" traz 2 a 3 intents complementares (não duplica o intent principal). Escolha apenas de: ${INTENT_KEYS.join(', ')}.`,
+  REFERENCES_RULE,
+  FORBIDDEN,
+].join('\n- ');
 
 const CHUNK_RULES = [
-  `bodyHtml usa <p>, <strong>, <em> (sem <h1>/<h2>), no maximo ${LIMITS.BODY_MAX} caracteres.`,
-  'chunks tem entre 2 e 5 itens. Cada id eh um slug kebab-case curto sem prefixo (ex: "abrigo", "respira", "entrega").',
-  'Cada chunk html eh um trecho semantico autocontido com <p><strong>...</strong></p> seguido de <p>...</p>.',
+  `"bodyHtml" usa apenas <p>, <strong>, <em>. Sem <h1>, sem <h2>, sem <ul>, sem <img>. Máximo ${LIMITS.BODY_MAX} caracteres.`,
+  'Cada parágrafo tem peso próprio. Evite parágrafos genéricos de transição.',
+  'O primeiro parágrafo do bodyHtml ancora a resposta da "answer" em uma imagem concreta (uma cena, um gesto, uma frase ouvida).',
+  '"chunks" tem entre 2 e 5 itens. Cada chunk é um trecho semanticamente autocontido — funciona sozinho se compartilhado.',
+  'Cada chunk "id" é um slug kebab-case curto, sem prefixo (ex.: "abrigo", "respira", "entrega").',
+  'Cada chunk "html" começa com <p><strong>Título do chunk</strong></p> seguido de <p>texto</p>.',
 ];
 
 const ARTICLE_RULES = [
-  `bodyHtml eh um artigo de 4 a 6 secoes, cada uma com um subtitulo em <h2> seguido de <p>...</p>, no maximo ${LIMITS.BODY_MAX} caracteres.`,
-  'chunks deve vir como lista vazia (o artigo vive no bodyHtml).',
+  `"bodyHtml" é um artigo de 4 a 6 seções. Cada seção começa com <h2>Subtítulo</h2> seguido de 1 a 3 <p>. Máximo ${LIMITS.BODY_MAX} caracteres.`,
+  'Estrutura answer-first: a primeira seção JÁ resolve a dúvida em poucas linhas. As seções seguintes aprofundam.',
+  'Termine com uma seção curta "Para levar com você" (uma frase prática + uma intenção de oração).',
+  '"chunks" deve vir como lista vazia (o artigo vive todo no bodyHtml).',
 ];
 
 const VERSE_RULES = [
-  'verses traz de 6 a 10 versiculos sobre o tema, cada um com ref (ex: "Joao 3, 16") e text (a traducao de uso comum no Brasil).',
-  `bodyHtml eh uma reflexao curta sobre o tema em 2 a 3 paragrafos <p>, no maximo ${LIMITS.BODY_MAX} caracteres.`,
-  'chunks deve vir como lista vazia (a pagina mostra os versiculos e a reflexao).',
+  '"verses" traz de 6 a 10 versículos sobre o tema. Cada item tem "ref" (ex.: "Salmo 23,1") e "text" (tradução católica usual no Brasil).',
+  'Misture livros (não 8 dos Salmos): pelo menos 1 dos Evangelhos, 1 das cartas de Paulo, 1 do Antigo Testamento.',
+  `"bodyHtml" é uma reflexão curta sobre o tema, 2 a 3 parágrafos <p>, máximo ${LIMITS.BODY_MAX} caracteres. Não repete os versículos — comenta o fio que os atravessa.`,
+  '"chunks" deve vir como lista vazia (a página mostra os versículos e a reflexão).',
 ];
 
 const rulesFor = (signalKind) => {
@@ -41,24 +63,36 @@ const rulesFor = (signalKind) => {
 };
 
 const systemFor = (signalKind) =>
-  `${TONE}\n\nRegras de formato (obrigatorias):\n- ${[...COMMON_RULES, ...rulesFor(signalKind)].join('\n- ')}`;
+  [
+    VOICE,
+    '',
+    'Regras de formato (obrigatórias):',
+    `- ${[...COMMON_RULES.split('\n- '), ...rulesFor(signalKind)].join('\n- ')}`,
+  ].join('\n');
 
 const ctx = ({ subject, intent }) => {
   const lines = [];
-  if (subject.title) lines.push(`Titulo-alvo (use como base, pode refinar): "${subject.title}".`);
+  if (subject.title) lines.push(`Título-alvo (pode refinar): "${subject.title}".`);
   if (subject.keyword) lines.push(`Palavra-chave de SEO: "${subject.keyword}".`);
   if (subject.brief) lines.push(`Resumo do que abordar: ${subject.brief}`);
-  lines.push(`O publico chega com o intent "${intent}".`);
+  lines.push(`O leitor chega com o intent "${intent}" — escreva pensando no estado emocional dessa pessoa agora.`);
   return lines;
 };
 
 const psalmUser = (seed) => {
   const n = seed.subject.psalmNumber;
   return [
-    n ? `Escreva o conteudo devocional sobre o Salmo ${n}.` : 'Escreva o conteudo devocional sobre este salmo.',
+    n
+      ? `Escreva o conteúdo devocional sobre o Salmo ${n}.`
+      : 'Escreva o conteúdo devocional sobre este salmo.',
     ...ctx(seed),
-    'Comece o bodyHtml citando o(s) primeiro(s) versiculo(s) do salmo em <p>.',
-    'No primeiro chunk, ancore o tema central com uma imagem do salmo.',
+    '',
+    'Estrutura do bodyHtml:',
+    '- Parágrafo 1: cite literalmente o(s) primeiro(s) versículo(s) do salmo entre <p>, e diga em uma frase o que esse início revela do tom do salmo.',
+    '- Parágrafos 2-3: explique o contexto vital do salmo (quando rezá-lo, que dor ele acolhe, que verdade ele afirma) sem cair em explicação acadêmica.',
+    '- Parágrafo final: uma frase de convite à oração, sem mandar o leitor fazer nada.',
+    '',
+    'No primeiro chunk, ancore o tema central com uma IMAGEM do próprio salmo (não use a imagem do "pastor" se o salmo não falar de pastor).',
   ].join('\n');
 };
 
@@ -66,48 +100,78 @@ const prayerUser = (seed) => {
   const t = `${seed.subject.title ?? ''} ${seed.subject.keyword ?? ''}`;
   const isSaint = /\b(s[aã]o|santa|santo|nossa senhora|arcanjo|ave maria|pai nosso|credo)\b/i.test(t);
   return [
-    'Escreva uma oracao devocional catolica.',
+    'Escreva uma oração devocional católica.',
     ...ctx(seed),
-    'bodyHtml deve incluir o TEXTO da oracao que a pessoa reza, entre <p>...</p>.',
+    '',
+    'Estrutura do bodyHtml:',
+    '- Parágrafo 1: contexto curto — quando se reza essa oração e por quê (1 a 2 frases).',
+    '- Parágrafo 2: o TEXTO da oração que a pessoa vai rezar, na íntegra, entre <p>...</p>. Se for uma oração tradicional (Ave-Maria, Pai-Nosso, oração a um santo), use o texto consagrado.',
+    '- Parágrafo final: uma linha sobre o efeito interior da oração (não milagre, não promessa).',
+    '',
     isSaint
-      ? 'Inclua um chunk explicando quem foi o(a) santo(a)/devocao e quando se reza (festa, causas).'
-      : 'Inclua um chunk com uma ancora pratica (ex: respiracao, gesto) e quando rezar.',
+      ? 'Inclua um chunk explicando quem foi o(a) santo(a)/devoção: nome completo, ano aproximado, causa/proteção pela qual é invocado(a), data de festa.'
+      : 'Inclua um chunk com uma âncora prática: gesto físico (sinal da cruz, mão no peito, vela), respiração ou momento do dia ideal pra rezar.',
   ].join('\n');
 };
 
 const devotionalUser = (seed) =>
   [
-    'Escreva um devocional curto e pratico.',
+    'Escreva um devocional curto e prático para leitura de manhã ou antes de dormir.',
     ...ctx(seed),
-    'Introduza um versiculo base, comente em 3-4 paragrafos e termine com um convite simples.',
-    'Um chunk deve destacar o versiculo em <p><strong>versiculo</strong></p>.',
+    '',
+    'Estrutura do bodyHtml:',
+    '- Parágrafo 1: um versículo-base entre <p><strong>...</strong></p> seguido da referência.',
+    '- Parágrafos 2-4: comente o versículo conectando com a vida real (trabalho, relação, cansaço, medo). Sem moralismo. Sem "Deus quer te dizer hoje".',
+    '- Parágrafo final: um convite simples — uma frase pra carregar no dia. Não peça pra "compartilhar" ou "salvar".',
+    '',
+    'Um chunk deve destacar o versículo-base em <p><strong>versículo</strong></p><p>(referência)</p>.',
+    'Outro chunk pode propor uma prática concreta de 1 minuto (respirar, repetir uma palavra, acender uma vela).',
   ].join('\n');
 
 const reflectionUser = (seed) =>
   [
-    'Escreva uma reflexao meditativa e acolhedora.',
+    'Escreva uma reflexão meditativa.',
     ...ctx(seed),
-    'Fale de forma honesta, sem moralismo, conectando fe e vida real.',
-    'Use 2 a 3 chunks, cada um com uma ideia autocontida.',
+    '',
+    'Tom: contemplativo, honesto, sem moralismo. Conecta fé e vida real (trabalho, relação, dor, dúvida).',
+    'Pode admitir incerteza. Não precisa resolver tudo.',
+    '',
+    'Estrutura do bodyHtml:',
+    '- Parágrafo 1: uma cena concreta ou pergunta honesta que abre o tema.',
+    '- Parágrafos 2-4: desenvolva a reflexão. Pode citar 1 ou 2 versículos quando ancorarem o ponto, não como decoração.',
+    '- Parágrafo final: um respiro, não uma conclusão fechada.',
+    '',
+    'Use 2 a 3 chunks, cada um com uma ideia autocontida — pensa neles como cartões que alguém poderia salvar isolados.',
   ].join('\n');
 
 const articleUser = (seed) =>
   [
-    'Escreva um artigo de blog longo, de ajuda pratica com base biblica, sem moralismo.',
+    'Escreva um artigo de blog longo, de ajuda prática com base bíblica.',
     ...ctx(seed),
-    'Estruture em 4 a 6 secoes com subtitulos <h2> no bodyHtml.',
-    'Comece resolvendo a duvida principal nas primeiras linhas (answer-first).',
+    '',
+    'Estrutura answer-first do bodyHtml:',
+    '- Primeira seção (com <h2>): JÁ resolve a dúvida principal em poucas linhas. Quem só ler o topo, sai com a resposta.',
+    '- Seções 2 a 5: aprofundam — contexto bíblico, exemplos da vida real, perguntas comuns, erros a evitar. Cada seção começa com <h2>Subtítulo</h2>.',
+    '- Última seção "Para levar com você" (com <h2>): uma frase prática e uma intenção curta de oração.',
+    '',
+    'Cite versículos com referência completa. Não use bullet points nem listas — só <p>.',
+    'Sem moralismo. Sem prosperidade. Sem "Deus vai te abençoar financeiramente".',
   ].join('\n');
 
 const verseCollectionUser = (seed) => {
-  const hints = Array.isArray(seed.subject.verseRefs) && seed.subject.verseRefs.length
-    ? `Use preferencialmente estes versiculos (confira o texto): ${seed.subject.verseRefs.join('; ')}.`
-    : 'Escolha de 6 a 10 versiculos conhecidos e fieis sobre o tema.';
+  const hints =
+    Array.isArray(seed.subject.verseRefs) && seed.subject.verseRefs.length
+      ? `Use preferencialmente estes versículos (confira o texto pela Bíblia de Aparecida ou Ave-Maria): ${seed.subject.verseRefs.join('; ')}.`
+      : 'Escolha de 6 a 10 versículos conhecidos e fiéis sobre o tema. Pelo menos 1 dos Evangelhos, 1 das cartas de Paulo, 1 do Antigo Testamento. Não repita livro mais de 2 vezes.';
   return [
-    `Monte uma coletanea de versiculos sobre o tema "${seed.subject.tag ?? seed.subject.keyword ?? seed.intent}".`,
+    `Monte uma coletânea de versículos sobre o tema "${seed.subject.tag ?? seed.subject.keyword ?? seed.intent}".`,
     ...ctx(seed),
+    '',
     hints,
-    'Preencha o campo verses (ref + text) e escreva uma reflexao curta no bodyHtml.',
+    '',
+    'Para cada versículo, preencha "ref" (formato "Livro Capítulo,versículo" — ex.: "Salmo 23,1") e "text" (tradução católica usual no Brasil).',
+    '',
+    'No "bodyHtml", escreva uma reflexão curta (2 a 3 parágrafos <p>) que NÃO repete os versículos, mas comenta o fio teológico que os atravessa.',
   ].join('\n');
 };
 

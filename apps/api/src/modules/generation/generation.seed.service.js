@@ -39,6 +39,15 @@ export const listSeedsForAdmin = async () => {
       published: publishedSet.has(s.slug),
       title: s.subject?.title ?? s.slug,
       keyword: s.subject?.keyword ?? '',
+      brief: s.subject?.brief ?? '',
+      runStatus: s.runStatus ?? 'idle',
+      runLog: s.runLog ?? [],
+      runStartedAt: s.runStartedAt ?? null,
+      runFinishedAt: s.runFinishedAt ?? null,
+      runDurationMs: s.runDurationMs ?? 0,
+      lastError: s.lastError ?? '',
+      lastSignalSlug: s.lastSignalSlug ?? '',
+      updatedAt: s.updatedAt ?? null,
     })),
   };
 };

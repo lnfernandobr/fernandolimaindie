@@ -25,6 +25,20 @@ export const GENERATION_DEFAULTS = Object.freeze({
   STATUS_DRAFT: 'draft',
 });
 
+export const SEED_RUN_STATUS = Object.freeze({
+  IDLE: 'idle',
+  GENERATING: 'generating',
+  DONE: 'done',
+  ERROR: 'error',
+});
+
+export const SEED_RUN_STATUSES = Object.freeze([
+  SEED_RUN_STATUS.IDLE,
+  SEED_RUN_STATUS.GENERATING,
+  SEED_RUN_STATUS.DONE,
+  SEED_RUN_STATUS.ERROR,
+]);
+
 export const GENERATION_OUTCOMES = Object.freeze({
   CREATED: 'created',
   SKIPPED_PUBLISHED: 'skipped_published',

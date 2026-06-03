@@ -92,6 +92,11 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 .status.done { background: rgba(34,197,94,.15); color: var(--green); }
 .status.error { background: rgba(239,68,68,.15); color: var(--red); }
 .status.skip { background: rgba(113,113,122,.15); color: var(--muted); }
+.status.generating { background: rgba(167,126,55,.18); color: var(--accent); }
+.status.idle { background: rgba(113,113,122,.12); color: var(--muted); }
+.status.published { background: rgba(34,197,94,.15); color: var(--green); }
+.status.pausado { background: rgba(113,113,122,.15); color: var(--muted); }
+.status.publicado { background: rgba(34,197,94,.15); color: var(--green); }
 
 /* Actions */
 .btn-sm {

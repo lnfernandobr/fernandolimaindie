@@ -28,4 +28,11 @@ export const createSeedDoc = (doc) => SeedModel.create(doc);
 export const updateSeedBySlug = (slug, patch) =>
   SeedModel.findOneAndUpdate({ slug }, patch, { new: true }).lean();
 
+export const appendRunLogEntry = (slug, entry) =>
+  SeedModel.findOneAndUpdate(
+    { slug },
+    { $push: { runLog: entry } },
+    { new: true },
+  ).lean();
+
 export const deleteSeedBySlug = (slug) => SeedModel.findOneAndDelete({ slug }).lean();

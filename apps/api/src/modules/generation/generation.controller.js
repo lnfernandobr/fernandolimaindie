@@ -7,7 +7,7 @@ import {
   createSeedSchema,
   updateSeedSchema,
 } from './generation.schema.js';
-import { generateOne, generateBatch, getGenerationStatus } from './generation.service.js';
+import { generateOne, generateBatch, getGenerationStatus, startSeedRun } from './generation.service.js';
 import { getGenerationConfig, updateGenerationConfig } from './generation.config.js';
 import { listSeedsForAdmin, createSeed, updateSeed, deleteSeed } from './generation.seed.service.js';
 import { toRunReport, toBatchReport, toJobRunReport } from './generation.dto.js';
@@ -17,6 +17,14 @@ export const handleRunOne = async (req, res) => {
   const input = runOneSchema.parse(req.body);
   const result = await generateOne(input);
   res.status(HTTP_STATUS.OK).json(toRunReport(result));
+};
+
+export const handleStartSeedRun = async (req, res) => {
+  const result = await startSeedRun({
+    seedSlug: req.params.slug,
+    force: req.body?.force === true,
+  });
+  res.status(HTTP_STATUS.ACCEPTED).json(result);
 };
 
 export const handleRunBatch = async (req, res) => {

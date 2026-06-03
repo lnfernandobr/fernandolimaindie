@@ -10,6 +10,7 @@ import {
   handleDeleteSeed,
   handleRunBatch,
   handleRunOne,
+  handleStartSeedRun,
   handleTriggerJob,
   handleGetConfig,
   handleUpdateConfig,
@@ -25,6 +26,7 @@ export const createGenerationRouter = () => {
   router.patch(GENERATION_PATHS.SEED_SLUG, requireAuth, asyncHandler(handleUpdateSeed));
   router.delete(GENERATION_PATHS.SEED_SLUG, requireAuth, asyncHandler(handleDeleteSeed));
   router.post(GENERATION_PATHS.RUN, requireAuth, asyncHandler(handleRunOne));
+  router.post(GENERATION_PATHS.SEED_RUN, requireAuth, asyncHandler(handleStartSeedRun));
   router.post(GENERATION_PATHS.BATCH, requireAuth, asyncHandler(handleRunBatch));
   router.post(GENERATION_PATHS.TRIGGER, requireAuth, asyncHandler(handleTriggerJob));
   return router;
