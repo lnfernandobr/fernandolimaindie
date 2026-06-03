@@ -12,6 +12,7 @@ import { createPost } from './posts.repository.js';
 import { toPublicPost } from './posts.dto.js';
 import { generateCarouselPlan } from './generation.anthropic.js';
 import { generateSlideImage } from './generation.openai.js';
+import { generateCarouselPlanWithOpenAI } from './generation.openai-text.js';
 import { buildMockPlan } from './generation.mock.js';
 import { prompts } from './prompts.js';
 
@@ -101,7 +102,18 @@ const createRunLog = () => {
       throw err;
     }
   };
-  return { entries, track };
+  const trackFallback = async (step, attempts) => {
+    let lastErr;
+    for (const attempt of attempts) {
+      try {
+        return await track(step, attempt.label, attempt.fn);
+      } catch (err) {
+        lastErr = err;
+      }
+    }
+    throw lastErr ?? new Error(`${step} failed`);
+  };
+  return { entries, track, trackFallback };
 };
 
 const mockSlideImageUrl = (channelHandle, slideNumber) =>
@@ -153,18 +165,36 @@ const newPostKey = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)
 const runPipeline = async ({ channel, item, runLog }) => {
   const slidesCount = channel.slidesPerCarousel ?? INSTAGRAM_DEFAULTS.SLIDES_PER_CAROUSEL;
 
-  const plan = await runLog.track('plan', 'Plano (Claude)', async () => {
-    if (env.OPENAI_MOCK_MODE) {
-      return validatePlan(buildMockPlan({ channel, topic: item.topic, slidesCount }), slidesCount);
-    }
-    const raw = await generateCarouselPlan({
-      channel,
-      topic: item.topic,
-      brief: item.brief,
-      slidesCount,
-    });
-    return validatePlan(raw, slidesCount);
-  });
+  const plan = env.OPENAI_MOCK_MODE
+    ? await runLog.track('plan', 'Plano (mock)', () =>
+        validatePlan(buildMockPlan({ channel, topic: item.topic, slidesCount }), slidesCount),
+      )
+    : await runLog.trackFallback('plan', [
+        {
+          label: 'Plano (Claude)',
+          fn: async () => {
+            const raw = await generateCarouselPlan({
+              channel,
+              topic: item.topic,
+              brief: item.brief,
+              slidesCount,
+            });
+            return validatePlan(raw, slidesCount);
+          },
+        },
+        {
+          label: 'Plano (OpenAI fallback)',
+          fn: async () => {
+            const raw = await generateCarouselPlanWithOpenAI({
+              channel,
+              topic: item.topic,
+              brief: item.brief,
+              slidesCount,
+            });
+            return validatePlan(raw, slidesCount);
+          },
+        },
+      ]);
 
   const postKey = newPostKey();
   const renderedSlides = [];
