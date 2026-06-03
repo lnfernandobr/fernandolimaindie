@@ -1,3 +1,12 @@
+const toLogEntry = (e) => ({
+  step: e.step,
+  label: e.label ?? '',
+  status: e.status,
+  durationMs: e.durationMs ?? 0,
+  message: e.message ?? '',
+  at: e.at,
+});
+
 export const toPublicQueueItem = (doc) =>
   doc === null || doc === undefined
     ? null
@@ -13,6 +22,8 @@ export const toPublicQueueItem = (doc) =>
         error: doc.error ?? null,
         generationStartedAt: doc.generationStartedAt,
         generationFinishedAt: doc.generationFinishedAt,
+        runDurationMs: doc.runDurationMs ?? 0,
+        runLog: (doc.runLog ?? []).map(toLogEntry),
         createdAt: doc.createdAt,
         updatedAt: doc.updatedAt,
       };

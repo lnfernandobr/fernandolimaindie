@@ -16,6 +16,7 @@ import { buildMockPlan } from './generation.mock.js';
 import { prompts } from './prompts.js';
 
 const PROMPT_LOG_LIMIT = 2000;
+const MESSAGE_LOG_LIMIT = 240;
 
 const truncate = (value, limit) => {
   if (!value) return '';
@@ -72,10 +73,35 @@ const validatePlan = (plan, slidesCount) => {
   };
 };
 
-const buildPlan = async ({ channel, topic, brief, slidesCount }) => {
-  if (env.OPENAI_MOCK_MODE) return validatePlan(buildMockPlan({ channel, topic, slidesCount }), slidesCount);
-  const raw = await generateCarouselPlan({ channel, topic, brief, slidesCount });
-  return validatePlan(raw, slidesCount);
+const createRunLog = () => {
+  const entries = [];
+  const track = async (step, label, fn) => {
+    const startedAt = new Date();
+    const start = Date.now();
+    try {
+      const result = await fn();
+      entries.push({
+        step,
+        label,
+        status: 'ok',
+        durationMs: Date.now() - start,
+        message: '',
+        at: startedAt,
+      });
+      return result;
+    } catch (err) {
+      entries.push({
+        step,
+        label,
+        status: 'error',
+        durationMs: Date.now() - start,
+        message: truncate(err?.message ?? 'unknown', MESSAGE_LOG_LIMIT),
+        at: startedAt,
+      });
+      throw err;
+    }
+  };
+  return { entries, track };
 };
 
 const mockSlideImageUrl = (channelHandle, slideNumber) =>
@@ -124,61 +150,85 @@ const renderSlide = async ({ channel, visualStyle, slide, slideNumber, totalSlid
 
 const newPostKey = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 
-const runPipeline = async ({ channel, item }) => {
+const runPipeline = async ({ channel, item, runLog }) => {
   const slidesCount = channel.slidesPerCarousel ?? INSTAGRAM_DEFAULTS.SLIDES_PER_CAROUSEL;
-  const plan = await buildPlan({
-    channel,
-    topic: item.topic,
-    brief: item.brief,
-    slidesCount,
+
+  const plan = await runLog.track('plan', 'Plano (Claude)', async () => {
+    if (env.OPENAI_MOCK_MODE) {
+      return validatePlan(buildMockPlan({ channel, topic: item.topic, slidesCount }), slidesCount);
+    }
+    const raw = await generateCarouselPlan({
+      channel,
+      topic: item.topic,
+      brief: item.brief,
+      slidesCount,
+    });
+    return validatePlan(raw, slidesCount);
   });
+
   const postKey = newPostKey();
   const renderedSlides = [];
   for (let i = 0; i < plan.slides.length; i += 1) {
     const slide = plan.slides[i];
-    const rendered = await renderSlide({
-      channel,
-      visualStyle: plan.visualStyle,
-      slide,
-      slideNumber: i + 1,
-      totalSlides: plan.slides.length,
-      postKey,
-    });
+    const slideNumber = i + 1;
+    const rendered = await runLog.track(
+      'slide',
+      `Slide ${slideNumber} (${slide.role}) — imagem + upload`,
+      () =>
+        renderSlide({
+          channel,
+          visualStyle: plan.visualStyle,
+          slide,
+          slideNumber,
+          totalSlides: plan.slides.length,
+          postKey,
+        }),
+    );
     renderedSlides.push(rendered);
   }
-  return createPost({
-    channelId: channel._id,
-    queueItemId: item._id,
-    topic: item.topic,
-    title: plan.title || item.topic,
-    brief: item.brief,
-    designConcept: plan.designConcept,
-    visualStyle: plan.visualStyle,
-    slides: renderedSlides,
-    caption: plan.caption,
-    hashtags: plan.hashtags,
-    hashtagTiers: plan.hashtagTiers,
-    coverImageUrl: renderedSlides[0]?.imageUrl ?? null,
-    status: 'ready',
-  });
+
+  return runLog.track('save', 'Persistir post', () =>
+    createPost({
+      channelId: channel._id,
+      queueItemId: item._id,
+      topic: item.topic,
+      title: plan.title || item.topic,
+      brief: item.brief,
+      designConcept: plan.designConcept,
+      visualStyle: plan.visualStyle,
+      slides: renderedSlides,
+      caption: plan.caption,
+      hashtags: plan.hashtags,
+      hashtagTiers: plan.hashtagTiers,
+      coverImageUrl: renderedSlides[0]?.imageUrl ?? null,
+      status: 'ready',
+    }),
+  );
 };
 
 export const generatePostForQueueItem = async ({ channelId, itemId }) => {
   const channelDoc = await ensureChannelById(channelId);
   if (!channelDoc.active) throw badRequest(INSTAGRAM_ERRORS.CHANNEL_INACTIVE);
   const item = await ensureQueueItem(channelId, itemId);
+  const startedAt = new Date();
   await markQueueItem(itemId, {
     status: INSTAGRAM_QUEUE_STATUS.GENERATING,
-    generationStartedAt: new Date(),
+    generationStartedAt: startedAt,
     error: null,
+    runLog: [],
+    runDurationMs: 0,
   });
+  const runLog = createRunLog();
+  const startMs = Date.now();
   try {
-    const post = await runPipeline({ channel: channelDoc, item });
+    const post = await runPipeline({ channel: channelDoc, item, runLog });
     await markQueueItem(itemId, {
       status: INSTAGRAM_QUEUE_STATUS.DONE,
       postId: post._id,
       generationFinishedAt: new Date(),
       error: null,
+      runLog: runLog.entries,
+      runDurationMs: Date.now() - startMs,
     });
     return toPublicPost(post.toObject());
   } catch (err) {
@@ -186,6 +236,8 @@ export const generatePostForQueueItem = async ({ channelId, itemId }) => {
       status: INSTAGRAM_QUEUE_STATUS.ERROR,
       error: truncate(err?.message ?? INSTAGRAM_ERRORS.GENERATION_FAILED, 500),
       generationFinishedAt: new Date(),
+      runLog: runLog.entries,
+      runDurationMs: Date.now() - startMs,
     });
     throw err;
   }

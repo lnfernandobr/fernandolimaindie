@@ -7,6 +7,18 @@ import {
 
 const QUEUE_COLLECTION = 'InstagramQueueItem';
 
+const runLogEntrySchema = new Schema(
+  {
+    step: { type: String, required: true },
+    label: { type: String, default: '' },
+    status: { type: String, enum: ['ok', 'error'], required: true },
+    durationMs: { type: Number, default: 0 },
+    message: { type: String, default: '' },
+    at: { type: Date, default: Date.now },
+  },
+  { _id: false },
+);
+
 const queueItemSchema = new Schema(
   {
     channelId: { type: Schema.Types.ObjectId, ref: 'InstagramChannel', required: true, index: true },
@@ -24,6 +36,8 @@ const queueItemSchema = new Schema(
     error: { type: String, default: null },
     generationStartedAt: { type: Date, default: null },
     generationFinishedAt: { type: Date, default: null },
+    runLog: { type: [runLogEntrySchema], default: [] },
+    runDurationMs: { type: Number, default: 0 },
   },
   { timestamps: true },
 );

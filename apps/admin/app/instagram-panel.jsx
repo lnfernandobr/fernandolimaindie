@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 
 const QUEUE_STATUSES = ['all', 'pending', 'generating', 'done', 'error', 'skip'];
 
@@ -261,10 +261,58 @@ function AddQueueForm({ session, channelId, onAdded }) {
   );
 }
 
+function fmtDuration(ms) {
+  if (ms == null) return '—';
+  if (ms < 1000) return `${ms} ms`;
+  return `${(ms / 1000).toFixed(ms < 10000 ? 2 : 1)} s`;
+}
+
+const STEP_LABELS = {
+  plan: 'Plano (Claude)',
+  slide: 'Slide',
+  save: 'Persistir',
+};
+
+function RunLog({ item }) {
+  const log = item.runLog ?? [];
+  if (!log.length) {
+    return (
+      <div style={{ padding: '12px 16px', color: 'var(--muted)', fontSize: '0.78rem' }}>
+        Sem log ainda. Rode a geração pra ver os tempos.
+      </div>
+    );
+  }
+  return (
+    <div className="ig-log">
+      <div className="ig-log-head">
+        <span>
+          Execução · total <strong>{fmtDuration(item.runDurationMs)}</strong>
+        </span>
+        {item.generationStartedAt && (
+          <span style={{ color: 'var(--muted)' }}>
+            início {new Date(item.generationStartedAt).toLocaleTimeString('pt-BR')}
+          </span>
+        )}
+      </div>
+      <ol className="ig-log-list">
+        {log.map((e, idx) => (
+          <li key={idx} className={`ig-log-item ${e.status}`}>
+            <span className="ig-log-icon">{e.status === 'ok' ? '✓' : '✕'}</span>
+            <span className="ig-log-step">{e.label || STEP_LABELS[e.step] || e.step}</span>
+            <span className="ig-log-dur">{fmtDuration(e.durationMs)}</span>
+            {e.message && <span className="ig-log-msg">{e.message}</span>}
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
 function QueueTable({ session, channelId, onPostGenerated }) {
   const [filter, setFilter] = useState('all');
   const [busy, setBusy] = useState(null);
   const [err, setErr] = useState(null);
+  const [expanded, setExpanded] = useState(null);
   const { data, loading, refresh } = useCoreData(session, `/channels/${channelId}/queue`, [
     session,
     channelId,
@@ -357,69 +405,95 @@ function QueueTable({ session, channelId, onPostGenerated }) {
               </tr>
             </thead>
             <tbody>
-              {filtered.map((item) => (
-                <tr key={item.id}>
-                  <td style={{ whiteSpace: 'nowrap' }}>
-                    {item.priority}{' '}
-                    <button className="btn-sm" disabled={busy === item.id} onClick={() => patch(item.id, { action: 'up' })}>
-                      ▲
-                    </button>
-                    <button className="btn-sm" disabled={busy === item.id} onClick={() => patch(item.id, { action: 'down' })}>
-                      ▼
-                    </button>
-                  </td>
-                  <td>
-                    <strong>{item.topic}</strong>
-                    {item.brief && (
-                      <>
-                        <br />
-                        <span style={{ color: 'var(--muted)', fontSize: '0.74rem' }}>{item.brief}</span>
-                      </>
+              {filtered.map((item) => {
+                const isOpen = expanded === item.id;
+                const hasLog = (item.runLog ?? []).length > 0;
+                return (
+                  <Fragment key={item.id}>
+                    <tr>
+                      <td style={{ whiteSpace: 'nowrap' }}>
+                        {item.priority}{' '}
+                        <button className="btn-sm" disabled={busy === item.id} onClick={() => patch(item.id, { action: 'up' })}>
+                          ▲
+                        </button>
+                        <button className="btn-sm" disabled={busy === item.id} onClick={() => patch(item.id, { action: 'down' })}>
+                          ▼
+                        </button>
+                      </td>
+                      <td>
+                        <strong>{item.topic}</strong>
+                        {item.brief && (
+                          <>
+                            <br />
+                            <span style={{ color: 'var(--muted)', fontSize: '0.74rem' }}>{item.brief}</span>
+                          </>
+                        )}
+                        {item.error && (
+                          <>
+                            <br />
+                            <span style={{ color: 'var(--red)', fontSize: '0.72rem' }}>{item.error}</span>
+                          </>
+                        )}
+                      </td>
+                      <td>
+                        <span className={`status ${item.status}`}>{item.status}</span>
+                        {item.runDurationMs > 0 && (
+                          <div style={{ fontSize: '0.7rem', color: 'var(--muted)', marginTop: 2 }}>
+                            {fmtDuration(item.runDurationMs)}
+                          </div>
+                        )}
+                      </td>
+                      <td style={{ fontSize: '0.72rem', color: 'var(--muted)' }}>
+                        {new Date(item.updatedAt).toLocaleString('pt-BR')}
+                      </td>
+                      <td style={{ whiteSpace: 'nowrap' }}>
+                        <button
+                          className="btn-sm"
+                          disabled={busy === item.id || item.status === 'generating'}
+                          onClick={() => runNow(item.id)}
+                          title="Gerar agora (síncrono)"
+                        >
+                          ▶ Gerar
+                        </button>
+                        {item.status === 'skip' ? (
+                          <button className="btn-sm" disabled={busy === item.id} onClick={() => patch(item.id, { action: 'reactivate' })}>
+                            Reativar
+                          </button>
+                        ) : item.status === 'error' ? (
+                          <button className="btn-sm" disabled={busy === item.id} onClick={() => patch(item.id, { action: 'reactivate' })}>
+                            Retry
+                          </button>
+                        ) : (
+                          <button className="btn-sm" disabled={busy === item.id} onClick={() => patch(item.id, { action: 'skip' })}>
+                            Pular
+                          </button>
+                        )}
+                        <button
+                          className={`btn-sm ${isOpen ? 'active' : ''}`}
+                          onClick={() => setExpanded(isOpen ? null : item.id)}
+                          title="Ver log de execução"
+                          disabled={!hasLog}
+                        >
+                          ⓘ Log
+                        </button>
+                        <button className="btn-sm" disabled={busy === item.id} onClick={() => editItem(item)} title="Editar">
+                          ✎
+                        </button>
+                        <button className="btn-sm" disabled={busy === item.id} onClick={() => remove(item.id)} title="Remover">
+                          🗑
+                        </button>
+                      </td>
+                    </tr>
+                    {isOpen && (
+                      <tr className="ig-log-row">
+                        <td colSpan={5}>
+                          <RunLog item={item} />
+                        </td>
+                      </tr>
                     )}
-                    {item.error && (
-                      <>
-                        <br />
-                        <span style={{ color: 'var(--red)', fontSize: '0.72rem' }}>{item.error}</span>
-                      </>
-                    )}
-                  </td>
-                  <td>
-                    <span className={`status ${item.status}`}>{item.status}</span>
-                  </td>
-                  <td style={{ fontSize: '0.72rem', color: 'var(--muted)' }}>
-                    {new Date(item.updatedAt).toLocaleString('pt-BR')}
-                  </td>
-                  <td style={{ whiteSpace: 'nowrap' }}>
-                    <button
-                      className="btn-sm"
-                      disabled={busy === item.id || item.status === 'generating'}
-                      onClick={() => runNow(item.id)}
-                      title="Gerar agora (síncrono)"
-                    >
-                      ▶ Gerar
-                    </button>
-                    {item.status === 'skip' ? (
-                      <button className="btn-sm" disabled={busy === item.id} onClick={() => patch(item.id, { action: 'reactivate' })}>
-                        Reativar
-                      </button>
-                    ) : item.status === 'error' ? (
-                      <button className="btn-sm" disabled={busy === item.id} onClick={() => patch(item.id, { action: 'reactivate' })}>
-                        Retry
-                      </button>
-                    ) : (
-                      <button className="btn-sm" disabled={busy === item.id} onClick={() => patch(item.id, { action: 'skip' })}>
-                        Pular
-                      </button>
-                    )}
-                    <button className="btn-sm" disabled={busy === item.id} onClick={() => editItem(item)} title="Editar">
-                      ✎
-                    </button>
-                    <button className="btn-sm" disabled={busy === item.id} onClick={() => remove(item.id)} title="Remover">
-                      🗑
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                  </Fragment>
+                );
+              })}
             </tbody>
           </table>
         </div>
