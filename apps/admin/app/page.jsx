@@ -440,7 +440,13 @@ export default function AdminPage() {
   }, []);
 
   const handleLogin = (data) => {
-    const s = { user: data.user, apiUrl: data.apiUrl, apiToken: data.apiToken };
+    const s = {
+      user: data.user,
+      apiUrl: data.apiUrl,
+      apiToken: data.apiToken,
+      coreApiUrl: data.coreApiUrl,
+      coreApiToken: data.coreApiToken,
+    };
     setSession(s);
     sessionStorage.setItem('admin-session', JSON.stringify(s));
   };
