@@ -6,8 +6,9 @@ import {
   INSTAGRAM_QUEUE_STATUS,
 } from '../../constants/instagram.js';
 import { uploadBuffer } from '../media/media.s3.js';
+import { logger } from '../../config/logger.js';
 import { ensureChannelById } from './channels.service.js';
-import { ensureQueueItem, markQueueItem } from './queue.service.js';
+import { appendQueueItemRunLog, ensureQueueItem, markQueueItem } from './queue.service.js';
 import { createPost } from './posts.repository.js';
 import { toPublicPost } from './posts.dto.js';
 import { generateCarouselPlan } from './generation.anthropic.js';
@@ -74,31 +75,42 @@ const validatePlan = (plan, slidesCount) => {
   };
 };
 
-const createRunLog = () => {
+const createRunLog = ({ itemId, runStartedAt }) => {
   const entries = [];
+  const persist = async (entry) => {
+    try {
+      await appendQueueItemRunLog(itemId, entry, Date.now() - runStartedAt);
+    } catch (err) {
+      logger.warn({ err: err.message, itemId }, 'failed to persist run log entry');
+    }
+  };
   const track = async (step, label, fn) => {
     const startedAt = new Date();
     const start = Date.now();
     try {
       const result = await fn();
-      entries.push({
+      const entry = {
         step,
         label,
         status: 'ok',
         durationMs: Date.now() - start,
         message: '',
         at: startedAt,
-      });
+      };
+      entries.push(entry);
+      await persist(entry);
       return result;
     } catch (err) {
-      entries.push({
+      const entry = {
         step,
         label,
         status: 'error',
         durationMs: Date.now() - start,
         message: truncate(err?.message ?? 'unknown', MESSAGE_LOG_LIMIT),
         at: startedAt,
-      });
+      };
+      entries.push(entry);
+      await persist(entry);
       throw err;
     }
   };
@@ -236,20 +248,8 @@ const runPipeline = async ({ channel, item, runLog }) => {
   );
 };
 
-export const generatePostForQueueItem = async ({ channelId, itemId }) => {
-  const channelDoc = await ensureChannelById(channelId);
-  if (!channelDoc.active) throw badRequest(INSTAGRAM_ERRORS.CHANNEL_INACTIVE);
-  const item = await ensureQueueItem(channelId, itemId);
-  const startedAt = new Date();
-  await markQueueItem(itemId, {
-    status: INSTAGRAM_QUEUE_STATUS.GENERATING,
-    generationStartedAt: startedAt,
-    error: null,
-    runLog: [],
-    runDurationMs: 0,
-  });
-  const runLog = createRunLog();
-  const startMs = Date.now();
+const runPostJob = async ({ channelDoc, item, itemId, startMs }) => {
+  const runLog = createRunLog({ itemId, runStartedAt: startMs });
   try {
     const post = await runPipeline({ channel: channelDoc, item, runLog });
     await markQueueItem(itemId, {
@@ -257,7 +257,6 @@ export const generatePostForQueueItem = async ({ channelId, itemId }) => {
       postId: post._id,
       generationFinishedAt: new Date(),
       error: null,
-      runLog: runLog.entries,
       runDurationMs: Date.now() - startMs,
     });
     return toPublicPost(post.toObject());
@@ -266,9 +265,32 @@ export const generatePostForQueueItem = async ({ channelId, itemId }) => {
       status: INSTAGRAM_QUEUE_STATUS.ERROR,
       error: truncate(err?.message ?? INSTAGRAM_ERRORS.GENERATION_FAILED, 500),
       generationFinishedAt: new Date(),
-      runLog: runLog.entries,
       runDurationMs: Date.now() - startMs,
     });
     throw err;
   }
+};
+
+export const startPostGeneration = async ({ channelId, itemId }) => {
+  const channelDoc = await ensureChannelById(channelId);
+  if (!channelDoc.active) throw badRequest(INSTAGRAM_ERRORS.CHANNEL_INACTIVE);
+  const item = await ensureQueueItem(channelId, itemId);
+  const startedAt = new Date();
+  await markQueueItem(itemId, {
+    status: INSTAGRAM_QUEUE_STATUS.GENERATING,
+    generationStartedAt: startedAt,
+    generationFinishedAt: null,
+    error: null,
+    runLog: [],
+    runDurationMs: 0,
+    postId: null,
+  });
+  const startMs = Date.now();
+  runPostJob({ channelDoc, item, itemId, startMs }).catch((err) => {
+    logger.error(
+      { err: err.message, itemId, channelId: String(channelId) },
+      'instagram post generation failed',
+    );
+  });
+  return { itemId, status: INSTAGRAM_QUEUE_STATUS.GENERATING, startedAt };
 };

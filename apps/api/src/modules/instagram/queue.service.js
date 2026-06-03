@@ -13,6 +13,7 @@ import {
   listQueueItemsByChannel,
   maxPriorityForChannel,
   minPriorityForChannel,
+  pushRunLogEntry,
   updateQueueItemById,
 } from './queue.repository.js';
 import { toPublicQueueItem } from './queue.dto.js';
@@ -134,3 +135,6 @@ export const ensureQueueItem = async (channelId, itemId) => {
 };
 
 export const markQueueItem = async (itemId, patch) => updateQueueItemById(itemId, patch);
+
+export const appendQueueItemRunLog = async (itemId, entry, runDurationMs) =>
+  pushRunLogEntry(itemId, entry, runDurationMs);

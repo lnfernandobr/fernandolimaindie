@@ -275,7 +275,8 @@ const STEP_LABELS = {
 
 function RunLog({ item }) {
   const log = item.runLog ?? [];
-  if (!log.length) {
+  const running = item.status === 'generating';
+  if (!log.length && !running) {
     return (
       <div style={{ padding: '12px 16px', color: 'var(--muted)', fontSize: '0.78rem' }}>
         Sem log ainda. Rode a geração pra ver os tempos.
@@ -286,7 +287,8 @@ function RunLog({ item }) {
     <div className="ig-log">
       <div className="ig-log-head">
         <span>
-          Execução · total <strong>{fmtDuration(item.runDurationMs)}</strong>
+          Execução · total{' '}
+          <strong>{item.runDurationMs ? fmtDuration(item.runDurationMs) : '—'}</strong>
         </span>
         {item.generationStartedAt && (
           <span style={{ color: 'var(--muted)' }}>
@@ -303,6 +305,15 @@ function RunLog({ item }) {
             {e.message && <span className="ig-log-msg">{e.message}</span>}
           </li>
         ))}
+        {running && (
+          <li className="ig-log-item running">
+            <span className="ig-log-icon">
+              <span className="ig-spinner" />
+            </span>
+            <span className="ig-log-step">executando…</span>
+            <span className="ig-log-dur">—</span>
+          </li>
+        )}
       </ol>
     </div>
   );
@@ -320,6 +331,15 @@ function QueueTable({ session, channelId, onPostGenerated }) {
 
   const items = data?.items ?? [];
   const filtered = filter === 'all' ? items : items.filter((i) => i.status === filter);
+  const anyGenerating = items.some((i) => i.status === 'generating');
+
+  useEffect(() => {
+    if (!anyGenerating) return undefined;
+    const id = setInterval(() => {
+      refresh();
+    }, 2500);
+    return () => clearInterval(id);
+  }, [anyGenerating, refresh]);
 
   const patch = async (itemId, body) => {
     setBusy(itemId);
@@ -356,6 +376,7 @@ function QueueTable({ session, channelId, onPostGenerated }) {
     setErr(null);
     try {
       await coreFetch(session, `/channels/${channelId}/queue/${itemId}/run`, { method: 'POST' });
+      setExpanded(itemId);
       await refresh();
       onPostGenerated?.();
     } catch (e) {
@@ -407,7 +428,8 @@ function QueueTable({ session, channelId, onPostGenerated }) {
             <tbody>
               {filtered.map((item) => {
                 const isOpen = expanded === item.id;
-                const hasLog = (item.runLog ?? []).length > 0;
+                const isRunning = item.status === 'generating';
+                const hasLog = (item.runLog ?? []).length > 0 || isRunning;
                 return (
                   <Fragment key={item.id}>
                     <tr>
@@ -436,7 +458,10 @@ function QueueTable({ session, channelId, onPostGenerated }) {
                         )}
                       </td>
                       <td>
-                        <span className={`status ${item.status}`}>{item.status}</span>
+                        <span className={`status ${item.status}`}>
+                          {item.status}
+                          {isRunning && <span className="ig-pulse" />}
+                        </span>
                         {item.runDurationMs > 0 && (
                           <div style={{ fontSize: '0.7rem', color: 'var(--muted)', marginTop: 2 }}>
                             {fmtDuration(item.runDurationMs)}

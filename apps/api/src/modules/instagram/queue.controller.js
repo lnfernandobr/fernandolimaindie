@@ -12,7 +12,7 @@ import {
   removeQueueItem,
   updateQueueItem,
 } from './queue.service.js';
-import { generatePostForQueueItem } from './generation.pipeline.js';
+import { startPostGeneration } from './generation.pipeline.js';
 
 export const handleListQueue = async (req, res) => {
   const { channelId } = channelIdParamSchema.parse(req.params);
@@ -43,6 +43,6 @@ export const handleDeleteQueueItem = async (req, res) => {
 
 export const handleRunQueueItem = async (req, res) => {
   const { channelId, itemId } = queueItemParamSchema.parse(req.params);
-  const result = await generatePostForQueueItem({ channelId, itemId });
-  res.status(HTTP_STATUS.OK).json(result);
+  const result = await startPostGeneration({ channelId, itemId });
+  res.status(HTTP_STATUS.ACCEPTED).json(result);
 };

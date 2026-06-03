@@ -28,6 +28,13 @@ export const maxPriorityForChannel = async (channelId) => {
 export const updateQueueItemById = (id, patch) =>
   InstagramQueueItemModel.findByIdAndUpdate(id, patch, { new: true }).lean();
 
+export const pushRunLogEntry = (id, entry, runDurationMs) =>
+  InstagramQueueItemModel.findByIdAndUpdate(
+    id,
+    { $push: { runLog: entry }, $set: { runDurationMs } },
+    { new: true },
+  ).lean();
+
 export const deleteQueueItemById = (id) =>
   InstagramQueueItemModel.findByIdAndDelete(id).lean();
 
