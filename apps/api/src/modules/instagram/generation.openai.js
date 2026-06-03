@@ -29,6 +29,7 @@ export const generateSlideImage = async ({ channelHandle, visualStyle, slide, sl
     model: env.OPENAI_IMAGE_MODEL,
     prompt,
     size: INSTAGRAM_DEFAULTS.IMAGE_SIZE,
+    quality: INSTAGRAM_DEFAULTS.IMAGE_QUALITY,
     n: 1,
   });
   const item = response?.data?.[0];

@@ -273,7 +273,108 @@ const STEP_LABELS = {
   save: 'Persistir',
 };
 
-function RunLog({ item }) {
+function InlinePostInfo({ session, postId }) {
+  const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState(null);
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setErr(null);
+    coreFetch(session, `/posts/${postId}`)
+      .then((p) => { if (!cancelled) setPost(p); })
+      .catch((e) => { if (!cancelled) setErr(e.message); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, [session, postId]);
+
+  if (loading) return <div style={{ padding: '10px 0', color: 'var(--muted)', fontSize: '0.78rem' }}>Carregando post…</div>;
+  if (err) return <div style={{ padding: '10px 0', color: 'var(--red)', fontSize: '0.78rem' }}>Erro: {err}</div>;
+  if (!post) return null;
+
+  return (
+    <div className="ig-post-inline">
+      <div className="ig-post-inline-head">
+        <strong>{post.title || post.topic}</strong>
+        <span style={{ color: 'var(--muted)', fontSize: '0.72rem' }}>id {post.id}</span>
+      </div>
+
+      {post.designConcept && (
+        <div className="ig-post-block">
+          <div className="ig-post-label">Conceito visual</div>
+          <div className="ig-caption-box">{post.designConcept}</div>
+        </div>
+      )}
+
+      {post.visualStyle && (
+        <div className="ig-post-block">
+          <div className="ig-post-label">Direção visual (vai pro prompt)</div>
+          <div className="ig-caption-box">{post.visualStyle}</div>
+        </div>
+      )}
+
+      <div className="ig-post-block">
+        <div className="ig-post-label">
+          Slides
+          <span style={{ color: 'var(--muted)', fontWeight: 400, marginLeft: 6 }}>
+            {post.slides?.length ?? 0} imagens
+          </span>
+        </div>
+        <div className="ig-asset-grid">
+          {(post.slides ?? []).map((s) => (
+            <div className="ig-asset" key={s.index}>
+              <img src={s.imageUrl} alt={`slide ${s.index + 1}`} />
+              <div className="lbl"><strong>#{s.index + 1}</strong> · {s.role}</div>
+              {s.text && (
+                <div className="lbl" title="Texto renderizado dentro da imagem">“{s.text}”</div>
+              )}
+              <a href={s.imageUrl} target="_blank" rel="noreferrer">abrir asset</a>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="ig-post-block">
+        <div className="ig-post-label">
+          Legenda
+          <button className="btn-sm" style={{ marginLeft: 8 }} onClick={() => copyToClipboard(post.caption)}>Copiar</button>
+        </div>
+        <div className="ig-caption-box">{post.caption}</div>
+      </div>
+
+      {post.hashtagTiers && (
+        <div className="ig-post-block">
+          <div className="ig-post-label">
+            Hashtags por tier
+            <button
+              className="btn-sm"
+              style={{ marginLeft: 8 }}
+              onClick={() => copyToClipboard((post.hashtags || []).join(' '))}
+            >
+              Copiar tudo
+            </button>
+          </div>
+          {['high', 'medium', 'low'].map((tier) => {
+            const tags = post.hashtagTiers?.[tier] ?? [];
+            if (!tags.length) return null;
+            const label = tier === 'high' ? 'Alto volume' : tier === 'medium' ? 'Médio' : 'Long-tail';
+            return (
+              <div key={tier} style={{ marginTop: 6 }}>
+                <span style={{ color: 'var(--muted)', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                  {label}
+                </span>
+                <button className="btn-sm" style={{ marginLeft: 8 }} onClick={() => copyToClipboard(tags.join(' '))}>Copiar</button>
+                <div className="ig-caption-box">{tags.join(' ')}</div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function RunLog({ session, item }) {
   const log = item.runLog ?? [];
   const running = item.status === 'generating';
   if (!log.length && !running) {
@@ -315,6 +416,9 @@ function RunLog({ item }) {
           </li>
         )}
       </ol>
+      {item.status === 'done' && item.postId && (
+        <InlinePostInfo session={session} postId={item.postId} />
+      )}
     </div>
   );
 }
@@ -512,7 +616,7 @@ function QueueTable({ session, channelId, onPostGenerated }) {
                     {isOpen && (
                       <tr className="ig-log-row">
                         <td colSpan={5}>
-                          <RunLog item={item} />
+                          <RunLog session={session} item={item} />
                         </td>
                       </tr>
                     )}

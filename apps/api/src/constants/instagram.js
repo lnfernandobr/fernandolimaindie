@@ -14,14 +14,14 @@ export const INSTAGRAM_LIMITS = Object.freeze({
 export const INSTAGRAM_DEFAULTS = Object.freeze({
   SLIDES_PER_CAROUSEL: 5,
   IMAGE_SIZE: '1024x1024',
-  IMAGE_QUALITY: 'standard',
+  IMAGE_QUALITY: 'high',
   IMAGE_FORMAT: 'png',
   IMAGE_CONTENT_TYPE: 'image/png',
   S3_PREFIX: 'instagram',
   TONE: 'inspirador, direto, sem clichê',
   CAPTION_STYLE: 'Português do Brasil, voz pessoal, CTA suave no fim.',
   FALLBACK_VISUAL_STYLE:
-    'editorial illustration, clean modern composition, sophisticated lighting, premium aesthetic',
+    'cinematic editorial photography, deep chiaroscuro lighting, considered composition, premium magazine aesthetic, large negative space, no stock-photo look',
 });
 
 export const INSTAGRAM_QUEUE_STATUS = Object.freeze({
