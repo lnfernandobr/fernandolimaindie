@@ -14,7 +14,7 @@ export const INSTAGRAM_LIMITS = Object.freeze({
 export const INSTAGRAM_DEFAULTS = Object.freeze({
   SLIDES_PER_CAROUSEL: 5,
   IMAGE_SIZE: '1024x1024',
-  IMAGE_QUALITY: 'high',
+  IMAGE_QUALITY: 'medium',
   IMAGE_FORMAT: 'png',
   IMAGE_CONTENT_TYPE: 'image/png',
   S3_PREFIX: 'instagram',

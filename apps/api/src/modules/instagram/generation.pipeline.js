@@ -13,7 +13,6 @@ import { createPost } from './posts.repository.js';
 import { toPublicPost } from './posts.dto.js';
 import { generateCarouselPlan } from './generation.anthropic.js';
 import { generateSlideImage } from './generation.openai.js';
-import { generateCarouselPlanWithOpenAI } from './generation.openai-text.js';
 import { buildMockPlan } from './generation.mock.js';
 import { prompts } from './prompts.js';
 
@@ -220,32 +219,15 @@ const runPipeline = async ({ channel, item, runLog }) => {
     ? await runLog.track('plan', 'Plano (mock)', () =>
         validatePlan(buildMockPlan({ channel, topic: item.topic, slidesCount }), slidesCount),
       )
-    : await runLog.trackFallback('plan', [
-        {
-          label: 'Plano (Claude)',
-          fn: async () => {
-            const raw = await generateCarouselPlan({
-              channel,
-              topic: item.topic,
-              brief: item.brief,
-              slidesCount,
-            });
-            return validatePlan(raw, slidesCount);
-          },
-        },
-        {
-          label: 'Plano (OpenAI fallback)',
-          fn: async () => {
-            const raw = await generateCarouselPlanWithOpenAI({
-              channel,
-              topic: item.topic,
-              brief: item.brief,
-              slidesCount,
-            });
-            return validatePlan(raw, slidesCount);
-          },
-        },
-      ]);
+    : await runLog.track('plan', 'Plano (Claude)', async () => {
+        const raw = await generateCarouselPlan({
+          channel,
+          topic: item.topic,
+          brief: item.brief,
+          slidesCount,
+        });
+        return validatePlan(raw, slidesCount);
+      });
 
   const postKey = newPostKey();
   const renderedSlides = [];

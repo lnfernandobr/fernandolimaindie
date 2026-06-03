@@ -14,7 +14,7 @@ export const ENV_DEFAULTS = Object.freeze({
   ALLOWED_ORIGINS: '*',
   OPENAI_API_KEY: '',
   OPENAI_MODEL: 'gpt-5-mini',
-  OPENAI_IMAGE_MODEL: 'gpt-image-1',
+  OPENAI_IMAGE_MODEL: 'gpt-image-2',
   OPENAI_MOCK_MODE: 'false',
   ANTHROPIC_API_KEY: '',
   ANTHROPIC_MODEL: 'claude-sonnet-4-6',

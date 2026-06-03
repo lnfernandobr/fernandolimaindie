@@ -27,16 +27,20 @@ export const generateImage = async (signal) => {
 
   const client = new OpenAI({ apiKey: env.OPENAI_API_KEY });
   const response = await client.images.generate({
-    model: MEDIA_DEFAULTS.IMAGE_MODEL,
+    model: env.OPENAI_IMAGE_MODEL,
     prompt: buildImagePrompt(signal),
     size: MEDIA_DEFAULTS.IMAGE_SIZE,
     quality: MEDIA_DEFAULTS.IMAGE_QUALITY,
     n: 1,
-    response_format: 'url',
   });
 
-  const tempUrl = response.data[0].url;
-  const res = await fetch(tempUrl);
-  if (!res.ok) throw new Error(MEDIA_ERRORS.OPENAI_IMAGE_FAILED);
-  return Buffer.from(await res.arrayBuffer());
+  const item = response?.data?.[0];
+  if (!item) throw new Error(MEDIA_ERRORS.OPENAI_IMAGE_FAILED);
+  if (item.b64_json) return Buffer.from(item.b64_json, 'base64');
+  if (item.url) {
+    const res = await fetch(item.url);
+    if (!res.ok) throw new Error(MEDIA_ERRORS.OPENAI_IMAGE_FAILED);
+    return Buffer.from(await res.arrayBuffer());
+  }
+  throw new Error(MEDIA_ERRORS.OPENAI_IMAGE_FAILED);
 };

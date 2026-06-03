@@ -8,14 +8,13 @@ export const MEDIA_DEFAULTS = Object.freeze({
   MOCK_AUDIO_URL: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
   MOCK_IMAGE_URL: 'https://placehold.co/1024x1024/B7411E/FBF6EE?text=UmSinalDeFe',
   IMAGE_SIZE: '1024x1024',
-  IMAGE_MODEL: 'dall-e-3',
-  IMAGE_QUALITY: 'standard',
+  IMAGE_QUALITY: 'medium',
 });
 
 export const MEDIA_ERRORS = Object.freeze({
   ELEVENLABS_KEY_MISSING: 'ELEVENLABS_API_KEY is not configured',
   ELEVENLABS_CALL_FAILED: 'ElevenLabs TTS generation failed',
-  OPENAI_IMAGE_FAILED: 'DALL-E image generation failed',
+  OPENAI_IMAGE_FAILED: 'OpenAI image generation failed',
   S3_NOT_CONFIGURED: 'AWS S3 is not configured',
   S3_UPLOAD_FAILED: 'S3 upload failed',
   SIGNAL_NOT_FOUND: 'Signal not found',

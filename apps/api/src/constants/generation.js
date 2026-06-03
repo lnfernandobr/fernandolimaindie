@@ -34,10 +34,8 @@ export const GENERATION_OUTCOMES = Object.freeze({
 
 export const GENERATION_ERRORS = Object.freeze({
   SEED_NOT_FOUND: 'Seed not found in catalog',
-  OPENAI_KEY_MISSING: 'OPENAI_API_KEY is not configured',
-  OPENAI_CALL_FAILED: 'OpenAI structured completion failed',
-  OPENAI_INVALID_OUTPUT: 'OpenAI returned content that failed validation',
+  ANTHROPIC_KEY_MISSING: 'ANTHROPIC_API_KEY is not configured',
+  ANTHROPIC_CALL_FAILED: 'Anthropic structured completion failed',
+  ANTHROPIC_INVALID_OUTPUT: 'Anthropic returned content that failed validation',
   UNKNOWN_SEED_KIND: 'Unknown seed kind',
 });
-
-export const OPENAI_RESPONSE_FORMAT_NAME = 'signal_content';

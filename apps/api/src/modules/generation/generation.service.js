@@ -13,7 +13,7 @@ import {
   updateSignalBySlug as patchSignalBySlug,
 } from '../signals/signals.repository.js';
 import { listRecentRuns } from '../cron/cron-run.repository.js';
-import { completeStructured } from './generation.openai.js';
+import { completeStructured } from './generation.anthropic.js';
 import { buildPrompt } from './generation.prompts.js';
 import {
   generatedContentSchema,
@@ -53,7 +53,7 @@ const generateContent = async (seed, model) => {
     model,
   });
   const parsed = generatedContentSchema.safeParse(raw);
-  if (!parsed.success) throw badRequest(GENERATION_ERRORS.OPENAI_INVALID_OUTPUT, parsed.error.flatten());
+  if (!parsed.success) throw badRequest(GENERATION_ERRORS.ANTHROPIC_INVALID_OUTPUT, parsed.error.flatten());
   return parsed.data;
 };
 
@@ -115,7 +115,7 @@ export const generateBatch = async ({ seedKind, limit, model, force }) => {
       results.push({
         seedSlug: seed.seedSlug,
         outcome: GENERATION_OUTCOMES.FAILED,
-        error: err?.message ?? GENERATION_ERRORS.OPENAI_CALL_FAILED,
+        error: err?.message ?? GENERATION_ERRORS.ANTHROPIC_CALL_FAILED,
       });
     }
   }
