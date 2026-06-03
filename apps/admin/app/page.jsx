@@ -313,118 +313,84 @@ function PostsTable({ posts }) {
 // ── Main ─────────────────────────────────────────────────────────────
 
 function CronConfigPanel({ session }) {
-  const { data, refresh } = useApi('/api/admin/cron-config', session);
-  const [draft, setDraft] = useState(null);
+  const base = session?.coreApiUrl;
+  const token = session?.coreApiToken;
+  const [dailyLimit, setDailyLimit] = useState(null);
+  const [status, setStatus] = useState(null);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState('');
 
-  useEffect(() => { if (data) setDraft(data); }, [data]);
-  if (!draft) return null;
-
-  const sections = ['salmo', 'oracao', 'biblia', 'blog', 'devocional', 'reflexao'];
-  const labels = {
-    salmo: 'Salmos', oracao: 'Orações', biblia: 'Bíblia (temas)',
-    blog: 'Blog', devocional: 'Devocionais', reflexao: 'Reflexões',
+  const load = async () => {
+    if (!base || !token) return;
+    try {
+      const [cfgRes, stRes] = await Promise.all([
+        fetch(`${base}/api/v1/generation/config`, { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(`${base}/api/v1/generation/status`),
+      ]);
+      if (cfgRes.ok) setDailyLimit((await cfgRes.json()).dailyLimit);
+      if (stRes.ok) setStatus(await stRes.json());
+    } catch { setError('Falha ao carregar a config do cron.'); }
   };
-  const total = sections.reduce((a, s) => a + (Number(draft.perSection?.[s]) || 0), 0);
 
-  const setN = (s, v) =>
-    setDraft((d) => ({
-      ...d,
-      perSection: { ...d.perSection, [s]: Math.max(0, Math.min(20, parseInt(v, 10) || 0)) },
-    }));
+  useEffect(() => { load(); }, [base, token]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (!base || !token) {
+    return (
+      <div className="section">
+        <div className="section-title">Geração automática (cron)</div>
+        <p style={{ color: 'var(--muted)', fontSize: '0.82rem' }}>
+          Sessão sem acesso à API. Refaça o login pra editar a geração.
+        </p>
+      </div>
+    );
+  }
+  if (dailyLimit === null) return null;
 
   const save = async () => {
     setSaving(true);
     setSaved(false);
+    setError('');
     try {
-      const res = await fetch(`${session.apiUrl}/api/admin/cron-config`, {
+      const res = await fetch(`${base}/api/v1/generation/config`, {
         method: 'PATCH',
-        headers: { Authorization: `Bearer ${session.apiToken}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ enabled: draft.enabled, imageProvider: draft.imageProvider, scheduleHourUtc: draft.scheduleHourUtc, audio: draft.audio, perSection: draft.perSection }),
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ dailyLimit }),
       });
-      if (res.ok) { setSaved(true); refresh(); }
-    } catch { /* ignore */ }
+      if (res.ok) { setSaved(true); load(); } else { setError('Não foi possível salvar.'); }
+    } catch { setError('Não foi possível salvar.'); }
     setSaving(false);
   };
 
   return (
     <div className="section">
       <div className="section-title">
-        Geração automática (cron) <span className="badge">{total} por execução</span>
+        Geração automática (cron) <span className="badge">{dailyLimit} por dia</span>
       </div>
       <p style={{ color: 'var(--muted)', fontSize: '0.82rem', marginBottom: 14 }}>
-        Quantos itens o cron gera por seção a cada execução. Use 0 pra pausar uma seção.
+        Quantos conteúdos o cron gera por dia, em ordem de prioridade (maior tráfego primeiro).
       </p>
+      {status && (
+        <div style={{ display: 'flex', gap: 18, flexWrap: 'wrap', marginBottom: 16, fontSize: '0.85rem', color: 'var(--muted)' }}>
+          <span>Cron: <strong style={{ color: status.enabled ? '#46a758' : '#e5484d' }}>{status.enabled ? 'ativado' : 'desativado'}</strong></span>
+          <span>Agenda: <strong>{status.schedule}</strong> UTC</span>
+          <span>Pendentes: <strong>{status.pendingSeeds}</strong></span>
+        </div>
+      )}
       <label style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16, fontSize: '0.9rem' }}>
+        Itens por dia:
         <input
-          type="checkbox"
-          checked={!!draft.enabled}
-          onChange={(e) => setDraft((d) => ({ ...d, enabled: e.target.checked }))}
+          type="number" min="1" max="50"
+          value={dailyLimit}
+          onChange={(e) => setDailyLimit(Math.max(1, Math.min(50, parseInt(e.target.value, 10) || 1)))}
+          style={{ width: 80, padding: '6px 8px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)', color: 'inherit', fontSize: '1.1rem' }}
         />
-        Geração ativada
       </label>
-      <label style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16, fontSize: '0.9rem' }}>
-        Imagem:
-        <select
-          value={draft.imageProvider || 'openai'}
-          onChange={(e) => setDraft((d) => ({ ...d, imageProvider: e.target.value }))}
-          style={{ padding: '4px 8px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)', color: 'inherit' }}
-        >
-          <option value="openai">OpenAI (gerada, qualidade)</option>
-          <option value="pexels">Pexels (banco grátis)</option>
-          <option value="none">Sem imagem</option>
-        </select>
-      </label>
-      <div style={{ display: 'flex', gap: 18, flexWrap: 'wrap', marginBottom: 16, fontSize: '0.9rem' }}>
-        <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          Horário do cron (UTC):
-          <input
-            type="number" min="0" max="23"
-            value={draft.scheduleHourUtc ?? 6}
-            onChange={(e) => setDraft((d) => ({ ...d, scheduleHourUtc: Math.max(0, Math.min(23, parseInt(e.target.value, 10) || 0)) }))}
-            style={{ width: 64, padding: '4px 8px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)', color: 'inherit' }}
-          />
-          h
-        </label>
-        <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <input
-            type="checkbox"
-            checked={draft.audio?.enabled !== false}
-            onChange={(e) => setDraft((d) => ({ ...d, audio: { ...d.audio, enabled: e.target.checked } }))}
-          />
-          Áudio (ElevenLabs)
-        </label>
-        <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          Máx. minutos de áudio:
-          <input
-            type="number" min="1" max="10"
-            value={draft.audio?.maxMinutes ?? 2}
-            onChange={(e) => setDraft((d) => ({ ...d, audio: { ...d.audio, maxMinutes: Math.max(1, Math.min(10, parseInt(e.target.value, 10) || 1)) } }))}
-            style={{ width: 64, padding: '4px 8px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)', color: 'inherit' }}
-          />
-        </label>
-      </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: 12, marginBottom: 16 }}>
-        {sections.map((s) => (
-          <div key={s} className="stat" style={{ opacity: draft.enabled ? 1 : 0.5 }}>
-            <div className="stat-label">{labels[s]}</div>
-            <input
-              type="number"
-              min="0"
-              max="20"
-              value={draft.perSection?.[s] ?? 0}
-              disabled={!draft.enabled}
-              onChange={(e) => setN(s, e.target.value)}
-              style={{ width: '100%', marginTop: 6, padding: '6px 8px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)', color: 'inherit', fontSize: '1.1rem' }}
-            />
-          </div>
-        ))}
-      </div>
       <button className="btn-sm" disabled={saving} onClick={save}>
-        {saving ? 'Salvando...' : 'Salvar configuração'}
+        {saving ? 'Salvando...' : 'Salvar'}
       </button>
       {saved && <span style={{ color: '#46a758', marginLeft: 10, fontSize: '0.82rem' }}>Salvo ✓</span>}
+      {error && <span style={{ color: '#e5484d', marginLeft: 10, fontSize: '0.82rem' }}>{error}</span>}
     </div>
   );
 }
