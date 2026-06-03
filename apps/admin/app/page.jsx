@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
 import InstagramPanel from './instagram-panel.jsx';
+import ContentQueuePanel from './content-queue-panel.jsx';
 
 // ── API hook ─────────────────────────────────────────────────────────
 
@@ -490,6 +491,8 @@ function ContentDashboard({ session }) {
       )}
 
       <CronConfigPanel session={session} />
+
+      <ContentQueuePanel session={session} />
     </>
   );
 }
