@@ -7,7 +7,8 @@ const USERS = {
 const API_TOKEN = process.env.ADMIN_TOKEN || 'usdf-admin-2026';
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://umsinaldefe.com.br';
 
-const CORE_API_URL = process.env.NEXT_PUBLIC_CORE_API_URL || 'http://localhost:4444';
+const CORE_API_URL =
+  process.env.CORE_API_URL || process.env.NEXT_PUBLIC_CORE_API_URL || 'http://localhost:4444';
 const CORE_USER = process.env.CORE_API_USERNAME || 'fernando';
 const CORE_PASS = process.env.CORE_API_PASSWORD || 'Fz9mPx7Kq2vRtY8n';
 
