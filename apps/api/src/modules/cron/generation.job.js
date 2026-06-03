@@ -1,8 +1,8 @@
-import { env } from '../../config/env.js';
 import { logger } from '../../config/logger.js';
 import { CRON_DEFAULTS, CRON_JOB_NAMES } from '../../constants/cron.js';
 import { GENERATION_OUTCOMES } from '../../constants/generation.js';
 import { generateBatch } from '../generation/generation.service.js';
+import { getGenerationConfig } from '../generation/generation.config.js';
 import { saveRun } from './cron-run.repository.js';
 import { triggerRevalidation } from '../../lib/revalidate.js';
 import { submitSignalSlugs, submitSitemapPing } from '../indexnow/index.js';
@@ -25,8 +25,9 @@ export const runGenerationJob = async (triggeredBy = CRON_DEFAULTS.TRIGGER_CRON)
   logger.info({ triggeredBy }, 'generation job started');
 
   try {
+    const { dailyLimit } = await getGenerationConfig();
     const { results } = await generateBatch({
-      limit: env.CRON_GENERATION_DAILY_LIMIT,
+      limit: dailyLimit,
       force: false,
     });
 

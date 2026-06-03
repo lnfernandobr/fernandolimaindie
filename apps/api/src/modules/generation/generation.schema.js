@@ -130,6 +130,10 @@ export const runOneSchema = z.object({
   force: z.boolean().default(false),
 });
 
+export const updateGenerationConfigSchema = z.object({
+  dailyLimit: z.coerce.number().int().min(1).max(50),
+});
+
 export const runBatchSchema = z.object({
   seedKind: z.enum(SEED_KINDS).optional(),
   limit: z

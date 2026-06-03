@@ -21,6 +21,7 @@ import {
 } from './generation.schema.js';
 import { buildMockContent } from './generation.mock.js';
 import { findSeedBySlug, loadAllSeeds, loadSeedsByKind } from './generation.seeds.js';
+import { getGenerationConfig } from './generation.config.js';
 
 const buildSignalInput = (seed, content) => ({
   slug: seed.seedSlug,
@@ -133,14 +134,15 @@ export const countPendingSeeds = async () => {
 };
 
 export const getGenerationStatus = async () => {
-  const [runs, pendingSeeds] = await Promise.all([
+  const [runs, pendingSeeds, config] = await Promise.all([
     listRecentRuns(CRON_JOB_NAMES.GENERATION, CRON_DEFAULTS.RUN_HISTORY_LIMIT),
     countPendingSeeds(),
+    getGenerationConfig(),
   ]);
   return {
     enabled: env.CRON_ENABLED,
     schedule: env.CRON_GENERATION_SCHEDULE,
-    dailyLimit: env.CRON_GENERATION_DAILY_LIMIT,
+    dailyLimit: config.dailyLimit,
     pendingSeeds,
     recentRuns: runs.map((r) => ({
       triggeredBy: r.triggeredBy,

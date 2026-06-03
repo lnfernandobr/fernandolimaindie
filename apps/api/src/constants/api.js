@@ -23,6 +23,7 @@ export const GENERATION_PATHS = Object.freeze({
   BATCH: '/batch',
   STATUS: '/status',
   TRIGGER: '/trigger',
+  CONFIG: '/config',
 });
 
 export const PUBLIC_ENDPOINTS = Object.freeze([

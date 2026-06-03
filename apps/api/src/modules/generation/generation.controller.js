@@ -1,7 +1,8 @@
 import { HTTP_STATUS } from '../../constants/http.js';
 import { CRON_DEFAULTS } from '../../constants/cron.js';
-import { runOneSchema, runBatchSchema } from './generation.schema.js';
+import { runOneSchema, runBatchSchema, updateGenerationConfigSchema } from './generation.schema.js';
 import { generateOne, generateBatch, getGenerationStatus } from './generation.service.js';
+import { getGenerationConfig, updateGenerationConfig } from './generation.config.js';
 import { loadAllSeeds, loadSeedsByKind } from './generation.seeds.js';
 import { toRunReport, toBatchReport, toJobRunReport } from './generation.dto.js';
 import { runGenerationJob } from '../cron/generation.job.js';
@@ -41,4 +42,13 @@ export const handleGetStatus = async (req, res) => {
 export const handleTriggerJob = async (req, res) => {
   const run = await runGenerationJob(CRON_DEFAULTS.TRIGGER_MANUAL);
   res.status(HTTP_STATUS.OK).json(toJobRunReport(run));
+};
+
+export const handleGetConfig = async (req, res) => {
+  res.status(HTTP_STATUS.OK).json(await getGenerationConfig());
+};
+
+export const handleUpdateConfig = async (req, res) => {
+  const patch = updateGenerationConfigSchema.parse(req.body);
+  res.status(HTTP_STATUS.OK).json(await updateGenerationConfig(patch));
 };

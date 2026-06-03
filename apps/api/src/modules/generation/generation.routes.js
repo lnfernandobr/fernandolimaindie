@@ -8,11 +8,15 @@ import {
   handleRunBatch,
   handleRunOne,
   handleTriggerJob,
+  handleGetConfig,
+  handleUpdateConfig,
 } from './generation.controller.js';
 
 export const createGenerationRouter = () => {
   const router = Router();
   router.get(GENERATION_PATHS.STATUS, asyncHandler(handleGetStatus));
+  router.get(GENERATION_PATHS.CONFIG, requireAuth, asyncHandler(handleGetConfig));
+  router.patch(GENERATION_PATHS.CONFIG, requireAuth, asyncHandler(handleUpdateConfig));
   router.get(GENERATION_PATHS.SEEDS, requireAuth, asyncHandler(handleListSeeds));
   router.post(GENERATION_PATHS.RUN, requireAuth, asyncHandler(handleRunOne));
   router.post(GENERATION_PATHS.BATCH, requireAuth, asyncHandler(handleRunBatch));
