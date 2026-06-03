@@ -57,17 +57,54 @@ const normalizeTiers = (tiersRaw) => {
   return { high, medium, low };
 };
 
+const normalizeAnchors = (raw) => {
+  const a = raw && typeof raw === 'object' ? raw : {};
+  return {
+    medium: truncate(a.medium, 400),
+    palette: truncate(a.palette, 400),
+    lighting: truncate(a.lighting, 400),
+    lensOrTechnique: truncate(a.lensOrTechnique || a.lens || a.technique, 400),
+    composition: truncate(a.composition, 400),
+    texture: truncate(a.texture, 400),
+    reference: truncate(a.reference, 400),
+  };
+};
+
+const flattenAnchors = (a) =>
+  [
+    a.medium && `medium: ${a.medium}`,
+    a.palette && `palette: ${a.palette}`,
+    a.lighting && `lighting: ${a.lighting}`,
+    a.lensOrTechnique && `lens/technique: ${a.lensOrTechnique}`,
+    a.composition && `composition: ${a.composition}`,
+    a.texture && `texture: ${a.texture}`,
+    a.reference && `reference: ${a.reference}`,
+  ]
+    .filter(Boolean)
+    .join(' · ');
+
 const validatePlan = (plan, slidesCount) => {
   if (!plan || !Array.isArray(plan.slides)) {
     throw badRequest(INSTAGRAM_ERRORS.ANTHROPIC_INVALID_OUTPUT);
   }
-  const slides = plan.slides.slice(0, slidesCount);
+  const slides = plan.slides.slice(0, slidesCount).map((s) => ({
+    role: s.role,
+    text: s.text,
+    imageSubject: truncate(s.imageSubject, 400),
+    imageScene: truncate(s.imageScene, 800),
+  }));
   if (slides.length === 0) throw badRequest(INSTAGRAM_ERRORS.ANTHROPIC_INVALID_OUTPUT);
+  const visualAnchors = normalizeAnchors(plan.visualAnchors);
+  const visualStyle =
+    flattenAnchors(visualAnchors) ||
+    truncate(plan.visualStyle, 1200) ||
+    INSTAGRAM_DEFAULTS.FALLBACK_VISUAL_STYLE;
   const hashtagTiers = normalizeTiers(plan.hashtags);
   return {
     title: truncate(plan.title, 240),
     designConcept: truncate(plan.designConcept, 1200),
-    visualStyle: truncate(plan.visualStyle, 1200) || INSTAGRAM_DEFAULTS.FALLBACK_VISUAL_STYLE,
+    visualAnchors,
+    visualStyle,
     slides,
     caption: truncate(plan.caption, 2200),
     hashtagTiers,
@@ -131,10 +168,10 @@ const createRunLog = ({ itemId, runStartedAt }) => {
 const mockSlideImageUrl = (channelHandle, slideNumber) =>
   `https://placehold.co/1024x1024/111827/F9FAFB?text=${encodeURIComponent(`@${channelHandle} ${slideNumber}`)}`;
 
-const renderSlide = async ({ channel, visualStyle, slide, slideNumber, totalSlides, postKey }) => {
+const renderSlide = async ({ channel, visualAnchors, slide, slideNumber, totalSlides, postKey }) => {
   const promptUsed = prompts.slideImage({
     channelHandle: channel.handle,
-    visualStyle,
+    visualAnchors,
     slide,
     slideNumber,
     totalSlides,
@@ -144,6 +181,7 @@ const renderSlide = async ({ channel, visualStyle, slide, slideNumber, totalSlid
       index: slideNumber - 1,
       role: slide.role,
       text: slide.text,
+      imageSubject: slide.imageSubject,
       imageScene: slide.imageScene,
       imagePrompt: truncate(promptUsed, PROMPT_LOG_LIMIT),
       imageUrl: mockSlideImageUrl(channel.handle, slideNumber),
@@ -151,7 +189,7 @@ const renderSlide = async ({ channel, visualStyle, slide, slideNumber, totalSlid
   }
   const { buffer } = await generateSlideImage({
     channelHandle: channel.handle,
-    visualStyle,
+    visualAnchors,
     slide,
     slideNumber,
     totalSlides,
@@ -166,6 +204,7 @@ const renderSlide = async ({ channel, visualStyle, slide, slideNumber, totalSlid
     index: slideNumber - 1,
     role: slide.role,
     text: slide.text,
+    imageSubject: slide.imageSubject,
     imageScene: slide.imageScene,
     imagePrompt: truncate(promptUsed, PROMPT_LOG_LIMIT),
     imageUrl,
@@ -219,7 +258,7 @@ const runPipeline = async ({ channel, item, runLog }) => {
       () =>
         renderSlide({
           channel,
-          visualStyle: plan.visualStyle,
+          visualAnchors: plan.visualAnchors,
           slide,
           slideNumber,
           totalSlides: plan.slides.length,
@@ -238,6 +277,7 @@ const runPipeline = async ({ channel, item, runLog }) => {
       brief: item.brief,
       designConcept: plan.designConcept,
       visualStyle: plan.visualStyle,
+      visualAnchors: plan.visualAnchors,
       slides: renderedSlides,
       caption: plan.caption,
       hashtags: plan.hashtags,

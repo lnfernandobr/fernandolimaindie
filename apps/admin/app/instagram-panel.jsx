@@ -306,12 +306,32 @@ function InlinePostInfo({ session, postId }) {
         </div>
       )}
 
-      {post.visualStyle && (
+      {post.visualAnchors && Object.values(post.visualAnchors).some(Boolean) ? (
+        <div className="ig-post-block">
+          <div className="ig-post-label">Direção visual (vai pro prompt)</div>
+          <div className="ig-anchors">
+            {[
+              ['Medium', post.visualAnchors.medium],
+              ['Paleta', post.visualAnchors.palette],
+              ['Lighting', post.visualAnchors.lighting],
+              ['Lente / técnica', post.visualAnchors.lensOrTechnique],
+              ['Composição', post.visualAnchors.composition],
+              ['Textura', post.visualAnchors.texture],
+              ['Referência', post.visualAnchors.reference],
+            ].filter(([, v]) => !!v).map(([k, v]) => (
+              <div key={k} className="ig-anchor">
+                <span className="ig-anchor-key">{k}</span>
+                <span className="ig-anchor-val">{v}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : post.visualStyle ? (
         <div className="ig-post-block">
           <div className="ig-post-label">Direção visual (vai pro prompt)</div>
           <div className="ig-caption-box">{post.visualStyle}</div>
         </div>
-      )}
+      ) : null}
 
       <div className="ig-post-block">
         <div className="ig-post-label">
@@ -327,6 +347,11 @@ function InlinePostInfo({ session, postId }) {
               <div className="lbl"><strong>#{s.index + 1}</strong> · {s.role}</div>
               {s.text && (
                 <div className="lbl" title="Texto renderizado dentro da imagem">“{s.text}”</div>
+              )}
+              {s.imageSubject && (
+                <div className="lbl" title="Sujeito principal" style={{ color: 'var(--muted)' }}>
+                  → {s.imageSubject}
+                </div>
               )}
               <a href={s.imageUrl} target="_blank" rel="noreferrer">abrir asset</a>
             </div>

@@ -16,11 +16,11 @@ const fetchUrlAsBuffer = async (url) => {
   return Buffer.from(await res.arrayBuffer());
 };
 
-export const generateSlideImage = async ({ channelHandle, visualStyle, slide, slideNumber, totalSlides }) => {
+export const generateSlideImage = async ({ channelHandle, visualAnchors, slide, slideNumber, totalSlides }) => {
   const client = buildClient();
   const prompt = prompts.slideImage({
     channelHandle,
-    visualStyle,
+    visualAnchors,
     slide,
     slideNumber,
     totalSlides,

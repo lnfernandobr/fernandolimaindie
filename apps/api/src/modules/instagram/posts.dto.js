@@ -2,6 +2,7 @@ const toSlide = (s) => ({
   index: s.index,
   role: s.role ?? 'body',
   text: s.text ?? '',
+  imageSubject: s.imageSubject ?? '',
   imageScene: s.imageScene ?? '',
   imagePrompt: s.imagePrompt ?? '',
   imageUrl: s.imageUrl,
@@ -11,6 +12,16 @@ const toHashtagTiers = (tiers) => ({
   high: tiers?.high ?? [],
   medium: tiers?.medium ?? [],
   low: tiers?.low ?? [],
+});
+
+const toVisualAnchors = (anchors) => ({
+  medium: anchors?.medium ?? '',
+  palette: anchors?.palette ?? '',
+  lighting: anchors?.lighting ?? '',
+  lensOrTechnique: anchors?.lensOrTechnique ?? '',
+  composition: anchors?.composition ?? '',
+  texture: anchors?.texture ?? '',
+  reference: anchors?.reference ?? '',
 });
 
 export const toPublicPost = (doc) =>
@@ -25,6 +36,7 @@ export const toPublicPost = (doc) =>
         brief: doc.brief ?? '',
         designConcept: doc.designConcept ?? '',
         visualStyle: doc.visualStyle ?? '',
+        visualAnchors: toVisualAnchors(doc.visualAnchors),
         slides: (doc.slides ?? []).map(toSlide),
         caption: doc.caption ?? '',
         hashtags: doc.hashtags ?? [],

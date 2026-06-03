@@ -185,6 +185,11 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 .ig-post-inline-head { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.92rem; }
 .ig-post-block { display: flex; flex-direction: column; gap: 4px; }
 .ig-post-label { font-size: 0.78rem; font-weight: 700; color: var(--text); display: flex; align-items: center; }
+.ig-anchors { display: grid; gap: 6px; }
+.ig-anchor { display: grid; grid-template-columns: 130px 1fr; gap: 12px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); font-size: 0.78rem; }
+.ig-anchor-key { color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.68rem; }
+.ig-anchor-val { color: var(--text); }
+@media (max-width: 700px) { .ig-anchor { grid-template-columns: 1fr; } }
 
 .ig-spinner {
   display: inline-block; width: 12px; height: 12px;

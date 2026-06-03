@@ -8,9 +8,23 @@ const slideSchema = new Schema(
     index: { type: Number, required: true },
     role: { type: String, default: 'body' },
     text: { type: String, default: '' },
+    imageSubject: { type: String, default: '' },
     imageScene: { type: String, default: '' },
     imagePrompt: { type: String, default: '' },
     imageUrl: { type: String, required: true },
+  },
+  { _id: false },
+);
+
+const visualAnchorsSchema = new Schema(
+  {
+    medium: { type: String, default: '' },
+    palette: { type: String, default: '' },
+    lighting: { type: String, default: '' },
+    lensOrTechnique: { type: String, default: '' },
+    composition: { type: String, default: '' },
+    texture: { type: String, default: '' },
+    reference: { type: String, default: '' },
   },
   { _id: false },
 );
@@ -33,6 +47,7 @@ const instagramPostSchema = new Schema(
     brief: { type: String, default: '', trim: true, maxlength: INSTAGRAM_LIMITS.BRIEF_MAX },
     designConcept: { type: String, default: '' },
     visualStyle: { type: String, default: '' },
+    visualAnchors: { type: visualAnchorsSchema, default: () => ({}) },
     slides: { type: [slideSchema], default: [] },
     caption: { type: String, default: '' },
     hashtags: { type: [String], default: [] },
