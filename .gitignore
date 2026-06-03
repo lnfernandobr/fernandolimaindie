@@ -6,6 +6,7 @@ build
 .env.local
 .env.local.bak
 .env.dopplerpulled.local
+.mcp.json
 *.log
 .logs/
 .DS_Store
@@ -21,3 +22,4 @@ apps/api/uploads/
 
 # Doppler import files (one-time use, contain real secrets)
 doppler-*.env
+.vercel

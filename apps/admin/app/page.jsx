@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
+import InstagramPanel from './instagram-panel.jsx';
 
 // ── API hook ─────────────────────────────────────────────────────────
 
@@ -453,7 +454,7 @@ export default function AdminPage() {
   return <Dashboard session={session} onLogout={handleLogout} />;
 }
 
-function Dashboard({ session, onLogout }) {
+function ContentDashboard({ session }) {
   const stats = useApi('/api/admin/stats', session);
   const queue = useApi('/api/admin/queue', session);
   const posts = useApi('/api/admin/posts', session);
@@ -464,43 +465,70 @@ function Dashboard({ session, onLogout }) {
 
   return (
     <>
+      {s && (
+        <>
+          <div className="stats">
+            <StatCard label="Total de páginas" value={s.content?.totalPages} />
+            <StatCard label="Signals" value={s.content?.signals} />
+            <StatCard label="Versículos" value={s.content?.verseTopics} />
+            <StatCard label="Blog posts" value={s.content?.blogPosts} />
+            <StatCard label="Fila: pendente" value={s.queue?.pending} color="yellow" />
+            <StatCard label="Fila: gerado" value={s.queue?.done} color="green" />
+            <StatCard label="Fila: erro" value={s.queue?.error} color="red" />
+          </div>
+          <div className="services">
+            <ServiceBadge name="ElevenLabs TTS" on={s.services?.tts} />
+            <ServiceBadge name="OpenAI" on={s.services?.openai} />
+            <ServiceBadge name="Pexels" on={s.services?.pexels} />
+          </div>
+        </>
+      )}
+
+      {stats.loading && <p style={{ color: 'var(--muted)' }}>Carregando...</p>}
+      {!stats.loading && !s && (
+        <p style={{ color: 'var(--red)' }}>Erro ao conectar na API. Verifique se o umsinaldefe está rodando.</p>
+      )}
+
+      <CronConfigPanel session={session} />
+
+      {q?.items && <QueueTable items={q.items} session={session} onRefresh={queue.refresh} />}
+
+      {p && <PostsTable posts={p.posts} />}
+    </>
+  );
+}
+
+function Dashboard({ session, onLogout }) {
+  const [tab, setTab] = useState('content');
+
+  return (
+    <>
       <div className="header">
         <span className="dot" />
-        <h1>✦ Um Sinal de Fé · Admin</h1>
+        <h1>✦ Fernando · Admin</h1>
         <div style={{ flex: 1 }} />
         <span style={{ fontSize: '0.78rem', color: 'var(--muted)' }}>
           Logado como <strong>{session.user}</strong>
         </span>
         <button className="btn-sm" onClick={onLogout}>Sair</button>
       </div>
+      <div className="nav-tabs">
+        <button
+          className={`nav-tab ${tab === 'content' ? 'active' : ''}`}
+          onClick={() => setTab('content')}
+        >
+          Um Sinal de Fé
+        </button>
+        <button
+          className={`nav-tab ${tab === 'instagram' ? 'active' : ''}`}
+          onClick={() => setTab('instagram')}
+        >
+          Instagram
+        </button>
+      </div>
       <div className="container">
-        {s && (
-          <>
-            <div className="stats">
-              <StatCard label="Total de páginas" value={s.content?.totalPages} />
-              <StatCard label="Signals" value={s.content?.signals} />
-              <StatCard label="Versículos" value={s.content?.verseTopics} />
-              <StatCard label="Blog posts" value={s.content?.blogPosts} />
-              <StatCard label="Fila: pendente" value={s.queue?.pending} color="yellow" />
-              <StatCard label="Fila: gerado" value={s.queue?.done} color="green" />
-              <StatCard label="Fila: erro" value={s.queue?.error} color="red" />
-            </div>
-            <div className="services">
-              <ServiceBadge name="ElevenLabs TTS" on={s.services?.tts} />
-              <ServiceBadge name="OpenAI" on={s.services?.openai} />
-              <ServiceBadge name="Pexels" on={s.services?.pexels} />
-            </div>
-          </>
-        )}
-
-        {stats.loading && <p style={{ color: 'var(--muted)' }}>Carregando...</p>}
-        {!stats.loading && !s && <p style={{ color: 'var(--red)' }}>Erro ao conectar na API. Verifique se o umsinaldefe está rodando.</p>}
-
-        <CronConfigPanel session={session} />
-
-        {q?.items && <QueueTable items={q.items} session={session} onRefresh={queue.refresh} />}
-
-        {p && <PostsTable posts={p.posts} />}
+        {tab === 'content' && <ContentDashboard session={session} />}
+        {tab === 'instagram' && <InstagramPanel session={session} />}
       </div>
     </>
   );

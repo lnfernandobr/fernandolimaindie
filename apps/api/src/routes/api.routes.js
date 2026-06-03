@@ -7,6 +7,7 @@ import { createTopicsRouter } from '../modules/topics/index.js';
 import { createEntitiesRouter } from '../modules/entities/index.js';
 import { createGenerationRouter } from '../modules/generation/index.js';
 import { createMediaRouter } from '../modules/media/index.js';
+import { createInstagramRouter } from '../modules/instagram/index.js';
 
 export const createApiRouter = () => {
   const router = Router();
@@ -17,5 +18,6 @@ export const createApiRouter = () => {
   router.use(PATHS.ENTITIES, createEntitiesRouter());
   router.use(PATHS.GENERATION, createGenerationRouter());
   router.use(PATHS.MEDIA, createMediaRouter());
+  router.use(PATHS.INSTAGRAM, createInstagramRouter());
   return router;
 };

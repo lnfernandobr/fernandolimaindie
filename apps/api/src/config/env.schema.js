@@ -20,10 +20,13 @@ export const envSchema = z.object({
   ALLOWED_ORIGINS: z.string().default(ENV_DEFAULTS.ALLOWED_ORIGINS),
   OPENAI_API_KEY: z.string().default(ENV_DEFAULTS.OPENAI_API_KEY),
   OPENAI_MODEL: z.string().default(ENV_DEFAULTS.OPENAI_MODEL),
+  OPENAI_IMAGE_MODEL: z.string().default(ENV_DEFAULTS.OPENAI_IMAGE_MODEL),
   OPENAI_MOCK_MODE: z
     .union([z.literal('true'), z.literal('false')])
     .default(ENV_DEFAULTS.OPENAI_MOCK_MODE)
     .transform((v) => v === 'true'),
+  ANTHROPIC_API_KEY: z.string().default(ENV_DEFAULTS.ANTHROPIC_API_KEY),
+  ANTHROPIC_MODEL: z.string().default(ENV_DEFAULTS.ANTHROPIC_MODEL),
   CRON_ENABLED: z
     .union([z.literal('true'), z.literal('false')])
     .default(ENV_DEFAULTS.CRON_ENABLED)
