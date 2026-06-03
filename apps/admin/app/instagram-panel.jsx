@@ -53,12 +53,7 @@ const emptyChannelForm = () => ({
   brief: '',
   tone: '',
   captionStyle: '',
-  imagePrompt: '',
   slidesPerCarousel: 5,
-  hashtagsPool: '',
-  brandBg: '#0F172A',
-  brandFg: '#F8FAFC',
-  brandAccent: '#FACC15',
   active: true,
 });
 
@@ -69,12 +64,7 @@ const fromChannel = (channel) => ({
   brief: channel.brief ?? '',
   tone: channel.tone ?? '',
   captionStyle: channel.captionStyle ?? '',
-  imagePrompt: channel.imagePrompt ?? '',
   slidesPerCarousel: channel.slidesPerCarousel ?? 5,
-  hashtagsPool: (channel.hashtagsPool ?? []).join(' '),
-  brandBg: channel.brandBg ?? '#0F172A',
-  brandFg: channel.brandFg ?? '#F8FAFC',
-  brandAccent: channel.brandAccent ?? '#FACC15',
   active: channel.active !== false,
 });
 
@@ -85,15 +75,7 @@ const toPayload = (form) => ({
   brief: form.brief.trim(),
   tone: form.tone.trim() || undefined,
   captionStyle: form.captionStyle.trim() || undefined,
-  imagePrompt: form.imagePrompt.trim() || undefined,
   slidesPerCarousel: Number(form.slidesPerCarousel) || 5,
-  hashtagsPool: form.hashtagsPool
-    .split(/\s+/)
-    .map((tag) => tag.trim())
-    .filter(Boolean),
-  brandBg: form.brandBg,
-  brandFg: form.brandFg,
-  brandAccent: form.brandAccent,
   active: !!form.active,
 });
 
@@ -187,50 +169,16 @@ function ChannelForm({ session, channel, onSaved, onCancel, onDeleted }) {
             placeholder="ex: PT-BR, frases curtas, CTA suave"
           />
         </label>
-        <label className="ig-field full">
-          Estilo visual base das imagens (vai pro prompt)
-          <textarea
-            value={form.imagePrompt}
-            onChange={set('imagePrompt')}
-            placeholder="ex: ilustração editorial limpa, paleta sóbria, sem texto na imagem"
-          />
-        </label>
-        <label className="ig-field full">
-          Pool de hashtags (separadas por espaço)
-          <input
-            value={form.hashtagsPool}
-            onChange={set('hashtagsPool')}
-            placeholder="#fe #cristianismo #oracao"
-          />
-        </label>
-        <label className="ig-field">
-          Cor de fundo
-          <div className="ig-color-row">
-            <input type="color" value={form.brandBg} onChange={set('brandBg')} />
-            <input value={form.brandBg} onChange={set('brandBg')} />
-          </div>
-        </label>
-        <label className="ig-field">
-          Cor do texto
-          <div className="ig-color-row">
-            <input type="color" value={form.brandFg} onChange={set('brandFg')} />
-            <input value={form.brandFg} onChange={set('brandFg')} />
-          </div>
-        </label>
-        <label className="ig-field">
-          Cor de destaque
-          <div className="ig-color-row">
-            <input type="color" value={form.brandAccent} onChange={set('brandAccent')} />
-            <input value={form.brandAccent} onChange={set('brandAccent')} />
-          </div>
-        </label>
-        <label className="ig-field" style={{ alignSelf: 'end' }}>
+        <label className="ig-field full" style={{ alignSelf: 'end' }}>
           <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <input type="checkbox" checked={!!form.active} onChange={setBool('active')} />
             Canal ativo
           </span>
         </label>
       </div>
+      <p style={{ color: 'var(--muted)', fontSize: '0.78rem', marginTop: 12 }}>
+        Estilo visual, paleta e hashtags são decididos pela IA por post, com base no tema, nicho e tom de voz.
+      </p>
       {err && <p style={{ color: 'var(--red)', fontSize: '0.82rem', marginTop: 12 }}>{err}</p>}
       <div style={{ marginTop: 14, display: 'flex', gap: 8 }}>
         <button className="btn-sm" disabled={busy} onClick={save}>
@@ -536,6 +484,18 @@ function PostDetailRow({ session, postId }) {
                 ))}
               </div>
               <div style={{ marginTop: 12, display: 'grid', gap: 10 }}>
+                {post.designConcept && (
+                  <div>
+                    <strong style={{ fontSize: '0.82rem' }}>Conceito visual</strong>
+                    <div className="ig-caption-box">{post.designConcept}</div>
+                  </div>
+                )}
+                {post.visualStyle && (
+                  <div>
+                    <strong style={{ fontSize: '0.82rem' }}>Direção visual (prompt)</strong>
+                    <div className="ig-caption-box">{post.visualStyle}</div>
+                  </div>
+                )}
                 <div>
                   <strong style={{ fontSize: '0.82rem' }}>Legenda</strong>
                   <button className="btn-sm" style={{ marginLeft: 8 }} onClick={() => copyToClipboard(post.caption)}>
@@ -543,13 +503,40 @@ function PostDetailRow({ session, postId }) {
                   </button>
                   <div className="ig-caption-box">{post.caption}</div>
                 </div>
-                <div>
-                  <strong style={{ fontSize: '0.82rem' }}>Hashtags</strong>
-                  <button className="btn-sm" style={{ marginLeft: 8 }} onClick={() => copyToClipboard(post.hashtags.join(' '))}>
-                    Copiar
-                  </button>
-                  <div className="ig-caption-box">{post.hashtags.join(' ')}</div>
-                </div>
+                {post.hashtagTiers && (
+                  <div style={{ display: 'grid', gap: 6 }}>
+                    <strong style={{ fontSize: '0.82rem' }}>
+                      Hashtags por tier
+                      <button
+                        className="btn-sm"
+                        style={{ marginLeft: 8 }}
+                        onClick={() => copyToClipboard((post.hashtags || []).join(' '))}
+                      >
+                        Copiar tudo
+                      </button>
+                    </strong>
+                    {['high', 'medium', 'low'].map((tier) => {
+                      const tags = post.hashtagTiers?.[tier] ?? [];
+                      if (!tags.length) return null;
+                      const label = tier === 'high' ? 'Alto volume' : tier === 'medium' ? 'Médio' : 'Long-tail';
+                      return (
+                        <div key={tier}>
+                          <span style={{ color: 'var(--muted)', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                            {label}
+                          </span>
+                          <button
+                            className="btn-sm"
+                            style={{ marginLeft: 8 }}
+                            onClick={() => copyToClipboard(tags.join(' '))}
+                          >
+                            Copiar
+                          </button>
+                          <div className="ig-caption-box">{tags.join(' ')}</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             </>
           )}

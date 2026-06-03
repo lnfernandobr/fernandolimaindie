@@ -14,6 +14,16 @@ const MOCK_BODY_SCENES = [
   'a small green plant breaking through cracked concrete, soft natural light, gritty texture',
 ];
 
+const slugifyHashtag = (text, suffix = '') =>
+  '#' +
+  (text || 'tema')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '')
+    .slice(0, 18) +
+  suffix;
+
 const pickBody = (count) => {
   const out = [];
   for (let i = 0; i < count; i += 1) {
@@ -41,22 +51,19 @@ export const buildMockPlan = ({ channel, topic, slidesCount }) => {
       imageScene: 'an open hand reaching upward against a sunrise sky, gentle warm gradient',
     },
   ];
+  const slug = slugifyHashtag(topic);
   return {
     title: topic,
+    designConcept:
+      'Layout editorial minimalista, contraste alto, foco na clareza da mensagem. Direção visual coesa entre slides.',
+    visualStyle:
+      'editorial minimalist photography, high contrast, warm cinematic lighting, premium magazine aesthetic',
     slides,
     caption: `${topic}\n\nConteúdo curado por @${channel.handle}. Salva pra revisitar.`,
-    hashtags: channel.hashtagsPool?.length
-      ? channel.hashtagsPool.slice(0, 10)
-      : ['#conteudo', '#dicas', '#brasil'],
+    hashtags: {
+      high: ['#instagram', '#conteudo', '#brasil'],
+      medium: [slug, '#carrossel', '#dicas', '#aprender'],
+      low: [`${slug}br`, `${slug}2026`, `${slug}foco`],
+    },
   };
-};
-
-const placeholderPalette = (channel) => ({
-  bg: (channel.brandBg || '#0F172A').replace('#', ''),
-  fg: (channel.brandFg || '#F8FAFC').replace('#', ''),
-});
-
-export const mockSlideImageUrl = ({ channel, slideNumber }) => {
-  const { bg, fg } = placeholderPalette(channel);
-  return `https://placehold.co/1024x1024/${bg}/${fg}?text=slide+${slideNumber}`;
 };

@@ -12,7 +12,7 @@ import { createPost } from './posts.repository.js';
 import { toPublicPost } from './posts.dto.js';
 import { generateCarouselPlan } from './generation.anthropic.js';
 import { generateSlideImage } from './generation.openai.js';
-import { buildMockPlan, mockSlideImageUrl } from './generation.mock.js';
+import { buildMockPlan } from './generation.mock.js';
 import { prompts } from './prompts.js';
 
 const PROMPT_LOG_LIMIT = 2000;
@@ -23,28 +23,72 @@ const truncate = (value, limit) => {
   return str.length > limit ? str.slice(0, limit) : str;
 };
 
+const sanitizeHashtag = (raw) => {
+  if (typeof raw !== 'string') return null;
+  const trimmed = raw.trim().toLowerCase();
+  if (!trimmed) return null;
+  const stripped = trimmed.startsWith('#') ? trimmed.slice(1) : trimmed;
+  const cleaned = stripped.replace(/[^a-z0-9_]/g, '');
+  return cleaned ? `#${cleaned}` : null;
+};
+
+const dedupeKeep = (arr) => {
+  const seen = new Set();
+  const out = [];
+  for (const item of arr) {
+    if (!item) continue;
+    if (seen.has(item)) continue;
+    seen.add(item);
+    out.push(item);
+  }
+  return out;
+};
+
+const normalizeTiers = (tiersRaw) => {
+  const tiers = tiersRaw && typeof tiersRaw === 'object' ? tiersRaw : {};
+  const clean = (arr) =>
+    dedupeKeep((Array.isArray(arr) ? arr : []).map(sanitizeHashtag).filter(Boolean));
+  const high = clean(tiers.high);
+  const medium = clean(tiers.medium).filter((h) => !high.includes(h));
+  const low = clean(tiers.low).filter((h) => !high.includes(h) && !medium.includes(h));
+  return { high, medium, low };
+};
+
 const validatePlan = (plan, slidesCount) => {
   if (!plan || !Array.isArray(plan.slides)) {
     throw badRequest(INSTAGRAM_ERRORS.ANTHROPIC_INVALID_OUTPUT);
   }
   const slides = plan.slides.slice(0, slidesCount);
   if (slides.length === 0) throw badRequest(INSTAGRAM_ERRORS.ANTHROPIC_INVALID_OUTPUT);
+  const hashtagTiers = normalizeTiers(plan.hashtags);
   return {
     title: truncate(plan.title, 240),
+    designConcept: truncate(plan.designConcept, 1200),
+    visualStyle: truncate(plan.visualStyle, 1200) || INSTAGRAM_DEFAULTS.FALLBACK_VISUAL_STYLE,
     slides,
     caption: truncate(plan.caption, 2200),
-    hashtags: Array.isArray(plan.hashtags) ? plan.hashtags.slice(0, 30) : [],
+    hashtagTiers,
+    hashtags: [...hashtagTiers.high, ...hashtagTiers.medium, ...hashtagTiers.low],
   };
 };
 
 const buildPlan = async ({ channel, topic, brief, slidesCount }) => {
-  if (env.OPENAI_MOCK_MODE) return buildMockPlan({ channel, topic, slidesCount });
+  if (env.OPENAI_MOCK_MODE) return validatePlan(buildMockPlan({ channel, topic, slidesCount }), slidesCount);
   const raw = await generateCarouselPlan({ channel, topic, brief, slidesCount });
   return validatePlan(raw, slidesCount);
 };
 
-const renderSlide = async ({ channel, slide, slideNumber, totalSlides, postKey }) => {
-  const promptUsed = prompts.slideImage({ channel, slide, slideNumber, totalSlides });
+const mockSlideImageUrl = (channelHandle, slideNumber) =>
+  `https://placehold.co/1024x1024/111827/F9FAFB?text=${encodeURIComponent(`@${channelHandle} ${slideNumber}`)}`;
+
+const renderSlide = async ({ channel, visualStyle, slide, slideNumber, totalSlides, postKey }) => {
+  const promptUsed = prompts.slideImage({
+    channelHandle: channel.handle,
+    visualStyle,
+    slide,
+    slideNumber,
+    totalSlides,
+  });
   if (env.MEDIA_MOCK_MODE) {
     return {
       index: slideNumber - 1,
@@ -52,10 +96,16 @@ const renderSlide = async ({ channel, slide, slideNumber, totalSlides, postKey }
       text: slide.text,
       imageScene: slide.imageScene,
       imagePrompt: truncate(promptUsed, PROMPT_LOG_LIMIT),
-      imageUrl: mockSlideImageUrl({ channel, slideNumber }),
+      imageUrl: mockSlideImageUrl(channel.handle, slideNumber),
     };
   }
-  const { buffer } = await generateSlideImage({ channel, slide, slideNumber, totalSlides });
+  const { buffer } = await generateSlideImage({
+    channelHandle: channel.handle,
+    visualStyle,
+    slide,
+    slideNumber,
+    totalSlides,
+  });
   const key = `${INSTAGRAM_DEFAULTS.S3_PREFIX}/${channel.handle}/${postKey}/slide-${slideNumber}.${INSTAGRAM_DEFAULTS.IMAGE_FORMAT}`;
   const imageUrl = await uploadBuffer({
     key,
@@ -88,6 +138,7 @@ const runPipeline = async ({ channel, item }) => {
     const slide = plan.slides[i];
     const rendered = await renderSlide({
       channel,
+      visualStyle: plan.visualStyle,
       slide,
       slideNumber: i + 1,
       totalSlides: plan.slides.length,
@@ -101,9 +152,12 @@ const runPipeline = async ({ channel, item }) => {
     topic: item.topic,
     title: plan.title || item.topic,
     brief: item.brief,
+    designConcept: plan.designConcept,
+    visualStyle: plan.visualStyle,
     slides: renderedSlides,
     caption: plan.caption,
     hashtags: plan.hashtags,
+    hashtagTiers: plan.hashtagTiers,
     coverImageUrl: renderedSlides[0]?.imageUrl ?? null,
     status: 'ready',
   });

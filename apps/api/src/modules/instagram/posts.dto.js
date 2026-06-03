@@ -7,6 +7,12 @@ const toSlide = (s) => ({
   imageUrl: s.imageUrl,
 });
 
+const toHashtagTiers = (tiers) => ({
+  high: tiers?.high ?? [],
+  medium: tiers?.medium ?? [],
+  low: tiers?.low ?? [],
+});
+
 export const toPublicPost = (doc) =>
   doc === null || doc === undefined
     ? null
@@ -17,9 +23,12 @@ export const toPublicPost = (doc) =>
         topic: doc.topic,
         title: doc.title ?? '',
         brief: doc.brief ?? '',
+        designConcept: doc.designConcept ?? '',
+        visualStyle: doc.visualStyle ?? '',
         slides: (doc.slides ?? []).map(toSlide),
         caption: doc.caption ?? '',
         hashtags: doc.hashtags ?? [],
+        hashtagTiers: toHashtagTiers(doc.hashtagTiers),
         coverImageUrl: doc.coverImageUrl ?? null,
         status: doc.status,
         createdAt: doc.createdAt,

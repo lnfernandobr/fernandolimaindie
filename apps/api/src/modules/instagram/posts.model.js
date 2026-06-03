@@ -15,6 +15,15 @@ const slideSchema = new Schema(
   { _id: false },
 );
 
+const hashtagTiersSchema = new Schema(
+  {
+    high: { type: [String], default: [] },
+    medium: { type: [String], default: [] },
+    low: { type: [String], default: [] },
+  },
+  { _id: false },
+);
+
 const instagramPostSchema = new Schema(
   {
     channelId: { type: Schema.Types.ObjectId, ref: 'InstagramChannel', required: true, index: true },
@@ -22,9 +31,12 @@ const instagramPostSchema = new Schema(
     topic: { type: String, required: true, trim: true, maxlength: INSTAGRAM_LIMITS.TOPIC_MAX },
     title: { type: String, default: '', trim: true, maxlength: INSTAGRAM_LIMITS.TOPIC_MAX },
     brief: { type: String, default: '', trim: true, maxlength: INSTAGRAM_LIMITS.BRIEF_MAX },
+    designConcept: { type: String, default: '' },
+    visualStyle: { type: String, default: '' },
     slides: { type: [slideSchema], default: [] },
     caption: { type: String, default: '' },
     hashtags: { type: [String], default: [] },
+    hashtagTiers: { type: hashtagTiersSchema, default: () => ({}) },
     coverImageUrl: { type: String, default: null },
     status: { type: String, default: 'ready' },
   },

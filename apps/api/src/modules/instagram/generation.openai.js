@@ -16,9 +16,15 @@ const fetchUrlAsBuffer = async (url) => {
   return Buffer.from(await res.arrayBuffer());
 };
 
-export const generateSlideImage = async ({ channel, slide, slideNumber, totalSlides }) => {
+export const generateSlideImage = async ({ channelHandle, visualStyle, slide, slideNumber, totalSlides }) => {
   const client = buildClient();
-  const prompt = prompts.slideImage({ channel, slide, slideNumber, totalSlides });
+  const prompt = prompts.slideImage({
+    channelHandle,
+    visualStyle,
+    slide,
+    slideNumber,
+    totalSlides,
+  });
   const response = await client.images.generate({
     model: env.OPENAI_IMAGE_MODEL,
     prompt,

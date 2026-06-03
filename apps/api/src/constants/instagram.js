@@ -4,8 +4,6 @@ export const INSTAGRAM_LIMITS = Object.freeze({
   BRIEF_MAX: 1000,
   TOPIC_MAX: 240,
   CAPTION_STYLE_MAX: 500,
-  IMAGE_PROMPT_MAX: 1000,
-  HASHTAGS_POOL_MAX: 50,
   HASHTAG_MAX: 60,
   SLIDES_MIN: 3,
   SLIDES_MAX: 10,
@@ -22,10 +20,8 @@ export const INSTAGRAM_DEFAULTS = Object.freeze({
   S3_PREFIX: 'instagram',
   TONE: 'inspirador, direto, sem clichê',
   CAPTION_STYLE: 'Português do Brasil, voz pessoal, CTA suave no fim.',
-  IMAGE_PROMPT: 'Ilustração editorial limpa, paleta sóbria, sem texto na imagem.',
-  BRAND_BG: '#0F172A',
-  BRAND_FG: '#F8FAFC',
-  BRAND_ACCENT: '#FACC15',
+  FALLBACK_VISUAL_STYLE:
+    'editorial illustration, clean modern composition, sophisticated lighting, premium aesthetic',
 });
 
 export const INSTAGRAM_QUEUE_STATUS = Object.freeze({
