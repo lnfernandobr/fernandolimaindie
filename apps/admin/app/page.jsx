@@ -426,46 +426,70 @@ export default function AdminPage() {
   return <Dashboard session={session} onLogout={handleLogout} />;
 }
 
-function ContentDashboard({ session }) {
-  const stats = useApi('/api/admin/stats', session);
-  const queue = useApi('/api/admin/queue', session);
-  const posts = useApi('/api/admin/posts', session);
+const CONTENT_KINDS = [
+  ['psalm', 'Salmos'],
+  ['prayer', 'Orações'],
+  ['devotional', 'Devocionais'],
+  ['reflection', 'Reflexões'],
+  ['article', 'Blog'],
+  ['verse_collection', 'Bíblia'],
+];
 
-  const s = stats.data;
-  const q = queue.data;
-  const p = posts.data;
+function ContentDashboard({ session }) {
+  const base = session?.coreApiUrl;
+  const [status, setStatus] = useState(null);
+  const [counts, setCounts] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    let cancel = false;
+    (async () => {
+      if (!base) { setLoading(false); return; }
+      setLoading(true);
+      setError('');
+      try {
+        const results = await Promise.all([
+          fetch(`${base}/api/v1/generation/status`).then((r) => (r.ok ? r.json() : null)),
+          ...CONTENT_KINDS.map(([k]) =>
+            fetch(`${base}/api/v1/signals?kind=${k}&limit=1`).then((r) => (r.ok ? r.json() : { total: 0 })),
+          ),
+        ]);
+        if (cancel) return;
+        setStatus(results[0]);
+        setCounts(CONTENT_KINDS.map(([k, label], i) => ({ k, label, total: results[i + 1]?.total ?? 0 })));
+      } catch {
+        if (!cancel) setError('Erro ao conectar na API.');
+      }
+      if (!cancel) setLoading(false);
+    })();
+    return () => { cancel = true; };
+  }, [base]);
+
+  const totalSignals = counts ? counts.reduce((a, c) => a + c.total, 0) : null;
+  const lastRun = status?.recentRuns?.[0];
 
   return (
     <>
-      {s && (
-        <>
-          <div className="stats">
-            <StatCard label="Total de páginas" value={s.content?.totalPages} />
-            <StatCard label="Signals" value={s.content?.signals} />
-            <StatCard label="Versículos" value={s.content?.verseTopics} />
-            <StatCard label="Blog posts" value={s.content?.blogPosts} />
-            <StatCard label="Fila: pendente" value={s.queue?.pending} color="yellow" />
-            <StatCard label="Fila: gerado" value={s.queue?.done} color="green" />
-            <StatCard label="Fila: erro" value={s.queue?.error} color="red" />
-          </div>
-          <div className="services">
-            <ServiceBadge name="ElevenLabs TTS" on={s.services?.tts} />
-            <ServiceBadge name="OpenAI" on={s.services?.openai} />
-            <ServiceBadge name="Pexels" on={s.services?.pexels} />
-          </div>
-        </>
+      {loading && <p style={{ color: 'var(--muted)' }}>Carregando...</p>}
+      {error && !loading && <p style={{ color: 'var(--red)' }}>{error}</p>}
+
+      {counts && (
+        <div className="stats">
+          <StatCard label="Conteúdos publicados" value={totalSignals} color="green" />
+          {counts.map((c) => <StatCard key={c.k} label={c.label} value={c.total} />)}
+          <StatCard label="Pendentes (cron)" value={status?.pendingSeeds} color="yellow" />
+        </div>
       )}
 
-      {stats.loading && <p style={{ color: 'var(--muted)' }}>Carregando...</p>}
-      {!stats.loading && !s && (
-        <p style={{ color: 'var(--red)' }}>Erro ao conectar na API. Verifique se o umsinaldefe está rodando.</p>
+      {lastRun && (
+        <p style={{ color: 'var(--muted)', fontSize: '0.82rem', margin: '10px 0 4px' }}>
+          Última geração: {new Date(lastRun.ranAt).toLocaleString('pt-BR')} — {lastRun.created} criados
+          {lastRun.failed ? `, ${lastRun.failed} falhas` : ''}.
+        </p>
       )}
 
       <CronConfigPanel session={session} />
-
-      {q?.items && <QueueTable items={q.items} session={session} onRefresh={queue.refresh} />}
-
-      {p && <PostsTable posts={p.posts} />}
     </>
   );
 }
