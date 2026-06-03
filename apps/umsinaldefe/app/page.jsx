@@ -7,6 +7,7 @@ import { PrayersList } from '../components/PrayersList.jsx';
 import { SubscribeForm } from '../components/SubscribeForm.jsx';
 import { isTtsConfigured } from '../lib/media/elevenlabs.js';
 import { listSignals } from '../lib/content/api.js';
+import { getVerseOfDay } from '../lib/content/verse-of-day.js';
 
 export const metadata = buildMetadata({
   title: 'Um Sinal de Fé: devocional diário, salmos e orações em português',
@@ -42,9 +43,15 @@ const pageGraph = ldGraph(faqLd(FAQ), speakableLd(['#devocional', '#intencoes'])
 export default async function HomePage() {
   const audioEnabled = isTtsConfigured();
 
-  // Conteúdo em destaque vem da API. Só renderiza o que existe (nada de link morto).
+  // Tudo vem da API. Só renderiza o que existe (nada de conteúdo estático ou link morto).
+  let verse = null;
   let psalms = [];
   let prayers = [];
+  try {
+    verse = await getVerseOfDay();
+  } catch {
+    // sem versículo ainda: hero mostra a casca de boas-vindas
+  }
   try {
     psalms = (await listSignals({ kind: 'psalm', limit: 7 })).items;
   } catch {
@@ -59,7 +66,7 @@ export default async function HomePage() {
   return (
     <>
       <script {...jsonLdScript(pageGraph)} />
-      <Hero />
+      <Hero verse={verse} />
       <Intentions />
       {psalms.length > 0 && <FeaturedPsalms psalms={psalms} />}
       {prayers.length > 0 && <PrayersList prayers={prayers} audioEnabled={audioEnabled} />}

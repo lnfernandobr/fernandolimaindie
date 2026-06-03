@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { getVerseOfDay } from '@/lib/content/verse-of-day.js';
 
 function getTodayLabel() {
   return new Date().toLocaleDateString('pt-BR', {
@@ -9,10 +8,13 @@ function getTodayLabel() {
   });
 }
 
-export function Hero() {
-  const v = getVerseOfDay();
+/**
+ * Hero da home. Recebe o versículo do dia (da API) via prop. Sem conteúdo
+ * estático: se não houver versículo ainda, mostra uma casca limpa de boas-vindas.
+ */
+export function Hero({ verse = null }) {
   const dateStr = getTodayLabel();
-  const shortVerse = v.text.length > 64 ? `${v.text.slice(0, 64)}…` : v.text;
+  const shortVerse = verse && verse.text.length > 64 ? `${verse.text.slice(0, 64)}…` : verse?.text;
 
   return (
     <section className="hero">
@@ -23,19 +25,24 @@ export function Hero() {
             <span className="hero-date">· {dateStr}</span>
           </p>
 
-          <h1 className="scripture hero-scripture">
-            &ldquo;{v.text}&rdquo;
-          </h1>
-
-          <p className="hero-ref">
-            {v.ref}
-          </p>
-
-          <p className="hero-reflection t-soft">{v.thought}</p>
+          {verse ? (
+            <>
+              <h1 className="scripture hero-scripture">&ldquo;{verse.text}&rdquo;</h1>
+              <p className="hero-ref">{verse.ref}</p>
+              {verse.thought && <p className="hero-reflection t-soft">{verse.thought}</p>}
+            </>
+          ) : (
+            <>
+              <h1 className="scripture hero-scripture">Um sinal de fé, todo dia.</h1>
+              <p className="hero-reflection t-soft">
+                Salmos, orações e versículos chegando, uma palavra por dia. Volte amanhã pra uma nova.
+              </p>
+            </>
+          )}
 
           <div className="hero-cta">
-            <Link className="btn btn-primary" href="/versiculo-do-dia">
-              Ver o versículo de hoje
+            <Link className="btn btn-primary" href={verse ? '/versiculo-do-dia' : '/biblia'}>
+              {verse ? 'Ver o versículo de hoje' : 'Explorar a Bíblia por tema'}
             </Link>
             <a className="btn btn-ghost" href="#intencoes">
               Onde está seu coração?
@@ -58,8 +65,14 @@ export function Hero() {
             <figcaption className="dcard-in">
               <span className="dcard-kicker">Versículo do dia</span>
               <span className="dcard-star">✦</span>
-              <p className="dcard-theme">{v.ref}</p>
-              <p className="dcard-verse">&ldquo;{shortVerse}&rdquo;</p>
+              {verse ? (
+                <>
+                  <p className="dcard-theme">{verse.ref}</p>
+                  <p className="dcard-verse">&ldquo;{shortVerse}&rdquo;</p>
+                </>
+              ) : (
+                <p className="dcard-verse">um sinal de fé todo dia</p>
+              )}
             </figcaption>
           </figure>
         </div>
