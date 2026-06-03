@@ -1,41 +1,33 @@
 import Link from 'next/link';
 import { Glyph } from './Glyph.jsx';
 
+// Só hubs e páginas de sentimento (sempre renderizam). Nada de deep-link pra
+// conteúdo específico, que pode ainda não ter sido gerado pelo cron (evita 404).
 const COLS = [
   {
-    h: 'Bíblia',
+    h: 'Conteúdo',
     items: [
-      { label: 'Versículo do dia',            href: '/versiculo-do-dia' },
-      { label: 'Versículos sobre o amor',     href: '/biblia/amor'      },
-      { label: 'Versículos sobre a família',  href: '/biblia/familia'   },
-      { label: 'Versículos por tema',         href: '/biblia'           },
+      { label: 'Versículo do dia', href: '/versiculo-do-dia' },
+      { label: 'Devocional',       href: '/devocional'       },
+      { label: 'Salmos',           href: '/salmo'            },
+      { label: 'Orações',          href: '/oracao'           },
     ],
   },
   {
-    h: 'Salmos',
+    h: 'Explorar',
     items: [
-      { label: 'Salmo 91 · proteção', href: '/salmo/91'  },
-      { label: 'Salmo 23 · o pastor', href: '/salmo/23'  },
-      { label: 'Salmo 121 · caminho', href: '/salmo/121' },
-      { label: 'Todos os salmos',     href: '/salmo'     },
+      { label: 'Versículos por tema', href: '/biblia' },
+      { label: 'Blog',                href: '/blog'   },
     ],
   },
   {
-    h: 'Orações',
+    h: 'Por sentimento',
     items: [
-      { label: 'Pelos filhos',           href: '/oracao/pelos-filhos'       },
-      { label: 'Para dormir em paz',     href: '/oracao/para-dormir-em-paz' },
-      { label: 'São Miguel Arcanjo',     href: '/oracao/sao-miguel-arcanjo' },
-      { label: 'Todas as orações',       href: '/oracao'                    },
-    ],
-  },
-  {
-    h: 'Blog',
-    items: [
-      { label: 'Vencer a ansiedade com fé', href: '/blog/como-vencer-a-ansiedade-com-fe' },
-      { label: 'Como ler a Bíblia',         href: '/blog/como-ler-a-biblia-do-zero'      },
-      { label: 'Fortalecer o casamento',    href: '/blog/como-fortalecer-o-casamento-com-fe' },
-      { label: 'Todos os artigos',          href: '/blog'                                },
+      { label: 'Ansiedade', href: '/ansiedade' },
+      { label: 'Medo',      href: '/medo'      },
+      { label: 'Proteção',  href: '/protecao'  },
+      { label: 'Gratidão',  href: '/gratidao'  },
+      { label: 'Família',   href: '/familia'   },
     ],
   },
 ];

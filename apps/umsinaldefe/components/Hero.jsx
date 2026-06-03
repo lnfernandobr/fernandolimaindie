@@ -1,7 +1,5 @@
 import Link from 'next/link';
-import { Glyph } from './Glyph.jsx';
-import { AudioPlayer } from './AudioPlayer.jsx';
-import { TODAY } from '@/lib/design-data.js';
+import { getVerseOfDay } from '@/lib/content/verse-of-day.js';
 
 function getTodayLabel() {
   return new Date().toLocaleDateString('pt-BR', {
@@ -11,50 +9,38 @@ function getTodayLabel() {
   });
 }
 
-export function Hero({ audioEnabled = false }) {
-  const d = TODAY;
+export function Hero() {
+  const v = getVerseOfDay();
   const dateStr = getTodayLabel();
-  const psalmNum = d.ref.replace(/Salmo\s*/i, '').replace(/,.*/, '');
+  const shortVerse = v.text.length > 64 ? `${v.text.slice(0, 64)}…` : v.text;
 
   return (
     <section className="hero">
       <div className="wrap hero-in">
         <div className="hero-text reveal">
           <p className="eyebrow hero-eyebrow">
-            <span className="star">✦</span> Devocional de hoje
+            <span className="star">✦</span> Versículo de hoje
             <span className="hero-date">· {dateStr}</span>
           </p>
 
           <h1 className="scripture hero-scripture">
-            &ldquo;{d.scripture}&rdquo;
+            &ldquo;{v.text}&rdquo;
           </h1>
 
           <p className="hero-ref">
-            {d.ref} · <span className="t-gold">{d.theme}</span>
+            {v.ref}
           </p>
 
-          <p className="hero-reflection t-soft">{d.reflection}</p>
+          <p className="hero-reflection t-soft">{v.thought}</p>
 
           <div className="hero-cta">
-            <Link className="btn btn-primary" href="/salmo/91">
-              Ler o devocional <span className="cta-mins">{d.readMins} min</span>
+            <Link className="btn btn-primary" href="/versiculo-do-dia">
+              Ver o versículo de hoje
             </Link>
             <a className="btn btn-ghost" href="#intencoes">
               Onde está seu coração?
             </a>
           </div>
-
-          {audioEnabled && (
-            <div className="hero-audio">
-              <AudioPlayer
-                title={d.audio.title}
-                subtitle={d.audio.subtitle}
-                duration={d.audio.duration}
-                src="/api/tts/salmo-91"
-                variant="feature"
-              />
-            </div>
-          )}
         </div>
 
         <div className="hero-art reveal">
@@ -70,11 +56,10 @@ export function Hero({ audioEnabled = false }) {
               <i style={{ top: '82%', left: '82%' }} />
             </div>
             <figcaption className="dcard-in">
-              <span className="dcard-kicker">Salmo do dia</span>
-              <span className="dcard-num">{psalmNum}</span>
+              <span className="dcard-kicker">Versículo do dia</span>
               <span className="dcard-star">✦</span>
-              <p className="dcard-theme">{d.theme}</p>
-              <p className="dcard-verse">&ldquo;à sombra do Todo-Poderoso&rdquo;</p>
+              <p className="dcard-theme">{v.ref}</p>
+              <p className="dcard-verse">&ldquo;{shortVerse}&rdquo;</p>
             </figcaption>
           </figure>
         </div>

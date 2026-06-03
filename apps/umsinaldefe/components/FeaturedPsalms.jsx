@@ -1,27 +1,24 @@
 import Link from 'next/link';
 import { Glyph } from './Glyph.jsx';
-import { PSALMS } from '@/lib/design-data.js';
+import { signalUrl } from '@/lib/content/signal-url.js';
+import { INTENT_LABELS } from '@/lib/content/intents.js';
 
-const fmt = (s) => {
-  s = Math.max(0, Math.round(s));
-  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
-};
+const psalmNumber = (slug) => slug.replace(/^salmo-/, '');
 
-function PsalmCard({ p, featured }) {
+function PsalmCard({ s, featured }) {
   return (
-    <Link href={`/salmo/${p.num}`} className={`psalm-card reveal ${featured ? 'is-featured' : ''}`} style={{ textDecoration: 'none' }}>
+    <Link
+      href={signalUrl(s)}
+      className={`psalm-card reveal ${featured ? 'is-featured' : ''}`}
+      style={{ textDecoration: 'none' }}
+    >
       <div className="psalm-top">
-        <span className="psalm-num">{p.num}</span>
-        <span className="psalm-tag">{p.tag}</span>
+        <span className="psalm-num">{psalmNumber(s.slug)}</span>
+        <span className="psalm-tag">{INTENT_LABELS[s.intent] ?? 'Salmo'}</span>
       </div>
-      <h3 className="psalm-title display">Salmo {p.num}</h3>
-      <p className="psalm-sub">{p.title}</p>
-      <p className="psalm-line scripture">&ldquo;{p.line}&rdquo;</p>
-      {featured && <p className="psalm-blurb t-soft">{p.blurb}</p>}
+      <h3 className="psalm-title display">{s.title}</h3>
+      <p className="psalm-line scripture">&ldquo;{s.answer}&rdquo;</p>
       <div className="psalm-foot">
-        <span className="psalm-audio">
-          <Glyph name="headphones" size={15} /> {fmt(p.audio)}
-        </span>
         <span className="psalm-go">
           Ler <span className="psalm-go-arrow"><Glyph name="arrow" size={15} /></span>
         </span>
@@ -30,8 +27,14 @@ function PsalmCard({ p, featured }) {
   );
 }
 
-export function FeaturedPsalms() {
-  const psalms = PSALMS;
+/**
+ * Salmos em destaque na home. Recebe signals (kind=psalm) da API — só linka o
+ * que existe. Se não houver nenhum, a home esconde a seção (ver app/page.jsx).
+ */
+export function FeaturedPsalms({ psalms = [] }) {
+  if (!psalms.length) return null;
+  const [first, ...rest] = psalms;
+
   return (
     <section className="section psalms paper-2" id="salmos">
       <div className="wrap">
@@ -46,10 +49,10 @@ export function FeaturedPsalms() {
         </div>
 
         <div className="psalm-grid">
-          <PsalmCard p={psalms[0]} featured />
+          <PsalmCard s={first} featured />
           <div className="psalm-rest">
-            {psalms.slice(1).map((p) => (
-              <PsalmCard key={p.num} p={p} />
+            {rest.map((s) => (
+              <PsalmCard key={s.slug} s={s} />
             ))}
           </div>
         </div>

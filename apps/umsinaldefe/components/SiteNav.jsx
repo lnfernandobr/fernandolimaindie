@@ -63,8 +63,8 @@ export function SiteNav() {
           >
             <Glyph name={theme === 'night' ? 'sunUi' : 'moonUi'} size={19} />
           </button>
-          <Link className="btn btn-primary nav-cta" href="/salmo/91">
-            Devocional de hoje
+          <Link className="btn btn-primary nav-cta" href="/versiculo-do-dia">
+            Versículo de hoje
           </Link>
           <button
             className="icon-btn nav-burger"
@@ -82,8 +82,8 @@ export function SiteNav() {
           {links.map((l) => (
             <Link key={l.href} href={l.href} onClick={() => setOpen(false)}>{l.label}</Link>
           ))}
-          <Link className="btn btn-gold" href="/salmo/91" onClick={() => setOpen(false)}>
-            Devocional de hoje
+          <Link className="btn btn-gold" href="/versiculo-do-dia" onClick={() => setOpen(false)}>
+            Versículo de hoje
           </Link>
         </div>
       )}

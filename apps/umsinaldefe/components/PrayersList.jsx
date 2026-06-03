@@ -2,10 +2,17 @@
 import { useRouter } from 'next/navigation';
 import { Glyph } from './Glyph.jsx';
 import { AudioPlayer } from './AudioPlayer.jsx';
-import { PRAYERS } from '@/lib/design-data.js';
+import { signalUrl } from '@/lib/content/signal-url.js';
+import { INTENT_LABELS } from '@/lib/content/intents.js';
 
-export function PrayersList({ audioEnabled = false }) {
+/**
+ * Orações em destaque na home. Recebe signals (kind=prayer) da API — só linka o
+ * que existe. Se não houver nenhum, a home esconde a seção (ver app/page.jsx).
+ */
+export function PrayersList({ prayers = [], audioEnabled = false }) {
   const router = useRouter();
+  if (!prayers.length) return null;
+
   return (
     <section className="section prayers pine" id="oracoes">
       <div className="wrap">
@@ -21,24 +28,23 @@ export function PrayersList({ audioEnabled = false }) {
         </div>
 
         <div className="prayer-list">
-          {PRAYERS.map((pr) => (
+          {prayers.map((pr) => (
             <article
               key={pr.slug}
               className="prayer-row reveal"
-              onClick={() => router.push(`/oracao/${pr.slug}`)}
+              onClick={() => router.push(signalUrl(pr))}
               style={{ cursor: 'pointer' }}
             >
               <div className="prayer-main">
-                <span className="prayer-tag">{pr.tag}</span>
+                <span className="prayer-tag">{INTENT_LABELS[pr.intent] ?? 'Oração'}</span>
                 <h3 className="prayer-title">{pr.title}</h3>
-                <p className="prayer-line scripture">&ldquo;{pr.line}&rdquo;</p>
+                <p className="prayer-line scripture">&ldquo;{pr.answer}&rdquo;</p>
               </div>
               {audioEnabled && (
                 <div className="prayer-player" onClick={(e) => e.stopPropagation()}>
                   <AudioPlayer
-                    title={pr.title.replace('Oração ', '')}
-                    duration={pr.audio}
-                    src={`/api/tts/oracao-${pr.slug}`}
+                    title={pr.title}
+                    src={`/api/tts/${pr.slug}`}
                     variant="row"
                   />
                 </div>
