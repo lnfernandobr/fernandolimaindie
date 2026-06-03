@@ -1,222 +1,254 @@
 [
   {
-    "slug": "salmo-1",
-    "intent": "faith",
-    "topicSlug": "fe",
-    "entitySlugs": ["salmos"],
+    "slug": "salmo-91",
+    "intent": "protection",
+    "topicSlug": "salmos-de-protecao",
+    "priority": 1,
     "subject": {
-      "psalmNumber": 1,
-      "theme": "o caminho do justo",
-      "hookWord": "salmo 1"
-    }
-  },
-  {
-    "slug": "salmo-23",
-    "intent": "faith",
-    "topicSlug": "fe",
-    "entitySlugs": ["salmos"],
-    "subject": {
-      "psalmNumber": 23,
-      "theme": "o Senhor e meu pastor",
-      "hookWord": "salmo 23"
-    }
-  },
-  {
-    "slug": "salmo-27",
-    "intent": "fear",
-    "topicSlug": "fe",
-    "entitySlugs": ["salmos"],
-    "subject": {
-      "psalmNumber": 27,
-      "theme": "luz e salvacao contra o medo",
-      "hookWord": "salmo 27"
-    }
-  },
-  {
-    "slug": "salmo-46",
-    "intent": "fear",
-    "topicSlug": "fe",
-    "entitySlugs": ["salmos"],
-    "subject": {
-      "psalmNumber": 46,
-      "theme": "refugio e fortaleza diante do caos",
-      "hookWord": "salmo 46"
-    }
-  },
-  {
-    "slug": "salmo-51",
-    "intent": "forgiveness",
-    "topicSlug": "fe",
-    "entitySlugs": ["salmos"],
-    "subject": {
-      "psalmNumber": 51,
-      "theme": "pedido de perdao e coracao novo",
-      "hookWord": "salmo 51"
-    }
-  },
-  {
-    "slug": "salmo-103",
-    "intent": "gratitude",
-    "topicSlug": "gratidao",
-    "entitySlugs": ["salmos"],
-    "subject": {
-      "psalmNumber": 103,
-      "theme": "bendize a Deus por todos os beneficios",
-      "hookWord": "salmo 103"
+      "title": "Salmo 91: o salmo da proteção (texto e como rezar)",
+      "keyword": "Salmo 91",
+      "brief": "O Salmo 91 é a oração de quem se abriga em Deus como num esconderijo. Ele abre com a frase \"Aquele que habita no abrigo do Altíssimo descansa à sombra do Todo-Poderoso\". Dá pra rezar de manhã, à noite ou em qualquer momento de medo.",
+      "psalmNumber": 91
     }
   },
   {
     "slug": "salmo-121",
     "intent": "protection",
-    "topicSlug": "protecao",
-    "entitySlugs": ["salmos"],
+    "topicSlug": "salmos-de-protecao",
+    "priority": 1,
     "subject": {
-      "psalmNumber": 121,
-      "theme": "o meu auxilio vem do Senhor",
-      "hookWord": "salmo 121"
-    }
-  },
-  {
-    "slug": "salmo-130",
-    "intent": "hope",
-    "topicSlug": "fe",
-    "entitySlugs": ["salmos"],
-    "subject": {
-      "psalmNumber": 130,
-      "theme": "das profundezas clamo a ti",
-      "hookWord": "salmo 130"
+      "title": "Salmo 121: o socorro vem do Senhor (salmo da viagem)",
+      "keyword": "Salmo 121",
+      "brief": "O Salmo 121 é a oração de quem levanta os olhos e pergunta de onde vem a ajuda. A resposta é direta: \"O meu socorro vem do Senhor, que fez o céu e a terra\". É o salmo de quem viaja e de quem fica esperando em casa.",
+      "psalmNumber": 121
     }
   },
   {
     "slug": "salmo-139",
     "intent": "faith",
-    "topicSlug": "fe",
-    "entitySlugs": ["salmos"],
+    "topicSlug": "salmos-de-confianca",
+    "priority": 1,
     "subject": {
-      "psalmNumber": 139,
-      "theme": "Senhor, tu me sondas e me conheces",
-      "hookWord": "salmo 139"
+      "title": "Salmo 139: Senhor, tu me sondas e me conheces",
+      "keyword": "Salmo 139",
+      "brief": "O Salmo 139 é a oração de quem se sente conhecido por inteiro. Ele diz \"Senhor, tu me sondas e me conheces\" e lembra que não existe lugar, nem o mais escondido, onde Deus não esteja perto.",
+      "psalmNumber": 139
+    }
+  },
+  {
+    "slug": "salmo-1",
+    "intent": "faith",
+    "topicSlug": "salmos-de-confianca",
+    "priority": 1,
+    "subject": {
+      "title": "Salmo 1: o caminho do justo e o da maldade",
+      "keyword": "salmo 1",
+      "brief": "Explicação do Salmo 1, a árvore plantada junto às águas.",
+      "psalmNumber": 1
     }
   },
   {
     "slug": "salmo-37",
-    "intent": "anxiety",
-    "topicSlug": "ansiedade",
-    "entitySlugs": ["salmos"],
+    "intent": "faith",
+    "topicSlug": "salmos-de-confianca",
+    "priority": 2,
     "subject": {
-      "psalmNumber": 37,
-      "theme": "nao te irrites, confia no Senhor e aquieta o coracao",
-      "hookWord": "salmo 37"
+      "title": "Salmo 37 explicado: não te irrites por causa dos que fazem o mal",
+      "keyword": "salmo 37",
+      "brief": "Explicação do Salmo 37 (versículos 4, 5, 7), paciência e confiança diante da injustiça, como rezar.",
+      "psalmNumber": 37
+    }
+  },
+  {
+    "slug": "salmo-34",
+    "intent": "faith",
+    "topicSlug": "salmos-de-confianca",
+    "priority": 2,
+    "subject": {
+      "title": "Salmo 34 explicado: o Senhor está perto dos quebrantados",
+      "keyword": "salmo 34",
+      "brief": "Explicação do Salmo 34, louvor e proximidade de Deus com quem sofre (v. 8, 18, 19).",
+      "psalmNumber": 34
+    }
+  },
+  {
+    "slug": "salmo-142",
+    "intent": "faith",
+    "topicSlug": "salmos-de-confianca",
+    "priority": 2,
+    "subject": {
+      "title": "Salmo 142: oração no meio da angústia",
+      "keyword": "salmo 142",
+      "brief": "Explicação do Salmo 142, derramar o lamento diante de Deus.",
+      "psalmNumber": 142
+    }
+  },
+  {
+    "slug": "salmo-23",
+    "intent": "faith",
+    "topicSlug": "salmos-de-confianca",
+    "priority": 3,
+    "subject": {
+      "title": "Salmo 23: o Senhor é meu pastor (significado e oração)",
+      "keyword": "Salmo 23",
+      "brief": "O Salmo 23 é a oração da confiança em meio à falta. Começa com \"O Senhor é o meu pastor, nada me faltará\" e segue por verdes pastos, águas tranquilas e um vale escuro que não dá medo, porque alguém caminha junto.",
+      "psalmNumber": 23
+    }
+  },
+  {
+    "slug": "salmo-27",
+    "intent": "fear",
+    "topicSlug": "salmos-de-confianca",
+    "priority": 3,
+    "subject": {
+      "title": "Salmo 27: o Senhor é minha luz, a quem temerei?",
+      "keyword": "Salmo 27",
+      "brief": "O Salmo 27 é a oração de quem sente medo e escolhe coragem assim mesmo. Ele começa com \"O Senhor é a minha luz e a minha salvação, a quem temerei?\" e termina pedindo um coração firme pra esperar.",
+      "psalmNumber": 27
+    }
+  },
+  {
+    "slug": "salmo-51",
+    "intent": "forgiveness",
+    "topicSlug": "perdao",
+    "priority": 3,
+    "subject": {
+      "title": "Salmo 51: cria em mim um coração puro (salmo do recomeço)",
+      "keyword": "Salmo 51",
+      "brief": "O Salmo 51 é a oração de quem reconhece o próprio erro e pede um novo começo. O pedido mais conhecido é \"Cria em mim, ó Deus, um coração puro e renova em mim um espírito firme\".",
+      "psalmNumber": 51
+    }
+  },
+  {
+    "slug": "salmo-46",
+    "intent": "faith",
+    "topicSlug": "salmos-de-confianca",
+    "priority": 3,
+    "subject": {
+      "title": "Salmo 46: Deus é o nosso refúgio e fortaleza",
+      "keyword": "salmo 46",
+      "brief": "Explicação do Salmo 46, refúgio na angústia, 'aquietai-vos e sabei que eu sou Deus' (v.10).",
+      "psalmNumber": 46
+    }
+  },
+  {
+    "slug": "salmo-103",
+    "intent": "faith",
+    "topicSlug": "salmos-de-confianca",
+    "priority": 3,
+    "subject": {
+      "title": "Salmo 103: bendize, ó minha alma, ao Senhor",
+      "keyword": "salmo 103",
+      "brief": "Explicação do Salmo 103, gratidão e os benefícios de Deus (v. 1-5, 12).",
+      "psalmNumber": 103
+    }
+  },
+  {
+    "slug": "salmo-100",
+    "intent": "faith",
+    "topicSlug": "salmos-de-confianca",
+    "priority": 3,
+    "subject": {
+      "title": "Salmo 100: salmo de louvor e gratidão a Deus",
+      "keyword": "salmo 100",
+      "brief": "Explicação do Salmo 100, entrar com ações de graças, servir com alegria.",
+      "psalmNumber": 100
     }
   },
   {
     "slug": "salmo-4",
-    "intent": "sleep",
-    "topicSlug": "sono",
-    "entitySlugs": ["salmos"],
+    "intent": "faith",
+    "topicSlug": "salmos-de-confianca",
+    "priority": 3,
     "subject": {
-      "psalmNumber": 4,
-      "theme": "em paz me deito e logo durmo",
-      "hookWord": "salmo 4"
-    }
-  },
-  {
-    "slug": "salmo-66",
-    "intent": "gratitude",
-    "topicSlug": "gratidao",
-    "entitySlugs": ["salmos"],
-    "subject": {
-      "psalmNumber": 66,
-      "theme": "aclamai a Deus com alegria por suas obras",
-      "hookWord": "salmo 66"
-    }
-  },
-  {
-    "slug": "salmo-126",
-    "intent": "hope",
-    "topicSlug": "fe",
-    "entitySlugs": ["salmos"],
-    "subject": {
-      "psalmNumber": 126,
-      "theme": "os que semeiam em lagrimas colhem com alegria",
-      "hookWord": "salmo 126"
-    }
-  },
-  {
-    "slug": "salmo-5",
-    "intent": "morning",
-    "topicSlug": "fe",
-    "entitySlugs": ["salmos"],
-    "subject": {
-      "psalmNumber": 5,
-      "theme": "de manha ouviras a minha voz",
-      "hookWord": "salmo 5"
-    }
-  },
-  {
-    "slug": "salmo-128",
-    "intent": "family",
-    "topicSlug": "familia",
-    "entitySlugs": ["salmos"],
-    "subject": {
-      "psalmNumber": 128,
-      "theme": "bencao sobre a casa de quem teme ao Senhor",
-      "hookWord": "salmo 128"
+      "title": "Salmo 4: em paz me deito e logo pego no sono",
+      "keyword": "salmo 4",
+      "brief": "Explicação do Salmo 4, oração da noite e confiança pra dormir em paz.",
+      "psalmNumber": 4
     }
   },
   {
     "slug": "salmo-127",
-    "intent": "family",
-    "topicSlug": "familia",
-    "entitySlugs": ["salmos"],
-    "subject": {
-      "psalmNumber": 127,
-      "theme": "se o Senhor nao edificar a casa, em vao trabalham os pedreiros",
-      "hookWord": "salmo 127"
-    }
-  },
-  {
-    "slug": "salmo-41",
-    "intent": "healing",
-    "topicSlug": "cura",
-    "entitySlugs": ["salmos"],
-    "subject": {
-      "psalmNumber": 41,
-      "theme": "o Senhor o sustenta no leito da enfermidade",
-      "hookWord": "salmo 41"
-    }
-  },
-  {
-    "slug": "salmo-70",
-    "intent": "hope",
-    "topicSlug": "fe",
-    "entitySlugs": ["salmos"],
-    "subject": {
-      "psalmNumber": 70,
-      "theme": "apressa-te, o Deus, em me livrar",
-      "hookWord": "salmo 70"
-    }
-  },
-  {
-    "slug": "salmo-90",
     "intent": "faith",
-    "topicSlug": "fe",
-    "entitySlugs": ["salmos"],
+    "topicSlug": "salmos-de-confianca",
+    "priority": 3,
     "subject": {
-      "psalmNumber": 90,
-      "theme": "ensina-nos a contar os nossos dias",
-      "hookWord": "salmo 90"
+      "title": "Salmo 127: se o Senhor não edificar a casa",
+      "keyword": "salmo 127",
+      "brief": "Explicação do Salmo 127, a casa e a família nas mãos de Deus.",
+      "psalmNumber": 127
     }
   },
   {
-    "slug": "salmo-35",
-    "intent": "protection",
-    "topicSlug": "protecao",
-    "entitySlugs": ["salmos"],
+    "slug": "salmo-133",
+    "intent": "faith",
+    "topicSlug": "salmos-de-confianca",
+    "priority": 3,
     "subject": {
-      "psalmNumber": 35,
-      "theme": "o Senhor combate os que me combatem",
-      "hookWord": "salmo 35"
+      "title": "Salmo 133: como é bom viverem unidos os irmãos",
+      "keyword": "salmo 133",
+      "brief": "Explicação do Salmo 133, a bênção da união e da harmonia.",
+      "psalmNumber": 133
+    }
+  },
+  {
+    "slug": "salmo-130",
+    "intent": "faith",
+    "topicSlug": "salmos-de-confianca",
+    "priority": 3,
+    "subject": {
+      "title": "Salmo 130: das profundezas clamo a ti, Senhor",
+      "keyword": "salmo 130",
+      "brief": "Explicação do Salmo 130, clamor desde o fundo, espera e perdão.",
+      "psalmNumber": 130
+    }
+  },
+  {
+    "slug": "salmo-40",
+    "intent": "faith",
+    "topicSlug": "salmos-de-confianca",
+    "priority": 3,
+    "subject": {
+      "title": "Salmo 40: esperei com paciência no Senhor",
+      "keyword": "salmo 40",
+      "brief": "Explicação do Salmo 40, ser tirado do lodo, cântico novo.",
+      "psalmNumber": 40
+    }
+  },
+  {
+    "slug": "salmo-19",
+    "intent": "faith",
+    "topicSlug": "salmos-de-confianca",
+    "priority": 3,
+    "subject": {
+      "title": "Salmo 19: os céus proclamam a glória de Deus",
+      "keyword": "salmo 19",
+      "brief": "Explicação do Salmo 19, a criação que fala de Deus e a Palavra.",
+      "psalmNumber": 19
+    }
+  },
+  {
+    "slug": "salmo-150",
+    "intent": "faith",
+    "topicSlug": "salmos-de-confianca",
+    "priority": 3,
+    "subject": {
+      "title": "Salmo 150: tudo o que respira louve ao Senhor",
+      "keyword": "salmo 150",
+      "brief": "Explicação do Salmo 150, o salmo do louvor pleno.",
+      "psalmNumber": 150
+    }
+  },
+  {
+    "slug": "salmo-8",
+    "intent": "faith",
+    "topicSlug": "salmos-de-confianca",
+    "priority": 3,
+    "subject": {
+      "title": "Salmo 8: que é o homem para te lembrares dele",
+      "keyword": "salmo 8",
+      "brief": "Explicação do Salmo 8, a grandeza de Deus e o valor do ser humano.",
+      "psalmNumber": 8
     }
   }
 ]

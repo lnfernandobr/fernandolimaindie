@@ -1,4 +1,5 @@
-import { listPosts, BLOG_CATEGORIES } from '@/lib/content/blog.js';
+import { listSignals } from '@/lib/content/api.js';
+import { BLOG_CATEGORIES } from '@/lib/content/categories.js';
 import { buildMetadata } from '@/lib/seo/metadata.js';
 import { breadcrumbLd, ldGraph, jsonLdScript } from '@/lib/seo/jsonld.js';
 import { AdSlot } from '@/components/AdSlot.jsx';
@@ -13,8 +14,14 @@ export const metadata = buildMetadata({
   path: '/blog',
 });
 
-export default function BlogIndexPage() {
-  const posts = listPosts();
+export default async function BlogIndexPage() {
+  let posts = [];
+  try {
+    const result = await listSignals({ kind: 'article', limit: 100 });
+    posts = result.items;
+  } catch {
+    // API indisponível: mostra a casca sem listagem
+  }
 
   const breadcrumbs = [
     { name: 'Início', path: '/' },
@@ -49,30 +56,34 @@ export default function BlogIndexPage() {
 
       <AdSlot slot="hub-top" />
 
-      {BLOG_CATEGORIES.map((cat) => {
-        const inCat = posts.filter((p) => p.category === cat.slug);
-        if (!inCat.length) return null;
-        return (
-          <section key={cat.slug} aria-label={cat.label} style={{ marginBottom: 'var(--space-6)' }}>
-            <h2>{cat.label}</h2>
-            <p className="t-soft" style={{ marginBottom: 'var(--space-4)' }}>{cat.description}</p>
-            <div className="signal-grid">
-              {inCat.map((p) => (
-                <a key={p.slug} href={`/blog/${p.slug}`} className="signal-card">
-                  <span
-                    className="tag"
-                    style={{ marginBottom: 'var(--space-3)', display: 'inline-block' }}
-                  >
-                    {cat.label}
-                  </span>
-                  <h3>{p.title}</h3>
-                  <p>{p.excerpt}</p>
-                </a>
-              ))}
-            </div>
-          </section>
-        );
-      })}
+      {posts.length === 0 ? (
+        <p style={{ color: 'var(--ink-mute)' }}>Conteúdo em breve.</p>
+      ) : (
+        BLOG_CATEGORIES.map((cat) => {
+          const inCat = posts.filter((p) => p.category === cat.slug);
+          if (!inCat.length) return null;
+          return (
+            <section key={cat.slug} aria-label={cat.label} style={{ marginBottom: 'var(--space-6)' }}>
+              <h2>{cat.label}</h2>
+              <p className="t-soft" style={{ marginBottom: 'var(--space-4)' }}>{cat.description}</p>
+              <div className="signal-grid">
+                {inCat.map((p) => (
+                  <a key={p.slug} href={`/blog/${p.slug}`} className="signal-card">
+                    <span
+                      className="tag"
+                      style={{ marginBottom: 'var(--space-3)', display: 'inline-block' }}
+                    >
+                      {cat.label}
+                    </span>
+                    <h3>{p.title}</h3>
+                    <p>{p.answer}</p>
+                  </a>
+                ))}
+              </div>
+            </section>
+          );
+        })
+      )}
 
       <IntentNav />
     </main>

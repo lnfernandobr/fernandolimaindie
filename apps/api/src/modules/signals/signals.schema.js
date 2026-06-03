@@ -26,6 +26,11 @@ const faqInput = z.object({
   answer: z.string().trim().min(1).max(LIMITS.FAQ_ANSWER_MAX),
 });
 
+const verseInput = z.object({
+  ref: z.string().trim().min(1).max(LIMITS.VERSE_REF_MAX),
+  text: z.string().trim().min(1).max(LIMITS.VERSE_TEXT_MAX),
+});
+
 export const createSignalSchema = z.object({
   slug: slugString,
   kind: z.enum(SIGNAL_KINDS),
@@ -38,6 +43,8 @@ export const createSignalSchema = z.object({
   bodyHtml: z.string().min(1).max(LIMITS.BODY_MAX),
   chunks: z.array(chunkInput).max(LIMITS.CHUNKS_MAX).default([]),
   faq: z.array(faqInput).max(LIMITS.FAQ_MAX).default([]),
+  verses: z.array(verseInput).max(LIMITS.VERSES_MAX).default([]),
+  category: z.string().trim().max(LIMITS.CATEGORY_MAX).optional().nullable(),
   relatedIntents: z
     .array(z.enum(INTENT_KEYS))
     .max(LIMITS.RELATED_INTENTS_MAX)

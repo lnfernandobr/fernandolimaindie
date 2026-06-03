@@ -17,7 +17,7 @@ import { completeStructured } from './generation.openai.js';
 import { buildPrompt } from './generation.prompts.js';
 import {
   generatedContentSchema,
-  generatedContentJsonSchema,
+  buildContentJsonSchema,
 } from './generation.schema.js';
 import { buildMockContent } from './generation.mock.js';
 import { findSeedBySlug, loadAllSeeds, loadSeedsByKind } from './generation.seeds.js';
@@ -34,6 +34,8 @@ const buildSignalInput = (seed, content) => ({
   bodyHtml: content.bodyHtml,
   chunks: content.chunks,
   faq: content.faq,
+  verses: content.verses ?? [],
+  category: content.category ?? seed.subject?.category ?? null,
   relatedIntents: content.relatedIntents.filter((k) => k !== seed.intent),
   lang: DEFAULT_LANG,
   status: GENERATION_DEFAULTS.STATUS_PUBLISHED,
@@ -46,7 +48,7 @@ const generateContent = async (seed, model) => {
   const raw = await completeStructured({
     system,
     user,
-    jsonSchema: generatedContentJsonSchema,
+    jsonSchema: buildContentJsonSchema(seed.signalKind),
     model,
   });
   const parsed = generatedContentSchema.safeParse(raw);
@@ -86,8 +88,11 @@ export const generateOne = async ({ seedSlug, model, force }) => {
   return runSeed({ seed, model, force });
 };
 
+const byPriority = (a, b) => (a.priority ?? 3) - (b.priority ?? 3);
+
 const pickPendingSeeds = async ({ seedKind, limit, force }) => {
-  const candidates = seedKind ? await loadSeedsByKind(seedKind) : await loadAllSeeds();
+  const loaded = seedKind ? await loadSeedsByKind(seedKind) : await loadAllSeeds();
+  const candidates = loaded.slice().sort(byPriority);
   if (force) return candidates.slice(0, limit);
   const checks = await Promise.all(
     candidates.map(async (seed) => {

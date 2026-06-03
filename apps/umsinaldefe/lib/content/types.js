@@ -7,6 +7,8 @@ export const SIGNAL_KINDS = [
   'verse',
   'devotional',
   'novena',
+  'article',
+  'verse_collection',
 ];
 
 export const INTENT_KEYS = [
@@ -38,6 +40,11 @@ const faqSchema = z.object({
   answer: z.string(),
 });
 
+const verseSchema = z.object({
+  ref: z.string(),
+  text: z.string(),
+});
+
 export const signalSchema = z.object({
   id: z.string(),
   slug: z.string(),
@@ -51,6 +58,8 @@ export const signalSchema = z.object({
   bodyHtml: z.string(),
   chunks: z.array(chunkSchema),
   faq: z.array(faqSchema),
+  verses: z.array(verseSchema).default([]),
+  category: z.string().nullable().optional(),
   relatedIntents: z.array(z.string()),
   audioUrl: z.string().nullable(),
   imageUrl: z.string().nullable(),
@@ -66,6 +75,7 @@ export const signalSummarySchema = z.object({
   kind: z.enum(SIGNAL_KINDS),
   intent: z.enum(INTENT_KEYS),
   topicSlug: z.string(),
+  category: z.string().nullable().optional(),
   title: z.string(),
   answer: z.string(),
   imageUrl: z.string().nullable(),

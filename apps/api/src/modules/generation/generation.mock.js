@@ -1,45 +1,61 @@
-import { INTENT_KEYS } from '../../constants/content.js';
+import { INTENT_KEYS, LIMITS } from '../../constants/content.js';
 
 const pickRelated = (intent) =>
   INTENT_KEYS.filter((k) => k !== intent).slice(0, 2);
 
+const clamp = (str, max) => (str && str.length > max ? `${str.slice(0, max - 1)}…` : str);
+
 const titleFor = (seed) => {
-  if (seed.seedKind === 'psalm') {
-    const n = seed.subject.psalmNumber ?? '?';
-    return `Salmo ${n} — ${seed.subject.theme ?? 'reflexao'}`;
-  }
-  if (seed.seedKind === 'saint-prayer') return `Oracao a ${seed.subject.saintName ?? 'santo'} — intercessao`;
-  if (seed.seedKind === 'intent-prayer') return `Oracao para ${seed.subject.focus ?? seed.intent} — pra rezar agora`;
-  return `Devocional — ${seed.subject.theme ?? 'reflexao do dia'}`;
+  const t = seed.subject?.title;
+  if (t) return clamp(t, LIMITS.TITLE_MAX);
+  const kw = seed.subject?.keyword ?? seed.intent;
+  return clamp(`${kw} — conteúdo de teste`, LIMITS.TITLE_MAX);
 };
 
-export const buildMockContent = (seed) => ({
-  title: titleFor(seed),
-  answer:
-    'Conteudo de teste gerado em modo mock. Substitua configurando OPENAI_API_KEY e desligando OPENAI_MOCK_MODE.',
-  summary:
-    'Resumo de teste gerado em mock mode. Isto eh um placeholder valido para validar o pipeline sem chamar a OpenAI.',
-  bodyHtml:
-    '<p>Conteudo de corpo em modo mock. Este texto existe apenas para que o pipeline de geracao possa ser testado end-to-end sem custo de API.</p><p>Use este modo durante desenvolvimento. Em producao, garanta que <strong>OPENAI_MOCK_MODE</strong> esteja em <em>false</em> e que a chave esteja configurada.</p>',
-  chunks: [
-    {
-      id: 'ancora',
-      html: '<p><strong>Ancora do tema.</strong></p><p>Trecho mock para representar um chunk semantico autocontido. Em producao, vira da OpenAI.</p>',
-    },
-    {
-      id: 'pratica',
-      html: '<p><strong>Pratica do dia.</strong></p><p>Outro trecho mock. Demonstra que o pipeline aceita multiplos chunks com ids slug curtos.</p>',
-    },
-  ],
-  faq: [
-    {
-      question: 'Isto eh conteudo real?',
-      answer: 'Nao. Isto eh saida do gerador em modo mock. Configure OPENAI_API_KEY para gerar conteudo real.',
-    },
-    {
-      question: 'Como ativar o gerador real?',
-      answer: 'Defina OPENAI_MOCK_MODE=false e tenha OPENAI_API_KEY no ambiente (Doppler em prod).',
-    },
-  ],
-  relatedIntents: pickRelated(seed.intent),
-});
+const briefText = (seed, fallback) => clamp(seed.subject?.brief || fallback, LIMITS.SUMMARY_MAX);
+
+const mockVerses = (seed) => {
+  const refs = Array.isArray(seed.subject?.verseRefs) && seed.subject.verseRefs.length
+    ? seed.subject.verseRefs
+    : ['Salmo 23, 1', 'João 3, 16', 'Filipenses 4, 13'];
+  return refs.slice(0, LIMITS.VERSES_MAX).map((ref) => ({
+    ref,
+    text: `Texto mock do versículo ${ref}. Em produção, vem da OpenAI com a tradução de uso comum no Brasil.`,
+  }));
+};
+
+/**
+ * Conteudo de teste (OPENAI_MOCK_MODE=true). Produz uma saida valida para o
+ * generatedContentSchema de cada signalKind, sem chamar a OpenAI.
+ */
+export const buildMockContent = (seed) => {
+  const answer = clamp(
+    briefText(seed, 'Conteudo de teste gerado em modo mock.'),
+    LIMITS.ANSWER_MAX,
+  );
+  const summary = briefText(seed, 'Resumo de teste gerado em mock mode, placeholder valido do pipeline.');
+  const base = {
+    title: titleFor(seed),
+    answer,
+    summary,
+    bodyHtml:
+      '<p>Conteudo de corpo em modo mock. Existe apenas para testar o pipeline end-to-end sem custo de API.</p><p>Em producao, garanta <strong>OPENAI_MOCK_MODE=false</strong> e a chave configurada.</p>',
+    chunks: [
+      { id: 'ancora', html: '<p><strong>Ancora do tema.</strong></p><p>Trecho mock semantico autocontido.</p>' },
+      { id: 'pratica', html: '<p><strong>Pratica do dia.</strong></p><p>Outro trecho mock com id slug curto.</p>' },
+    ],
+    faq: [
+      { question: 'Isto eh conteudo real?', answer: 'Nao. Eh saida do gerador em modo mock.' },
+      { question: 'Como ativar o gerador real?', answer: 'Defina OPENAI_MOCK_MODE=false e tenha OPENAI_API_KEY no ambiente.' },
+    ],
+    relatedIntents: pickRelated(seed.intent),
+  };
+
+  if (seed.signalKind === 'verse_collection') {
+    return { ...base, verses: mockVerses(seed), chunks: [] };
+  }
+  if (seed.signalKind === 'article') {
+    return { ...base, category: seed.subject?.category ?? 'vida-crista' };
+  }
+  return base;
+};

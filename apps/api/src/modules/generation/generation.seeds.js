@@ -15,9 +15,11 @@ const seedsRoot = path.resolve(currentFileDir, '..', '..', 'data', SEEDS_DIR_NAM
 
 const SEED_FILES = Object.freeze({
   psalm: 'psalms.json',
-  'saint-prayer': 'saints.json',
-  'intent-prayer': 'intent-prayers.json',
+  prayer: 'prayers.json',
   devotional: 'devotionals.json',
+  reflection: 'reflections.json',
+  article: 'blog.json',
+  'verse-collection': 'verse-collections.json',
 });
 
 const decorate = (seedKind, raw) =>
@@ -28,6 +30,7 @@ const decorate = (seedKind, raw) =>
     intent: raw.intent,
     topicSlug: raw.topicSlug,
     entitySlugs: raw.entitySlugs ?? [],
+    priority: raw.priority ?? 3,
     subject: raw.subject ?? {},
   });
 

@@ -24,6 +24,14 @@ const faqSchema = new Schema(
   { _id: false },
 );
 
+const verseSchema = new Schema(
+  {
+    ref: { type: String, required: true, trim: true },
+    text: { type: String, required: true, trim: true },
+  },
+  { _id: false },
+);
+
 const signalSchema = new Schema(
   {
     slug: {
@@ -44,6 +52,8 @@ const signalSchema = new Schema(
     bodyHtml: { type: String, required: true },
     chunks: { type: [chunkSchema], default: [] },
     faq: { type: [faqSchema], default: [] },
+    verses: { type: [verseSchema], default: [] },
+    category: { type: String, default: null, trim: true },
     relatedIntents: { type: [String], default: [] },
     audioUrl: { type: String, default: null },
     imageUrl: { type: String, default: null },

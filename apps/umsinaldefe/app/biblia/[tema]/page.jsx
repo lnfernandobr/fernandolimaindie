@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getVerseTopic, VERSE_TOPIC_SLUGS } from '@/lib/content/biblia.js';
+import { getSignal } from '@/lib/content/api.js';
 import { INTENT_SLUGS, INTENT_LABELS } from '@/lib/content/intents.js';
 import { buildMetadata } from '@/lib/seo/metadata.js';
 import {
@@ -18,16 +18,18 @@ import { IntentNav } from '@/components/IntentNav.jsx';
 import { AudioPlayer } from '@/components/AudioPlayer.jsx';
 import { isTtsConfigured } from '@/lib/media/elevenlabs.js';
 
-export const revalidate = 86400;
+export const dynamic = 'force-dynamic';
 
-export async function generateStaticParams() {
-  return VERSE_TOPIC_SLUGS.map((tema) => ({ tema }));
-}
+const temaLabel = (tema) => (tema ?? '').replace(/-/g, ' ');
 
 export async function generateMetadata({ params }) {
   const { tema } = await params;
-  const topic = getVerseTopic(tema);
-  if (!topic) return {};
+  let topic;
+  try {
+    topic = await getSignal(`biblia-${tema}`);
+  } catch {
+    return {};
+  }
   return buildMetadata({
     title: topic.title,
     description: topic.answer,
@@ -38,17 +40,23 @@ export async function generateMetadata({ params }) {
 
 export default async function VerseTopicPage({ params }) {
   const { tema } = await params;
-  const topic = getVerseTopic(tema);
-  if (!topic) notFound();
+
+  let topic;
+  try {
+    topic = await getSignal(`biblia-${tema}`);
+  } catch {
+    notFound();
+  }
 
   const path = `/biblia/${tema}`;
+  const label = temaLabel(tema);
   const intentSlug = topic.intent ? INTENT_SLUGS[topic.intent] : null;
   const intentLabel = topic.intent ? INTENT_LABELS[topic.intent] : null;
 
   const breadcrumbs = [
     { name: 'Início', path: '/' },
     { name: 'Bíblia', path: '/biblia' },
-    { name: topic.tag, path },
+    { name: topic.title, path },
   ];
 
   const nodes = [
@@ -86,7 +94,6 @@ export default async function VerseTopicPage({ params }) {
             <a className="tag" href="/biblia" style={{ textDecoration: 'none' }}>
               Bíblia
             </a>
-            <span className="tag">{topic.tag}</span>
           </div>
           <h1>{topic.title}</h1>
         </header>
@@ -113,26 +120,30 @@ export default async function VerseTopicPage({ params }) {
 
         <AdSlot slot="top-article" />
 
-        <section id="versiculos" className="chunk">
-          <h2>Versículos sobre {topic.tag.toLowerCase()}</h2>
-          <div className="verse-list">
-            {topic.verses.map((vrs) => (
-              <figure className="verse" key={vrs.ref}>
-                <blockquote className="scripture">&ldquo;{vrs.text}&rdquo;</blockquote>
-                <figcaption className="verse-ref">{vrs.ref}</figcaption>
-              </figure>
-            ))}
-          </div>
-        </section>
+        {topic.verses?.length > 0 && (
+          <section id="versiculos" className="chunk">
+            <h2>Versículos sobre {label}</h2>
+            <div className="verse-list">
+              {topic.verses.map((vrs) => (
+                <figure className="verse" key={vrs.ref}>
+                  <blockquote className="scripture">&ldquo;{vrs.text}&rdquo;</blockquote>
+                  <figcaption className="verse-ref">{vrs.ref}</figcaption>
+                </figure>
+              ))}
+            </div>
+          </section>
+        )}
 
-        <section className="chunk" dangerouslySetInnerHTML={{ __html: topic.reflectionHtml }} />
+        {topic.bodyHtml && (
+          <section className="chunk" dangerouslySetInnerHTML={{ __html: topic.bodyHtml }} />
+        )}
 
         {isTtsConfigured() && topic.audioEnabled !== false && (
           <section id="audio" className="chunk">
             <h2>Ouça estes versículos</h2>
             <AudioPlayer
-              title={`Versículos sobre ${topic.tag.toLowerCase()}`}
-              src={`/api/tts/${tema}`}
+              title={topic.title}
+              src={`/api/tts/${topic.slug}`}
               variant="feature"
             />
           </section>

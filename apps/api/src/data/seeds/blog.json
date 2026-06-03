@@ -1,0 +1,206 @@
+[
+  {
+    "slug": "deus-e-fiel-significado",
+    "intent": "faith",
+    "topicSlug": "vida-crista",
+    "priority": 2,
+    "subject": {
+      "title": "Deus é fiel: o que significa e os versículos que provam",
+      "keyword": "deus é fiel",
+      "brief": "O que quer dizer 'Deus é fiel', base bíblica (Lamentações 3, 1 Coríntios 10:13, 2 Timóteo 2:13), como sustenta nos dias difíceis.",
+      "category": "vida-crista"
+    }
+  },
+  {
+    "slug": "o-que-significa-amem",
+    "intent": "faith",
+    "topicSlug": "vida-crista",
+    "priority": 3,
+    "subject": {
+      "title": "O que significa amem? Origem e sentido da palavra",
+      "keyword": "o que significa amem",
+      "brief": "O que significa amem. Foco no termo \"o que significa amem\".",
+      "category": "vida-crista"
+    }
+  },
+  {
+    "slug": "o-que-e-um-devocional",
+    "intent": "faith",
+    "topicSlug": "vida-crista",
+    "priority": 3,
+    "subject": {
+      "title": "O que e um devocional e como fazer o seu",
+      "keyword": "o que e um devocional",
+      "brief": "O que e um devocional. Foco no termo \"o que e um devocional\".",
+      "category": "vida-crista"
+    }
+  },
+  {
+    "slug": "como-confiar-em-deus",
+    "intent": "faith",
+    "topicSlug": "vida-crista",
+    "priority": 3,
+    "subject": {
+      "title": "Como confiar em Deus quando nada faz sentido",
+      "keyword": "como confiar em deus",
+      "brief": "Passos práticos pra confiar em Deus na incerteza (Provérbios 3:5-6). Confiança como decisão e processo.",
+      "category": "vida-crista"
+    }
+  },
+  {
+    "slug": "como-ter-mais-fe",
+    "intent": "faith",
+    "topicSlug": "vida-crista",
+    "priority": 3,
+    "subject": {
+      "title": "Como ter mais fé: 7 passos práticos",
+      "keyword": "como ter mais fé",
+      "brief": "Como fortalecer a fé (Palavra, oração, convívio, ação). Romanos 10:17, Marcos 9:24.",
+      "category": "vida-crista"
+    }
+  },
+  {
+    "slug": "como-perdoar-alguem-que-te-machucou",
+    "intent": "forgiveness",
+    "topicSlug": "superacao",
+    "priority": 3,
+    "subject": {
+      "title": "Como perdoar alguém que te machucou (mesmo quando dói)",
+      "keyword": "como perdoar alguém",
+      "brief": "Caminho do perdão, o que é e não é perdoar (Mateus 18, Colossenses 3:13). Processo e libertação.",
+      "category": "superacao"
+    }
+  },
+  {
+    "slug": "como-superar-a-perda-de-alguem",
+    "intent": "grief",
+    "topicSlug": "superacao",
+    "priority": 3,
+    "subject": {
+      "title": "Como superar a perda de alguém que você ama, com fé",
+      "keyword": "como superar a perda de alguém",
+      "brief": "Luto e fé, fases da dor, consolo bíblico (Salmo 34:18, Apocalipse 21:4, Mateus 5:4).",
+      "category": "superacao"
+    }
+  },
+  {
+    "slug": "como-vencer-o-medo",
+    "intent": "fear",
+    "topicSlug": "superacao",
+    "priority": 3,
+    "subject": {
+      "title": "Como vencer o medo segundo a Bíblia",
+      "keyword": "como vencer o medo",
+      "brief": "O que fazer com o medo, coragem que vem da presença de Deus (Josué 1:9, Isaías 41:10, 2 Timóteo 1:7).",
+      "category": "superacao"
+    }
+  },
+  {
+    "slug": "mulher-virtuosa-proverbios-31",
+    "intent": "finances",
+    "topicSlug": "familia",
+    "priority": 3,
+    "subject": {
+      "title": "Mulher virtuosa de Provérbios 31: quem é de verdade",
+      "keyword": "mulher virtuosa",
+      "brief": "Estudo de Provérbios 31, ser mulher virtuosa hoje (caráter, fé, trabalho). Tom de valorização.",
+      "category": "familia"
+    }
+  },
+  {
+    "slug": "como-comecar-a-orar",
+    "intent": "gratitude",
+    "topicSlug": "vida-crista",
+    "priority": 3,
+    "subject": {
+      "title": "Como começar a orar: um guia simples pra quem não sabe",
+      "keyword": "como começar a orar",
+      "brief": "Como orar do zero, modelo do Pai Nosso (adoração, confissão, gratidão, súplica).",
+      "category": "vida-crista"
+    }
+  },
+  {
+    "slug": "como-ter-intimidade-com-deus",
+    "intent": "gratitude",
+    "topicSlug": "vida-crista",
+    "priority": 3,
+    "subject": {
+      "title": "Como ter intimidade com Deus no dia a dia",
+      "keyword": "como ter intimidade com deus",
+      "brief": "Hábitos de proximidade: oração, Palavra, silêncio, gratidão. Tiago 4:8.",
+      "category": "vida-crista"
+    }
+  },
+  {
+    "slug": "o-que-e-fe-segundo-a-biblia",
+    "intent": "faith",
+    "topicSlug": "vida-crista",
+    "priority": 3,
+    "subject": {
+      "title": "O que é fé segundo a Bíblia (Hebreus 11)",
+      "keyword": "o que é fé",
+      "brief": "Definição de fé (Hebreus 11:1), fé e dúvida, fé e obras (Tiago 2:17).",
+      "category": "vida-crista"
+    }
+  },
+  {
+    "slug": "como-manter-a-fe-em-tempos-dificeis",
+    "intent": "faith",
+    "topicSlug": "superacao",
+    "priority": 3,
+    "subject": {
+      "title": "Como manter a fé em tempos difíceis",
+      "keyword": "como manter a fé em tempos difíceis",
+      "brief": "Sustentar a fé na crise (comunidade, Palavra, memória do que Deus fez), Salmo 42, Habacuque 3:17-18.",
+      "category": "superacao"
+    }
+  },
+  {
+    "slug": "como-agradecer-a-deus",
+    "intent": "gratitude",
+    "topicSlug": "vida-crista",
+    "priority": 3,
+    "subject": {
+      "title": "Como agradecer a Deus todos os dias",
+      "keyword": "como agradecer a deus",
+      "brief": "Cultivar a gratidão (1 Tessalonicenses 5:18), o diário de gratidão.",
+      "category": "vida-crista"
+    }
+  },
+  {
+    "slug": "casamento-em-crise-o-que-diz-a-biblia",
+    "intent": "forgiveness",
+    "topicSlug": "casamento",
+    "priority": 3,
+    "subject": {
+      "title": "Casamento em crise: o que a Bíblia diz e por onde começar",
+      "keyword": "casamento em crise",
+      "brief": "Caminhos pra um casamento em crise: perdão, comunicação, ajuda, oração a dois. Sem julgamento.",
+      "category": "casamento"
+    }
+  },
+  {
+    "slug": "como-lidar-com-a-solidao",
+    "intent": "grief",
+    "topicSlug": "superacao",
+    "priority": 3,
+    "subject": {
+      "title": "Como lidar com a solidão com a ajuda da fé",
+      "keyword": "como lidar com a solidão",
+      "brief": "A solidão e a presença de Deus, o convite à comunidade (Hebreus 13:5, Salmo 68:6).",
+      "category": "superacao"
+    }
+  },
+  {
+    "slug": "como-sair-das-dividas-com-fe",
+    "intent": "finances",
+    "topicSlug": "financas",
+    "priority": 3,
+    "subject": {
+      "title": "Como sair das dívidas com fé, sabedoria e atitude",
+      "keyword": "como sair das dívidas",
+      "brief": "Passos pra organizar finanças com fé, contentamento e provisão (Provérbios 22:7, Filipenses 4:19).",
+      "category": "financas"
+    }
+  }
+]

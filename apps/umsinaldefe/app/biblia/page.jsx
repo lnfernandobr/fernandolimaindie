@@ -1,4 +1,5 @@
-import { listVerseTopics } from '@/lib/content/biblia.js';
+import { listSignals } from '@/lib/content/api.js';
+import { signalUrl } from '@/lib/content/signal-url.js';
 import { buildMetadata } from '@/lib/seo/metadata.js';
 import { breadcrumbLd, ldGraph, jsonLdScript } from '@/lib/seo/jsonld.js';
 import { AdSlot } from '@/components/AdSlot.jsx';
@@ -13,8 +14,14 @@ export const metadata = buildMetadata({
   path: '/biblia',
 });
 
-export default function BibliaIndexPage() {
-  const topics = listVerseTopics();
+export default async function BibliaIndexPage() {
+  let topics = [];
+  try {
+    const result = await listSignals({ kind: 'verse_collection', limit: 100 });
+    topics = result.items;
+  } catch {
+    // API indisponível: mostra a casca sem listagem
+  }
 
   const breadcrumbs = [
     { name: 'Início', path: '/' },
@@ -56,22 +63,26 @@ export default function BibliaIndexPage() {
 
       <AdSlot slot="hub-top" />
 
-      <section aria-label="Temas">
-        <div className="signal-grid">
-          {topics.map((t) => (
-            <a key={t.slug} href={`/biblia/${t.slug}`} className="signal-card">
-              <span
-                className="tag"
-                style={{ marginBottom: 'var(--space-3)', display: 'inline-block' }}
-              >
-                {t.tag}
-              </span>
-              <h3>{t.title}</h3>
-              <p>{t.answer}</p>
-            </a>
-          ))}
-        </div>
-      </section>
+      {topics.length === 0 ? (
+        <p style={{ color: 'var(--ink-mute)' }}>Conteúdo em breve.</p>
+      ) : (
+        <section aria-label="Temas">
+          <div className="signal-grid">
+            {topics.map((t) => (
+              <a key={t.slug} href={signalUrl(t)} className="signal-card">
+                <span
+                  className="tag"
+                  style={{ marginBottom: 'var(--space-3)', display: 'inline-block' }}
+                >
+                  Bíblia
+                </span>
+                <h3>{t.title}</h3>
+                <p>{t.answer}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
 
       <IntentNav />
     </main>

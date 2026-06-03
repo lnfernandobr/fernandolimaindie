@@ -1,123 +1,68 @@
 [
   {
-    "slug": "devocional-confianca",
-    "intent": "faith",
-    "topicSlug": "fe",
-    "entitySlugs": ["jesus"],
+    "slug": "devocional-descansar-a-sombra",
+    "intent": "protection",
+    "topicSlug": "salmos-de-protecao",
+    "priority": 3,
     "subject": {
-      "theme": "confianca em Deus mesmo no escuro",
-      "verseRef": "Provérbios 3:5-6",
-      "dayMoment": "manha"
+      "title": "Descansar à sombra: devocional do Salmo 91",
+      "keyword": "Descansar à sombra",
+      "brief": "Quando o dia é forte, a gente não combate o sol, procura sombra. Este devocional parte do Salmo 91 pra lembrar que Deus pode ser esse lugar de descanso, uma frase de cada vez."
     }
   },
   {
-    "slug": "devocional-paciencia",
-    "intent": "hope",
-    "topicSlug": "fe",
-    "entitySlugs": [],
-    "subject": {
-      "theme": "paciencia com Deus e com voce mesmo",
-      "verseRef": "Tiago 1:2-4",
-      "dayMoment": "qualquer"
-    }
-  },
-  {
-    "slug": "devocional-pequenas-coisas",
-    "intent": "gratitude",
-    "topicSlug": "gratidao",
-    "entitySlugs": [],
-    "subject": {
-      "theme": "a santidade nas pequenas coisas do dia",
-      "verseRef": "Lucas 16:10",
-      "dayMoment": "manha"
-    }
-  },
-  {
-    "slug": "devocional-descanso",
-    "intent": "sleep",
-    "topicSlug": "sono",
-    "entitySlugs": ["jesus"],
-    "subject": {
-      "theme": "descansar em Deus no fim do dia",
-      "verseRef": "Mateus 11:28",
-      "dayMoment": "noite"
-    }
-  },
-  {
-    "slug": "devocional-presenca",
-    "intent": "faith",
-    "topicSlug": "fe",
-    "entitySlugs": [],
-    "subject": {
-      "theme": "a presenca de Deus no comum",
-      "verseRef": "Salmo 139:7-10",
-      "dayMoment": "qualquer"
-    }
-  },
-  {
-    "slug": "devocional-ansiedade",
+    "slug": "devocional-quando-a-ansiedade-aperta",
     "intent": "anxiety",
-    "topicSlug": "ansiedade",
-    "entitySlugs": ["jesus"],
+    "topicSlug": "ansiedade-e-paz",
+    "priority": 3,
     "subject": {
-      "theme": "entregar a ansiedade a Deus um dia de cada vez",
-      "verseRef": "Filipenses 4:6-7",
-      "dayMoment": "qualquer"
+      "title": "Quando a ansiedade aperta: devocional pra respirar",
+      "keyword": "Quando a ansiedade aperta",
+      "brief": "A ansiedade quase sempre vive no futuro, no \"e se\". Este devocional usa Mateus 6 pra trazer você de volta pro hoje, que é onde dá pra dar o próximo passo."
     }
   },
   {
-    "slug": "devocional-recomeco",
-    "intent": "hope",
-    "topicSlug": "fe",
-    "entitySlugs": [],
+    "slug": "devocional-comecar-o-dia-com-deus",
+    "intent": "morning",
+    "topicSlug": "oracoes-da-manha",
+    "priority": 3,
     "subject": {
-      "theme": "as misericordias do Senhor se renovam a cada manha",
-      "verseRef": "Lamentações 3:22-23",
-      "dayMoment": "manha"
+      "title": "Começar o dia com Deus: devocional da manhã",
+      "keyword": "Começar o dia com Deus",
+      "brief": "Os primeiros minutos do dia dão o tom de tudo. Este devocional propõe trocar o celular por um instante de fé ao acordar, com um versículo do Salmo 143 e uma oração curta."
     }
   },
   {
-    "slug": "devocional-perdao",
-    "intent": "forgiveness",
-    "topicSlug": "fe",
-    "entitySlugs": [],
-    "subject": {
-      "theme": "perdoar setenta vezes sete e se libertar da magoa",
-      "verseRef": "Mateus 18:21-22",
-      "dayMoment": "qualquer"
-    }
-  },
-  {
-    "slug": "devocional-provisao",
+    "slug": "devocional-confiar-quando-falta-dinheiro",
     "intent": "finances",
-    "topicSlug": "fe",
-    "entitySlugs": [],
+    "topicSlug": "financas-e-trabalho",
+    "priority": 3,
     "subject": {
-      "theme": "buscar primeiro o Reino e confiar na provisao de Deus",
-      "verseRef": "Mateus 6:31-33",
-      "dayMoment": "manha"
+      "title": "Confiar quando falta dinheiro: devocional sobre o pão de cada dia",
+      "keyword": "Confiar quando falta dinheiro",
+      "brief": "O medo de não dar conta das contas tira o sono de muita gente. Este devocional parte do \"pão nosso de cada dia\" pra falar de confiança que anda junto com atitude, um dia de cada vez."
     }
   },
   {
-    "slug": "devocional-noite",
-    "intent": "night",
-    "topicSlug": "sono",
-    "entitySlugs": [],
+    "slug": "devocional-a-esperanca-que-nao-decepciona",
+    "intent": "hope",
+    "topicSlug": "esperanca",
+    "priority": 3,
     "subject": {
-      "theme": "entregar o dia e dormir em paz",
-      "verseRef": "Salmo 4:8",
-      "dayMoment": "noite"
+      "title": "A esperança que não decepciona: devocional pra dias sem luz",
+      "keyword": "A esperança que não decepciona",
+      "brief": "Tem dias em que falta luz no fim do túnel. Este devocional fala de uma esperança que não é otimismo ingênuo, é confiança que sustenta enquanto a resposta não vem."
     }
   },
   {
-    "slug": "devocional-cura",
-    "intent": "healing",
-    "topicSlug": "cura",
-    "entitySlugs": ["jesus"],
+    "slug": "devocional-dormir-entregando-o-dia",
+    "intent": "sleep",
+    "topicSlug": "oracoes-da-noite",
+    "priority": 3,
     "subject": {
-      "theme": "Deus cura os de coracao quebrantado",
-      "verseRef": "Salmo 147:3",
-      "dayMoment": "qualquer"
+      "title": "Dormir entregando o dia: devocional pra noite",
+      "keyword": "Dormir entregando o dia",
+      "brief": "Antes de dormir, a cabeça insiste em reprisar o dia e adiantar o de amanhã. Este devocional ajuda a fechar o dia com o Salmo 4, entregando o que ficou e descansando de verdade."
     }
   }
 ]

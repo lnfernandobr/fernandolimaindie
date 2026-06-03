@@ -1,15 +1,19 @@
 export const SEED_KINDS = Object.freeze([
   'psalm',
-  'saint-prayer',
-  'intent-prayer',
+  'prayer',
   'devotional',
+  'reflection',
+  'article',
+  'verse-collection',
 ]);
 
 export const SEED_KIND_TO_SIGNAL_KIND = Object.freeze({
   psalm: 'psalm',
-  'saint-prayer': 'prayer',
-  'intent-prayer': 'prayer',
+  prayer: 'prayer',
   devotional: 'devotional',
+  reflection: 'reflection',
+  article: 'article',
+  'verse-collection': 'verse_collection',
 });
 
 export const GENERATION_DEFAULTS = Object.freeze({

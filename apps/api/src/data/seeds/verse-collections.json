@@ -1,0 +1,556 @@
+[
+  {
+    "slug": "biblia-amor",
+    "intent": "family",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 2,
+    "subject": {
+      "title": "Versículos sobre o amor: o que a Bíblia diz",
+      "keyword": "versículos sobre amor",
+      "brief": "A Bíblia fala do amor como paciência, bondade e entrega, não como um sentimento passageiro. O capítulo mais conhecido é 1 Coríntios 13, mas há versículos sobre o amor a Deus, ao próximo e dentro da família espalhados por toda a Escritura.",
+      "tag": "Amor",
+      "category": "biblia-explicada"
+    }
+  },
+  {
+    "slug": "biblia-amizade",
+    "intent": "faith",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 2,
+    "subject": {
+      "title": "Versículos sobre amizade verdadeira",
+      "keyword": "versículos sobre amizade",
+      "brief": "Versículos sobre o amigo leal (Provérbios 17:17, 18:24, Eclesiastes 4:9-10).",
+      "tag": "amizade",
+      "category": "biblia-explicada",
+      "verseRefs": [
+        "Provérbios 17:17",
+        "Eclesiastes 4:9-10"
+      ]
+    }
+  },
+  {
+    "slug": "biblia-casamento",
+    "intent": "family",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 2,
+    "subject": {
+      "title": "Versículos sobre o casamento e a vida a dois",
+      "keyword": "versículos sobre casamento",
+      "brief": "A Bíblia trata o casamento como uma união feita pra durar, em que duas pessoas se tornam uma só carne. Há versículos sobre amor, respeito, perdão e companheirismo, ótimos pra votos, alianças ou pra rezar pelo casamento.",
+      "tag": "Casamento",
+      "category": "biblia-explicada"
+    }
+  },
+  {
+    "slug": "biblia-familia",
+    "intent": "family",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos sobre a família e o lar",
+      "keyword": "versículos sobre família",
+      "brief": "A Bíblia vê a família como um presente e uma responsabilidade: pais que educam, filhos que honram, uma casa que serve a Deus. São versículos pra rezar pela sua casa, pelos filhos e pela união de todos.",
+      "tag": "Família",
+      "category": "biblia-explicada"
+    }
+  },
+  {
+    "slug": "biblia-cura",
+    "intent": "healing",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos sobre cura e saúde",
+      "keyword": "versículos sobre cura",
+      "brief": "A Bíblia traz muitos versículos de cura, do corpo e da alma. Eles lembram que Deus sara o coração quebrantado e cuida de cada ferida, e servem pra rezar por você ou por quem está doente.",
+      "tag": "Cura",
+      "category": "biblia-explicada"
+    }
+  },
+  {
+    "slug": "biblia-mulher",
+    "intent": "faith",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos sobre a mulher: valor, força e fé",
+      "keyword": "versículos sobre mulher",
+      "brief": "Versículos sobre a mulher virtuosa (Provérbios 31), valor e dignidade. Tom de valorização.",
+      "tag": "Versículos sobre a mulher: valor, força e fé",
+      "category": "biblia-explicada"
+    }
+  },
+  {
+    "slug": "biblia-gratidao",
+    "intent": "gratitude",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos sobre gratidão e agradecer a Deus",
+      "keyword": "versículos sobre gratidão",
+      "brief": "A Bíblia chama a gratidão de vontade de Deus pra nós: dar graças em tudo, não só quando dá certo. São versículos pra começar o dia agradecendo e pra lembrar do bem que já existe.",
+      "tag": "Gratidão",
+      "category": "biblia-explicada"
+    }
+  },
+  {
+    "slug": "biblia-esperanca",
+    "intent": "hope",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos sobre esperança pra dias difíceis",
+      "keyword": "versículos sobre esperança",
+      "brief": "A Bíblia fala de esperança como confiança no futuro que Deus prepara, mesmo quando o presente está pesado. São versículos pra dias sem luz, pra quando falta força e pra renovar a fé no amanhã.",
+      "tag": "Esperança",
+      "category": "biblia-explicada"
+    }
+  },
+  {
+    "slug": "biblia-forca",
+    "intent": "faith",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos de força e coragem pra dias difíceis",
+      "keyword": "versículos sobre força",
+      "brief": "Versículos de força e coragem pra quando bate o cansaço e o medo. A Bíblia repete o convite a \"ser forte e corajoso\", lembrando que a força vem de Deus, não só da gente.",
+      "tag": "Força",
+      "category": "biblia-explicada"
+    }
+  },
+  {
+    "slug": "biblia-paz",
+    "intent": "faith",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos sobre a paz que vem de Deus",
+      "keyword": "versículos sobre paz",
+      "brief": "Versículos sobre paz interior e com os outros (João 14:27, Filipenses 4:7, Isaías 26:3).",
+      "tag": "paz",
+      "category": "biblia-explicada",
+      "verseRefs": [
+        "João 14:27",
+        "Filipenses 4:7",
+        "Isaías 26:3"
+      ]
+    }
+  },
+  {
+    "slug": "biblia-medo",
+    "intent": "faith",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versiculos sobre o medo: coragem na fe",
+      "keyword": "versiculos sobre medo",
+      "brief": "Versiculos sobre o medo. Foco no termo \"versiculos sobre medo\".",
+      "tag": "medo",
+      "category": "biblia-explicada"
+    }
+  },
+  {
+    "slug": "biblia-fe",
+    "intent": "faith",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos sobre fé pra fortalecer a confiança",
+      "keyword": "versículos sobre fé",
+      "brief": "A Bíblia define fé como a certeza daquilo que se espera, mesmo sem ver. São versículos pra fortalecer a confiança em Deus nos momentos de dúvida e pra lembrar que a fé cresce ouvindo a Palavra.",
+      "tag": "Fé",
+      "category": "biblia-explicada"
+    }
+  },
+  {
+    "slug": "biblia-confianca",
+    "intent": "faith",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos sobre confiar em Deus",
+      "keyword": "versículos sobre confiança",
+      "brief": "Versículos sobre confiança (Provérbios 3:5-6, Salmo 37:5, Jeremias 17:7).",
+      "tag": "confianca",
+      "category": "biblia-explicada",
+      "verseRefs": [
+        "Provérbios 3:5-6",
+        "Salmo 37:5",
+        "Jeremias 17:7"
+      ]
+    }
+  },
+  {
+    "slug": "biblia-amor-de-deus",
+    "intent": "faith",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos sobre o amor de Deus",
+      "keyword": "versículos sobre amor de deus",
+      "brief": "O amor de Deus na Bíblia é incondicional e eterno, e a sua maior prova é Jesus: \"Deus amou o mundo de tal maneira que deu o seu Filho\" (João 3, 16). Aqui estão os versículos mais marcantes sobre o amor de Deus por você.",
+      "tag": "Amor de Deus",
+      "category": "biblia-explicada",
+      "verseRefs": [
+        "João 3, 16"
+      ]
+    }
+  },
+  {
+    "slug": "biblia-perdao",
+    "intent": "forgiveness",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos sobre o perdão",
+      "keyword": "versículos sobre perdão",
+      "brief": "A Bíblia liga o perdão que recebemos ao perdão que oferecemos: somos chamados a perdoar como fomos perdoados. São versículos pra quem precisa perdoar alguém ou pedir perdão e soltar um peso antigo.",
+      "tag": "Perdão",
+      "category": "biblia-explicada"
+    }
+  },
+  {
+    "slug": "biblia-protecao",
+    "intent": "protection",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos sobre proteção e a guarda de Deus",
+      "keyword": "versículos sobre proteção",
+      "brief": "A Bíblia está cheia de versículos de proteção, especialmente nos Salmos. Eles falam de Deus como refúgio, rocha e guarda que não dorme, e servem pra pedir cobertura pra você, sua casa e quem você ama.",
+      "tag": "Proteção",
+      "category": "biblia-explicada"
+    }
+  },
+  {
+    "slug": "biblia-ansiedade",
+    "intent": "anxiety",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos sobre ansiedade pra acalmar o coração",
+      "keyword": "versículos sobre ansiedade",
+      "brief": "A Bíblia tem versículos diretos sobre a ansiedade, como Filipenses 4, 6 (\"não andeis ansiosos por coisa alguma\") e 1 Pedro 5, 7 (\"lançai sobre ele toda a vossa ansiedade\"). Eles ajudam a acalmar o coração e a entregar o que não dá pra contr",
+      "tag": "Ansiedade",
+      "category": "biblia-explicada",
+      "verseRefs": [
+        "Filipenses 4, 6",
+        "1 Pedro 5, 7"
+      ]
+    }
+  },
+  {
+    "slug": "biblia-promessas-de-deus",
+    "intent": "faith",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos sobre as promessas de Deus",
+      "keyword": "versículos sobre promessas de deus",
+      "brief": "A Bíblia está cheia de promessas de Deus: provisão, presença, força e cuidado. São versículos pra lembrar, nos dias de dúvida, daquilo que Deus prometeu e cumpre.",
+      "tag": "Promessas de Deus",
+      "category": "biblia-explicada"
+    }
+  },
+  {
+    "slug": "biblia-bom-dia",
+    "intent": "morning",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos de bom dia pra começar o dia com Deus",
+      "keyword": "versículos sobre bom dia",
+      "brief": "Versículos de bom dia pra começar a manhã com fé e gratidão, pra você ou pra mandar pra alguém. A Bíblia lembra que as misericórdias de Deus se renovam a cada manhã.",
+      "tag": "Bom dia",
+      "category": "biblia-explicada"
+    }
+  },
+  {
+    "slug": "biblia-boa-noite",
+    "intent": "night",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos de boa noite pra dormir em paz",
+      "keyword": "versículos sobre boa noite",
+      "brief": "Versículos de boa noite pra encerrar o dia entregando tudo a Deus e dormir em paz. A Bíblia diz que Ele dá o sono aos seus amados e guarda quem nele descansa.",
+      "tag": "Boa noite",
+      "category": "biblia-explicada"
+    }
+  },
+  {
+    "slug": "biblia-conforto",
+    "intent": "grief",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos de conforto pra dias de dor e tristeza",
+      "keyword": "versículos sobre conforto",
+      "brief": "Versículos de conforto pra momentos de dor, perda e tristeza. A Bíblia mostra um Deus que está perto de quem tem o coração quebrantado e que consola em toda aflição.",
+      "tag": "Conforto",
+      "category": "biblia-explicada"
+    }
+  },
+  {
+    "slug": "biblia-trabalho",
+    "intent": "faith",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos sobre o trabalho: esforço, propósito e descanso",
+      "keyword": "versículos sobre trabalho",
+      "brief": "Versículos sobre trabalhar com dedicação (Colossenses 3:23), propósito e descanso.",
+      "tag": "Versículos sobre o trabalho: esforço, propósito e descanso",
+      "category": "biblia-explicada",
+      "verseRefs": [
+        "Colossenses 3:23"
+      ]
+    }
+  },
+  {
+    "slug": "biblia-dinheiro",
+    "intent": "faith",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos sobre dinheiro e prosperidade com sabedoria",
+      "keyword": "versículos sobre dinheiro",
+      "brief": "O que a Bíblia diz sobre dinheiro e contentamento (1 Timóteo 6, Filipenses 4:19). Sem teologia da prosperidade.",
+      "tag": "Versículos sobre dinheiro e prosperidade com sabedoria",
+      "category": "biblia-explicada",
+      "verseRefs": [
+        "Filipenses 4:19"
+      ]
+    }
+  },
+  {
+    "slug": "biblia-sabedoria",
+    "intent": "faith",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos sobre sabedoria para boas decisões",
+      "keyword": "versículos sobre sabedoria",
+      "brief": "Versículos sobre buscar sabedoria (Tiago 1:5, Provérbios 3:5-6, 9:10).",
+      "tag": "Versículos sobre sabedoria para boas decisões",
+      "category": "biblia-explicada",
+      "verseRefs": [
+        "Tiago 1:5",
+        "Provérbios 3:5-6"
+      ]
+    }
+  },
+  {
+    "slug": "biblia-alegria",
+    "intent": "faith",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos sobre a alegria do Senhor",
+      "keyword": "versículos sobre alegria",
+      "brief": "Versículos sobre alegria que vem de Deus (Neemias 8:10, Salmo 16:11, Filipenses 4:4).",
+      "tag": "Versículos sobre a alegria do Senhor",
+      "category": "biblia-explicada",
+      "verseRefs": [
+        "Neemias 8:10",
+        "Salmo 16:11",
+        "Filipenses 4:4"
+      ]
+    }
+  },
+  {
+    "slug": "biblia-humildade",
+    "intent": "faith",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos sobre humildade",
+      "keyword": "versículos sobre humildade",
+      "brief": "Versículos sobre humildade (Tiago 4:6, Filipenses 2:3, Provérbios 22:4).",
+      "tag": "Versículos sobre humildade",
+      "category": "biblia-explicada",
+      "verseRefs": [
+        "Tiago 4:6",
+        "Filipenses 2:3",
+        "Provérbios 22:4"
+      ]
+    }
+  },
+  {
+    "slug": "biblia-paciencia",
+    "intent": "faith",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos sobre paciência e esperar no tempo de Deus",
+      "keyword": "versículos sobre paciência",
+      "brief": "Versículos sobre paciência e perseverança (Tiago 1:4, Romanos 12:12, Gálatas 6:9).",
+      "tag": "Versículos sobre paciência e esperar no tempo de Deus",
+      "category": "biblia-explicada",
+      "verseRefs": [
+        "Tiago 1:4",
+        "Romanos 12:12",
+        "Gálatas 6:9"
+      ]
+    }
+  },
+  {
+    "slug": "biblia-espirito-santo",
+    "intent": "faith",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos sobre o Espírito Santo",
+      "keyword": "versículos sobre o espírito santo",
+      "brief": "Versículos sobre o Espírito Santo, consolador e guia (João 14:26, Gálatas 5:22, Atos 1:8).",
+      "tag": "Versículos sobre o Espírito Santo",
+      "category": "biblia-explicada",
+      "verseRefs": [
+        "João 14:26",
+        "Gálatas 5:22",
+        "Atos 1:8"
+      ]
+    }
+  },
+  {
+    "slug": "biblia-aniversario",
+    "intent": "faith",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos de aniversário para abençoar quem você ama",
+      "keyword": "versículos de aniversário",
+      "brief": "Versículos pra aniversários (Números 6:24-26, Salmo 91:16, Jeremias 29:11). Pra cartões.",
+      "tag": "Versículos de aniversário para abençoar quem você ama",
+      "category": "biblia-explicada",
+      "verseRefs": [
+        "Números 6:24-26",
+        "Salmo 91:16",
+        "Jeremias 29:11"
+      ]
+    }
+  },
+  {
+    "slug": "biblia-louvor",
+    "intent": "faith",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos sobre louvor e adoração",
+      "keyword": "versículos sobre louvor",
+      "brief": "Versículos sobre louvar a Deus (Salmo 150, 100, Hebreus 13:15).",
+      "tag": "Versículos sobre louvor e adoração",
+      "category": "biblia-explicada",
+      "verseRefs": [
+        "Salmo 150, 100",
+        "Hebreus 13:15"
+      ]
+    }
+  },
+  {
+    "slug": "biblia-natal",
+    "intent": "faith",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos de Natal sobre o nascimento de Jesus",
+      "keyword": "versículos de natal",
+      "brief": "Versículos do Natal (Lucas 2, Isaías 9:6, João 3:16). Pra ceia e mensagens.",
+      "tag": "Versículos de Natal sobre o nascimento de Jesus",
+      "category": "biblia-explicada",
+      "verseRefs": [
+        "Isaías 9:6",
+        "João 3:16"
+      ]
+    }
+  },
+  {
+    "slug": "biblia-vida-eterna",
+    "intent": "faith",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos sobre a vida eterna",
+      "keyword": "versículos sobre vida eterna",
+      "brief": "Versículos sobre vida eterna e ressurreição (João 3:16, 11:25, Apocalipse 21:4).",
+      "tag": "Versículos sobre a vida eterna",
+      "category": "biblia-explicada",
+      "verseRefs": [
+        "João 3:16",
+        "Apocalipse 21:4"
+      ]
+    }
+  },
+  {
+    "slug": "biblia-arrependimento",
+    "intent": "faith",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos sobre arrependimento e perdão",
+      "keyword": "versículos sobre arrependimento",
+      "brief": "Versículos sobre arrepender-se e voltar pra Deus (1 João 1:9, Atos 3:19, Salmo 51).",
+      "tag": "Versículos sobre arrependimento e perdão",
+      "category": "biblia-explicada",
+      "verseRefs": [
+        "1 João 1:9",
+        "Atos 3:19"
+      ]
+    }
+  },
+  {
+    "slug": "biblia-jejum",
+    "intent": "faith",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos sobre o jejum e a oração",
+      "keyword": "versículos sobre jejum",
+      "brief": "Versículos sobre o jejum (Mateus 6:16-18, Isaías 58, Joel 2:12).",
+      "tag": "Versículos sobre o jejum e a oração",
+      "category": "biblia-explicada",
+      "verseRefs": [
+        "Mateus 6:16-18",
+        "Joel 2:12"
+      ]
+    }
+  },
+  {
+    "slug": "biblia-batismo",
+    "intent": "faith",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos sobre o batismo",
+      "keyword": "versículos sobre batismo",
+      "brief": "Versículos sobre o batismo (Mateus 28:19, Atos 2:38, Romanos 6:4).",
+      "tag": "Versículos sobre o batismo",
+      "category": "biblia-explicada",
+      "verseRefs": [
+        "Mateus 28:19",
+        "Atos 2:38",
+        "Romanos 6:4"
+      ]
+    }
+  },
+  {
+    "slug": "biblia-cura-e-libertacao",
+    "intent": "faith",
+    "topicSlug": "versiculos-da-biblia",
+    "priority": 3,
+    "subject": {
+      "title": "Versículos de cura e libertação",
+      "keyword": "versículos de cura e libertação",
+      "brief": "Versículos de cura física, emocional e libertação (Salmo 107:20, Isaías 53:5, Lucas 4:18).",
+      "tag": "Versículos de cura e libertação",
+      "category": "biblia-explicada",
+      "verseRefs": [
+        "Salmo 107:20",
+        "Isaías 53:5",
+        "Lucas 4:18"
+      ]
+    }
+  }
+]

@@ -7,6 +7,8 @@ export const SIGNAL_KINDS = Object.freeze([
   'verse',
   'devotional',
   'novena',
+  'article',
+  'verse_collection',
 ]);
 
 export const SIGNAL_STATUSES = Object.freeze(['draft', 'published']);
@@ -55,6 +57,10 @@ export const LIMITS = Object.freeze({
   PAGE_DEFAULT: 20,
   PAGE_MAX: 100,
   RELATED_MAX: 6,
+  VERSE_REF_MAX: 80,
+  VERSE_TEXT_MAX: 800,
+  VERSES_MAX: 20,
+  CATEGORY_MAX: 60,
 });
 
 export const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;

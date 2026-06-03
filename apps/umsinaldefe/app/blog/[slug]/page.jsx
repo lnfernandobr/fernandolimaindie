@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
-import { getPost, POST_SLUGS, categoryLabel } from '@/lib/content/blog.js';
+import { getSignal } from '@/lib/content/api.js';
+import { categoryLabel } from '@/lib/content/categories.js';
 import { INTENT_SLUGS, INTENT_LABELS } from '@/lib/content/intents.js';
 import { buildMetadata } from '@/lib/seo/metadata.js';
 import {
@@ -18,26 +19,7 @@ import { IntentNav } from '@/components/IntentNav.jsx';
 import { AudioPlayer } from '@/components/AudioPlayer.jsx';
 import { isTtsConfigured } from '@/lib/media/elevenlabs.js';
 
-export const revalidate = 86400;
-
-export async function generateStaticParams() {
-  return POST_SLUGS.map((slug) => ({ slug }));
-}
-
-export async function generateMetadata({ params }) {
-  const { slug } = await params;
-  const post = getPost(slug);
-  if (!post) return {};
-  return buildMetadata({
-    title: post.title,
-    description: post.excerpt,
-    path: `/blog/${slug}`,
-    type: 'article',
-    image: post.image?.src ?? undefined,
-    publishedTime: post.publishedAt,
-    modifiedTime: post.updatedAt,
-  });
-}
+export const dynamic = 'force-dynamic';
 
 /** Extrai os H2s do bodyHtml pra montar o índice (TOC). */
 function extractHeadings(html) {
@@ -58,17 +40,48 @@ function injectHeadingIds(html) {
   });
 }
 
+/** Estima minutos de leitura (~200 palavras/min) a partir do bodyHtml. */
+function readingMinutes(html) {
+  const words = (html ?? '').replace(/<[^>]+>/g, ' ').trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 200));
+}
+
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  let post;
+  try {
+    post = await getSignal(slug);
+  } catch {
+    return {};
+  }
+  return buildMetadata({
+    title: post.title,
+    description: post.answer,
+    path: `/blog/${slug}`,
+    type: 'article',
+    image: post.imageUrl ?? undefined,
+    publishedTime: post.publishedAt?.toISOString(),
+    modifiedTime: post.updatedAt?.toISOString(),
+  });
+}
+
 export default async function BlogPostPage({ params }) {
   const { slug } = await params;
-  const post = getPost(slug);
-  if (!post) notFound();
+
+  let post;
+  try {
+    post = await getSignal(slug);
+  } catch {
+    notFound();
+  }
 
   const path = `/blog/${slug}`;
   const catLabel = categoryLabel(post.category);
-  const intentSlug = post.relatedIntent ? INTENT_SLUGS[post.relatedIntent] : null;
-  const intentLabel = post.relatedIntent ? INTENT_LABELS[post.relatedIntent] : null;
+  const intentSlug = post.intent ? INTENT_SLUGS[post.intent] : null;
+  const intentLabel = post.intent ? INTENT_LABELS[post.intent] : null;
   const headings = extractHeadings(post.bodyHtml);
   const bodyWithIds = injectHeadingIds(post.bodyHtml);
+  const readMins = readingMinutes(post.bodyHtml);
 
   const breadcrumbs = [
     { name: 'Início', path: '/' },
@@ -80,13 +93,13 @@ export default async function BlogPostPage({ params }) {
     breadcrumbLd(breadcrumbs),
     articleLd({
       headline: post.title,
-      description: post.excerpt,
+      description: post.answer,
       path,
-      image: post.image?.src,
-      datePublished: post.publishedAt,
-      dateModified: post.updatedAt,
+      image: post.imageUrl,
+      datePublished: post.publishedAt?.toISOString(),
+      dateModified: post.updatedAt?.toISOString() ?? post.publishedAt?.toISOString(),
     }),
-    speakableLd(['#answer', '#key-takeaways']),
+    speakableLd(['#answer']),
     post.faq?.length ? faqLd(post.faq) : null,
   ];
 
@@ -116,16 +129,15 @@ export default async function BlogPostPage({ params }) {
           </div>
           <h1 itemProp="headline">{post.title}</h1>
           <p className="t-faint" style={{ marginTop: 'var(--space-2)' }}>
-            {post.readMins} min de leitura
+            {readMins} min de leitura
           </p>
         </header>
 
-        {/* Imagem de capa */}
-        {post.image?.src && (
+        {post.imageUrl && (
           <figure className="post-hero">
             <img
-              src={post.image.src}
-              alt={post.image.alt || post.title}
+              src={post.imageUrl}
+              alt={post.title}
               loading="eager"
               decoding="async"
               width={1200}
@@ -140,17 +152,7 @@ export default async function BlogPostPage({ params }) {
         </div>
 
         {/* Resposta direta (answer-first, speakable) */}
-        <p id="answer" className="lede" itemProp="description">{post.excerpt}</p>
-
-        {/* Pontos-chave (key takeaways) */}
-        {post.keyTakeaways?.length > 0 && (
-          <aside id="key-takeaways" className="key-takeaways" aria-label="Pontos-chave">
-            <strong>Pontos-chave deste artigo:</strong>
-            <ul>
-              {post.keyTakeaways.map((t, i) => <li key={i}>{t}</li>)}
-            </ul>
-          </aside>
-        )}
+        <p id="answer" className="lede" itemProp="description">{post.answer}</p>
 
         {/* Índice (TOC) */}
         {headings.length >= 3 && (
@@ -194,7 +196,7 @@ export default async function BlogPostPage({ params }) {
         )}
       </article>
 
-      <IntentNav currentKey={post.relatedIntent ?? undefined} />
+      <IntentNav currentKey={post.intent ?? undefined} />
     </main>
   );
 }
