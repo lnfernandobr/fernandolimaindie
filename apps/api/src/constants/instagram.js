@@ -62,8 +62,8 @@ export const INSTAGRAM_VIDEO = Object.freeze({
   REQUEST_VARIANTS: Object.freeze(['short', 'long', 'both']),
   // Render
   XFADE_MS: 750, // duração da transição entre cenas (mais longa = mais fluida)
-  ZOOM_MAX: 1.08, // zoom final do Ken Burns (suave, corta menos a imagem)
-  UPSCALE: 1.25, // pré-upscale leve antes do zoompan (anti-jitter) sem estourar CPU/RAM
+  ZOOM_MAX: 1.12, // zoom final do Ken Burns (movimento contínuo, sem corte agressivo)
+  UPSCALE: 1.6, // supersampling do input do zoompan — quanto maior, mais suave (menos stepping)
   MUSIC_VOLUME: 0.15, // volume da trilha sob a narração
   // Cena / áudio
   SCENE_PADDING_MS: 600, // respiro depois que a narração da cena termina

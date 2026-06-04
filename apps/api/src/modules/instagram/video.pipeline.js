@@ -239,7 +239,7 @@ export const renderVariant = async ({ post, channel, handle, variant }) => {
       });
 
       const clip = path.join(tmp, `clip-${i}.mp4`);
-      await ff.renderSceneClip({ image: img.path, durationMs: durMs, variant, assFile, output: clip });
+      await ff.renderSceneClip({ image: img.path, durationMs: durMs, variant, assFile, sceneIndex: i, output: clip });
 
       clips.push(clip);
       segments.push(seg);

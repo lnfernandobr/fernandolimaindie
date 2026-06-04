@@ -130,17 +130,41 @@ export const narrationOnly = async (narration, output, totalMs) => {
 
 // ── Vídeo ──────────────────────────────────────────────────────────────────
 
-// Clipe de UMA cena: Ken Burns (cobre o frame da variante) + legenda .ass opcional.
-export const renderSceneClip = async ({ image, durationMs, variant, assFile, output }) => {
-  const v = INSTAGRAM_VIDEO.VARIANTS[variant];
-  const frames = framesFor(durationMs);
+// Ken Burns com movimento variado por cena: zoom suave + pan (lateral/vertical/diagonal).
+// O pan distribui o movimento em 2 eixos e, com o supersampling (UPSCALE), disfarça o
+// stepping de pixel inteiro do zoompan — fica fluido em vez de "travado".
+const kenBurnsFilter = ({ v, frames, sceneIndex }) => {
   const incr = ((ZOOM_MAX - 1) / frames).toFixed(6);
+  const z = `min(zoom+${incr},${ZOOM_MAX})`;
+  const t = `on/${frames}`;
+  // fatores de posição do recorte (0..1). Mantidos entre 0.15 e 0.85 pra nunca
+  // estourar a borda (o zoompan tem ~1px de overflow se for ao limite exato).
+  const cx = `(iw-iw/zoom)*0.5`;
+  const cy = `(ih-ih/zoom)*0.5`;
+  const lr = `(iw-iw/zoom)*(0.15+0.7*${t})`; // pan horizontal →
+  const rl = `(iw-iw/zoom)*(0.85-0.7*${t})`; // pan horizontal ←
+  const td = `(ih-ih/zoom)*(0.15+0.7*${t})`; // pan vertical ↓
+  const bu = `(ih-ih/zoom)*(0.85-0.7*${t})`; // pan vertical ↑
+  const patterns = [
+    { x: cx, y: cy }, // zoom-in centralizado
+    { x: lr, y: cy }, // zoom + pan horizontal →
+    { x: cx, y: td }, // zoom + pan vertical ↓
+    { x: rl, y: bu }, // zoom + pan diagonal ↖
+  ];
+  const p = patterns[sceneIndex % patterns.length];
   const coverW = Math.round(v.width * UPSCALE);
   const coverH = Math.round(v.height * UPSCALE);
-  const kenBurns =
+  return (
     `[0:v]scale=${coverW}:${coverH}:force_original_aspect_ratio=increase,crop=${coverW}:${coverH},` +
-    `zoompan=z='min(zoom+${incr},${ZOOM_MAX})':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':` +
-    `d=${frames}:s=${v.width}x${v.height}:fps=${FPS},format=yuv420p`;
+    `zoompan=z='${z}':x='${p.x}':y='${p.y}':d=${frames}:s=${v.width}x${v.height}:fps=${FPS},format=yuv420p`
+  );
+};
+
+// Clipe de UMA cena: Ken Burns (cobre o frame da variante) + legenda .ass opcional.
+export const renderSceneClip = async ({ image, durationMs, variant, assFile, sceneIndex = 0, output }) => {
+  const v = INSTAGRAM_VIDEO.VARIANTS[variant];
+  const frames = framesFor(durationMs);
+  const kenBurns = kenBurnsFilter({ v, frames, sceneIndex });
   const filter = assFile ? `${kenBurns},ass=${assFile}[v]` : `${kenBurns}[v]`;
   await run(FFMPEG, [
     '-y', '-i', image,
