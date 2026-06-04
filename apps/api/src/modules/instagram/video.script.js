@@ -1,10 +1,11 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { env } from '../../config/env.js';
+import { logger } from '../../config/logger.js';
 import { badRequest } from '../../errors/factories.js';
 import { INSTAGRAM_ERRORS, INSTAGRAM_VIDEO } from '../../constants/instagram.js';
 import { prompts } from './prompts.js';
 
-const MAX_TOKENS = 5000; // roteiro longo (até ~36 cenas) cabe aqui
+const MAX_TOKENS = 8000; // roteiro longo (até ~36 cenas) com folga
 const TEMPERATURE = 0.8;
 
 const buildClient = () => {
@@ -12,25 +13,44 @@ const buildClient = () => {
   return new Anthropic({ apiKey: env.ANTHROPIC_API_KEY });
 };
 
-const stripFences = (text) =>
-  text
-    .replace(/^```json\s*/i, '')
-    .replace(/^```\s*/i, '')
-    .replace(/\s*```$/i, '')
-    .trim();
-
-const extractText = (message) => {
-  const block = message?.content?.find((c) => c.type === 'text');
-  if (!block?.text) throw badRequest(INSTAGRAM_ERRORS.ANTHROPIC_INVALID_OUTPUT);
-  return stripFences(block.text);
-};
-
-const parseJson = (raw) => {
-  try {
-    return JSON.parse(raw);
-  } catch {
-    throw badRequest(INSTAGRAM_ERRORS.ANTHROPIC_INVALID_OUTPUT);
-  }
+// Tool (structured output): o Claude devolve um objeto JS já válido — sem parse de texto,
+// então narração/roteiro com aspas e quebras de linha não quebram mais o JSON.
+const SCRIPT_TOOL = {
+  name: 'emit_video_script',
+  description: 'Emit the final structured faceless video script.',
+  input_schema: {
+    type: 'object',
+    properties: {
+      title: { type: 'string' },
+      bgColor: { type: 'string' },
+      musicMood: { type: 'string' },
+      visualAnchors: {
+        type: 'object',
+        properties: {
+          medium: { type: 'string' },
+          palette: { type: 'string' },
+          lighting: { type: 'string' },
+          lensOrTechnique: { type: 'string' },
+          composition: { type: 'string' },
+          texture: { type: 'string' },
+          reference: { type: 'string' },
+        },
+      },
+      scenes: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            narration: { type: 'string' },
+            imagePrompt: { type: 'string' },
+            onScreenText: { type: 'string' },
+          },
+          required: ['narration', 'imagePrompt'],
+        },
+      },
+    },
+    required: ['scenes', 'visualAnchors'],
+  },
 };
 
 const truncate = (value, limit) => {
@@ -129,6 +149,13 @@ export const generateVideoScript = async ({ post, channel, variant }) => {
     temperature: TEMPERATURE,
     system,
     messages: [{ role: 'user', content: user }],
+    tools: [SCRIPT_TOOL],
+    tool_choice: { type: 'tool', name: SCRIPT_TOOL.name },
   });
-  return validateScript(parseJson(extractText(message)), sceneCount);
+  const toolUse = message?.content?.find((c) => c.type === 'tool_use');
+  if (!toolUse?.input) {
+    logger.warn({ variant, stopReason: message?.stop_reason }, 'video script: sem tool_use no retorno');
+    throw badRequest(INSTAGRAM_ERRORS.ANTHROPIC_INVALID_OUTPUT);
+  }
+  return validateScript(toolUse.input, sceneCount);
 };

@@ -5,7 +5,7 @@ import { badRequest } from '../../errors/factories.js';
 import { INSTAGRAM_ERRORS } from '../../constants/instagram.js';
 import { prompts } from './prompts.js';
 
-const MAX_TOKENS = 8000; // folga p/ captions longos (ex: orações completas) sem truncar
+const MAX_TOKENS = 8000;
 const TEMPERATURE = 0.7;
 
 const buildClient = () => {
@@ -13,37 +13,54 @@ const buildClient = () => {
   return new Anthropic({ apiKey: env.ANTHROPIC_API_KEY });
 };
 
-const stripFences = (text) =>
-  text
-    .replace(/^```json\s*/i, '')
-    .replace(/^```\s*/i, '')
-    .replace(/\s*```$/i, '')
-    .trim();
-
-// Extrai o primeiro objeto JSON balanceado do texto, tolerando preâmbulo/sufixo
-// do modelo. Respeita strings (aspas/escape) pra não fechar em chave dentro de texto.
-const extractJsonObject = (text) => {
-  const start = text.indexOf('{');
-  if (start === -1) return null;
-  let depth = 0;
-  let inStr = false;
-  let esc = false;
-  for (let i = start; i < text.length; i += 1) {
-    const ch = text[i];
-    if (inStr) {
-      if (esc) esc = false;
-      else if (ch === '\\') esc = true;
-      else if (ch === '"') inStr = false;
-    } else if (ch === '"') {
-      inStr = true;
-    } else if (ch === '{') {
-      depth += 1;
-    } else if (ch === '}') {
-      depth -= 1;
-      if (depth === 0) return text.slice(start, i + 1);
-    }
-  }
-  return null; // não fechou → resposta truncada
+// Tool (structured output): o Claude preenche os campos via tool_use, e o SDK devolve
+// um objeto JS já válido — sem parse de texto, então captions/orações com aspas e quebras
+// de linha não quebram mais o JSON.
+const PLAN_TOOL = {
+  name: 'emit_carousel_plan',
+  description: 'Emit the final structured Instagram carousel plan.',
+  input_schema: {
+    type: 'object',
+    properties: {
+      title: { type: 'string' },
+      designConcept: { type: 'string' },
+      visualAnchors: {
+        type: 'object',
+        properties: {
+          medium: { type: 'string' },
+          palette: { type: 'string' },
+          lighting: { type: 'string' },
+          lensOrTechnique: { type: 'string' },
+          composition: { type: 'string' },
+          texture: { type: 'string' },
+          reference: { type: 'string' },
+        },
+      },
+      slides: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            role: { type: 'string', enum: ['hook', 'body', 'cta'] },
+            text: { type: 'string' },
+            imageSubject: { type: 'string' },
+            imageScene: { type: 'string' },
+          },
+          required: ['role', 'text', 'imageSubject', 'imageScene'],
+        },
+      },
+      caption: { type: 'string' },
+      hashtags: {
+        type: 'object',
+        properties: {
+          high: { type: 'array', items: { type: 'string' } },
+          medium: { type: 'array', items: { type: 'string' } },
+          low: { type: 'array', items: { type: 'string' } },
+        },
+      },
+    },
+    required: ['title', 'slides', 'caption', 'visualAnchors', 'hashtags'],
+  },
 };
 
 export const generateCarouselPlan = async ({ channel, topic, brief, slidesCount }) => {
@@ -55,22 +72,14 @@ export const generateCarouselPlan = async ({ channel, topic, brief, slidesCount 
     temperature: TEMPERATURE,
     system,
     messages: [{ role: 'user', content: user }],
+    tools: [PLAN_TOOL],
+    tool_choice: { type: 'tool', name: PLAN_TOOL.name },
   });
 
-  const block = message?.content?.find((c) => c.type === 'text');
-  const raw = block?.text ? stripFences(block.text) : '';
-  const json = extractJsonObject(raw);
-  if (!json) {
-    logger.warn(
-      { topic, stopReason: message?.stop_reason, len: raw.length, tail: raw.slice(-180) },
-      'carousel plan: JSON não extraível (provável truncamento)',
-    );
+  const toolUse = message?.content?.find((c) => c.type === 'tool_use');
+  if (!toolUse?.input) {
+    logger.warn({ topic, stopReason: message?.stop_reason }, 'carousel plan: sem tool_use no retorno');
     throw badRequest(INSTAGRAM_ERRORS.ANTHROPIC_INVALID_OUTPUT);
   }
-  try {
-    return JSON.parse(json);
-  } catch (err) {
-    logger.warn({ topic, err: err.message, head: json.slice(0, 180) }, 'carousel plan: JSON.parse falhou');
-    throw badRequest(INSTAGRAM_ERRORS.ANTHROPIC_INVALID_OUTPUT);
-  }
+  return toolUse.input;
 };
