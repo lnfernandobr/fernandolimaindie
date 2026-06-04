@@ -79,6 +79,7 @@ const validateScript = (raw, sceneCount) => {
   return {
     title: truncate(raw.title, 100),
     bgColor: normalizeColor(raw.bgColor),
+    musicMood: truncate(raw.musicMood, 120),
     visualAnchors: normalizeAnchors(raw.visualAnchors),
     scenes,
   };
@@ -95,6 +96,7 @@ export const buildMockScript = ({ post, variant }) => {
   return {
     title: truncate(post.title || post.topic, 100),
     bgColor: '#111418',
+    musicMood: 'calm acoustic hopeful',
     visualAnchors: normalizeAnchors({
       medium: 'documentary photograph on 35mm film',
       palette: 'muted earth tones',

@@ -199,6 +199,7 @@ const videoScriptUser = ({ post, variant, sceneCount, targetSeconds }) => {
     '{',
     '  "title": string,            // short internal title (pt-BR, max 100 chars)',
     '  "bgColor": string,          // ONE hex color from the palette, fallback background. ex: "#1A1A1A"',
+    '  "musicMood": string,        // 2-4 EN keywords for the ideal background track. ex: "calm acoustic hopeful" / "tense cinematic" / "uplifting lofi chill"',
     '  "visualAnchors": {          // ENGLISH, applied to EVERY scene image for coherence',
     '    "medium": string, "palette": string, "lighting": string,',
     '    "lensOrTechnique": string, "composition": string, "texture": string, "reference": string',

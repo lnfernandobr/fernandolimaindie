@@ -9,6 +9,10 @@ const postIdParamSchema = z.object({
   postId: z.string().regex(/^[a-f0-9]{24}$/i),
 });
 
+const generateVideoBodySchema = z.object({
+  variant: z.enum(['short', 'long', 'both']).default('short'),
+});
+
 const listPostsQuerySchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
   limit: z.coerce
@@ -34,6 +38,7 @@ export const handleGetPost = async (req, res) => {
 
 export const handleGenerateVideo = async (req, res) => {
   const { postId } = postIdParamSchema.parse(req.params);
-  const result = await startVideoGeneration({ postId });
+  const { variant } = generateVideoBodySchema.parse(req.body ?? {});
+  const result = await startVideoGeneration({ postId, variant });
   res.status(HTTP_STATUS.ACCEPTED).json(result);
 };

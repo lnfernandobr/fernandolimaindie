@@ -283,7 +283,10 @@ const runPostJob = async ({ channelDoc, item, itemId, startMs }) => {
       runDurationMs: Date.now() - startMs,
     });
     if (channelDoc.autoVideo) {
-      startVideoGeneration({ postId: String(post._id) }).catch((err) =>
+      startVideoGeneration({
+        postId: String(post._id),
+        variant: channelDoc.videoVariant || 'short',
+      }).catch((err) =>
         logger.error({ err: err.message, postId: String(post._id) }, 'auto video generation failed'),
       );
     }

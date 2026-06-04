@@ -7,218 +7,275 @@ import { INSTAGRAM_DEFAULTS, INSTAGRAM_ERRORS, INSTAGRAM_VIDEO } from '../../con
 import { badRequest } from '../../errors/factories.js';
 import { uploadBuffer, downloadBuffer } from '../media/media.s3.js';
 import { generateSpeech } from '../media/media.elevenlabs.js';
+import { generateVideoScript, buildMockScript, sceneCountFor } from './video.script.js';
+import { generateSceneImage } from './video.image.js';
+import { transcribeWords, buildSceneAss } from './video.captions.js';
 import * as ff from './video.ffmpeg.js';
 
 const MUSIC_EXT = /\.(mp3|m4a|aac|wav|ogg)$/i;
-
-const isMockMode = () => env.MEDIA_MOCK_MODE || !env.ELEVENLABS_API_KEY;
+const SCENE_COLORS = ['#1f2937', '#4b5563', '#7c2d12', '#365314', '#1e3a5f', '#3b0764', '#7f1d1d', '#134e4a'];
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const isMock = () => env.MEDIA_MOCK_MODE === true;
+const hasAnthropic = () => !!env.ANTHROPIC_API_KEY;
+const hasOpenAI = () => !!env.OPENAI_API_KEY;
+const hasElevenLabs = () => !!env.ELEVENLABS_API_KEY;
 
-// Erros transitórios valem retry; permissão/auth/validação (4xx) não adianta repetir.
-const isRetryableTtsError = (err) => {
+const sceneDuration = (narrationMs) =>
+  Math.max(narrationMs + INSTAGRAM_VIDEO.SCENE_PADDING_MS, INSTAGRAM_VIDEO.SCENE_MIN_MS);
+
+const mockSceneMs = (text) => {
+  const words = String(text ?? '').trim().split(/\s+/).filter(Boolean).length;
+  if (!words) return INSTAGRAM_VIDEO.SCENE_FALLBACK_MS;
+  return Math.min(Math.max(words * 360, INSTAGRAM_VIDEO.SCENE_MIN_MS), 9000);
+};
+
+const isRetryable = (err) => {
   const m = String(err?.message ?? '');
   return /\b(429|5\d\d)\b/.test(m) || /timeout|ETIMEDOUT|ECONNRESET|fetch failed|network/i.test(m);
 };
 
-// Gera a narração de um slide com retry exponencial pra erros transitórios.
-const ttsWithRetry = async (text) => {
+const withRetry = async (fn, retries, backoffMs) => {
   let lastErr;
-  for (let attempt = 0; attempt <= INSTAGRAM_VIDEO.TTS_RETRIES; attempt += 1) {
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
     try {
-      return await generateSpeech(text);
+      return await fn();
     } catch (err) {
       lastErr = err;
-      if (!isRetryableTtsError(err) || attempt === INSTAGRAM_VIDEO.TTS_RETRIES) break;
-      await sleep(INSTAGRAM_VIDEO.TTS_RETRY_BACKOFF_MS * (attempt + 1));
+      if (!isRetryable(err) || attempt === retries) break;
+      await sleep(backoffMs * (attempt + 1));
     }
   }
   throw lastErr;
 };
 
-// Duração final do slide no vídeo: narração + respiro, com piso mínimo.
-const slideDuration = (narrationMs) =>
-  Math.max(narrationMs + INSTAGRAM_VIDEO.SLIDE_PADDING_MS, INSTAGRAM_VIDEO.SLIDE_MIN_MS);
+const MUSIC_STOPWORDS = new Set([
+  'the', 'and', 'for', 'with', 'free', 'music', 'copyright', 'royalty', 'sound', 'sounds',
+  'background', 'mp3', 'video', 'videos', 'beat', 'beats', 'type', 'release', 'audio',
+  'library', 'official', 'non', 'commercial', 'use', 'feat', 'remix', 'version',
+]);
 
-// Em mock, estima a duração pela quantidade de palavras pra a prévia parecer real.
-const mockNarrationMs = (text) => {
-  const words = String(text ?? '').trim().split(/\s+/).filter(Boolean).length;
-  if (!words) return INSTAGRAM_VIDEO.SLIDE_FALLBACK_MS;
-  return Math.min(Math.max(words * 360, INSTAGRAM_VIDEO.SLIDE_MIN_MS), 9000);
-};
+const tokenize = (s) =>
+  String(s ?? '')
+    .toLowerCase()
+    .split(/[^a-z]+/)
+    .filter((w) => w.length > 2 && !MUSIC_STOPWORDS.has(w));
 
-const fetchImage = async (url, dest) => {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`${INSTAGRAM_ERRORS.VIDEO_FAILED}: download ${res.status} ${url}`);
-  await writeFile(dest, Buffer.from(await res.arrayBuffer()));
-  return dest;
-};
-
-const pickMusic = async () => {
-  const dir = path.isAbsolute(env.INSTAGRAM_MUSIC_DIR)
+const musicDir = () =>
+  path.isAbsolute(env.INSTAGRAM_MUSIC_DIR)
     ? env.INSTAGRAM_MUSIC_DIR
     : path.resolve(process.cwd(), env.INSTAGRAM_MUSIC_DIR);
+
+// Escolhe a faixa cujo NOME melhor casa com o mood do roteiro (não aleatório).
+// Empate ou nenhum match: sorteia entre as melhores pra dar variedade.
+const selectMusic = async (mood) => {
+  let files;
   try {
-    const files = (await readdir(dir)).filter((f) => MUSIC_EXT.test(f));
-    if (!files.length) return null;
-    return path.join(dir, files[Math.floor(Math.random() * files.length)]);
+    files = (await readdir(musicDir())).filter((f) => MUSIC_EXT.test(f));
   } catch {
     return null;
   }
+  if (!files.length) return null;
+
+  const moodWords = new Set(tokenize(mood));
+  const scored = files.map((f) => ({
+    f,
+    score: moodWords.size ? tokenize(f).filter((w) => moodWords.has(w)).length : 0,
+  }));
+  const max = Math.max(...scored.map((s) => s.score));
+  const pool = max > 0 ? scored.filter((s) => s.score === max) : scored;
+  const chosen = pool[Math.floor(Math.random() * pool.length)].f;
+  return path.join(musicDir(), chosen);
 };
 
 const uploadFile = async (file, key, contentType) =>
   uploadBuffer({ key, buffer: await readFile(file), contentType });
 
-// Resolve a narração de UM slide: reusa do cache no S3 (retoma de onde parou),
-// senão gera via TTS (com retry) e cacheia. Falha definitiva -> null (vira silêncio).
-const resolveSlideNarration = async ({ tmp, text, index, cacheKey, postId }) => {
-  let buffer = null;
+// ── Roteiro (com cache no S3) ──────────────────────────────────────────────
+const resolveScript = async ({ post, channel, variant, base }) => {
+  const key = `${base}/${variant}/${INSTAGRAM_VIDEO.SCRIPT_FILE}`;
   try {
-    buffer = await downloadBuffer(cacheKey);
+    const cached = await downloadBuffer(key);
+    if (cached) return JSON.parse(cached.toString('utf8'));
   } catch (err) {
-    logger.warn({ err: err.message, postId, slide: index }, 'falha ao consultar cache de narração');
+    logger.warn({ err: err.message, variant }, 'falha ao ler roteiro do cache');
   }
-  if (buffer) {
-    logger.info({ postId, slide: index }, 'narração reusada do cache');
-  } else {
-    try {
-      buffer = await ttsWithRetry(text);
-      await uploadBuffer({
-        key: cacheKey,
-        buffer,
-        contentType: INSTAGRAM_VIDEO.AUDIO_CONTENT_TYPE,
-      }).catch((err) =>
-        logger.warn({ err: err.message, postId, slide: index }, 'falha ao cachear narração'),
-      );
-    } catch (err) {
-      logger.warn({ err: err.message, postId, slide: index }, 'TTS falhou — slide sairá sem narração');
-      return null;
-    }
-  }
-  const narr = path.join(tmp, `narr-${index}.mp3`);
-  await writeFile(narr, buffer);
-  return narr;
+  const script =
+    isMock() || !hasAnthropic()
+      ? buildMockScript({ post, variant })
+      : await generateVideoScript({ post, channel, variant });
+  await uploadBuffer({
+    key,
+    buffer: Buffer.from(JSON.stringify(script)),
+    contentType: 'application/json',
+  }).catch((err) => logger.warn({ err: err.message, variant }, 'falha ao cachear roteiro'));
+  return script;
 };
 
-// Monta a trilha (narração por slide + opcional música) e devolve a duração de
-// cada slide pra dirigir o vídeo (A/V sincronizado). Resiliente: TTS que falha
-// vira silêncio; narração já feita é reusada do S3 num novo disparo.
-const buildSoundtrack = async ({ tmp, slides, mock, handle, postId }) => {
-  const segments = [];
-  const perSlideMs = [];
-  let ttsFailures = 0;
-
-  for (let i = 0; i < slides.length; i += 1) {
-    const text = String(slides[i].text ?? '').trim();
-    const seg = path.join(tmp, `seg-${i}.mp3`);
-
-    let narr = null;
-    if (!mock && text) {
-      const cacheKey = `${INSTAGRAM_DEFAULTS.S3_PREFIX}/${handle}/${postId}/${INSTAGRAM_VIDEO.NARRATION_PREFIX}/slide-${i}.mp3`;
-      narr = await resolveSlideNarration({ tmp, text, index: i, cacheKey, postId });
-      if (!narr) ttsFailures += 1;
-    }
-
-    if (narr) {
-      const durMs = slideDuration(await ff.probeDurationMs(narr));
-      await ff.padAudioToDuration(narr, seg, durMs);
-      perSlideMs.push(durMs);
-    } else {
-      // mock, slide sem texto, ou TTS falhou: silêncio
-      const durMs = mock ? slideDuration(mockNarrationMs(text)) : INSTAGRAM_VIDEO.SLIDE_FALLBACK_MS;
-      await ff.makeSilence(seg, durMs);
-      perSlideMs.push(durMs);
-    }
-    segments.push(seg);
-  }
-
-  const narrationFile = path.join(tmp, 'narration.mp3');
-  await ff.concatAudio(segments, narrationFile);
-
-  const music = await pickMusic();
-  let audioFile = narrationFile;
-  if (music) {
-    const mixed = path.join(tmp, 'soundtrack.mp3');
-    await ff.mixMusic(narrationFile, music, mixed);
-    audioFile = mixed;
-  }
-  return { audioFile, perSlideMs, ttsFailures };
-};
-
-const renderFormat = async ({ tmp, format, images, perSlideMs, texts, audioFile }) => {
-  const clips = [];
-  for (let i = 0; i < images.length; i += 1) {
-    const textFile = texts[i]
-      ? await ff.writeTextFile(tmp, `t-${format.key}-${i}.txt`, texts[i])
-      : null;
-    const clip = path.join(tmp, `clip-${format.key}-${i}.mp4`);
-    await ff.renderSlideClip({
-      image: images[i],
-      durationMs: perSlideMs[i],
-      format,
-      textFile,
-      fontFile: env.INSTAGRAM_VIDEO_FONT_FILE,
-      output: clip,
-    });
-    clips.push(clip);
-  }
-  const joined = path.join(tmp, `joined-${format.key}.mp4`);
-  await ff.concatClips(clips, path.join(tmp, `list-${format.key}.txt`), joined);
-
-  const final = path.join(tmp, format.file);
-  await ff.muxVideoAudio(joined, audioFile, final);
-  return final;
-};
-
-// Monta os dois formatos de vídeo a partir dos slides já no S3 e devolve as URLs.
-export const renderPostVideo = async ({ postId, handle, slides: rawSlides }) => {
-  const slides = [...(rawSlides ?? [])].sort((a, b) => a.index - b.index);
-  if (!slides.length) throw badRequest(INSTAGRAM_ERRORS.VIDEO_NO_SLIDES);
-
-  const mock = isMockMode();
-  const tmp = await mkdtemp(path.join(os.tmpdir(), 'ig-video-'));
-  logger.info({ postId, mock, slides: slides.length }, 'instagram video render started');
+// ── Imagem da cena (cache + retry + fallback) ──────────────────────────────
+const resolveSceneImage = async ({ tmp, script, scene, index, total, variant, base, lastGood }) => {
+  const dest = path.join(tmp, `scene-${index}.png`);
+  const key = `${base}/${variant}/${INSTAGRAM_VIDEO.SCENE_PREFIX}/scene-${index}.png`;
 
   try {
-    const images = [];
-    for (let i = 0; i < slides.length; i += 1) {
-      images.push(await fetchImage(slides[i].imageUrl, path.join(tmp, `slide-${i}.png`)));
+    const cached = await downloadBuffer(key);
+    if (cached) {
+      await writeFile(dest, cached);
+      return { path: dest, ok: true };
     }
+  } catch (err) {
+    logger.warn({ err: err.message, index }, 'falha ao ler imagem do cache');
+  }
 
-    const { audioFile, perSlideMs, ttsFailures } = await buildSoundtrack({
-      tmp,
-      slides,
-      mock,
-      handle,
-      postId,
-    });
-    if (ttsFailures > 0) {
-      logger.warn(
-        { postId, ttsFailures, total: slides.length },
-        'vídeo gerado com slides sem narração (TTS falhou) — só com a trilha musical',
-      );
-    }
-    const texts = slides.map((s) => String(s.text ?? '').trim());
+  if (isMock() || !hasOpenAI()) {
+    await ff.makeSolidImage(SCENE_COLORS[index % SCENE_COLORS.length], variant, dest);
+    return { path: dest, ok: true };
+  }
 
-    const base = `${INSTAGRAM_DEFAULTS.S3_PREFIX}/${handle}/${postId}`;
-    const result = { durationMs: perSlideMs.reduce((a, b) => a + b, 0) };
-
-    for (const format of INSTAGRAM_VIDEO.FORMATS) {
-      const file = await renderFormat({ tmp, format, images, perSlideMs, texts, audioFile });
-      const url = await uploadFile(file, `${base}/${format.file}`, INSTAGRAM_VIDEO.VIDEO_CONTENT_TYPE);
-      if (format.key === 'vertical') result.verticalUrl = url;
-      else result.squareUrl = url;
-    }
-
-    result.narrationUrl = await uploadFile(
-      audioFile,
-      `${base}/${INSTAGRAM_VIDEO.NARRATION_FILE}`,
-      INSTAGRAM_VIDEO.AUDIO_CONTENT_TYPE,
+  try {
+    const buffer = await withRetry(
+      () =>
+        generateSceneImage({
+          visualAnchors: script.visualAnchors,
+          scene,
+          sceneNumber: index + 1,
+          totalScenes: total,
+          variant,
+        }),
+      INSTAGRAM_VIDEO.IMAGE_RETRIES,
+      1500,
     );
+    await writeFile(dest, buffer);
+    await uploadFile(dest, key, INSTAGRAM_VIDEO.IMAGE_CONTENT_TYPE).catch((err) =>
+      logger.warn({ err: err.message, index }, 'falha ao cachear imagem'),
+    );
+    return { path: dest, ok: true };
+  } catch (err) {
+    logger.warn({ err: err.message, index }, 'imagem falhou — usando fallback');
+    if (lastGood) return { path: lastGood, ok: false }; // reusa a cena anterior
+    await ff.makeSolidImage(script.bgColor, variant, dest); // 1ª cena: cor da paleta
+    return { path: dest, ok: false };
+  }
+};
 
-    logger.info({ postId, durationMs: result.durationMs }, 'instagram video render finished');
-    return result;
+// ── Narração da cena (cache + retry + fallback p/ silêncio) ─────────────────
+const resolveSceneNarration = async ({ tmp, scene, index, variant, base }) => {
+  const text = String(scene.narration ?? '').trim();
+  if (isMock() || !hasElevenLabs() || !text) return null;
+  const dest = path.join(tmp, `narr-${index}.mp3`);
+  const key = `${base}/${variant}/${INSTAGRAM_VIDEO.NARRATION_PREFIX}/scene-${index}.mp3`;
+
+  try {
+    const cached = await downloadBuffer(key);
+    if (cached) {
+      await writeFile(dest, cached);
+      return dest;
+    }
+  } catch (err) {
+    logger.warn({ err: err.message, index }, 'falha ao ler narração do cache');
+  }
+
+  try {
+    const buffer = await withRetry(
+      () => generateSpeech(text),
+      INSTAGRAM_VIDEO.TTS_RETRIES,
+      INSTAGRAM_VIDEO.TTS_RETRY_BACKOFF_MS,
+    );
+    await writeFile(dest, buffer);
+    await uploadFile(dest, key, INSTAGRAM_VIDEO.AUDIO_CONTENT_TYPE).catch((err) =>
+      logger.warn({ err: err.message, index }, 'falha ao cachear narração'),
+    );
+    return dest;
+  } catch (err) {
+    logger.warn({ err: err.message, index }, 'TTS falhou — cena sem narração');
+    return null;
+  }
+};
+
+// Renderiza UMA variante (curto ou longo) ponta a ponta.
+export const renderVariant = async ({ post, channel, handle, variant }) => {
+  const v = INSTAGRAM_VIDEO.VARIANTS[variant];
+  if (!v) throw badRequest(INSTAGRAM_ERRORS.VIDEO_VARIANT_INVALID);
+
+  const tmp = await mkdtemp(path.join(os.tmpdir(), `ig-v2-${variant}-`));
+  const base = `${INSTAGRAM_DEFAULTS.S3_PREFIX}/${handle}/${post.id || post._id}`;
+  logger.info({ postId: post.id || String(post._id), variant }, 'video v2 render started');
+
+  try {
+    const script = await resolveScript({ post, channel, variant, base });
+    const total = Math.min(script.scenes.length, sceneCountFor(variant));
+    const scenes = script.scenes.slice(0, total);
+
+    const clips = [];
+    const segments = [];
+    const durations = [];
+    let lastGood = null;
+    let voiced = 0;
+
+    for (let i = 0; i < scenes.length; i += 1) {
+      const scene = scenes[i];
+      const img = await resolveSceneImage({ tmp, script, scene, index: i, total, variant, base, lastGood });
+      if (img.ok) lastGood = img.path;
+
+      const narr = await resolveSceneNarration({ tmp, scene, index: i, variant, base });
+      const seg = path.join(tmp, `seg-${i}.mp3`);
+      let durMs;
+      if (narr) {
+        voiced += 1;
+        durMs = sceneDuration(await ff.probeDurationMs(narr));
+        await ff.padAudioToDuration(narr, seg, durMs);
+      } else {
+        durMs = isMock() ? sceneDuration(mockSceneMs(scene.narration)) : INSTAGRAM_VIDEO.SCENE_FALLBACK_MS;
+        await ff.makeSilence(seg, durMs);
+      }
+
+      const words = narr ? await transcribeWords(narr) : [];
+      const assFile = await buildSceneAss({
+        words,
+        durationMs: durMs,
+        variant,
+        fallbackText: scene.onScreenText,
+        outFile: path.join(tmp, `cap-${i}.ass`),
+      });
+
+      const clip = path.join(tmp, `clip-${i}.mp4`);
+      await ff.renderSceneClip({ image: img.path, durationMs: durMs, variant, assFile, output: clip });
+
+      clips.push(clip);
+      segments.push(seg);
+      durations.push(durMs);
+    }
+
+    const narrationFile = path.join(tmp, 'narration.mp3');
+    await ff.crossfadeAudio(segments, narrationFile);
+    const totalMs = await ff.probeDurationMs(narrationFile);
+
+    const music = await selectMusic(script.musicMood);
+    let audioFile;
+    if (music) {
+      audioFile = path.join(tmp, 'soundtrack.mp3');
+      await ff.mixSoundtrack({
+        narration: narrationFile,
+        music,
+        output: audioFile,
+        totalMs,
+        hasVoice: voiced > 0,
+      });
+    } else {
+      audioFile = path.join(tmp, 'audio.mp3');
+      await ff.narrationOnly(narrationFile, audioFile, totalMs);
+    }
+
+    const joined = path.join(tmp, 'joined.mp4');
+    await ff.xfadeClips(clips, durations, joined);
+
+    const final = path.join(tmp, v.file);
+    await ff.muxVideoAudio(joined, audioFile, final);
+
+    const url = await uploadFile(final, `${base}/${v.file}`, INSTAGRAM_VIDEO.VIDEO_CONTENT_TYPE);
+    const durationMs = await ff.probeDurationMs(final);
+    logger.info({ variant, durationMs, scenes: scenes.length }, 'video v2 render finished');
+    return { url, durationMs, scenes: scenes.length };
   } finally {
     await rm(tmp, { recursive: true, force: true }).catch(() => {});
   }

@@ -3,7 +3,7 @@ import { INSTAGRAM_ERRORS, INSTAGRAM_VIDEO } from '../../constants/instagram.js'
 
 const FFMPEG = process.env.FFMPEG_PATH || 'ffmpeg';
 const FFPROBE = process.env.FFPROBE_PATH || 'ffprobe';
-const { FPS, ZOOM_MAX, UPSCALE, XFADE_MS, MUSIC_VOLUME } = INSTAGRAM_VIDEO;
+const { FPS, ZOOM_MAX, UPSCALE, XFADE_MS } = INSTAGRAM_VIDEO;
 
 // Roda um binário e resolve com stdout; rejeita com o fim do stderr em código != 0.
 const run = (bin, args) =>
@@ -77,13 +77,39 @@ export const crossfadeAudio = async (files, output, xfadeMs = XFADE_MS) => {
   return output;
 };
 
-// Mixa a narração com a trilha (em loop, volume baixo) cortando no fim da narração.
-export const mixMusic = async (narration, music, output, volume = MUSIC_VOLUME) => {
+// Trilha profissional: música normalizada (loudnorm) no mesmo volume percebido,
+// com fade in/out, cortada no tamanho do vídeo. Se há locução, a música abaixa
+// sozinha sob a voz (sidechain ducking). Sem voz, fica como fundo discreto.
+export const mixSoundtrack = async ({ narration, music, output, totalMs, hasVoice }) => {
+  const durSec = totalMs / 1000;
+  const fadeOutStart = Math.max(0.1, durSec - 2.5).toFixed(2);
+  const musicBase =
+    `[1:a]loudnorm=I=-26:TP=-1.5:LRA=11,` +
+    `afade=t=in:st=0:d=1.5,afade=t=out:st=${fadeOutStart}:d=2.5`;
+  const filter = hasVoice
+    ? `${musicBase}[m];` +
+      `[0:a]asplit=2[v][sc];` +
+      `[m][sc]sidechaincompress=threshold=0.02:ratio=6:attack=20:release=350[md];` +
+      `[v][md]amix=inputs=2:duration=first:normalize=0[a]`
+    : `${musicBase},volume=0.7[a]`;
   await run(FFMPEG, [
-    '-y', '-i', narration, '-stream_loop', '-1', '-i', music,
-    '-filter_complex',
-    `[1:a]volume=${volume}[m];[0:a][m]amix=inputs=2:duration=first:dropout_transition=0[a]`,
-    '-map', '[a]', '-c:a', 'libmp3lame', '-q:a', '4', output,
+    '-y',
+    '-i', narration,
+    '-stream_loop', '-1', '-i', music,
+    '-filter_complex', filter,
+    '-map', '[a]',
+    '-t', durSec.toFixed(3),
+    '-c:a', 'libmp3lame', '-q:a', '4',
+    output,
+  ]);
+  return output;
+};
+
+// Quando não há música, usa só a narração (cortada no tamanho do vídeo).
+export const narrationOnly = async (narration, output, totalMs) => {
+  await run(FFMPEG, [
+    '-y', '-i', narration, '-t', (totalMs / 1000).toFixed(3),
+    '-c:a', 'libmp3lame', '-q:a', '4', output,
   ]);
   return output;
 };
