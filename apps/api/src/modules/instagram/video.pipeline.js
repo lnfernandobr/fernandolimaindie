@@ -5,8 +5,9 @@ import { env } from '../../config/env.js';
 import { logger } from '../../config/logger.js';
 import { INSTAGRAM_DEFAULTS, INSTAGRAM_ERRORS, INSTAGRAM_VIDEO } from '../../constants/instagram.js';
 import { badRequest } from '../../errors/factories.js';
-import { uploadBuffer, downloadBuffer } from '../media/media.s3.js';
+import { uploadBuffer, downloadBuffer, publicUrl } from '../media/media.s3.js';
 import { generateSpeech } from '../media/media.elevenlabs.js';
+import { hasFal, generateHookClip } from './video.i2v.js';
 import { generateVideoScript, buildMockScript, sceneCountFor } from './video.script.js';
 import { generateSceneImage } from './video.image.js';
 import { transcribeWords, buildSceneAss } from './video.captions.js';
@@ -239,7 +240,37 @@ export const renderVariant = async ({ post, channel, handle, variant }) => {
       });
 
       const clip = path.join(tmp, `clip-${i}.mp4`);
-      await ff.renderSceneClip({ image: img.path, durationMs: durMs, variant, assFile, sceneIndex: i, output: clip });
+      let clipDone = false;
+
+      // Hook (1ª cena): anima a imagem via i2v (fal.ai), se habilitado e a imagem é real.
+      // Cache no S3; qualquer falha cai no Ken Burns (renderSceneClip).
+      if (i === 0 && img.ok && hasFal()) {
+        try {
+          const i2vKey = `${base}/i2v/scene-${i}.mp4`;
+          let vidBuf = await downloadBuffer(i2vKey).catch(() => null);
+          if (!vidBuf) {
+            const imageUrl = publicUrl(`${base}/${INSTAGRAM_VIDEO.SCENE_PREFIX}/scene-${i}.png`);
+            vidBuf = await generateHookClip({
+              imageUrl,
+              prompt: scene.imagePrompt,
+              durationMs: durMs,
+              aspect: INSTAGRAM_VIDEO.VARIANTS[variant].aspect,
+            });
+            await uploadBuffer({ key: i2vKey, buffer: vidBuf, contentType: 'video/mp4' }).catch(() => {});
+          }
+          const vidFile = path.join(tmp, `i2v-${i}.mp4`);
+          await writeFile(vidFile, vidBuf);
+          await ff.renderSceneFromVideo({ video: vidFile, durationMs: durMs, variant, assFile, output: clip });
+          clipDone = true;
+          logger.info({ index: i, variant }, 'hook animado via i2v');
+        } catch (err) {
+          logger.warn({ err: err.message, index: i }, 'i2v falhou — fallback Ken Burns');
+        }
+      }
+
+      if (!clipDone) {
+        await ff.renderSceneClip({ image: img.path, durationMs: durMs, variant, assFile, sceneIndex: i, output: clip });
+      }
 
       clips.push(clip);
       segments.push(seg);

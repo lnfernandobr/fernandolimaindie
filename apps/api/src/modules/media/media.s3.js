@@ -15,6 +15,14 @@ const buildClient = () => {
   });
 };
 
+// URL pública de um objeto no S3 (usada, por ex., pra passar a imagem pro i2v da fal.ai).
+export const publicUrl = (key) => {
+  const base = env.AWS_S3_PUBLIC_URL
+    ? env.AWS_S3_PUBLIC_URL.replace(/\/$/, '')
+    : `https://${env.AWS_S3_BUCKET}.s3.${env.AWS_REGION}.amazonaws.com`;
+  return `${base}/${key}`;
+};
+
 export const uploadBuffer = async ({ key, buffer, contentType }) => {
   const client = buildClient();
   await client.send(
@@ -25,10 +33,7 @@ export const uploadBuffer = async ({ key, buffer, contentType }) => {
       ContentType: contentType,
     }),
   );
-  const base = env.AWS_S3_PUBLIC_URL
-    ? env.AWS_S3_PUBLIC_URL.replace(/\/$/, '')
-    : `https://${env.AWS_S3_BUCKET}.s3.${env.AWS_REGION}.amazonaws.com`;
-  return `${base}/${key}`;
+  return publicUrl(key);
 };
 
 // Baixa um objeto do S3 como Buffer; devolve null se a chave não existir.

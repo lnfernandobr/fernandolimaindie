@@ -177,6 +177,25 @@ export const renderSceneClip = async ({ image, durationMs, variant, assFile, sce
   return output;
 };
 
+// Cena a partir de um clipe i2v (Kling/LTX): escala pro frame, segura o último quadro
+// se for mais curto que a cena, aplica a legenda e corta na duração da cena.
+export const renderSceneFromVideo = async ({ video, durationMs, variant, assFile, output }) => {
+  const v = INSTAGRAM_VIDEO.VARIANTS[variant];
+  const base =
+    `[0:v]scale=${v.width}:${v.height}:force_original_aspect_ratio=increase,crop=${v.width}:${v.height},` +
+    `fps=${FPS},tpad=stop_mode=clone:stop_duration=12,format=yuv420p`;
+  const filter = assFile ? `${base},ass=${assFile}[v]` : `${base}[v]`;
+  await run(FFMPEG, [
+    '-y', '-i', video,
+    '-filter_complex', filter,
+    '-map', '[v]', '-t', (durationMs / 1000).toFixed(3), '-r', String(FPS), '-an',
+    '-threads', '1', '-filter_threads', '1',
+    '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '20', '-pix_fmt', 'yuv420p',
+    output,
+  ]);
+  return output;
+};
+
 // Transições variadas (rotacionam por cena) pra dar dinâmica e fluidez.
 const XFADE_TRANSITIONS = [
   'fade', 'smoothleft', 'dissolve', 'smoothup', 'slideright',
