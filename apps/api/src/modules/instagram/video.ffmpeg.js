@@ -5,10 +5,12 @@ const FFMPEG = process.env.FFMPEG_PATH || 'ffmpeg';
 const FFPROBE = process.env.FFPROBE_PATH || 'ffprobe';
 const { FPS, ZOOM_MAX, UPSCALE, XFADE_MS } = INSTAGRAM_VIDEO;
 
-// Roda um binário e resolve com stdout; rejeita com o fim do stderr em código != 0.
+// Roda ffmpeg/ffprobe com prioridade baixa (nice) pra não competir com a API pela
+// CPU — o host é pequeno (2GB / 2 vCPU) e o render é pesado. Resolve com stdout;
+// rejeita com o fim do stderr em código != 0.
 const run = (bin, args) =>
   new Promise((resolve, reject) => {
-    const child = spawn(bin, args, { stdio: ['ignore', 'pipe', 'pipe'] });
+    const child = spawn('nice', ['-n', '19', bin, ...args], { stdio: ['ignore', 'pipe', 'pipe'] });
     let out = '';
     let err = '';
     child.stdout.on('data', (d) => (out += d));
@@ -132,6 +134,7 @@ export const renderSceneClip = async ({ image, durationMs, variant, assFile, out
     '-y', '-i', image,
     '-filter_complex', filter,
     '-map', '[v]', '-r', String(FPS), '-an',
+    '-threads', '1', '-filter_threads', '1',
     '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '20', '-pix_fmt', 'yuv420p',
     output,
   ]);
@@ -161,6 +164,7 @@ export const xfadeClips = async (clips, durationsMs, output, xfadeMs = XFADE_MS)
     '-filter_complex', parts.join(';'),
     '-map', '[vout]',
     '-r', String(FPS),
+    '-threads', '1', '-filter_threads', '1',
     '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '20', '-pix_fmt', 'yuv420p',
     output,
   ]);
