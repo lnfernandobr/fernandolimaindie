@@ -5,13 +5,36 @@ import { env } from '../../config/env.js';
 import { logger } from '../../config/logger.js';
 import { INSTAGRAM_DEFAULTS, INSTAGRAM_ERRORS, INSTAGRAM_VIDEO } from '../../constants/instagram.js';
 import { badRequest } from '../../errors/factories.js';
-import { uploadBuffer } from '../media/media.s3.js';
+import { uploadBuffer, downloadBuffer } from '../media/media.s3.js';
 import { generateSpeech } from '../media/media.elevenlabs.js';
 import * as ff from './video.ffmpeg.js';
 
 const MUSIC_EXT = /\.(mp3|m4a|aac|wav|ogg)$/i;
 
 const isMockMode = () => env.MEDIA_MOCK_MODE || !env.ELEVENLABS_API_KEY;
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// Erros transitórios valem retry; permissão/auth/validação (4xx) não adianta repetir.
+const isRetryableTtsError = (err) => {
+  const m = String(err?.message ?? '');
+  return /\b(429|5\d\d)\b/.test(m) || /timeout|ETIMEDOUT|ECONNRESET|fetch failed|network/i.test(m);
+};
+
+// Gera a narração de um slide com retry exponencial pra erros transitórios.
+const ttsWithRetry = async (text) => {
+  let lastErr;
+  for (let attempt = 0; attempt <= INSTAGRAM_VIDEO.TTS_RETRIES; attempt += 1) {
+    try {
+      return await generateSpeech(text);
+    } catch (err) {
+      lastErr = err;
+      if (!isRetryableTtsError(err) || attempt === INSTAGRAM_VIDEO.TTS_RETRIES) break;
+      await sleep(INSTAGRAM_VIDEO.TTS_RETRY_BACKOFF_MS * (attempt + 1));
+    }
+  }
+  throw lastErr;
+};
 
 // Duração final do slide no vídeo: narração + respiro, com piso mínimo.
 const slideDuration = (narrationMs) =>
@@ -47,25 +70,64 @@ const pickMusic = async () => {
 const uploadFile = async (file, key, contentType) =>
   uploadBuffer({ key, buffer: await readFile(file), contentType });
 
-// Gera a trilha de áudio (narração por slide + opcional música) e devolve a
-// duração de cada slide pra dirigir o vídeo. Garante A/V sincronizado.
-const buildSoundtrack = async ({ tmp, slides, mock }) => {
+// Resolve a narração de UM slide: reusa do cache no S3 (retoma de onde parou),
+// senão gera via TTS (com retry) e cacheia. Falha definitiva -> null (vira silêncio).
+const resolveSlideNarration = async ({ tmp, text, index, cacheKey, postId }) => {
+  let buffer = null;
+  try {
+    buffer = await downloadBuffer(cacheKey);
+  } catch (err) {
+    logger.warn({ err: err.message, postId, slide: index }, 'falha ao consultar cache de narração');
+  }
+  if (buffer) {
+    logger.info({ postId, slide: index }, 'narração reusada do cache');
+  } else {
+    try {
+      buffer = await ttsWithRetry(text);
+      await uploadBuffer({
+        key: cacheKey,
+        buffer,
+        contentType: INSTAGRAM_VIDEO.AUDIO_CONTENT_TYPE,
+      }).catch((err) =>
+        logger.warn({ err: err.message, postId, slide: index }, 'falha ao cachear narração'),
+      );
+    } catch (err) {
+      logger.warn({ err: err.message, postId, slide: index }, 'TTS falhou — slide sairá sem narração');
+      return null;
+    }
+  }
+  const narr = path.join(tmp, `narr-${index}.mp3`);
+  await writeFile(narr, buffer);
+  return narr;
+};
+
+// Monta a trilha (narração por slide + opcional música) e devolve a duração de
+// cada slide pra dirigir o vídeo (A/V sincronizado). Resiliente: TTS que falha
+// vira silêncio; narração já feita é reusada do S3 num novo disparo.
+const buildSoundtrack = async ({ tmp, slides, mock, handle, postId }) => {
   const segments = [];
   const perSlideMs = [];
+  let ttsFailures = 0;
 
   for (let i = 0; i < slides.length; i += 1) {
     const text = String(slides[i].text ?? '').trim();
     const seg = path.join(tmp, `seg-${i}.mp3`);
 
-    if (mock || !text) {
-      const durMs = mock ? slideDuration(mockNarrationMs(text)) : INSTAGRAM_VIDEO.SLIDE_FALLBACK_MS;
-      await ff.makeSilence(seg, durMs);
-      perSlideMs.push(durMs);
-    } else {
-      const narr = path.join(tmp, `narr-${i}.mp3`);
-      await writeFile(narr, await generateSpeech(text));
+    let narr = null;
+    if (!mock && text) {
+      const cacheKey = `${INSTAGRAM_DEFAULTS.S3_PREFIX}/${handle}/${postId}/${INSTAGRAM_VIDEO.NARRATION_PREFIX}/slide-${i}.mp3`;
+      narr = await resolveSlideNarration({ tmp, text, index: i, cacheKey, postId });
+      if (!narr) ttsFailures += 1;
+    }
+
+    if (narr) {
       const durMs = slideDuration(await ff.probeDurationMs(narr));
       await ff.padAudioToDuration(narr, seg, durMs);
+      perSlideMs.push(durMs);
+    } else {
+      // mock, slide sem texto, ou TTS falhou: silêncio
+      const durMs = mock ? slideDuration(mockNarrationMs(text)) : INSTAGRAM_VIDEO.SLIDE_FALLBACK_MS;
+      await ff.makeSilence(seg, durMs);
       perSlideMs.push(durMs);
     }
     segments.push(seg);
@@ -75,11 +137,13 @@ const buildSoundtrack = async ({ tmp, slides, mock }) => {
   await ff.concatAudio(segments, narrationFile);
 
   const music = await pickMusic();
-  if (!music) return { audioFile: narrationFile, perSlideMs, hasMusic: false };
-
-  const mixed = path.join(tmp, 'soundtrack.mp3');
-  await ff.mixMusic(narrationFile, music, mixed);
-  return { audioFile: mixed, perSlideMs, hasMusic: true };
+  let audioFile = narrationFile;
+  if (music) {
+    const mixed = path.join(tmp, 'soundtrack.mp3');
+    await ff.mixMusic(narrationFile, music, mixed);
+    audioFile = mixed;
+  }
+  return { audioFile, perSlideMs, ttsFailures };
 };
 
 const renderFormat = async ({ tmp, format, images, perSlideMs, texts, audioFile }) => {
@@ -122,7 +186,19 @@ export const renderPostVideo = async ({ postId, handle, slides: rawSlides }) => 
       images.push(await fetchImage(slides[i].imageUrl, path.join(tmp, `slide-${i}.png`)));
     }
 
-    const { audioFile, perSlideMs } = await buildSoundtrack({ tmp, slides, mock });
+    const { audioFile, perSlideMs, ttsFailures } = await buildSoundtrack({
+      tmp,
+      slides,
+      mock,
+      handle,
+      postId,
+    });
+    if (ttsFailures > 0) {
+      logger.warn(
+        { postId, ttsFailures, total: slides.length },
+        'vídeo gerado com slides sem narração (TTS falhou) — só com a trilha musical',
+      );
+    }
     const texts = slides.map((s) => String(s.text ?? '').trim());
 
     const base = `${INSTAGRAM_DEFAULTS.S3_PREFIX}/${handle}/${postId}`;

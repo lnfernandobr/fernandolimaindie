@@ -31,6 +31,9 @@ export const INSTAGRAM_VIDEO = Object.freeze({
     Object.freeze({ key: 'square', width: 1080, height: 1080, file: 'video-1x1.mp4' }),
   ]),
   NARRATION_FILE: 'narration.mp3',
+  NARRATION_PREFIX: 'narration', // subpasta no S3 com a narração por slide (cache p/ retomar)
+  TTS_RETRIES: 2, // tentativas extras de TTS em erro transitório (429/5xx/rede)
+  TTS_RETRY_BACKOFF_MS: 1500, // base do backoff entre tentativas de TTS
   SLIDE_PADDING_MS: 600, // tempo extra de imagem depois que a narração termina
   SLIDE_MIN_MS: 3000, // duração mínima de um slide
   SLIDE_FALLBACK_MS: 4000, // duração quando não há narração (mock / slide sem texto)

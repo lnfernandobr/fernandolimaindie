@@ -1,4 +1,4 @@
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import { env } from '../../config/env.js';
 import { MEDIA_ERRORS } from '../../constants/media.js';
 
@@ -29,4 +29,20 @@ export const uploadBuffer = async ({ key, buffer, contentType }) => {
     ? env.AWS_S3_PUBLIC_URL.replace(/\/$/, '')
     : `https://${env.AWS_S3_BUCKET}.s3.${env.AWS_REGION}.amazonaws.com`;
   return `${base}/${key}`;
+};
+
+// Baixa um objeto do S3 como Buffer; devolve null se a chave não existir.
+export const downloadBuffer = async (key) => {
+  const client = buildClient();
+  try {
+    const res = await client.send(
+      new GetObjectCommand({ Bucket: env.AWS_S3_BUCKET, Key: key }),
+    );
+    const chunks = [];
+    for await (const chunk of res.Body) chunks.push(chunk);
+    return Buffer.concat(chunks);
+  } catch (err) {
+    if (err?.name === 'NoSuchKey' || err?.$metadata?.httpStatusCode === 404) return null;
+    throw err;
+  }
 };
