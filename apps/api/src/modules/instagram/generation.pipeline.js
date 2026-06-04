@@ -14,6 +14,7 @@ import { toPublicPost } from './posts.dto.js';
 import { generateCarouselPlan } from './generation.anthropic.js';
 import { generateSlideImage } from './generation.openai.js';
 import { buildMockPlan } from './generation.mock.js';
+import { startVideoGeneration } from './video.service.js';
 import { prompts } from './prompts.js';
 
 const PROMPT_LOG_LIMIT = 2000;
@@ -281,6 +282,11 @@ const runPostJob = async ({ channelDoc, item, itemId, startMs }) => {
       error: null,
       runDurationMs: Date.now() - startMs,
     });
+    if (channelDoc.autoVideo) {
+      startVideoGeneration({ postId: String(post._id) }).catch((err) =>
+        logger.error({ err: err.message, postId: String(post._id) }, 'auto video generation failed'),
+      );
+    }
     return toPublicPost(post.toObject());
   } catch (err) {
     await markQueueItem(itemId, {

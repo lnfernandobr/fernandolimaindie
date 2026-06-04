@@ -17,6 +17,7 @@ import {
   handleUpdateQueueItem,
 } from './queue.controller.js';
 import {
+  handleGenerateVideo,
   handleGetPost,
   handleListPostsByChannel,
 } from './posts.controller.js';
@@ -77,6 +78,11 @@ export const createInstagramRouter = () => {
     `${INSTAGRAM_PATHS.POSTS}${INSTAGRAM_PATHS.POST_PARAM}`,
     requireAuth,
     asyncHandler(handleGetPost),
+  );
+  router.post(
+    `${INSTAGRAM_PATHS.POSTS}${INSTAGRAM_PATHS.POST_PARAM}${INSTAGRAM_PATHS.VIDEO}`,
+    requireAuth,
+    asyncHandler(handleGenerateVideo),
   );
 
   return router;

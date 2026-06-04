@@ -31,6 +31,7 @@ const channelSchema = new Schema(
       max: INSTAGRAM_LIMITS.SLIDES_MAX,
     },
     active: { type: Boolean, default: true },
+    autoVideo: { type: Boolean, default: false },
   },
   { timestamps: true, strict: true },
 );

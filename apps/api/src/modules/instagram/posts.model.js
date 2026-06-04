@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { INSTAGRAM_LIMITS } from '../../constants/instagram.js';
+import { INSTAGRAM_LIMITS, INSTAGRAM_VIDEO } from '../../constants/instagram.js';
 
 const POST_COLLECTION = 'InstagramPost';
 
@@ -29,6 +29,19 @@ const visualAnchorsSchema = new Schema(
   { _id: false },
 );
 
+const videoSchema = new Schema(
+  {
+    status: { type: String, default: INSTAGRAM_VIDEO.STATUS.IDLE },
+    verticalUrl: { type: String, default: null },
+    squareUrl: { type: String, default: null },
+    narrationUrl: { type: String, default: null },
+    durationMs: { type: Number, default: 0 },
+    error: { type: String, default: null },
+    generatedAt: { type: Date, default: null },
+  },
+  { _id: false },
+);
+
 const hashtagTiersSchema = new Schema(
   {
     high: { type: [String], default: [] },
@@ -53,6 +66,7 @@ const instagramPostSchema = new Schema(
     hashtags: { type: [String], default: [] },
     hashtagTiers: { type: hashtagTiersSchema, default: () => ({}) },
     coverImageUrl: { type: String, default: null },
+    video: { type: videoSchema, default: () => ({ status: INSTAGRAM_VIDEO.STATUS.IDLE }) },
     status: { type: String, default: 'ready' },
   },
   { timestamps: true },

@@ -55,6 +55,7 @@ const emptyChannelForm = () => ({
   captionStyle: '',
   slidesPerCarousel: 5,
   active: true,
+  autoVideo: false,
 });
 
 const fromChannel = (channel) => ({
@@ -66,6 +67,7 @@ const fromChannel = (channel) => ({
   captionStyle: channel.captionStyle ?? '',
   slidesPerCarousel: channel.slidesPerCarousel ?? 5,
   active: channel.active !== false,
+  autoVideo: channel.autoVideo === true,
 });
 
 const toPayload = (form) => ({
@@ -77,6 +79,7 @@ const toPayload = (form) => ({
   captionStyle: form.captionStyle.trim() || undefined,
   slidesPerCarousel: Number(form.slidesPerCarousel) || 5,
   active: !!form.active,
+  autoVideo: !!form.autoVideo,
 });
 
 function ChannelForm({ session, channel, onSaved, onCancel, onDeleted }) {
@@ -173,6 +176,12 @@ function ChannelForm({ session, channel, onSaved, onCancel, onDeleted }) {
           <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <input type="checkbox" checked={!!form.active} onChange={setBool('active')} />
             Canal ativo
+          </span>
+        </label>
+        <label className="ig-field full" style={{ alignSelf: 'end' }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <input type="checkbox" checked={!!form.autoVideo} onChange={setBool('autoVideo')} />
+            Gerar vídeo automático (após cada post)
           </span>
         </label>
       </div>
@@ -273,6 +282,92 @@ const STEP_LABELS = {
   save: 'Persistir',
 };
 
+function VideoBlock({ session, postId }) {
+  const [video, setVideo] = useState(null);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState(null);
+
+  const load = useCallback(async () => {
+    try {
+      const post = await coreFetch(session, `/posts/${postId}`);
+      setVideo(post.video ?? null);
+    } catch (e) {
+      setErr(e.message);
+    }
+  }, [session, postId]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  const status = video?.status ?? 'idle';
+
+  useEffect(() => {
+    if (status !== 'generating') return undefined;
+    const id = setInterval(load, 3000);
+    return () => clearInterval(id);
+  }, [status, load]);
+
+  const generate = async () => {
+    setBusy(true);
+    setErr(null);
+    try {
+      await coreFetch(session, `/posts/${postId}/video`, { method: 'POST' });
+      await load();
+    } catch (e) {
+      setErr(e.message);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const videoStyle = (vertical) => ({
+    width: '100%',
+    maxWidth: vertical ? 160 : 240,
+    maxHeight: 320,
+    borderRadius: 8,
+    background: '#000',
+    display: 'block',
+    marginTop: 4,
+  });
+
+  return (
+    <div className="ig-post-block">
+      <div className="ig-post-label">
+        Vídeo <span style={{ color: 'var(--muted)', fontWeight: 400 }}>Reels 9:16 + Feed 1:1</span>
+        {(status === 'idle' || status === 'error') && (
+          <button className="btn-sm" style={{ marginLeft: 8 }} disabled={busy} onClick={generate}>
+            🎬 {busy ? 'Enviando…' : status === 'error' ? 'Tentar de novo' : 'Gerar vídeo'}
+          </button>
+        )}
+      </div>
+      {status === 'generating' && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--muted)', fontSize: '0.8rem' }}>
+          <span className="ig-spinner" /> gerando vídeo… (narração + render dos 2 formatos)
+        </div>
+      )}
+      {status === 'error' && video?.error && (
+        <p style={{ color: 'var(--red)', fontSize: '0.78rem' }}>{video.error}</p>
+      )}
+      {status === 'ready' && (
+        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'flex-start' }}>
+          <div>
+            <div className="lbl"><strong>Reels 9:16</strong></div>
+            <video src={video.verticalUrl} controls playsInline style={videoStyle(true)} />
+            <a href={video.verticalUrl} target="_blank" rel="noreferrer">baixar</a>
+          </div>
+          <div>
+            <div className="lbl"><strong>Feed 1:1</strong></div>
+            <video src={video.squareUrl} controls playsInline style={videoStyle(false)} />
+            <a href={video.squareUrl} target="_blank" rel="noreferrer">baixar</a>
+          </div>
+        </div>
+      )}
+      {err && <p style={{ color: 'var(--red)', fontSize: '0.78rem' }}>{err}</p>}
+    </div>
+  );
+}
+
 function InlinePostInfo({ session, postId }) {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -358,6 +453,8 @@ function InlinePostInfo({ session, postId }) {
           ))}
         </div>
       </div>
+
+      <VideoBlock session={session} postId={post.id} />
 
       <div className="ig-post-block">
         <div className="ig-post-label">
@@ -712,6 +809,7 @@ function PostDetailRow({ session, postId }) {
                 ))}
               </div>
               <div style={{ marginTop: 12, display: 'grid', gap: 10 }}>
+                <VideoBlock session={session} postId={postId} />
                 {post.designConcept && (
                   <div>
                     <strong style={{ fontSize: '0.82rem' }}>Conceito visual</strong>

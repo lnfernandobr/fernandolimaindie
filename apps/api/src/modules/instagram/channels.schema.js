@@ -23,6 +23,7 @@ export const createChannelSchema = z.object({
     .max(INSTAGRAM_LIMITS.SLIDES_MAX)
     .optional(),
   active: z.boolean().default(true),
+  autoVideo: z.boolean().default(false),
 });
 
 export const updateChannelSchema = createChannelSchema.partial();

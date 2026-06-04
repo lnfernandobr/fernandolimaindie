@@ -3,6 +3,7 @@ import { HTTP_STATUS } from '../../constants/http.js';
 import { INSTAGRAM_LIMITS } from '../../constants/instagram.js';
 import { channelIdParamSchema } from './queue.schema.js';
 import { getPostById, listPostsForChannel } from './posts.service.js';
+import { startVideoGeneration } from './video.service.js';
 
 const postIdParamSchema = z.object({
   postId: z.string().regex(/^[a-f0-9]{24}$/i),
@@ -29,4 +30,10 @@ export const handleGetPost = async (req, res) => {
   const { postId } = postIdParamSchema.parse(req.params);
   const post = await getPostById(postId);
   res.status(HTTP_STATUS.OK).json(post);
+};
+
+export const handleGenerateVideo = async (req, res) => {
+  const { postId } = postIdParamSchema.parse(req.params);
+  const result = await startVideoGeneration({ postId });
+  res.status(HTTP_STATUS.ACCEPTED).json(result);
 };

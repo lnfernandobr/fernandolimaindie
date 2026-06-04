@@ -14,6 +14,16 @@ const toHashtagTiers = (tiers) => ({
   low: tiers?.low ?? [],
 });
 
+const toVideo = (video) => ({
+  status: video?.status ?? 'idle',
+  verticalUrl: video?.verticalUrl ?? null,
+  squareUrl: video?.squareUrl ?? null,
+  narrationUrl: video?.narrationUrl ?? null,
+  durationMs: video?.durationMs ?? 0,
+  error: video?.error ?? null,
+  generatedAt: video?.generatedAt ?? null,
+});
+
 const toVisualAnchors = (anchors) => ({
   medium: anchors?.medium ?? '',
   palette: anchors?.palette ?? '',
@@ -42,6 +52,7 @@ export const toPublicPost = (doc) =>
         hashtags: doc.hashtags ?? [],
         hashtagTiers: toHashtagTiers(doc.hashtagTiers),
         coverImageUrl: doc.coverImageUrl ?? null,
+        video: toVideo(doc.video),
         status: doc.status,
         createdAt: doc.createdAt,
         updatedAt: doc.updatedAt,
@@ -57,5 +68,6 @@ export const toPostSummary = (doc) =>
         title: doc.title ?? '',
         slideCount: (doc.slides ?? []).length,
         coverImageUrl: doc.coverImageUrl ?? null,
+        videoStatus: doc.video?.status ?? 'idle',
         createdAt: doc.createdAt,
       };

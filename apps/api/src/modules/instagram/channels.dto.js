@@ -11,6 +11,7 @@ export const toPublicChannel = (doc) =>
         captionStyle: doc.captionStyle ?? '',
         slidesPerCarousel: doc.slidesPerCarousel,
         active: doc.active,
+        autoVideo: doc.autoVideo ?? false,
         createdAt: doc.createdAt,
         updatedAt: doc.updatedAt,
       };

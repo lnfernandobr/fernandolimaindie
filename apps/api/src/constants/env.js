@@ -23,6 +23,8 @@ export const ENV_DEFAULTS = Object.freeze({
   CRON_GENERATION_DAILY_LIMIT: 5,
   ELEVENLABS_API_KEY: '',
   ELEVENLABS_VOICE_ID: 'pNInz6obpgDQGcFmaJgB',
+  INSTAGRAM_VIDEO_FONT_FILE: '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',
+  INSTAGRAM_MUSIC_DIR: 'assets/music',
   AWS_ACCESS_KEY_ID: '',
   AWS_SECRET_ACCESS_KEY: '',
   AWS_REGION: 'us-east-1',

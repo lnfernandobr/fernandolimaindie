@@ -13,3 +13,8 @@ export const listPostsByChannel = ({ channelId, skip, limit }) =>
 
 export const countPostsByChannel = (channelId) =>
   InstagramPostModel.countDocuments({ channelId });
+
+export const updatePostVideo = (id, patch) => {
+  const set = Object.fromEntries(Object.entries(patch).map(([k, v]) => [`video.${k}`, v]));
+  return InstagramPostModel.findByIdAndUpdate(id, { $set: set }, { new: true }).lean();
+};
