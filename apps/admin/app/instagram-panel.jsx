@@ -56,6 +56,7 @@ const emptyChannelForm = () => ({
   slidesPerCarousel: 5,
   active: true,
   autoVideo: false,
+  videoVariant: 'short',
 });
 
 const fromChannel = (channel) => ({
@@ -68,6 +69,7 @@ const fromChannel = (channel) => ({
   slidesPerCarousel: channel.slidesPerCarousel ?? 5,
   active: channel.active !== false,
   autoVideo: channel.autoVideo === true,
+  videoVariant: channel.videoVariant ?? 'short',
 });
 
 const toPayload = (form) => ({
@@ -80,6 +82,7 @@ const toPayload = (form) => ({
   slidesPerCarousel: Number(form.slidesPerCarousel) || 5,
   active: !!form.active,
   autoVideo: !!form.autoVideo,
+  videoVariant: form.videoVariant || 'short',
 });
 
 function ChannelForm({ session, channel, onSaved, onCancel, onDeleted }) {
@@ -184,6 +187,14 @@ function ChannelForm({ session, channel, onSaved, onCancel, onDeleted }) {
             Gerar vídeo automático (após cada post)
           </span>
         </label>
+        <label className="ig-field">
+          Formato do vídeo automático
+          <select value={form.videoVariant} onChange={set('videoVariant')}>
+            <option value="short">Curto 9:16</option>
+            <option value="long">Longo 16:9</option>
+            <option value="both">Ambos</option>
+          </select>
+        </label>
       </div>
       <p style={{ color: 'var(--muted)', fontSize: '0.78rem', marginTop: 12 }}>
         Estilo visual, paleta e hashtags são decididos pela IA por post, com base no tema, nicho e tom de voz.
@@ -282,8 +293,46 @@ const STEP_LABELS = {
   save: 'Persistir',
 };
 
+function VariantCard({ label, aspect, data }) {
+  const status = data?.status ?? 'idle';
+  const vertical = aspect === 'vertical';
+  const style = {
+    width: '100%',
+    maxWidth: vertical ? 170 : 320,
+    maxHeight: 340,
+    borderRadius: 8,
+    background: '#000',
+    display: 'block',
+    marginTop: 4,
+  };
+  return (
+    <div>
+      <div className="lbl">
+        <strong>{label}</strong>
+        {status === 'ready' && data?.durationMs ? ` · ${Math.round(data.durationMs / 1000)}s` : ''}
+      </div>
+      {status === 'generating' && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--muted)', fontSize: '0.76rem' }}>
+          <span className="ig-spinner" /> gerando…
+        </div>
+      )}
+      {status === 'error' && (
+        <p style={{ color: 'var(--red)', fontSize: '0.74rem' }}>{data?.error || 'erro'}</p>
+      )}
+      {status === 'ready' && data?.url && (
+        <>
+          <video src={data.url} controls playsInline style={style} />
+          <a href={data.url} target="_blank" rel="noreferrer">baixar</a>
+        </>
+      )}
+      {status === 'idle' && <div style={{ color: 'var(--muted)', fontSize: '0.74rem' }}>—</div>}
+    </div>
+  );
+}
+
 function VideoBlock({ session, postId }) {
   const [video, setVideo] = useState(null);
+  const [variant, setVariant] = useState('short');
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState(null);
 
@@ -300,19 +349,22 @@ function VideoBlock({ session, postId }) {
     load();
   }, [load]);
 
-  const status = video?.status ?? 'idle';
+  const generating = video?.short?.status === 'generating' || video?.long?.status === 'generating';
 
   useEffect(() => {
-    if (status !== 'generating') return undefined;
-    const id = setInterval(load, 3000);
+    if (!generating) return undefined;
+    const id = setInterval(load, 3500);
     return () => clearInterval(id);
-  }, [status, load]);
+  }, [generating, load]);
 
   const generate = async () => {
     setBusy(true);
     setErr(null);
     try {
-      await coreFetch(session, `/posts/${postId}/video`, { method: 'POST' });
+      await coreFetch(session, `/posts/${postId}/video`, {
+        method: 'POST',
+        body: JSON.stringify({ variant }),
+      });
       await load();
     } catch (e) {
       setErr(e.message);
@@ -321,48 +373,28 @@ function VideoBlock({ session, postId }) {
     }
   };
 
-  const videoStyle = (vertical) => ({
-    width: '100%',
-    maxWidth: vertical ? 160 : 240,
-    maxHeight: 320,
-    borderRadius: 8,
-    background: '#000',
-    display: 'block',
-    marginTop: 4,
-  });
-
   return (
     <div className="ig-post-block">
       <div className="ig-post-label">
-        Vídeo <span style={{ color: 'var(--muted)', fontWeight: 400 }}>Reels 9:16 + Feed 1:1</span>
-        {(status === 'idle' || status === 'error') && (
-          <button className="btn-sm" style={{ marginLeft: 8 }} disabled={busy} onClick={generate}>
-            🎬 {busy ? 'Enviando…' : status === 'error' ? 'Tentar de novo' : 'Gerar vídeo'}
-          </button>
-        )}
+        Vídeo <span style={{ color: 'var(--muted)', fontWeight: 400 }}>roteiro IA · imagens novas</span>
+        <select
+          value={variant}
+          onChange={(e) => setVariant(e.target.value)}
+          className="btn-sm"
+          style={{ marginLeft: 8 }}
+        >
+          <option value="short">Curto 9:16</option>
+          <option value="long">Longo 16:9</option>
+          <option value="both">Ambos</option>
+        </select>
+        <button className="btn-sm" style={{ marginLeft: 6 }} disabled={busy || generating} onClick={generate}>
+          🎬 {busy ? 'Enviando…' : generating ? 'Gerando…' : 'Gerar vídeo'}
+        </button>
       </div>
-      {status === 'generating' && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--muted)', fontSize: '0.8rem' }}>
-          <span className="ig-spinner" /> gerando vídeo… (narração + render dos 2 formatos)
-        </div>
-      )}
-      {status === 'error' && video?.error && (
-        <p style={{ color: 'var(--red)', fontSize: '0.78rem' }}>{video.error}</p>
-      )}
-      {status === 'ready' && (
-        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'flex-start' }}>
-          <div>
-            <div className="lbl"><strong>Reels 9:16</strong></div>
-            <video src={video.verticalUrl} controls playsInline style={videoStyle(true)} />
-            <a href={video.verticalUrl} target="_blank" rel="noreferrer">baixar</a>
-          </div>
-          <div>
-            <div className="lbl"><strong>Feed 1:1</strong></div>
-            <video src={video.squareUrl} controls playsInline style={videoStyle(false)} />
-            <a href={video.squareUrl} target="_blank" rel="noreferrer">baixar</a>
-          </div>
-        </div>
-      )}
+      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'flex-start', marginTop: 6 }}>
+        <VariantCard label="Curto 9:16" aspect="vertical" data={video?.short} />
+        <VariantCard label="Longo 16:9" aspect="horizontal" data={video?.long} />
+      </div>
       {err && <p style={{ color: 'var(--red)', fontSize: '0.78rem' }}>{err}</p>}
     </div>
   );
