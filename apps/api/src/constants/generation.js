@@ -16,6 +16,28 @@ export const SEED_KIND_TO_SIGNAL_KIND = Object.freeze({
   'verse-collection': 'verse_collection',
 });
 
+// Ordem em que o cron percorre os tipos e em que a UI lista as cotas.
+export const QUOTA_KIND_ORDER = Object.freeze([
+  'verse-collection',
+  'psalm',
+  'prayer',
+  'devotional',
+  'reflection',
+  'article',
+]);
+
+// Cota diária default por seedKind (soma = 5/dia). Editável pelo admin.
+export const DEFAULT_DAILY_QUOTAS = Object.freeze({
+  'verse-collection': 1,
+  psalm: 1,
+  prayer: 1,
+  devotional: 1,
+  reflection: 0,
+  article: 1,
+});
+
+export const QUOTA_PER_KIND_MAX = 20;
+
 export const GENERATION_DEFAULTS = Object.freeze({
   BATCH_LIMIT: 5,
   BATCH_LIMIT_MAX: 20,

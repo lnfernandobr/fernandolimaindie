@@ -1,6 +1,6 @@
 import { logger } from '../../config/logger.js';
 import { CRON_DEFAULTS, CRON_JOB_NAMES } from '../../constants/cron.js';
-import { GENERATION_OUTCOMES } from '../../constants/generation.js';
+import { GENERATION_OUTCOMES, QUOTA_KIND_ORDER } from '../../constants/generation.js';
 import { generateBatch } from '../generation/generation.service.js';
 import { getGenerationConfig } from '../generation/generation.config.js';
 import { saveRun } from './cron-run.repository.js';
@@ -25,11 +25,16 @@ export const runGenerationJob = async (triggeredBy = CRON_DEFAULTS.TRIGGER_CRON)
   logger.info({ triggeredBy }, 'generation job started');
 
   try {
-    const { dailyLimit } = await getGenerationConfig();
-    const { results } = await generateBatch({
-      limit: dailyLimit,
-      force: false,
-    });
+    const { dailyQuotas } = await getGenerationConfig();
+
+    // Gera até a cota de cada tipo, na ordem definida. Cota 0 = tipo desligado.
+    const results = [];
+    for (const seedKind of QUOTA_KIND_ORDER) {
+      const quota = dailyQuotas[seedKind] ?? 0;
+      if (quota <= 0) continue;
+      const out = await generateBatch({ seedKind, limit: quota, force: false });
+      results.push(...out.results);
+    }
 
     const counts = tallyOutcomes(results);
     const durationMs = Date.now() - start;

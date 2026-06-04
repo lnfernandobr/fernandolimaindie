@@ -4,6 +4,7 @@ import {
   GENERATION_OUTCOMES,
   GENERATION_ERRORS,
   SEED_RUN_STATUS,
+  QUOTA_KIND_ORDER,
 } from '../../constants/generation.js';
 import { CRON_DEFAULTS, CRON_JOB_NAMES } from '../../constants/cron.js';
 import { DEFAULT_LANG } from '../../constants/content.js';
@@ -223,7 +224,8 @@ export const generateBatch = async ({ seedKind, limit, model, force }) => {
   return { processed: results.length, results };
 };
 
-export const countPendingSeeds = async () => {
+// Seeds ativos que ainda não viraram signal publicado (o que o cron processaria).
+const listPendingSeeds = async () => {
   const candidates = await loadAllSeeds();
   const checks = await Promise.all(
     candidates.map(async (seed) => {
@@ -231,20 +233,31 @@ export const countPendingSeeds = async () => {
       return existing?.status === GENERATION_DEFAULTS.STATUS_PUBLISHED ? null : seed;
     }),
   );
-  return checks.filter(Boolean).length;
+  return checks.filter(Boolean);
+};
+
+export const countPendingSeeds = async () => (await listPendingSeeds()).length;
+
+const countPendingByKind = (pending) => {
+  const out = Object.fromEntries(QUOTA_KIND_ORDER.map((k) => [k, 0]));
+  for (const seed of pending) {
+    if (out[seed.seedKind] !== undefined) out[seed.seedKind] += 1;
+  }
+  return out;
 };
 
 export const getGenerationStatus = async () => {
-  const [runs, pendingSeeds, config] = await Promise.all([
+  const [runs, pending, config] = await Promise.all([
     listRecentRuns(CRON_JOB_NAMES.GENERATION, CRON_DEFAULTS.RUN_HISTORY_LIMIT),
-    countPendingSeeds(),
+    listPendingSeeds(),
     getGenerationConfig(),
   ]);
   return {
     enabled: env.CRON_ENABLED,
     schedule: env.CRON_GENERATION_SCHEDULE,
-    dailyLimit: config.dailyLimit,
-    pendingSeeds,
+    dailyQuotas: config.dailyQuotas,
+    pendingSeeds: pending.length,
+    pendingByKind: countPendingByKind(pending),
     recentRuns: runs.map((r) => ({
       triggeredBy: r.triggeredBy,
       ranAt: r.ranAt,

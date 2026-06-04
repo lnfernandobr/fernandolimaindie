@@ -7,6 +7,7 @@ import {
 import {
   SEED_KINDS,
   GENERATION_DEFAULTS,
+  QUOTA_PER_KIND_MAX,
 } from '../../constants/generation.js';
 
 const slugString = z
@@ -130,8 +131,13 @@ export const runOneSchema = z.object({
   force: z.boolean().default(false),
 });
 
+const quotaValue = z.coerce.number().int().min(0).max(QUOTA_PER_KIND_MAX);
+
+// Patch parcial: cada seedKind é opcional; precisa de ao menos um.
 export const updateGenerationConfigSchema = z.object({
-  dailyLimit: z.coerce.number().int().min(1).max(50),
+  dailyQuotas: z
+    .object(Object.fromEntries(SEED_KINDS.map((k) => [k, quotaValue.optional()])))
+    .refine((q) => Object.keys(q).length > 0, { message: 'Informe ao menos uma cota.' }),
 });
 
 export const createSeedSchema = z.object({

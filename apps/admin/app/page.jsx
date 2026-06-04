@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Fragment } from 'react';
 import InstagramPanel from './instagram-panel.jsx';
 import ContentQueuePanel from './content-queue-panel.jsx';
 
@@ -313,10 +313,26 @@ function PostsTable({ posts }) {
 
 // ── Main ─────────────────────────────────────────────────────────────
 
+// Cotas por tipo (seedKind), na ordem/rótulos que o admin mostra.
+const QUOTA_KINDS = [
+  ['verse-collection', 'Bíblia'],
+  ['psalm', 'Salmo'],
+  ['prayer', 'Oração'],
+  ['devotional', 'Devocional'],
+  ['reflection', 'Reflexão'],
+  ['article', 'Blog'],
+];
+
+const QUOTA_INPUT_STYLE = {
+  width: 64, padding: '6px 8px', borderRadius: 6,
+  border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)',
+  color: 'inherit', fontSize: '1rem', textAlign: 'center',
+};
+
 function CronConfigPanel({ session }) {
   const base = session?.coreApiUrl;
   const token = session?.coreApiToken;
-  const [dailyLimit, setDailyLimit] = useState(null);
+  const [quotas, setQuotas] = useState(null);
   const [status, setStatus] = useState(null);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -329,7 +345,7 @@ function CronConfigPanel({ session }) {
         fetch(`${base}/api/v1/generation/config`, { headers: { Authorization: `Bearer ${token}` } }),
         fetch(`${base}/api/v1/generation/status`),
       ]);
-      if (cfgRes.ok) setDailyLimit((await cfgRes.json()).dailyLimit);
+      if (cfgRes.ok) setQuotas((await cfgRes.json()).dailyQuotas ?? {});
       if (stRes.ok) setStatus(await stRes.json());
     } catch { setError('Falha ao carregar a config do cron.'); }
   };
@@ -346,7 +362,15 @@ function CronConfigPanel({ session }) {
       </div>
     );
   }
-  if (dailyLimit === null) return null;
+  if (quotas === null) return null;
+
+  const total = QUOTA_KINDS.reduce((a, [k]) => a + (quotas[k] ?? 0), 0);
+
+  const setQuota = (k, v) => {
+    const n = Math.max(0, Math.min(20, parseInt(v, 10) || 0));
+    setQuotas((q) => ({ ...q, [k]: n }));
+    setSaved(false);
+  };
 
   const save = async () => {
     setSaving(true);
@@ -356,7 +380,7 @@ function CronConfigPanel({ session }) {
       const res = await fetch(`${base}/api/v1/generation/config`, {
         method: 'PATCH',
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ dailyLimit }),
+        body: JSON.stringify({ dailyQuotas: quotas }),
       });
       if (res.ok) { setSaved(true); load(); } else { setError('Não foi possível salvar.'); }
     } catch { setError('Não foi possível salvar.'); }
@@ -366,10 +390,10 @@ function CronConfigPanel({ session }) {
   return (
     <div className="section">
       <div className="section-title">
-        Geração automática (cron) <span className="badge">{dailyLimit} por dia</span>
+        Geração automática (cron) <span className="badge">{total} por dia</span>
       </div>
       <p style={{ color: 'var(--muted)', fontSize: '0.82rem', marginBottom: 14 }}>
-        Quantos conteúdos o cron gera por dia, em ordem de prioridade (maior tráfego primeiro).
+        Quantos conteúdos o cron gera por dia, por tipo. Cota 0 = tipo desligado (ainda dá pra gerar manual na fila).
       </p>
       {status && (
         <div style={{ display: 'flex', gap: 18, flexWrap: 'wrap', marginBottom: 16, fontSize: '0.85rem', color: 'var(--muted)' }}>
@@ -378,15 +402,31 @@ function CronConfigPanel({ session }) {
           <span>Pendentes: <strong>{status.pendingSeeds}</strong></span>
         </div>
       )}
-      <label style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16, fontSize: '0.9rem' }}>
-        Itens por dia:
-        <input
-          type="number" min="1" max="50"
-          value={dailyLimit}
-          onChange={(e) => setDailyLimit(Math.max(1, Math.min(50, parseInt(e.target.value, 10) || 1)))}
-          style={{ width: 80, padding: '6px 8px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)', color: 'inherit', fontSize: '1.1rem' }}
-        />
-      </label>
+      <div
+        style={{
+          display: 'grid', gridTemplateColumns: 'auto 64px auto',
+          gap: '8px 14px', alignItems: 'center', maxWidth: 360, marginBottom: 16,
+        }}
+      >
+        {QUOTA_KINDS.map(([k, label]) => (
+          <Fragment key={k}>
+            <label htmlFor={`quota-${k}`} style={{ fontSize: '0.9rem' }}>{label}</label>
+            <input
+              id={`quota-${k}`}
+              type="number" min="0" max="20"
+              value={quotas[k] ?? 0}
+              onChange={(e) => setQuota(k, e.target.value)}
+              style={QUOTA_INPUT_STYLE}
+            />
+            <span style={{ fontSize: '0.78rem', color: 'var(--muted)' }}>
+              {status?.pendingByKind?.[k] ?? 0} pendentes
+            </span>
+          </Fragment>
+        ))}
+        <strong style={{ fontSize: '0.9rem', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 8 }}>Total/dia</strong>
+        <strong style={{ textAlign: 'center', fontSize: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 8 }}>{total}</strong>
+        <span style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }} />
+      </div>
       <button className="btn-sm" disabled={saving} onClick={save}>
         {saving ? 'Salvando...' : 'Salvar'}
       </button>
