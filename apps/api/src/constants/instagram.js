@@ -26,23 +26,57 @@ export const INSTAGRAM_DEFAULTS = Object.freeze({
 
 export const INSTAGRAM_VIDEO = Object.freeze({
   FPS: 30,
-  FORMATS: Object.freeze([
-    Object.freeze({ key: 'vertical', width: 1080, height: 1920, file: 'video-9x16.mp4' }),
-    Object.freeze({ key: 'square', width: 1080, height: 1080, file: 'video-1x1.mp4' }),
-  ]),
-  NARRATION_FILE: 'narration.mp3',
-  NARRATION_PREFIX: 'narration', // subpasta no S3 com a narração por slide (cache p/ retomar)
-  TTS_RETRIES: 2, // tentativas extras de TTS em erro transitório (429/5xx/rede)
-  TTS_RETRY_BACKOFF_MS: 1500, // base do backoff entre tentativas de TTS
-  SLIDE_PADDING_MS: 600, // tempo extra de imagem depois que a narração termina
-  SLIDE_MIN_MS: 3000, // duração mínima de um slide
-  SLIDE_FALLBACK_MS: 4000, // duração quando não há narração (mock / slide sem texto)
-  NARRATION_GAP_MS: 250, // silêncio inserido entre as narrações de cada slide
+  // Variantes de vídeo. Cada uma define proporção, tamanho de imagem (gpt-image-2),
+  // duração-alvo e densidade de cenas (~1 imagem a cada secondsPerScene).
+  VARIANTS: Object.freeze({
+    short: Object.freeze({
+      key: 'short',
+      label: 'Curto 9:16',
+      width: 1080,
+      height: 1920,
+      aspect: 'vertical',
+      imageSize: '1024x1536', // gpt-image-2 retrato
+      file: 'short-9x16.mp4',
+      targetSeconds: 75,
+      secondsPerScene: 9,
+      minScenes: 6,
+      maxScenes: 12,
+      captionStyle: 'word', // legenda palavra-a-palavra
+    }),
+    long: Object.freeze({
+      key: 'long',
+      label: 'Longo 16:9',
+      width: 1920,
+      height: 1080,
+      aspect: 'horizontal',
+      imageSize: '1536x1024', // gpt-image-2 paisagem
+      file: 'long-16x9.mp4',
+      targetSeconds: 300,
+      secondsPerScene: 10,
+      minScenes: 20,
+      maxScenes: 36,
+      captionStyle: 'discreet', // legenda mais discreta no longo
+    }),
+  }),
+  VARIANT_KEYS: Object.freeze(['short', 'long']),
+  REQUEST_VARIANTS: Object.freeze(['short', 'long', 'both']),
+  // Render
+  XFADE_MS: 500, // duração da transição (crossfade) entre cenas
   ZOOM_MAX: 1.12, // zoom final do Ken Burns (começa em 1.0)
-  UPSCALE: 2, // pré-upscale antes do zoompan, evita o jitter conhecido do filtro
-  BLUR: 28, // raio do boxblur do fundo no formato vertical
+  UPSCALE: 2, // pré-upscale antes do zoompan, evita o jitter do filtro
   MUSIC_VOLUME: 0.15, // volume da trilha sob a narração
-  TEXT_WRAP_CHARS: 26, // largura de quebra do texto queimado
+  // Cena / áudio
+  SCENE_PADDING_MS: 600, // respiro depois que a narração da cena termina
+  SCENE_MIN_MS: 2500, // duração mínima de uma cena
+  SCENE_FALLBACK_MS: 4000, // duração quando não há narração (mock / TTS falhou)
+  // Resiliência
+  TTS_RETRIES: 2, // tentativas extras de TTS em erro transitório (429/5xx/rede)
+  TTS_RETRY_BACKOFF_MS: 1500,
+  IMAGE_RETRIES: 2, // tentativas extras de geração de imagem
+  // S3 (cache por post/variante — retoma de onde parou)
+  SCRIPT_FILE: 'script.json',
+  SCENE_PREFIX: 'scenes', // imagens das cenas
+  NARRATION_PREFIX: 'narration', // narração por cena
   STATUS: Object.freeze({
     IDLE: 'idle',
     GENERATING: 'generating',
@@ -51,6 +85,7 @@ export const INSTAGRAM_VIDEO = Object.freeze({
   }),
   VIDEO_CONTENT_TYPE: 'video/mp4',
   AUDIO_CONTENT_TYPE: 'audio/mpeg',
+  IMAGE_CONTENT_TYPE: 'image/png',
 });
 
 export const INSTAGRAM_QUEUE_STATUS = Object.freeze({
@@ -110,5 +145,8 @@ export const INSTAGRAM_ERRORS = Object.freeze({
   VIDEO_NO_SLIDES: 'Post has no slides to render into video',
   VIDEO_IN_PROGRESS: 'Video generation already in progress for this post',
   VIDEO_FAILED: 'Instagram video generation failed',
+  VIDEO_VARIANT_INVALID: 'Invalid video variant (expected short | long | both)',
+  VIDEO_SCRIPT_FAILED: 'Video script generation failed',
+  VIDEO_IMAGE_FAILED: 'Scene image generation failed',
   FFMPEG_FAILED: 'ffmpeg command failed',
 });

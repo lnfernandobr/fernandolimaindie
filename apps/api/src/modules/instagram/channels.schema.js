@@ -24,6 +24,7 @@ export const createChannelSchema = z.object({
     .optional(),
   active: z.boolean().default(true),
   autoVideo: z.boolean().default(false),
+  videoVariant: z.enum(['short', 'long', 'both']).default('short'),
 });
 
 export const updateChannelSchema = createChannelSchema.partial();

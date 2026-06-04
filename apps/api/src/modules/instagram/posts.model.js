@@ -29,15 +29,22 @@ const visualAnchorsSchema = new Schema(
   { _id: false },
 );
 
-const videoSchema = new Schema(
+const videoVariantSchema = new Schema(
   {
     status: { type: String, default: INSTAGRAM_VIDEO.STATUS.IDLE },
-    verticalUrl: { type: String, default: null },
-    squareUrl: { type: String, default: null },
-    narrationUrl: { type: String, default: null },
+    url: { type: String, default: null },
     durationMs: { type: Number, default: 0 },
+    scenes: { type: Number, default: 0 },
     error: { type: String, default: null },
     generatedAt: { type: Date, default: null },
+  },
+  { _id: false },
+);
+
+const videoSchema = new Schema(
+  {
+    short: { type: videoVariantSchema, default: () => ({ status: INSTAGRAM_VIDEO.STATUS.IDLE }) },
+    long: { type: videoVariantSchema, default: () => ({ status: INSTAGRAM_VIDEO.STATUS.IDLE }) },
   },
   { _id: false },
 );
@@ -66,7 +73,7 @@ const instagramPostSchema = new Schema(
     hashtags: { type: [String], default: [] },
     hashtagTiers: { type: hashtagTiersSchema, default: () => ({}) },
     coverImageUrl: { type: String, default: null },
-    video: { type: videoSchema, default: () => ({ status: INSTAGRAM_VIDEO.STATUS.IDLE }) },
+    video: { type: videoSchema, default: () => ({}) },
     status: { type: String, default: 'ready' },
   },
   { timestamps: true },

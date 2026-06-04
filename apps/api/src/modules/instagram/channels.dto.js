@@ -12,6 +12,7 @@ export const toPublicChannel = (doc) =>
         slidesPerCarousel: doc.slidesPerCarousel,
         active: doc.active,
         autoVideo: doc.autoVideo ?? false,
+        videoVariant: doc.videoVariant ?? 'short',
         createdAt: doc.createdAt,
         updatedAt: doc.updatedAt,
       };

@@ -14,14 +14,18 @@ const toHashtagTiers = (tiers) => ({
   low: tiers?.low ?? [],
 });
 
+const toVideoVariant = (v) => ({
+  status: v?.status ?? 'idle',
+  url: v?.url ?? null,
+  durationMs: v?.durationMs ?? 0,
+  scenes: v?.scenes ?? 0,
+  error: v?.error ?? null,
+  generatedAt: v?.generatedAt ?? null,
+});
+
 const toVideo = (video) => ({
-  status: video?.status ?? 'idle',
-  verticalUrl: video?.verticalUrl ?? null,
-  squareUrl: video?.squareUrl ?? null,
-  narrationUrl: video?.narrationUrl ?? null,
-  durationMs: video?.durationMs ?? 0,
-  error: video?.error ?? null,
-  generatedAt: video?.generatedAt ?? null,
+  short: toVideoVariant(video?.short),
+  long: toVideoVariant(video?.long),
 });
 
 const toVisualAnchors = (anchors) => ({
@@ -68,6 +72,7 @@ export const toPostSummary = (doc) =>
         title: doc.title ?? '',
         slideCount: (doc.slides ?? []).length,
         coverImageUrl: doc.coverImageUrl ?? null,
-        videoStatus: doc.video?.status ?? 'idle',
+        videoShortStatus: doc.video?.short?.status ?? 'idle',
+        videoLongStatus: doc.video?.long?.status ?? 'idle',
         createdAt: doc.createdAt,
       };

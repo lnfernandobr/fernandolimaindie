@@ -32,6 +32,7 @@ const channelSchema = new Schema(
     },
     active: { type: Boolean, default: true },
     autoVideo: { type: Boolean, default: false },
+    videoVariant: { type: String, enum: ['short', 'long', 'both'], default: 'short' },
   },
   { timestamps: true, strict: true },
 );

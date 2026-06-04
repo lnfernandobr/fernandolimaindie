@@ -166,10 +166,104 @@ const slideImagePrompt = ({ visualAnchors, slide, slideNumber, totalSlides, chan
   ]);
 };
 
+// ── Vídeo (roteiro por IA) ───────────────────────────────────────────────
+
+const videoScriptSystem = (channel) =>
+  list([
+    'You are THREE experts working as one on ONE faceless narrated video:',
+    '1. A viral short-form scriptwriter who hooks in the first 2 seconds and never lets go.',
+    '2. A documentary director of photography who briefs cinematic, signature imagery (never stock, never generic).',
+    '3. A retention strategist who paces narration so every line earns the next.',
+    '',
+    'The narration is read aloud by a TTS voice; the images are made by an image model.',
+    'Respond with STRICT valid JSON only. No markdown, no code fences, no prose.',
+    '',
+    channelContext(channel),
+  ]);
+
+const videoScriptUser = ({ post, variant, sceneCount, targetSeconds }) => {
+  const wordsPerScene = Math.round((targetSeconds / sceneCount) * 2.4);
+  return list([
+    `Write the script for ONE ${variant.aspect} faceless narrated video (${variant.label}).`,
+    `Target length: about ${targetSeconds} seconds, split into EXACTLY ${sceneCount} scenes.`,
+    '',
+    'The Instagram post below is only the THEME. Do NOT just read it — expand it into a richer, self-contained video with a real arc (hook → development → payoff → soft CTA).',
+    '',
+    'Source post (theme):',
+    `- Topic: ${post.topic}`,
+    post.title ? `- Title: ${post.title}` : null,
+    post.caption ? `- Caption: ${String(post.caption).slice(0, 1200)}` : null,
+    post.designConcept ? `- Visual concept: ${post.designConcept}` : null,
+    '',
+    'Return a JSON object with this EXACT shape:',
+    '{',
+    '  "title": string,            // short internal title (pt-BR, max 100 chars)',
+    '  "bgColor": string,          // ONE hex color from the palette, fallback background. ex: "#1A1A1A"',
+    '  "visualAnchors": {          // ENGLISH, applied to EVERY scene image for coherence',
+    '    "medium": string, "palette": string, "lighting": string,',
+    '    "lensOrTechnique": string, "composition": string, "texture": string, "reference": string',
+    '  },',
+    `  "scenes": [                 // EXACTLY ${sceneCount} scenes, in order`,
+    '    {',
+    `      "narration": string,    // pt-BR spoken line(s). Natural speech for TTS: no emojis, no markdown, no hashtags, no stage directions. ~${wordsPerScene} words.`,
+    '      "imagePrompt": string,  // ENGLISH. One cinematic still: subject + environment + mood. NEVER mention text, letters, words, captions, signs, books, screens, UI, logos or typography.',
+    '      "onScreenText": string  // pt-BR. A SHORT 2-5 word key phrase for this scene (caption fallback).',
+    '    }',
+    '  ]',
+    '}',
+    '',
+    'Hard rules:',
+    `- EXACTLY ${sceneCount} scenes. Scene 1 is a thumb-stopping hook; the last scene is a soft CTA.`,
+    '- All scenes share the same visualAnchors and one coherent visual world; each scene shows a DIFFERENT concrete subject/environment.',
+    '- imagePrompt is English and must NEVER reference any written language (no text, letters, words, captions, signs, books, screens, typography, logos).',
+    '- narration is Brazilian Portuguese, in the channel tone, flowing naturally when read aloud.',
+    '- visualAnchors must be specific (never lone "warm", "clean", "modern", "minimalist", "premium").',
+    '- Forbidden visual modes: plastic 3D render, generic AI illustration, stock photography, inspirational poster, symmetric AI face, glitch.',
+    '',
+    'Return the JSON object only.',
+  ]);
+};
+
+const sceneImagePrompt = ({ visualAnchors, scene, sceneNumber, totalScenes, aspect }) => {
+  const anchors = anchorsBlock(visualAnchors);
+  const vertical = aspect === 'vertical';
+  return list([
+    '# Objective',
+    `Produce scene ${sceneNumber} of ${totalScenes} of a cinematic narrated video.`,
+    '',
+    '# Deliverable',
+    `A single ${vertical ? 'vertical 9:16' : 'horizontal 16:9'} still image, publish-ready. NO text anywhere. No multi-panel, no border, no frame, no mockup.`,
+    '',
+    '# Scene',
+    scene.imagePrompt || 'an intentional, cinematic moment',
+    '',
+    '# Style (must match across every scene of this video)',
+    anchors,
+    '',
+    '# Composition',
+    '- One clear focal subject + cinematic depth; strong visual hierarchy.',
+    '- Leave a calm area of negative space where a caption could sit — but put NO text in the image.',
+    `- ${vertical ? 'Vertical 9:16 framing.' : 'Horizontal 16:9 framing.'}`,
+    '- Safe margin on every edge; never crop the main subject awkwardly.',
+    '',
+    '# Restrictions (must be ABSENT from the final image)',
+    '- ANY text, letters, words, captions, subtitles, signs, labels, numbers, typography, watermarks, logos, UI',
+    '- phone frames, app screenshots, social media mockups',
+    '- distorted hands, mangled faces, extra fingers, gibberish shapes',
+    '- plastic 3D render look, generic AI illustration look, symmetric AI face',
+    '- stock-photo cliché poses, inspirational poster aesthetic, oversaturation, HDR halos, plastic skin',
+  ]);
+};
+
 export const prompts = {
   carouselPlan: ({ channel, topic, brief, slidesCount }) => ({
     system: carouselPlanSystem(channel),
     user: carouselPlanUser({ topic, brief, slidesCount }),
   }),
   slideImage: slideImagePrompt,
+  videoScript: ({ channel, post, variant, sceneCount, targetSeconds }) => ({
+    system: videoScriptSystem(channel),
+    user: videoScriptUser({ post, variant, sceneCount, targetSeconds }),
+  }),
+  sceneImage: sceneImagePrompt,
 };
