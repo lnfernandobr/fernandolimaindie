@@ -79,25 +79,37 @@ export const crossfadeAudio = async (files, output, xfadeMs = XFADE_MS) => {
   return output;
 };
 
-// Trilha profissional: música normalizada (loudnorm) no mesmo volume percebido,
-// com fade in/out, cortada no tamanho do vídeo. Se há locução, a música abaixa
-// sozinha sob a voz (sidechain ducking). Sem voz, fica como fundo discreto.
+// Trilha de áudio. Com locução, a NARRAÇÃO manda: voz normalizada forte (~-16 LUFS),
+// música bem mais baixa (~-30 LUFS) e ainda abaixada sob a fala (ducking forte) — a voz
+// fica sempre clara. Sem voz, a música é o foco, em volume agradável. Fade in/out sempre.
 export const mixSoundtrack = async ({ narration, music, output, totalMs, hasVoice }) => {
   const durSec = totalMs / 1000;
   const fadeOutStart = Math.max(0.1, durSec - 2.5).toFixed(2);
-  const musicBase =
-    `[1:a]loudnorm=I=-26:TP=-1.5:LRA=11,` +
-    `afade=t=in:st=0:d=1.5,afade=t=out:st=${fadeOutStart}:d=2.5`;
+  const fades = `afade=t=in:st=0:d=1.5,afade=t=out:st=${fadeOutStart}:d=2.5`;
+
+  // 1) Pré-normaliza a faixa (finita) pro volume-alvo. loudnorm direto num stream
+  //    em loop infinito trunca o áudio — por isso normalizamos ANTES de loopar.
+  const musicNorm = `${output}.mus.mp3`;
+  const targetI = hasVoice ? -30 : -23;
+  await run(FFMPEG, [
+    '-y', '-i', music,
+    '-af', `loudnorm=I=${targetI}:TP=-1.5`,
+    '-c:a', 'libmp3lame', '-q:a', '4', musicNorm,
+  ]);
+
+  // 2) Mix. Com voz: narração forte (loudnorm -16; apad garante o comprimento) +
+  //    música em loop com ducking forte sob a fala. Sem voz: só a música, com fades.
   const filter = hasVoice
-    ? `${musicBase}[m];` +
-      `[0:a]asplit=2[v][sc];` +
-      `[m][sc]sidechaincompress=threshold=0.02:ratio=6:attack=20:release=350[md];` +
-      `[v][md]amix=inputs=2:duration=first:normalize=0[a]`
-    : `${musicBase},volume=0.7[a]`;
+    ? `[0:a]loudnorm=I=-16:TP=-1.5:LRA=11,apad,asplit=2[voice][vkey];` +
+      `[1:a]${fades}[mus];` +
+      `[mus][vkey]sidechaincompress=threshold=0.05:ratio=12:attack=5:release=300[musd];` +
+      `[voice][musd]amix=inputs=2:duration=first:normalize=0[a]`
+    : `[1:a]${fades}[a]`;
+
   await run(FFMPEG, [
     '-y',
     '-i', narration,
-    '-stream_loop', '-1', '-i', music,
+    '-stream_loop', '-1', '-i', musicNorm,
     '-filter_complex', filter,
     '-map', '[a]',
     '-t', durSec.toFixed(3),
@@ -141,6 +153,12 @@ export const renderSceneClip = async ({ image, durationMs, variant, assFile, out
   return output;
 };
 
+// Transições variadas (rotacionam por cena) pra dar dinâmica e fluidez.
+const XFADE_TRANSITIONS = [
+  'fade', 'smoothleft', 'dissolve', 'smoothup', 'slideright',
+  'circleopen', 'smoothright', 'fadeblack', 'smoothdown', 'slideleft',
+];
+
 // Encadeia os clipes das cenas com crossfade (xfade). Devolve vídeo mudo.
 export const xfadeClips = async (clips, durationsMs, output, xfadeMs = XFADE_MS) => {
   if (clips.length === 1) {
@@ -155,7 +173,8 @@ export const xfadeClips = async (clips, durationsMs, output, xfadeMs = XFADE_MS)
   for (let i = 1; i < clips.length; i += 1) {
     const offset = (acc - d).toFixed(3);
     const label = i === clips.length - 1 ? '[vout]' : `[x${i}]`;
-    parts.push(`${prev}[${i}:v]xfade=transition=fade:duration=${d}:offset=${offset}${label}`);
+    const trans = XFADE_TRANSITIONS[(i - 1) % XFADE_TRANSITIONS.length];
+    parts.push(`${prev}[${i}:v]xfade=transition=${trans}:duration=${d}:offset=${offset}${label}`);
     prev = label;
     acc = acc + durationsMs[i] / 1000 - d;
   }

@@ -241,11 +241,13 @@ const sceneImagePrompt = ({ visualAnchors, scene, sceneNumber, totalScenes, aspe
     '# Style (must match across every scene of this video)',
     anchors,
     '',
-    '# Composition',
-    '- One clear focal subject + cinematic depth; strong visual hierarchy.',
-    '- Leave a calm area of negative space where a caption could sit — but put NO text in the image.',
-    `- ${vertical ? 'Vertical 9:16 framing.' : 'Horizontal 16:9 framing.'}`,
-    '- Safe margin on every edge; never crop the main subject awkwardly.',
+    '# Composition & framing (CRITICAL — the image will be cropped to fill the frame)',
+    vertical
+      ? '- Composed for a 9:16 vertical crop: keep the main subject CENTERED horizontally with comfortable margin. The left and right edges WILL be cropped — put nothing important near the side edges.'
+      : '- Composed for a 16:9 horizontal crop: keep the main subject within the central safe area; top and bottom edges may be cropped.',
+    '- Balanced, intentional framing: a clear medium shot — subject not too tight, with natural headroom and breathing room. Never cramped, never awkwardly cut at the edges.',
+    '- One clear focal subject + cinematic depth; rule of thirds; strong visual hierarchy.',
+    '- Keep the lower third calmer (room for a caption to sit later) — but put NO text in the image.',
     '',
     '# Restrictions (must be ABSENT from the final image)',
     '- ANY text, letters, words, captions, subtitles, signs, labels, numbers, typography, watermarks, logos, UI',
