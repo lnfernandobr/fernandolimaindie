@@ -2,6 +2,7 @@ import OpenAI from 'openai';
 import { env } from '../../config/env.js';
 import { INSTAGRAM_DEFAULTS, INSTAGRAM_ERRORS } from '../../constants/instagram.js';
 import { prompts } from './prompts.js';
+import { IMAGE_SAFE_SUFFIX, isImageSafetyError } from './image.safety.js';
 
 const DEFAULT_TIMEOUT = 180000;
 
@@ -16,15 +17,7 @@ const fetchUrlAsBuffer = async (url) => {
   return Buffer.from(await res.arrayBuffer());
 };
 
-export const generateSlideImage = async ({ channelHandle, visualAnchors, slide, slideNumber, totalSlides }) => {
-  const client = buildClient();
-  const prompt = prompts.slideImage({
-    channelHandle,
-    visualAnchors,
-    slide,
-    slideNumber,
-    totalSlides,
-  });
+const callImage = async (client, prompt) => {
   const response = await client.images.generate({
     model: env.OPENAI_IMAGE_MODEL,
     prompt,
@@ -34,7 +27,20 @@ export const generateSlideImage = async ({ channelHandle, visualAnchors, slide, 
   });
   const item = response?.data?.[0];
   if (!item) throw new Error(INSTAGRAM_ERRORS.OPENAI_IMAGE_FAILED);
-  if (item.b64_json) return { buffer: Buffer.from(item.b64_json, 'base64'), prompt };
-  if (item.url) return { buffer: await fetchUrlAsBuffer(item.url), prompt };
+  if (item.b64_json) return Buffer.from(item.b64_json, 'base64');
+  if (item.url) return fetchUrlAsBuffer(item.url);
   throw new Error(INSTAGRAM_ERRORS.OPENAI_IMAGE_FAILED);
+};
+
+export const generateSlideImage = async ({ channelHandle, visualAnchors, slide, slideNumber, totalSlides }) => {
+  const client = buildClient();
+  const prompt = prompts.slideImage({ channelHandle, visualAnchors, slide, slideNumber, totalSlides });
+  try {
+    return { buffer: await callImage(client, prompt), prompt };
+  } catch (err) {
+    if (!isImageSafetyError(err)) throw err;
+    // Moderação rejeitou: re-tenta uma vez com a restrição de segurança reforçada.
+    const safePrompt = prompt + IMAGE_SAFE_SUFFIX;
+    return { buffer: await callImage(client, safePrompt), prompt: safePrompt };
+  }
 };

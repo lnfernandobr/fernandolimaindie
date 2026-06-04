@@ -2,6 +2,7 @@ import OpenAI from 'openai';
 import { env } from '../../config/env.js';
 import { INSTAGRAM_DEFAULTS, INSTAGRAM_ERRORS, INSTAGRAM_VIDEO } from '../../constants/instagram.js';
 import { prompts } from './prompts.js';
+import { IMAGE_SAFE_SUFFIX, isImageSafetyError } from './image.safety.js';
 
 const DEFAULT_TIMEOUT = 180000;
 
@@ -16,22 +17,11 @@ const fetchUrlAsBuffer = async (url) => {
   return Buffer.from(await res.arrayBuffer());
 };
 
-// Gera a imagem (PNG buffer) de UMA cena no tamanho/aspecto da variante.
-export const generateSceneImage = async ({ visualAnchors, scene, sceneNumber, totalScenes, variant }) => {
-  const v = INSTAGRAM_VIDEO.VARIANTS[variant];
-  if (!v) throw new Error(INSTAGRAM_ERRORS.VIDEO_VARIANT_INVALID);
-  const client = buildClient();
-  const prompt = prompts.sceneImage({
-    visualAnchors,
-    scene,
-    sceneNumber,
-    totalScenes,
-    aspect: v.aspect,
-  });
+const callImage = async (client, prompt, size) => {
   const response = await client.images.generate({
     model: env.OPENAI_IMAGE_MODEL,
     prompt,
-    size: v.imageSize,
+    size,
     quality: INSTAGRAM_DEFAULTS.IMAGE_QUALITY,
     n: 1,
   });
@@ -40,4 +30,19 @@ export const generateSceneImage = async ({ visualAnchors, scene, sceneNumber, to
   if (item.b64_json) return Buffer.from(item.b64_json, 'base64');
   if (item.url) return fetchUrlAsBuffer(item.url);
   throw new Error(INSTAGRAM_ERRORS.VIDEO_IMAGE_FAILED);
+};
+
+// Gera a imagem (PNG buffer) de UMA cena no tamanho/aspecto da variante.
+export const generateSceneImage = async ({ visualAnchors, scene, sceneNumber, totalScenes, variant }) => {
+  const v = INSTAGRAM_VIDEO.VARIANTS[variant];
+  if (!v) throw new Error(INSTAGRAM_ERRORS.VIDEO_VARIANT_INVALID);
+  const client = buildClient();
+  const prompt = prompts.sceneImage({ visualAnchors, scene, sceneNumber, totalScenes, aspect: v.aspect });
+  try {
+    return await callImage(client, prompt, v.imageSize);
+  } catch (err) {
+    if (!isImageSafetyError(err)) throw err;
+    // Moderação rejeitou: re-tenta uma vez com a restrição de segurança reforçada.
+    return callImage(client, prompt + IMAGE_SAFE_SUFFIX, v.imageSize);
+  }
 };
