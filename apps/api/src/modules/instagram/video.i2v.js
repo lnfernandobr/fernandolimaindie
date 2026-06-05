@@ -10,9 +10,23 @@ const TIMEOUT_MS = 6 * 60 * 1000; // i2v pode levar minutos
 const DEFAULT_PROMPT =
   'subtle cinematic motion, gentle parallax, slow and smooth camera, calm and reverent, no warping';
 
-// Modelos suportados. Trocar via env I2V_MODEL (default: kling). LTX é mais barato
-// (mas deprecated — usar só pra validar). Kling 1.6 std é o de produção.
+// Modelos suportados. Trocar via env I2V_MODEL ou arquivo no host (default: kling).
+// - veo3: Veo 3 Fast (Google) — movimento bem melhor; mais caro ($0.10/s sem áudio).
+//   Duração mínima 4s; o pipeline corta o clipe na duração da cena (~3s no hook).
+// - kling: Kling 1.6 std — equilíbrio custo/qualidade.
+// - ltx: mais barato, mas deprecated (movimento fraco — "parece imagem fixa").
 const MODELS = {
+  veo3: {
+    id: 'fal-ai/veo3/fast/image-to-video',
+    body: ({ imageUrl, prompt, durationMs, aspect }) => ({
+      image_url: imageUrl,
+      prompt: prompt || DEFAULT_PROMPT,
+      duration: durationMs > 6500 ? '8s' : durationMs > 4500 ? '6s' : '4s',
+      aspect_ratio: aspect === 'vertical' ? '9:16' : '16:9',
+      resolution: '720p',
+      generate_audio: false, // o áudio final vem da narração+trilha; Veo3 sem áudio é mais barato
+    }),
+  },
   kling: {
     id: 'fal-ai/kling-video/v1.6/standard/image-to-video',
     body: ({ imageUrl, prompt, durationMs }) => ({
