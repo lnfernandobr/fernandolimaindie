@@ -5,7 +5,7 @@ import { env } from '../../config/env.js';
 import { logger } from '../../config/logger.js';
 import { INSTAGRAM_DEFAULTS, INSTAGRAM_ERRORS, INSTAGRAM_VIDEO } from '../../constants/instagram.js';
 import { badRequest } from '../../errors/factories.js';
-import { uploadBuffer, downloadBuffer, publicUrl } from '../media/media.s3.js';
+import { uploadBuffer, downloadBuffer, presignedGetUrl } from '../media/media.s3.js';
 import { generateSpeech } from '../media/media.elevenlabs.js';
 import { hasFal, generateHookClip } from './video.i2v.js';
 import { generateVideoScript, buildMockScript, sceneCountFor } from './video.script.js';
@@ -246,10 +246,10 @@ export const renderVariant = async ({ post, channel, handle, variant }) => {
       // Cache no S3; qualquer falha cai no Ken Burns (renderSceneClip).
       if (i === 0 && img.ok && hasFal()) {
         try {
-          const i2vKey = `${base}/i2v/scene-${i}.mp4`;
+          const i2vKey = `${base}/${variant}/i2v/scene-${i}.mp4`;
           let vidBuf = await downloadBuffer(i2vKey).catch(() => null);
           if (!vidBuf) {
-            const imageUrl = publicUrl(`${base}/${INSTAGRAM_VIDEO.SCENE_PREFIX}/scene-${i}.png`);
+            const imageUrl = await presignedGetUrl(`${base}/${variant}/${INSTAGRAM_VIDEO.SCENE_PREFIX}/scene-${i}.png`);
             vidBuf = await generateHookClip({
               imageUrl,
               prompt: scene.imagePrompt,

@@ -1,4 +1,5 @@
 import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { env } from '../../config/env.js';
 import { MEDIA_ERRORS } from '../../constants/media.js';
 
@@ -14,6 +15,13 @@ const buildClient = () => {
     },
   });
 };
+
+// URL assinada (temporária) de GET — deixa serviços externos (ex: fal.ai) baixarem um
+// objeto privado do S3 sem tornar o bucket público.
+export const presignedGetUrl = (key, expiresIn = 600) =>
+  getSignedUrl(buildClient(), new GetObjectCommand({ Bucket: env.AWS_S3_BUCKET, Key: key }), {
+    expiresIn,
+  });
 
 // URL pública de um objeto no S3 (usada, por ex., pra passar a imagem pro i2v da fal.ai).
 export const publicUrl = (key) => {
