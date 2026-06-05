@@ -25,6 +25,8 @@ const paths = {
   headphones: <><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="13" width="4" height="7" rx="1.6"/><rect x="17" y="13" width="4" height="7" rx="1.6"/></>,
   mail:    <><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M4 7l8 6 8-6"/></>,
   check:   <path d="M5 12.5l4.5 4.5L19 7"/>,
+  instagram: <><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="1" fill="currentColor" stroke="none"/></>,
+  youtube:   <><rect x="2.5" y="6" width="19" height="12" rx="3.6"/><path d="M10.5 9.3l5 2.7-5 2.7Z" fill="currentColor" stroke="none"/></>,
 };
 
 export function Glyph({ name, size = 24, stroke = 1.5, style, className, ...rest }) {

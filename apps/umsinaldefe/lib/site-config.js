@@ -1,5 +1,10 @@
 import { env } from './env.js';
 
+const social = {
+  instagram: 'https://www.instagram.com/umsinaldefe/',
+  youtube: 'https://www.youtube.com/@umsinaldefe',
+};
+
 export const siteConfig = {
   url: env.NEXT_PUBLIC_SITE_URL,
   name: env.NEXT_PUBLIC_SITE_NAME,
@@ -9,10 +14,11 @@ export const siteConfig = {
   description:
     'Devocional diário, salmos, orações e versículos pra te acompanhar todo dia. Conteúdo cristão acolhedor, em português, pra momentos de fé, ansiedade, sono, proteção e gratidão.',
   brandTagline: 'um sinal de fé todo dia',
+  social,
   organization: {
     name: 'Um Sinal de Fé',
     email: 'oi@umsinaldefe.com.br',
-    sameAs: [],
+    sameAs: Object.values(social),
   },
   ogImage: '/og-default.png',
   twitter: {

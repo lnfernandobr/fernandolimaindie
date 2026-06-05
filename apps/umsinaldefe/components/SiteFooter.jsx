@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import { Glyph } from './Glyph.jsx';
+import { siteConfig } from '@/lib/site-config.js';
 
 // Só hubs e páginas de sentimento (sempre renderizam). Nada de deep-link pra
 // conteúdo específico, que pode ainda não ter sido gerado pelo cron (evita 404).
@@ -41,6 +43,26 @@ export function SiteFooter() {
             <span className="brand-name">Um Sinal de Fé</span>
           </Link>
           <p className="footer-tag t-soft">um sinal de fé todo dia</p>
+          <div className="footer-social">
+            <a
+              href={siteConfig.social.instagram}
+              target="_blank"
+              rel="me noopener noreferrer"
+              aria-label="Instagram do Um Sinal de Fé"
+              title="Instagram"
+            >
+              <Glyph name="instagram" size={20} />
+            </a>
+            <a
+              href={siteConfig.social.youtube}
+              target="_blank"
+              rel="me noopener noreferrer"
+              aria-label="YouTube do Um Sinal de Fé"
+              title="YouTube"
+            >
+              <Glyph name="youtube" size={20} />
+            </a>
+          </div>
         </div>
         <div className="footer-cols">
           {COLS.map((c) => (
