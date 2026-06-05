@@ -11,6 +11,7 @@ import { hasFal, generateHookClip } from './video.i2v.js';
 import { generateVideoScript, buildMockScript, sceneCountFor } from './video.script.js';
 import { generateSceneImage } from './video.image.js';
 import { transcribeWords, buildSceneAss } from './video.captions.js';
+import { selectTrackByMood } from './music.catalog.js';
 import * as ff from './video.ffmpeg.js';
 
 const MUSIC_EXT = /\.(mp3|m4a|aac|wav|ogg)$/i;
@@ -67,9 +68,9 @@ const musicDir = () =>
     ? env.INSTAGRAM_MUSIC_DIR
     : path.resolve(process.cwd(), env.INSTAGRAM_MUSIC_DIR);
 
-// Escolhe a faixa cujo NOME melhor casa com o mood do roteiro (não aleatório).
+// Fallback legado: casa o mood com o NOME do arquivo (usado quando não há catálogo).
 // Empate ou nenhum match: sorteia entre as melhores pra dar variedade.
-const selectMusic = async (mood) => {
+const selectByFilename = async (mood) => {
   let files;
   try {
     files = (await readdir(musicDir())).filter((f) => MUSIC_EXT.test(f));
@@ -88,6 +89,11 @@ const selectMusic = async (mood) => {
   const chosen = pool[Math.floor(Math.random() * pool.length)].f;
   return path.join(musicDir(), chosen);
 };
+
+// Seleção da trilha: primeiro o catálogo etiquetado (casa o mood com as keywords da
+// faixa — robusto, independente do nome do arquivo). Sem catálogo no disco, cai no
+// match pelo nome do arquivo (legado).
+const selectMusic = async (mood) => (await selectTrackByMood(mood)) ?? selectByFilename(mood);
 
 const uploadFile = async (file, key, contentType) =>
   uploadBuffer({ key, buffer: await readFile(file), contentType });

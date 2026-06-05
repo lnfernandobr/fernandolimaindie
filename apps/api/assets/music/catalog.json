@@ -1,0 +1,130 @@
+[
+  {
+    "id": "calmo-piano-intimista",
+    "file": "calmo-piano-intimista.mp3",
+    "mood": "calmo",
+    "keywords": ["calm", "piano", "intimate", "slow", "melancholic", "gentle", "soft", "emotional", "reflective", "acoustic", "peaceful", "tender", "sad"],
+    "description": "Piano solo lento e intimista, notas espaçadas, atmosfera melancólica e silenciosa. Sem percussão.",
+    "tags": ["reflexao", "luto", "saudade", "introspeccao"]
+  },
+  {
+    "id": "calmo-piano-intimista-2",
+    "file": "calmo-piano-intimista-2.mp3",
+    "mood": "calmo",
+    "keywords": ["calm", "piano", "intimate", "slow", "melancholic", "gentle", "soft", "emotional", "reflective", "acoustic", "peaceful", "tender", "sad"],
+    "description": "Piano solo lento e intimista, notas espaçadas, atmosfera melancólica e silenciosa. Sem percussão.",
+    "tags": ["reflexao", "luto", "saudade", "introspeccao"]
+  },
+  {
+    "id": "calmo-piano-intimista-3",
+    "file": "calmo-piano-intimista-3.mp3",
+    "mood": "calmo",
+    "keywords": ["calm", "piano", "intimate", "slow", "melancholic", "gentle", "soft", "emotional", "reflective", "acoustic", "peaceful", "tender", "sad"],
+    "description": "Piano solo lento e intimista, notas espaçadas, atmosfera melancólica e silenciosa. Sem percussão.",
+    "tags": ["reflexao", "luto", "saudade", "introspeccao"]
+  },
+  {
+    "id": "esperanca-cordas-piano",
+    "file": "esperanca-cordas-piano.mp3",
+    "mood": "esperanca",
+    "keywords": ["hopeful", "uplifting", "strings", "piano", "warm", "inspiring", "emotional", "cinematic", "bright", "gentle", "acoustic", "heartfelt", "optimistic"],
+    "description": "Cordas e piano em progressão ascendente, luminoso e acolhedor, sensação de recomeço e fé. Crescimento suave, sem clímax dramático.",
+    "tags": ["fe", "recomeco", "gratidao", "acolhimento"]
+  },
+  {
+    "id": "esperanca-cordas-piano-2",
+    "file": "esperanca-cordas-piano-2.mp3",
+    "mood": "esperanca",
+    "keywords": ["hopeful", "uplifting", "strings", "piano", "warm", "inspiring", "emotional", "cinematic", "bright", "gentle", "acoustic", "heartfelt", "optimistic"],
+    "description": "Cordas e piano em progressão ascendente, luminoso e acolhedor, sensação de recomeço e fé. Crescimento suave, sem clímax dramático.",
+    "tags": ["fe", "recomeco", "gratidao", "acolhimento"]
+  },
+  {
+    "id": "esperanca-cordas-piano-3",
+    "file": "esperanca-cordas-piano-3.mp3",
+    "mood": "esperanca",
+    "keywords": ["hopeful", "uplifting", "strings", "piano", "warm", "inspiring", "emotional", "cinematic", "bright", "gentle", "acoustic", "heartfelt", "optimistic"],
+    "description": "Cordas e piano em progressão ascendente, luminoso e acolhedor, sensação de recomeço e fé. Crescimento suave, sem clímax dramático.",
+    "tags": ["fe", "recomeco", "gratidao", "acolhimento"]
+  },
+  {
+    "id": "reflexao-ambient-pads",
+    "file": "reflexao-ambient-pads.mp3",
+    "mood": "reflexao",
+    "keywords": ["ambient", "contemplative", "meditative", "ethereal", "calm", "slow", "atmospheric", "pads", "peaceful", "spacious", "drone", "reflective", "minimal"],
+    "description": "Ambient contemplativo com pads suaves e textura etérea, ritmo muito lento, espaço para o silêncio. Ideal para meditação.",
+    "tags": ["meditacao", "silencio", "oracao", "contemplacao"]
+  },
+  {
+    "id": "reflexao-ambient-pads-2",
+    "file": "reflexao-ambient-pads-2.mp3",
+    "mood": "reflexao",
+    "keywords": ["ambient", "contemplative", "meditative", "ethereal", "calm", "slow", "atmospheric", "pads", "peaceful", "spacious", "drone", "reflective", "minimal"],
+    "description": "Ambient contemplativo com pads suaves e textura etérea, ritmo muito lento, espaço para o silêncio. Ideal para meditação.",
+    "tags": ["meditacao", "silencio", "oracao", "contemplacao"]
+  },
+  {
+    "id": "reflexao-ambient-pads-3",
+    "file": "reflexao-ambient-pads-3.mp3",
+    "mood": "reflexao",
+    "keywords": ["ambient", "contemplative", "meditative", "ethereal", "calm", "slow", "atmospheric", "pads", "peaceful", "spacious", "drone", "reflective", "minimal"],
+    "description": "Ambient contemplativo com pads suaves e textura etérea, ritmo muito lento, espaço para o silêncio. Ideal para meditação.",
+    "tags": ["meditacao", "silencio", "oracao", "contemplacao"]
+  },
+  {
+    "id": "solene-cordas-profundas",
+    "file": "solene-cordas-profundas.mp3",
+    "mood": "solene",
+    "keywords": ["solemn", "cinematic", "strings", "reverent", "dramatic", "sacred", "emotional", "deep", "orchestral", "serious", "epic", "majestic"],
+    "description": "Cordas profundas e reverentes, tom cerimonial e sagrado, dignidade e peso emocional. Sem brilho excessivo.",
+    "tags": ["salmo", "adoracao", "reverencia", "sagrado"]
+  },
+  {
+    "id": "solene-cordas-profundas-2",
+    "file": "solene-cordas-profundas-2.mp3",
+    "mood": "solene",
+    "keywords": ["solemn", "cinematic", "strings", "reverent", "dramatic", "sacred", "emotional", "deep", "orchestral", "serious", "epic", "majestic"],
+    "description": "Cordas profundas e reverentes, tom cerimonial e sagrado, dignidade e peso emocional. Sem brilho excessivo.",
+    "tags": ["salmo", "adoracao", "reverencia", "sagrado"]
+  },
+  {
+    "id": "sono-drone-suave",
+    "file": "sono-drone-suave.mp3",
+    "mood": "sono",
+    "keywords": ["ambient", "sleep", "drone", "calm", "soft", "relaxing", "peaceful", "slow", "deep", "soothing", "atmospheric", "dreamy", "sleepy"],
+    "description": "Drone ambiente muito suave e contínuo, frequências graves quentes, sem percussão nem melodia marcante. Feito para relaxamento e sono profundo.",
+    "tags": ["sono", "relaxamento", "descanso", "noite"]
+  },
+  {
+    "id": "sono-drone-suave-2",
+    "file": "sono-drone-suave-2.mp3",
+    "mood": "sono",
+    "keywords": ["ambient", "sleep", "drone", "calm", "soft", "relaxing", "peaceful", "slow", "deep", "soothing", "atmospheric", "dreamy", "sleepy"],
+    "description": "Drone ambiente muito suave e contínuo, frequências graves quentes, sem percussão nem melodia marcante. Feito para relaxamento e sono profundo.",
+    "tags": ["sono", "relaxamento", "descanso", "noite"]
+  },
+  {
+    "id": "sono-drone-suave-3",
+    "file": "sono-drone-suave-3.mp3",
+    "mood": "sono",
+    "keywords": ["ambient", "sleep", "drone", "calm", "soft", "relaxing", "peaceful", "slow", "deep", "soothing", "atmospheric", "dreamy", "sleepy"],
+    "description": "Drone ambiente muito suave e contínuo, frequências graves quentes, sem percussão nem melodia marcante. Feito para relaxamento e sono profundo.",
+    "tags": ["sono", "relaxamento", "descanso", "noite"]
+  },
+  {
+    "id": "alegre-violao-folk",
+    "file": "alegre-violao-folk.mp3",
+    "mood": "alegre",
+    "keywords": ["acoustic", "folk", "guitar", "warm", "gentle", "uplifting", "light", "happy", "hopeful", "mellow", "chill", "cheerful", "positive"],
+    "description": "Violão folk dedilhado, leve e acolhedor, calor humano sem agitação. Otimista mas discreto.",
+    "tags": ["gratidao", "celebracao", "cotidiano", "leveza"]
+  },
+  {
+    "id": "alegre-violao-folk-2",
+    "file": "alegre-violao-folk-2.mp3",
+    "mood": "alegre",
+    "keywords": ["acoustic", "folk", "guitar", "warm", "gentle", "uplifting", "light", "happy", "hopeful", "mellow", "chill", "cheerful", "positive"],
+    "description": "Violão folk dedilhado, leve e acolhedor, calor humano sem agitação. Otimista mas discreto.",
+    "tags": ["gratidao", "celebracao", "cotidiano", "leveza"]
+  }
+]
