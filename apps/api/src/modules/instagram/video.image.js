@@ -68,19 +68,33 @@ const generateSceneImageOpenAI = async ({ visualAnchors, scene, sceneNumber, tot
   }
 };
 
-// Usa FLUX (fal.ai) quando há chave fal e o config não força openai; cai no gpt-image
-// se o FLUX falhar. Sem chave fal, usa gpt-image direto. Toggle: arquivo image_model.
-const useFlux = () => hasFal() && readConfigFile(IMAGE_MODEL_FILE, 'IMAGE_MODEL', 'flux') !== 'openai';
+// Principal: gpt-image-2 (OpenAI). Cai no FLUX (fal.ai) SÓ quando a OpenAI barra por
+// restrição de conteúdo — o FLUX tem moderação leve e aceita temas religiosos/históricos.
+// Toggle no arquivo image_model: 'flux' volta ao modo antigo (FLUX primeiro).
+const imageMode = () => readConfigFile(IMAGE_MODEL_FILE, 'IMAGE_MODEL', 'openai');
 
 export const generateSceneImage = async (args) => {
   const v = INSTAGRAM_VIDEO.VARIANTS[args.variant];
   if (!v) throw new Error(INSTAGRAM_ERRORS.VIDEO_VARIANT_INVALID);
-  if (useFlux()) {
+
+  // Modo legado (opt-in via image_model=flux): FLUX primeiro, gpt-image como fallback.
+  if (imageMode() === 'flux' && hasFal()) {
     try {
       return await generateSceneImageFlux(args);
     } catch (err) {
       logger.warn({ err: err.message }, 'FLUX falhou — fallback gpt-image-2');
+      return generateSceneImageOpenAI(args);
     }
   }
-  return generateSceneImageOpenAI(args);
+
+  // Padrão: OpenAI principal; FLUX só se a OpenAI barrar por restrição de conteúdo.
+  try {
+    return await generateSceneImageOpenAI(args);
+  } catch (err) {
+    if (hasFal() && isImageSafetyError(err)) {
+      logger.warn({ err: err.message }, 'OpenAI barrou por restrição — fallback FLUX');
+      return generateSceneImageFlux(args);
+    }
+    throw err;
+  }
 };
