@@ -47,6 +47,7 @@ export const toPublicPost = (doc) =>
         queueItemId: doc.queueItemId ? String(doc.queueItemId) : null,
         topic: doc.topic,
         title: doc.title ?? '',
+        youtubeTitle: doc.youtubeTitle ?? '',
         brief: doc.brief ?? '',
         designConcept: doc.designConcept ?? '',
         visualStyle: doc.visualStyle ?? '',

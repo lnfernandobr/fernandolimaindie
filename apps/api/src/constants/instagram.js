@@ -21,7 +21,7 @@ export const INSTAGRAM_DEFAULTS = Object.freeze({
   TONE: 'inspirador, direto, sem clichê',
   CAPTION_STYLE: 'Português do Brasil, voz pessoal, CTA suave no fim.',
   FALLBACK_VISUAL_STYLE:
-    'cinematic editorial photography, deep chiaroscuro lighting, considered composition, premium magazine aesthetic, large negative space, no stock-photo look',
+    'natural-light editorial photography, soft directional daylight, an intentional and colorful palette chosen for the emotion, considered composition with generous negative space, real tactile texture, no stock-photo look, no dark/desaturated/monochrome default',
 });
 
 export const INSTAGRAM_VIDEO = Object.freeze({

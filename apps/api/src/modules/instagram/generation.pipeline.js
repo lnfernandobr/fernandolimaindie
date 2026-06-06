@@ -102,6 +102,7 @@ const validatePlan = (plan, slidesCount) => {
   const hashtagTiers = normalizeTiers(plan.hashtags);
   return {
     title: truncate(plan.title, 240),
+    youtubeTitle: truncate(plan.youtubeTitle, 240),
     designConcept: truncate(plan.designConcept, 1200),
     visualAnchors,
     visualStyle,
@@ -257,6 +258,7 @@ const runPipeline = async ({ channel, item, runLog }) => {
       queueItemId: item._id,
       topic: item.topic,
       title: plan.title || item.topic,
+      youtubeTitle: plan.youtubeTitle || plan.title || item.topic,
       brief: item.brief,
       designConcept: plan.designConcept,
       visualStyle: plan.visualStyle,

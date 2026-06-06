@@ -51,30 +51,31 @@ export const buildMockPlan = ({ channel, topic, slidesCount }) => {
     {
       role: 'hook',
       text: topic,
-      imageSubject: 'a single warm spotlight on a dark velvet curtain',
-      imageScene: 'a contemplative stage backstage, deep shadow fall-off, low ambient murmur',
+      imageSubject: 'a single white ceramic vase with a fresh eucalyptus sprig',
+      imageScene: 'a sunlit white table by a bright window, airy morning light, soft open shadows',
     },
     ...pickBody(middle),
     {
       role: 'cta',
       text: 'Salva esse post e marca quem precisa ver.',
       imageSubject: 'an open hand resting on a sun-warmed wooden table',
-      imageScene: 'a quiet workshop in late afternoon light, faint dust, warm tone',
+      imageScene: 'a bright kitchen in late morning light, fresh and warm, gentle daylight',
     },
   ];
   const slug = slugifyHashtag(topic);
   return {
     title: topic,
+    youtubeTitle: topic,
     designConcept:
-      'Documental analógico em paleta dessaturada, foco em pequenos objetos do cotidiano carregados de simbolismo, inspirado em editoriais da revista Apartamento.',
+      'Luz natural clara e arejada, paleta de brancos quentes com verde-sálvia e toques de ocre, para traduzir leveza e recomeço. Pequenos objetos do cotidiano sob luz de manhã, inspirado em editoriais luminosos da revista Kinfolk.',
     visualAnchors: {
-      medium: 'documentary photograph on 35mm Kodak Portra 400',
-      palette: 'muted sage #8FA68C, warm sand #C9B8A2, ink black #1A1A1A, ivory paper #F2EDE6 — restrained, dusty, melancholic',
-      lighting: 'soft window light from camera left, gentle shadow fall-off, slight haze in the air',
-      lensOrTechnique: '50mm prime at f/2, shallow depth of field, gentle bokeh, slight halation on highlights',
+      medium: 'natural-light photograph on 35mm Kodak Portra 400',
+      palette: 'fresh warm white #F7F5F0, sage green #9CB3A0, soft clay #C58A6A, gentle gold #E7C66B — bright, hopeful, alive',
+      lighting: 'bright soft daylight from a large window, open airy shadows, gentle highlights',
+      lensOrTechnique: '50mm prime at f/2, shallow depth of field, gentle bokeh',
       composition: 'rule of thirds, subject offset to the right, generous negative space upper-left to host typography',
-      texture: 'fine 400-iso film grain, faint dust specks, paper weight visible',
-      reference: 'Saul Leiter color street photography meets Apartamento Magazine domestic editorials',
+      texture: 'fine 200-iso film grain, real surface detail, paper weight visible',
+      reference: 'Kinfolk magazine light meets Joel Meyerowitz color',
     },
     slides,
     caption: `${topic}\n\nConteúdo curado por @${channel.handle}. Salva pra revisitar.`,

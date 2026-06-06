@@ -23,6 +23,7 @@ const PLAN_TOOL = {
     type: 'object',
     properties: {
       title: { type: 'string' },
+      youtubeTitle: { type: 'string' },
       designConcept: { type: 'string' },
       visualAnchors: {
         type: 'object',

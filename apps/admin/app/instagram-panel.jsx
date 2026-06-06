@@ -524,6 +524,8 @@ function InlinePostInfo({ session, postId }) {
           })}
         </div>
       )}
+
+      <YoutubeExtras post={post} />
     </div>
   );
 }
@@ -789,6 +791,43 @@ function copyToClipboard(text) {
   if (navigator?.clipboard) navigator.clipboard.writeText(text);
 }
 
+// Campos prontos pra publicar no YouTube: título otimizado + todas as hashtags
+// numa linha separadas por vírgula (as hashtags por tier acima ficam intactas).
+function YoutubeExtras({ post }) {
+  const ytTitle = post.youtubeTitle || post.title || post.topic || '';
+  const commaTags = (post.hashtags || []).join(', ');
+  if (!ytTitle && !commaTags) return null;
+  const subLabel = {
+    color: 'var(--muted)',
+    fontSize: '0.7rem',
+    textTransform: 'uppercase',
+    letterSpacing: '0.06em',
+  };
+  return (
+    <div className="ig-post-block">
+      <div className="ig-post-label">YouTube</div>
+      {ytTitle && (
+        <div style={{ marginTop: 6 }}>
+          <span style={subLabel}>Título</span>
+          <button className="btn-sm" style={{ marginLeft: 8 }} onClick={() => copyToClipboard(ytTitle)}>
+            Copiar
+          </button>
+          <div className="ig-caption-box">{ytTitle}</div>
+        </div>
+      )}
+      {commaTags && (
+        <div style={{ marginTop: 6 }}>
+          <span style={subLabel}>Hashtags (vírgula)</span>
+          <button className="btn-sm" style={{ marginLeft: 8 }} onClick={() => copyToClipboard(commaTags)}>
+            Copiar
+          </button>
+          <div className="ig-caption-box">{commaTags}</div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function PostDetailRow({ session, postId }) {
   const [open, setOpen] = useState(false);
   const [post, setPost] = useState(null);
@@ -895,6 +934,7 @@ function PostDetailRow({ session, postId }) {
                     })}
                   </div>
                 )}
+                <YoutubeExtras post={post} />
               </div>
             </>
           )}

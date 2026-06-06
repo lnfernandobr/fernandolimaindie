@@ -24,6 +24,32 @@ const channelContext = (channel) =>
     channel.captionStyle ? `Caption style guide: ${channel.captionStyle}` : null,
   ]);
 
+// ── Camada de direção de arte ────────────────────────────────────────────────
+// Biblioteca de linguagens visuais distintas. A IA escolhe UMA família por peça
+// (coerência interna) e DEVE variar entre peças — o objetivo é matar o feed
+// monótono escuro/dessaturado. Luz e cor são decisões a serviço da emoção, nunca
+// um reflexo. Tom escuro/P&B é uma ferramenta para poucas emoções, não o default.
+const VISUAL_LANGUAGE_LIBRARY = list([
+  'VISUAL LANGUAGE LIBRARY — choose ONE family per piece and commit to it fully (coherence inside the piece, real variety across pieces). These are starting points, not a cage; bend them to the emotion:',
+  '1. Bright airy natural light — luminous daylight, soft open shadows, white + pastel + one fresh accent. Reads as hope, lightness, a fresh start.',
+  '2. Warm golden-hour cinema — amber backlight, gentle sun flare, long shadows, honey/terracotta tones. Reads as gratitude, homecoming, warmth.',
+  '3. Saturated editorial color — bold color blocking, colored shadows, confident hues (Saul Leiter / Alex Webb / Joel Meyerowitz). Reads as aliveness, modern, scroll-stopping.',
+  '4. Painterly still life — oil/gouache/acrylic of a few symbolic objects, tactile brushwork, a warm or fresh palette (NOT muted Morandi-grey). Reads as craft, intimacy, the sacred inside the ordinary.',
+  '5. Fine-art illustration — gouache / watercolor / colored-pencil on toned paper, emotional line art, the human hand visible. Reads as gentle, humble, artisanal.',
+  '6. Sunlit documentary — real people, real hands, real places in generous natural light, candid and unstaged. Reads as authentic, human, relatable (very strong for faith/community).',
+  '7. Organic tactile materials — clay, ochre, moss, terracotta, linen, paper, stone; matte natural color and macro texture. Reads as calm, grounded, current for 2026.',
+  '8. Intentional chiaroscuro / nocturne — candlelight, a single warm source, deep shadow, OR true night. RESERVED for grief, fear, night, repentance or intimacy. Use it with purpose — never as a default mood.',
+]);
+
+const artDirectionThinking = () =>
+  list([
+    'Work as a real art director, not on autopilot:',
+    '  • Name, in one breath, the dominant EMOTION and the PROMISE of this piece.',
+    '  • DELIBERATELY pick one visual language from the library that AMPLIFIES that emotion. Most themes here — hope, faith, gratitude, restart, peace, love, encouragement — call for LIGHT and COLOR. Darkness, sepia and monochrome are a precise tool for a few emotions (grief, night, fear, repentance), NOT your reflex. Never desaturate or darken out of habit.',
+    '  • Give THIS piece its own identity. Assume the previous posts exist and do NOT repeat the same muted/dark documentary look — variety across the feed is part of the job.',
+    '  • Picture the first slide as a thumbnail competing in a fast feed: strong focal subject, high contrast, instantly readable. That single frame must stop the thumb.',
+  ]);
+
 const slideRoles = () =>
   list([
     'Slide roles:',
@@ -35,8 +61,8 @@ const slideRoles = () =>
 const carouselPlanSystem = (channel) =>
   list([
     'You are THREE experts working as one on a single Instagram carousel:',
-    '1. A senior creative director who designs scroll-stopping editorial visual systems.',
-    '2. A director of photography who briefs cinematic, signature imagery (never stock, never generic).',
+    '1. A senior art director who has mastered MANY visual languages and refuses the tired dark/desaturated default — every piece gets a light, palette and medium chosen on purpose.',
+    '2. A director of photography / illustrator who briefs cinematic, signature imagery (never stock, never generic AI sludge).',
     '3. A viral growth strategist who reverse-engineers what gets saved, shared, and ranked on Instagram in 2026.',
     '',
     'You produce structured plans that will be consumed by an image model. Every visual decision must be specific enough to repeat across slides — never abstract.',
@@ -53,33 +79,36 @@ const carouselPlanUser = ({ topic, brief, slidesCount }) =>
     `Topic: ${topic}`,
     brief ? `Topic brief: ${brief}` : null,
     '',
+    VISUAL_LANGUAGE_LIBRARY,
+    '',
     'Think silently in this order before producing the JSON:',
     '  a) What single insight or transformation does this carousel deliver?',
     '  b) Who exactly (within the channel niche) needs this NOW, and what emotional state are they in?',
-    '  c) Which visual world (palette, lighting, atmosphere, material, subject matter) will stop them in the feed?',
-    '  d) Which hook copy converts that visual into a save?',
-    '  e) How do middle slides deliver value with zero filler?',
-    '  f) Which CTA matches their state without feeling salesy?',
-    '  g) Which hashtags actually drive reach AND ranking for this exact topic — split across tiers.',
+    artDirectionThinking(),
+    '  c) Which hook copy converts that visual into a save?',
+    '  d) How do middle slides deliver value with zero filler?',
+    '  e) Which CTA matches their state without feeling salesy?',
+    '  f) Which hashtags actually drive reach AND ranking for this exact topic — split across tiers.',
     '',
     'Return a JSON object with this EXACT shape:',
     '{',
     '  "title": string,                        // short internal title for the admin (max 100 chars, pt-BR)',
-    '  "designConcept": string,                // 2-4 sentence rationale in pt-BR. MUST name a specific visual direction (ex: "documental analogico em 35mm inspirado em editoriais da Apartamento Magazine"). Words like "limpo", "elegante", "moderno", "minimalista" used alone are FORBIDDEN.',
+    '  "youtubeTitle": string,                 // pt-BR title optimized for YouTube / Shorts: curiosity-driven and searchable, <= 70 chars. No clickbait lies, no emojis, no hashtags.',
+    '  "designConcept": string,                // 2-4 sentence rationale in pt-BR. MUST name the chosen visual language, its light and palette, and WHY they serve THIS emotion (ex: "luz natural clara e arejada, paleta de brancos e verde-sálvia, para traduzir recomeço e leveza"). Generic words like "limpo", "elegante", "moderno", "minimalista", "escuro", "melancólico" used alone are FORBIDDEN.',
     '  "visualAnchors": {                      // ENGLISH, used DIRECTLY by the image model on every slide. Be specific. Same anchors apply to ALL slides for coherence.',
-    '    "medium": string,                     // ex: "documentary photograph on 35mm Kodak Portra 400" / "matte gouache illustration on toned paper" / "still life painted in oil with palette knife". One specific medium, never a list.',
-    '    "palette": string,                    // 3-4 specific colors with mood. ex: "muted sage #8FA68C, warm sand #C9B8A2, ink black #1A1A1A, ivory paper #F2EDE6 — restrained, dusty, melancholic".',
-    '    "lighting": string,                   // ex: "soft window light coming from camera left, deep shadow fall-off on the right, slight haze in the air, golden hour quality".',
-    '    "lensOrTechnique": string,            // ex: "50mm prime at f/2, shallow depth of field, gentle bokeh, slight halation on highlights" OR "wet-on-wet watercolor with visible paper grain".',
+    '    "medium": string,                     // ex: "documentary photograph on 35mm Kodak Portra 400" / "matte gouache illustration on toned paper" / "still life painted in oil with a palette knife". One specific medium, never a list.',
+    '    "palette": string,                    // 3-4 specific colors WITH mood, chosen to fit the emotion. ex: "fresh white #F7F5F0, sage green #9CB3A0, warm clay #C58A6A, soft gold #E7C66B — bright, hopeful, alive". Do NOT default to grey/sepia/muted unless the emotion truly demands it.',
+    '    "lighting": string,                   // ex: "bright soft daylight wrapping the subject, open shadows, airy" OR "warm golden-hour backlight with gentle flare". Match the light to the real emotion.',
+    '    "lensOrTechnique": string,            // ex: "50mm prime at f/2, shallow depth of field, gentle bokeh" OR "wet-on-wet watercolor with visible paper grain".',
     '    "composition": string,                // ex: "rule of thirds, subject offset to the right, generous negative space upper-left to host typography".',
-    '    "texture": string,                    // ex: "fine 400-iso film grain, faint dust specks, paper weight visible" OR "matte gouache pigment, micro brush texture".',
-    '    "reference": string                   // ONE explicit reference: a photographer, magazine, film, or art movement. ex: "Saul Leiter color street photography" / "the matte stillness of Tarkovsky\'s Stalker" / "Apartamento Magazine domestic editorials".',
+    '    "texture": string,                    // ex: "fine 200-iso film grain, real surface detail" OR "matte gouache pigment, micro brush texture".',
+    '    "reference": string                   // ONE explicit reference: a photographer, illustrator, magazine, film, or art movement. ex: "Joel Meyerowitz color light" / "Apartamento Magazine domestic editorials" / "Mary Blair gouache color".',
     '  },',
     '  "slides": [',
     '    {',
     '      "role": "hook" | "body" | "cta",',
     '      "text": string,                     // SHORT copy that will be RENDERED INSIDE the image (literal). No hashtags, no emojis, no URLs.',
-    '      "imageSubject": string,             // ENGLISH. The single primary subject of this slide, expressed as a concrete noun phrase. ex: "a chipped enamel mug resting on a worn linen napkin". No abstractions.',
+    '      "imageSubject": string,             // ENGLISH. The single primary subject of this slide, as a concrete noun phrase. ex: "a chipped enamel mug resting on a sunlit linen napkin". No abstractions.',
     '      "imageScene": string                // ENGLISH. The environment, time of day, mood and any secondary element. ONE coherent moment, not a list. NEVER mention text, letters, words, captions, signs, books, screens, or typography.',
     '    }',
     '  ],',
@@ -99,7 +128,8 @@ const carouselPlanUser = ({ topic, brief, slidesCount }) =>
     '- Each slide must show a DIFFERENT concrete subject and environment, but coherent within the visualAnchors.',
     '- imageSubject and imageScene are English and must NEVER reference any written language (no text, letters, words, captions, signs, books, screens, typography).',
     '- visualAnchors fields must be specific: never write "warm", "dark", "modern", "clean", "minimalist", "editorial illustration", "premium aesthetic" by themselves.',
-    '- Forbidden visual modes anywhere: plastic 3D render, generic AI illustration, stock photography, inspirational poster, AI face symmetry, glitch artifacts, Pinterest devotional cliché.',
+    '- FORBIDDEN as a default mood: dark, desaturated, sepia, grey, monochrome or "melancholic documentary" applied to a theme that is actually hopeful. Choose darkness ONLY when the emotion is genuinely grief, night, fear or repentance — otherwise commit to light and color.',
+    '- Forbidden visual modes anywhere: plastic 3D render, soulless generic-AI clip-art, stock photography, inspirational poster, AI face symmetry, glitch artifacts, Pinterest devotional cliché.',
     '- Caption is in Brazilian Portuguese and respects the channel tone.',
     '- Every hashtag starts with "#", lowercase, no spaces, no accents.',
     '- Hashtags MUST be distinct across tiers (no duplicates). Each tier has at least 3 hashtags. Hashtags must be topically tied to the EXACT topic.',
@@ -139,6 +169,7 @@ const slideImagePrompt = ({ visualAnchors, slide, slideNumber, totalSlides, chan
     '',
     `# Style (must match across every slide of this carousel)`,
     anchors,
+    'Honor the chosen medium, palette and lighting EXACTLY. Do NOT default to dark, desaturated, sepia or monochrome unless the palette literally specifies it — render the colors and brightness as briefed.',
     '',
     `# Composition`,
     `- One primary subject + generous negative space — strict visual hierarchy.`,
@@ -152,17 +183,17 @@ const slideImagePrompt = ({ visualAnchors, slide, slideNumber, totalSlides, chan
     '"""',
     slide.text,
     '"""',
-    'Typography: bold modern sans-serif (Inter, Söhne, Neue Haas Grotesk vibe), tight tracking, very high contrast against its local background. No decorative serifs, no script fonts, no hand-drawn lettering, no shadow, no outline, no gradient on the type.',
+    'Typography: a bold, highly legible typeface with very high contrast against its local background, in a weight coherent with the chosen visual language (default to a clean modern grotesk sans-serif — Inter, Söhne, Neue Haas Grotesk vibe). Tight, intentional tracking. No cheesy script, no hand-drawn lettering, no drop shadow, no outline, no gradient on the type.',
     '',
     `# Restrictions (must be ABSENT from the final image)`,
     '- watermarks, logos, signatures, URLs, page numbers',
     '- Instagram UI mockups, phone frames, app screenshots',
     '- emojis, hashtags, additional sentences other than the one between triple quotes above',
     '- distorted hands, mangled faces, extra fingers, gibberish letters',
-    '- plastic 3D render look, generic AI illustration look, symmetric AI face',
+    '- cheap/generic AI look: plastic 3D render, soulless vector clip-art, airbrushed CGI skin, symmetric AI face',
     '- stock-photo cliché poses (arms raised at sunset, silhouette on mountaintop, smiling at camera, hands forming a heart)',
     '- inspirational poster aesthetic, generic Pinterest devotional style, motivational-quote-graphic vibe',
-    '- oversaturation, HDR halos, plastic skin, soap-opera lighting',
+    '- oversaturation blow-out, HDR halos, plastic skin, soap-opera lighting',
   ]);
 };
 
@@ -172,7 +203,7 @@ const videoScriptSystem = (channel) =>
   list([
     'You are THREE experts working as one on ONE faceless narrated video:',
     '1. A viral short-form scriptwriter who hooks in the first 2 seconds and never lets go.',
-    '2. A documentary director of photography who briefs cinematic, signature imagery (never stock, never generic).',
+    '2. An art director / director of photography who has mastered MANY visual languages and refuses the tired dark/desaturated default — light, palette and medium are chosen on purpose.',
     '3. A retention strategist who paces narration so every line earns the next.',
     '',
     'The narration is read aloud by a TTS voice; the images are made by an image model.',
@@ -195,10 +226,14 @@ const videoScriptUser = ({ post, variant, sceneCount, targetSeconds }) => {
     post.caption ? `- Caption: ${String(post.caption).slice(0, 1200)}` : null,
     post.designConcept ? `- Visual concept: ${post.designConcept}` : null,
     '',
+    VISUAL_LANGUAGE_LIBRARY,
+    '',
+    artDirectionThinking(),
+    '',
     'Return a JSON object with this EXACT shape:',
     '{',
     '  "title": string,            // short internal title (pt-BR, max 100 chars)',
-    '  "bgColor": string,          // ONE hex color from the palette, fallback background. ex: "#1A1A1A"',
+    '  "bgColor": string,          // ONE hex color from the palette, fallback background. ex: "#F2EDE6"',
     '  "musicMood": string,        // 2-4 EN keywords for the ideal background track. ex: "calm acoustic hopeful" / "tense cinematic" / "uplifting lofi chill"',
     '  "visualAnchors": {          // ENGLISH, applied to EVERY scene image for coherence',
     '    "medium": string, "palette": string, "lighting": string,',
@@ -219,7 +254,8 @@ const videoScriptUser = ({ post, variant, sceneCount, targetSeconds }) => {
     '- imagePrompt is English and must NEVER reference any written language (no text, letters, words, captions, signs, books, screens, typography, logos).',
     '- narration is Brazilian Portuguese, in the channel tone, flowing naturally when read aloud.',
     '- visualAnchors must be specific (never lone "warm", "clean", "modern", "minimalist", "premium").',
-    '- Forbidden visual modes: plastic 3D render, generic AI illustration, stock photography, inspirational poster, symmetric AI face, glitch.',
+    '- FORBIDDEN as a default mood: dark, desaturated, sepia, grey or monochrome applied to a hopeful theme. Choose darkness ONLY for genuine grief, night, fear or repentance — otherwise commit to light and color.',
+    '- Forbidden visual modes: plastic 3D render, soulless generic-AI clip-art, stock photography, inspirational poster, symmetric AI face, glitch.',
     '',
     'Return the JSON object only.',
   ]);
@@ -240,6 +276,7 @@ const sceneImagePrompt = ({ visualAnchors, scene, sceneNumber, totalScenes, aspe
     '',
     '# Style (must match across every scene of this video)',
     anchors,
+    'Honor the chosen medium, palette and lighting EXACTLY. Do NOT default to dark, desaturated, sepia or monochrome unless the palette literally specifies it — render the colors and brightness as briefed.',
     '',
     '# Composition & framing (CRITICAL — the image will be cropped to fill the frame)',
     vertical
@@ -253,8 +290,8 @@ const sceneImagePrompt = ({ visualAnchors, scene, sceneNumber, totalScenes, aspe
     '- ANY text, letters, words, captions, subtitles, signs, labels, numbers, typography, watermarks, logos, UI',
     '- phone frames, app screenshots, social media mockups',
     '- distorted hands, mangled faces, extra fingers, gibberish shapes',
-    '- plastic 3D render look, generic AI illustration look, symmetric AI face',
-    '- stock-photo cliché poses, inspirational poster aesthetic, oversaturation, HDR halos, plastic skin',
+    '- cheap/generic AI look: plastic 3D render, soulless vector clip-art, airbrushed CGI skin, symmetric AI face',
+    '- stock-photo cliché poses, inspirational poster aesthetic, oversaturation blow-out, HDR halos, plastic skin',
   ]);
 };
 

@@ -64,6 +64,7 @@ const instagramPostSchema = new Schema(
     queueItemId: { type: Schema.Types.ObjectId, ref: 'InstagramQueueItem', default: null, index: true },
     topic: { type: String, required: true, trim: true, maxlength: INSTAGRAM_LIMITS.TOPIC_MAX },
     title: { type: String, default: '', trim: true, maxlength: INSTAGRAM_LIMITS.TOPIC_MAX },
+    youtubeTitle: { type: String, default: '', trim: true, maxlength: INSTAGRAM_LIMITS.TOPIC_MAX },
     brief: { type: String, default: '', trim: true, maxlength: INSTAGRAM_LIMITS.BRIEF_MAX },
     designConcept: { type: String, default: '' },
     visualStyle: { type: String, default: '' },
