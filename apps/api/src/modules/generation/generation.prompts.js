@@ -14,9 +14,30 @@ const FORBIDDEN = [
   '- clichês de coach/autoajuda: "abraços de luz", "vibrações positivas", "energia do universo", "alta vibração".',
   '- jargão de prosperidade: "decretar bênçãos", "tomar posse", "reivindicar a promessa", "abrir portas financeiras".',
   '- linguagem de palco evangélico: "uma palavra para você hoje", "Deus está falando comigo agora", "profetizo sobre sua vida".',
+  '- muletas de IA/redação de robô: "em um mundo cada vez mais", "não se trata apenas de X, mas de Y", "no final das contas", "a verdade é que", "lembre-se de que", "a chave está em", "mais do que nunca", "afinal", "jornada", "pequenos passos", "vale a pena lembrar".',
+  '- subtítulos e aberturas genéricos e intercambiáveis (que caberiam em qualquer texto). Cada subtítulo é específico do que aquela seção realmente diz.',
   '- emoji, hashtag, link, URL, asterisco de markdown, travessão, reticências de suspense ("...").',
   '- abreviações tipo "Sr.", "vc", "tb". Escrever por extenso.',
   '- referências a "este post", "este artigo", "leia mais abaixo" — texto deve funcionar isolado.',
+].join('\n');
+
+// Regras de profundidade: o que separa um texto vivo de um texto raso com cara de IA.
+const DEPTH = [
+  'Profundidade (inegociável — o texto não pode soar genérico, raso nem gerado por máquina):',
+  '- Cada parágrafo carrega UMA ideia específica e não-óbvia. Se a frase serviria para qualquer outro tema, corte ou troque por algo concreto.',
+  '- Ancore em concreto: uma cena, um gesto, um diálogo curto, um detalhe do cotidiano brasileiro (a louça na pia às 23h, o grupo da família no WhatsApp, o trânsito na volta do trabalho, a cadeira vazia na ceia). Mostre, não decrete.',
+  '- Nomeie a tensão real e a objeção que o leitor faria. Não finja que é simples. Pode admitir o que dói e o que não tem resposta fácil.',
+  '- Ritmo humano: alterne frases curtas e longas. Evite a estrutura de três itens paralelos perfeitinhos repetida em todo parágrafo.',
+  '- Densidade: prefira sempre o exemplo exato ao conselho genérico. Uma boa imagem concreta vale mais que três adjetivos.',
+].join('\n');
+
+// Briefing da imagem de capa (o Claude preenche o campo "imagePrompt", em inglês).
+const IMAGE_DIRECTION = [
+  'Campo "imagePrompt" (ESCREVA EM INGLÊS) — o briefing da imagem de capa, lido por um modelo de imagem para gerar uma capa editorial impactante:',
+  '- Escolha UMA cena ou objeto simbólico CONCRETO ligado ao tema (ex.: "hands cupping the first morning light", "an empty chair beside a sunlit window", "torn bread on a worn wooden table", "a child\'s small shoes left by the front door", "a single candle lit at dawn"). Nada de clichê religioso literal: no glowing cross, no praying-hands stock pose, no godrays kitsch, no open Bible with sparkles.',
+  '- Direção de arte de capa de revista: cinematic natural light, an intentional color palette that fits the emotion, shallow depth of field, real tactile texture. Avoid the generic-AI / stock-photo look entirely.',
+  '- Numa única cena coerente, descreva subject + environment + light + color + framing. Seja específico e visual. Compose for a wide landscape (3:2) hero with one strong focal subject.',
+  '- The image carries NO text: never mention text, letters, words, captions, watermark, logo, frame or UI.',
 ].join('\n');
 
 const REFERENCES_RULE = [
@@ -43,8 +64,9 @@ const CHUNK_RULES = [
 ];
 
 const ARTICLE_RULES = [
-  `"bodyHtml" é um artigo de 4 a 6 seções. Cada seção começa com <h2>Subtítulo</h2> seguido de 1 a 3 <p>. Máximo ${LIMITS.BODY_MAX} caracteres.`,
-  'Estrutura answer-first: a primeira seção JÁ resolve a dúvida em poucas linhas. As seções seguintes aprofundam.',
+  `"bodyHtml" é um artigo de 4 a 6 seções. Cada seção começa com <h2>Subtítulo</h2> seguido de 2 a 4 <p>. Máximo ${LIMITS.BODY_MAX} caracteres.`,
+  'Estrutura answer-first: a primeira seção JÁ resolve a dúvida em poucas linhas. As seções seguintes APROFUNDAM de verdade — cada uma traz um exemplo concreto, uma objeção real ou um detalhe que só quem viveu o tema saberia. Nada de seção que só repete a anterior com outras palavras.',
+  'Subtítulos específicos e vivos (dizem o que aquela seção entrega), nunca rótulos genéricos e intercambiáveis.',
   'Termine com uma seção curta "Para levar com você" (uma frase prática + uma intenção de oração).',
   '"chunks" deve vir como lista vazia (o artigo vive todo no bodyHtml).',
 ];
@@ -66,8 +88,12 @@ const systemFor = (signalKind) =>
   [
     VOICE,
     '',
+    DEPTH,
+    '',
     'Regras de formato (obrigatórias):',
     `- ${[...COMMON_RULES.split('\n- '), ...rulesFor(signalKind)].join('\n- ')}`,
+    '',
+    IMAGE_DIRECTION,
   ].join('\n');
 
 const ctx = ({ subject, intent }) => {

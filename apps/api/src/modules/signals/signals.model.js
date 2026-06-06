@@ -55,6 +55,7 @@ const signalSchema = new Schema(
     verses: { type: [verseSchema], default: [] },
     category: { type: String, default: null, trim: true },
     relatedIntents: { type: [String], default: [] },
+    imagePrompt: { type: String, default: '' },
     audioUrl: { type: String, default: null },
     imageUrl: { type: String, default: null },
     lang: { type: String, default: DEFAULT_LANG, trim: true },

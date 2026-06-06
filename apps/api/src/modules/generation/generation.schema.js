@@ -38,6 +38,7 @@ export const generatedContentSchema = z.object({
   answer: z.string().trim().min(1).max(LIMITS.ANSWER_MAX),
   summary: z.string().trim().min(1).max(LIMITS.SUMMARY_MAX),
   bodyHtml: z.string().min(1).max(LIMITS.BODY_MAX),
+  imagePrompt: z.string().trim().max(LIMITS.IMAGE_PROMPT_MAX).optional().default(''),
   chunks: z.array(chunkSchema).max(LIMITS.CHUNKS_MAX).default([]),
   faq: z.array(faqSchema).min(1).max(LIMITS.FAQ_MAX),
   verses: z.array(verseSchema).max(LIMITS.VERSES_MAX).default([]),
@@ -89,6 +90,7 @@ export const buildContentJsonSchema = (signalKind) => {
     answer: { type: 'string', minLength: 1, maxLength: LIMITS.ANSWER_MAX },
     summary: { type: 'string', minLength: 1, maxLength: LIMITS.SUMMARY_MAX },
     bodyHtml: { type: 'string', minLength: 1, maxLength: LIMITS.BODY_MAX },
+    imagePrompt: { type: 'string', minLength: 1, maxLength: LIMITS.IMAGE_PROMPT_MAX },
     chunks: {
       type: 'array',
       minItems: chunksMin,

@@ -107,6 +107,7 @@ const buildSignalInput = (seed, content) => ({
   answer: content.answer,
   summary: content.summary,
   bodyHtml: content.bodyHtml,
+  imagePrompt: content.imagePrompt,
   chunks: content.chunks,
   faq: content.faq,
   verses: content.verses ?? [],

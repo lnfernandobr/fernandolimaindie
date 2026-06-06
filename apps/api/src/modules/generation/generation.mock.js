@@ -40,6 +40,8 @@ export const buildMockContent = (seed) => {
     summary,
     bodyHtml:
       '<p>Conteudo de corpo em modo mock. Existe apenas para testar o pipeline end-to-end sem custo de API.</p><p>Em producao, garanta <strong>OPENAI_MOCK_MODE=false</strong> e a chave configurada.</p>',
+    imagePrompt:
+      'torn bread on a worn wooden table beside a sunlit window, cinematic morning light, warm intentional palette, shallow depth of field, no text',
     chunks: [
       { id: 'ancora', html: '<p><strong>Ancora do tema.</strong></p><p>Trecho mock semantico autocontido.</p>' },
       { id: 'pratica', html: '<p><strong>Pratica do dia.</strong></p><p>Outro trecho mock com id slug curto.</p>' },

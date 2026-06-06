@@ -6,9 +6,9 @@ export const MEDIA_DEFAULTS = Object.freeze({
   S3_PREFIX_AUDIO: 'audio',
   S3_PREFIX_IMAGE: 'image',
   MOCK_AUDIO_URL: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-  MOCK_IMAGE_URL: 'https://placehold.co/1024x1024/B7411E/FBF6EE?text=UmSinalDeFe',
-  IMAGE_SIZE: '1024x1024',
-  IMAGE_QUALITY: 'medium',
+  MOCK_IMAGE_URL: 'https://placehold.co/1536x1024/B7411E/FBF6EE?text=UmSinalDeFe',
+  IMAGE_SIZE: '1536x1024',
+  IMAGE_QUALITY: 'high',
 });
 
 export const MEDIA_ERRORS = Object.freeze({

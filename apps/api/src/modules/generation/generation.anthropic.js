@@ -3,7 +3,7 @@ import { env } from '../../config/env.js';
 import { GENERATION_DEFAULTS, GENERATION_ERRORS } from '../../constants/generation.js';
 import { badRequest } from '../../errors/factories.js';
 
-const MAX_TOKENS = 4096;
+const MAX_TOKENS = 8000;
 
 const buildClient = () => {
   if (!env.ANTHROPIC_API_KEY) throw badRequest(GENERATION_ERRORS.ANTHROPIC_KEY_MISSING);
