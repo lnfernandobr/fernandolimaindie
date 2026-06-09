@@ -25,6 +25,9 @@ const MODELS = {
       aspect_ratio: aspect === 'vertical' ? '9:16' : '16:9',
       resolution: '720p',
       generate_audio: false, // o áudio final vem da narração+trilha; Veo3 sem áudio é mais barato
+      // moderação do Google é o que barrava o hook de temas devocionais (resultado 422).
+      // 6 = mais permissivo (1 é o mais estrito). Mesmo destrave do FLUX nas imagens.
+      safety_tolerance: '6',
     }),
   },
   kling: {
@@ -123,7 +126,11 @@ export const generateHookClip = async ({ imageUrl, prompt, durationMs, aspect })
   }
 
   const res = await fetch(resultUrl, { headers: auth(key) });
-  if (!res.ok) throw new Error(`fal result ${res.status}`);
+  if (!res.ok) {
+    // 422 aqui costuma ser moderação do modelo — expõe o corpo pra diagnóstico
+    const body = await res.text().catch(() => '');
+    throw new Error(`fal result ${res.status}: ${body.slice(0, 220)}`.trim());
+  }
   const data = await res.json();
   const url = data?.video?.url;
   if (!url) throw new Error('fal: sem video.url');
