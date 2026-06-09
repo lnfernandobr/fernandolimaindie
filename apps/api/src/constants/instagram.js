@@ -5,7 +5,7 @@ export const INSTAGRAM_LIMITS = Object.freeze({
   TOPIC_MAX: 240,
   CAPTION_STYLE_MAX: 500,
   HASHTAG_MAX: 60,
-  SLIDES_MIN: 3,
+  SLIDES_MIN: 1, // 1 = post de imagem única (uma imagem + legenda)
   SLIDES_MAX: 10,
   PAGE_DEFAULT: 50,
   PAGE_MAX: 200,

@@ -150,10 +150,10 @@ function ChannelForm({ session, channel, onSaved, onCancel, onDeleted }) {
           <input value={form.niche} onChange={set('niche')} placeholder="finanças, dev, devocional..." />
         </label>
         <label className="ig-field">
-          Slides por carrossel (3-10)
+          Slides por carrossel (1-10) <span style={{ color: 'var(--muted)', fontWeight: 400 }}>· 1 = imagem única</span>
           <input
             type="number"
-            min="3"
+            min="1"
             max="10"
             value={form.slidesPerCarousel}
             onChange={set('slidesPerCarousel')}

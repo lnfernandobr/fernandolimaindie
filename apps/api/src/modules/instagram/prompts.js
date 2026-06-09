@@ -74,7 +74,9 @@ const carouselPlanSystem = (channel) =>
 
 const carouselPlanUser = ({ topic, brief, slidesCount }) =>
   list([
-    `Design ONE Instagram carousel with EXACTLY ${slidesCount} slides for the topic below.`,
+    slidesCount === 1
+      ? `Design ONE standalone single-image Instagram post (EXACTLY 1 slide) for the topic below. Make this single image carry the whole message — a strong visual with its own hook.`
+      : `Design ONE Instagram carousel with EXACTLY ${slidesCount} slides for the topic below.`,
     '',
     `Topic: ${topic}`,
     brief ? `Topic brief: ${brief}` : null,
@@ -123,7 +125,9 @@ const carouselPlanUser = ({ topic, brief, slidesCount }) =>
     slideRoles(),
     '',
     'Hard rules:',
-    '- The first slide MUST have role "hook". The last slide MUST have role "cta". All others "body".',
+    slidesCount === 1
+      ? '- EXACTLY 1 slide with role "hook": a complete, self-contained thought with its own visual hook. Put the call-to-action in the caption, NOT on the image.'
+      : '- The first slide MUST have role "hook". The last slide MUST have role "cta". All others "body".',
     '- All slides SHARE the same visualAnchors and the same world — coherence is mandatory.',
     '- Each slide must show a DIFFERENT concrete subject and environment, but coherent within the visualAnchors.',
     '- imageSubject and imageScene are English and must NEVER reference any written language (no text, letters, words, captions, signs, books, screens, typography).',
