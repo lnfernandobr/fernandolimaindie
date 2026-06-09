@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { HTTP_STATUS } from '../../constants/http.js';
-import { INSTAGRAM_LIMITS } from '../../constants/instagram.js';
+import { INSTAGRAM_LIMITS, INSTAGRAM_VIDEO } from '../../constants/instagram.js';
 import { channelIdParamSchema } from './queue.schema.js';
 import { getPostById, listPostsForChannel } from './posts.service.js';
 import { startVideoGeneration } from './video.service.js';
@@ -11,6 +11,15 @@ const postIdParamSchema = z.object({
 
 const generateVideoBodySchema = z.object({
   variant: z.enum(['short', 'long', 'both']).default('short'),
+  // duração-alvo aproximada (s); omitida = usa o padrão da variante
+  targetSeconds: z.coerce
+    .number()
+    .int()
+    .min(INSTAGRAM_VIDEO.DURATION_MIN_S)
+    .max(INSTAGRAM_VIDEO.DURATION_MAX_S)
+    .optional(),
+  // refaz o take animado (i2v) ignorando o cache do hook — pra testar o modelo atual
+  force: z.coerce.boolean().optional().default(false),
 });
 
 const listPostsQuerySchema = z.object({
@@ -38,7 +47,7 @@ export const handleGetPost = async (req, res) => {
 
 export const handleGenerateVideo = async (req, res) => {
   const { postId } = postIdParamSchema.parse(req.params);
-  const { variant } = generateVideoBodySchema.parse(req.body ?? {});
-  const result = await startVideoGeneration({ postId, variant });
+  const { variant, targetSeconds, force } = generateVideoBodySchema.parse(req.body ?? {});
+  const result = await startVideoGeneration({ postId, variant, targetSeconds, force });
   res.status(HTTP_STATUS.ACCEPTED).json(result);
 };

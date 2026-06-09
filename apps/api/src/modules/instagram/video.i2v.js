@@ -47,7 +47,7 @@ const MODELS = {
 };
 // Modelo ativo: lê de um arquivo no host (troca LTX<->Kling sem deploy) ou de I2V_MODEL.
 const MODEL_FILE = process.env.I2V_MODEL_FILE || '/opt/media/secrets/i2v_model';
-const activeModelKey = () => {
+export const activeModelKey = () => {
   try {
     if (existsSync(MODEL_FILE)) {
       const m = readFileSync(MODEL_FILE, 'utf8').trim().toLowerCase();
@@ -107,7 +107,19 @@ export const generateHookClip = async ({ imageUrl, prompt, durationMs, aspect })
     if (!st?.ok) continue;
     const s = await st.json().catch(() => ({}));
     if (s.status === 'COMPLETED') break;
-    if (s.status === 'FAILED' || s.status === 'ERROR') throw new Error(`fal: job ${s.status}`);
+    if (s.status === 'FAILED' || s.status === 'ERROR') {
+      // busca o motivo real da falha (moderação, prompt rejeitado, etc.) — sem isso
+      // a mensagem some e o pipeline só registra "i2v falhou" genérico.
+      let detail = '';
+      try {
+        const r = await fetch(resultUrl, { headers: auth(key) });
+        const j = await r.json();
+        detail = JSON.stringify(j?.detail ?? j?.error ?? j ?? '').slice(0, 220);
+      } catch {
+        /* sem detalhe */
+      }
+      throw new Error(`fal: job ${s.status} ${detail}`.trim());
+    }
   }
 
   const res = await fetch(resultUrl, { headers: auth(key) });

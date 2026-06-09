@@ -58,12 +58,25 @@ const truncate = (value, limit) => {
   return str.length > limit ? str.slice(0, limit) : str;
 };
 
-// Nº de cenas da variante: ~1 imagem a cada secondsPerScene, dentro de [min,max].
-export const sceneCountFor = (variantKey) => {
+// Duração-alvo efetiva (segundos): a explícita (clampada) ou o padrão da variante.
+export const targetSecondsFor = (variantKey, targetSeconds) => {
   const v = INSTAGRAM_VIDEO.VARIANTS[variantKey];
   if (!v) throw badRequest(INSTAGRAM_ERRORS.VIDEO_VARIANT_INVALID);
-  const raw = Math.round(v.targetSeconds / v.secondsPerScene);
-  return Math.min(Math.max(raw, v.minScenes), v.maxScenes);
+  const n = Number(targetSeconds);
+  if (!Number.isFinite(n) || n <= 0) return v.targetSeconds;
+  return Math.min(Math.max(Math.round(n), INSTAGRAM_VIDEO.DURATION_MIN_S), INSTAGRAM_VIDEO.DURATION_MAX_S);
+};
+
+// Nº de cenas: ~1 imagem a cada secondsPerScene. Com duração explícita o piso cai
+// pra MIN_SCENES_CUSTOM (permite vídeos bem curtos); sem ela usa o piso da variante.
+export const sceneCountFor = (variantKey, targetSeconds) => {
+  const v = INSTAGRAM_VIDEO.VARIANTS[variantKey];
+  if (!v) throw badRequest(INSTAGRAM_ERRORS.VIDEO_VARIANT_INVALID);
+  const explicit = Number(targetSeconds) > 0;
+  const secs = targetSecondsFor(variantKey, targetSeconds);
+  const raw = Math.round(secs / v.secondsPerScene);
+  const floor = explicit ? INSTAGRAM_VIDEO.MIN_SCENES_CUSTOM : v.minScenes;
+  return Math.min(Math.max(raw, floor), v.maxScenes);
 };
 
 const normalizeAnchors = (a) => ({
@@ -106,8 +119,8 @@ const validateScript = (raw, sceneCount) => {
 };
 
 // Roteiro de teste (mock) — usado quando não há chave/Claude, pra validar o render.
-export const buildMockScript = ({ post, variant }) => {
-  const count = sceneCountFor(variant);
+export const buildMockScript = ({ post, variant, targetSeconds }) => {
+  const count = sceneCountFor(variant, targetSeconds);
   const scenes = Array.from({ length: count }, (_, i) => ({
     narration: `Cena ${i + 1} sobre ${post.topic}. Uma frase de narração de exemplo para o teste do vídeo.`,
     imagePrompt: `cinematic still, scene ${i + 1}, soft natural light, shallow depth of field, no text`,
@@ -131,17 +144,18 @@ export const buildMockScript = ({ post, variant }) => {
 };
 
 // Gera o roteiro do vídeo via Claude, validado e normalizado.
-export const generateVideoScript = async ({ post, channel, variant }) => {
+export const generateVideoScript = async ({ post, channel, variant, targetSeconds }) => {
   const v = INSTAGRAM_VIDEO.VARIANTS[variant];
   if (!v) throw badRequest(INSTAGRAM_ERRORS.VIDEO_VARIANT_INVALID);
-  const sceneCount = sceneCountFor(variant);
+  const sceneCount = sceneCountFor(variant, targetSeconds);
+  const secs = targetSecondsFor(variant, targetSeconds);
   const client = buildClient();
   const { system, user } = prompts.videoScript({
     channel,
     post,
     variant: v,
     sceneCount,
-    targetSeconds: v.targetSeconds,
+    targetSeconds: secs,
   });
   const message = await client.messages.create({
     model: env.ANTHROPIC_MODEL,

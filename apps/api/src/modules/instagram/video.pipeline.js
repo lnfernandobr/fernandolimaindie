@@ -7,8 +7,8 @@ import { INSTAGRAM_DEFAULTS, INSTAGRAM_ERRORS, INSTAGRAM_VIDEO } from '../../con
 import { badRequest } from '../../errors/factories.js';
 import { uploadBuffer, downloadBuffer, presignedGetUrl } from '../media/media.s3.js';
 import { generateSpeech } from '../media/media.elevenlabs.js';
-import { hasFal, generateHookClip } from './video.i2v.js';
-import { generateVideoScript, buildMockScript, sceneCountFor } from './video.script.js';
+import { hasFal, generateHookClip, activeModelKey } from './video.i2v.js';
+import { generateVideoScript, buildMockScript, sceneCountFor, targetSecondsFor } from './video.script.js';
 import { generateSceneImage } from './video.image.js';
 import { transcribeWords, buildSceneAss } from './video.captions.js';
 import { selectTrackByMood } from './music.catalog.js';
@@ -99,8 +99,8 @@ const uploadFile = async (file, key, contentType) =>
   uploadBuffer({ key, buffer: await readFile(file), contentType });
 
 // ── Roteiro (com cache no S3) ──────────────────────────────────────────────
-const resolveScript = async ({ post, channel, variant, base }) => {
-  const key = `${base}/${variant}/${INSTAGRAM_VIDEO.SCRIPT_FILE}`;
+const resolveScript = async ({ post, channel, variant, keyBase, targetSeconds }) => {
+  const key = `${keyBase}/${INSTAGRAM_VIDEO.SCRIPT_FILE}`;
   try {
     const cached = await downloadBuffer(key);
     if (cached) return JSON.parse(cached.toString('utf8'));
@@ -109,8 +109,8 @@ const resolveScript = async ({ post, channel, variant, base }) => {
   }
   const script =
     isMock() || !hasAnthropic()
-      ? buildMockScript({ post, variant })
-      : await generateVideoScript({ post, channel, variant });
+      ? buildMockScript({ post, variant, targetSeconds })
+      : await generateVideoScript({ post, channel, variant, targetSeconds });
   await uploadBuffer({
     key,
     buffer: Buffer.from(JSON.stringify(script)),
@@ -120,9 +120,9 @@ const resolveScript = async ({ post, channel, variant, base }) => {
 };
 
 // ── Imagem da cena (cache + retry + fallback) ──────────────────────────────
-const resolveSceneImage = async ({ tmp, script, scene, index, total, variant, base, lastGood }) => {
+const resolveSceneImage = async ({ tmp, script, scene, index, total, variant, keyBase, lastGood }) => {
   const dest = path.join(tmp, `scene-${index}.png`);
-  const key = `${base}/${variant}/${INSTAGRAM_VIDEO.SCENE_PREFIX}/scene-${index}.png`;
+  const key = `${keyBase}/${INSTAGRAM_VIDEO.SCENE_PREFIX}/scene-${index}.png`;
 
   try {
     const cached = await downloadBuffer(key);
@@ -166,11 +166,11 @@ const resolveSceneImage = async ({ tmp, script, scene, index, total, variant, ba
 };
 
 // ── Narração da cena (cache + retry + fallback p/ silêncio) ─────────────────
-const resolveSceneNarration = async ({ tmp, scene, index, variant, base }) => {
+const resolveSceneNarration = async ({ tmp, scene, index, variant, keyBase }) => {
   const text = String(scene.narration ?? '').trim();
   if (isMock() || !hasElevenLabs() || !text) return null;
   const dest = path.join(tmp, `narr-${index}.mp3`);
-  const key = `${base}/${variant}/${INSTAGRAM_VIDEO.NARRATION_PREFIX}/scene-${index}.mp3`;
+  const key = `${keyBase}/${INSTAGRAM_VIDEO.NARRATION_PREFIX}/scene-${index}.mp3`;
 
   try {
     const cached = await downloadBuffer(key);
@@ -200,17 +200,24 @@ const resolveSceneNarration = async ({ tmp, scene, index, variant, base }) => {
 };
 
 // Renderiza UMA variante (curto ou longo) ponta a ponta.
-export const renderVariant = async ({ post, channel, handle, variant }) => {
+export const renderVariant = async ({ post, channel, handle, variant, targetSeconds, force = false }) => {
   const v = INSTAGRAM_VIDEO.VARIANTS[variant];
   if (!v) throw badRequest(INSTAGRAM_ERRORS.VIDEO_VARIANT_INVALID);
 
+  // Duração-alvo efetiva. Quando difere do padrão da variante, namespaceia o cache
+  // (roteiro/imagens/narração/i2v) por `d{N}` — assim cada duração tem o seu render,
+  // sem reaproveitar a narração/roteiro de outra. A duração padrão mantém o path antigo.
+  const secs = targetSecondsFor(variant, targetSeconds);
+  const durTag = secs !== v.targetSeconds ? `d${secs}` : null;
+
   const tmp = await mkdtemp(path.join(os.tmpdir(), `ig-v2-${variant}-`));
   const base = `${INSTAGRAM_DEFAULTS.S3_PREFIX}/${handle}/${post.id || post._id}`;
-  logger.info({ postId: post.id || String(post._id), variant }, 'video v2 render started');
+  const vbase = durTag ? `${base}/${variant}/${durTag}` : `${base}/${variant}`;
+  logger.info({ postId: post.id || String(post._id), variant, targetSeconds: secs, force }, 'video v2 render started');
 
   try {
-    const script = await resolveScript({ post, channel, variant, base });
-    const total = Math.min(script.scenes.length, sceneCountFor(variant));
+    const script = await resolveScript({ post, channel, variant, keyBase: vbase, targetSeconds: secs });
+    const total = Math.min(script.scenes.length, sceneCountFor(variant, secs));
     const scenes = script.scenes.slice(0, total);
 
     const clips = [];
@@ -221,10 +228,10 @@ export const renderVariant = async ({ post, channel, handle, variant }) => {
 
     for (let i = 0; i < scenes.length; i += 1) {
       const scene = scenes[i];
-      const img = await resolveSceneImage({ tmp, script, scene, index: i, total, variant, base, lastGood });
+      const img = await resolveSceneImage({ tmp, script, scene, index: i, total, variant, keyBase: vbase, lastGood });
       if (img.ok) lastGood = img.path;
 
-      const narr = await resolveSceneNarration({ tmp, scene, index: i, variant, base });
+      const narr = await resolveSceneNarration({ tmp, scene, index: i, variant, keyBase: vbase });
       const seg = path.join(tmp, `seg-${i}.mp3`);
       let durMs;
       if (narr) {
@@ -252,13 +259,15 @@ export const renderVariant = async ({ post, channel, handle, variant }) => {
       // Cache no S3; qualquer falha cai no Ken Burns (renderSceneClip).
       if (i === 0 && img.ok && hasFal()) {
         try {
-          const i2vKey = `${base}/${variant}/i2v/scene-${i}.mp4`;
-          let vidBuf = await downloadBuffer(i2vKey).catch(() => null);
+          const i2vKey = `${vbase}/i2v/scene-${i}.mp4`;
+          // force ignora o cache do hook (pra re-testar o modelo i2v atual, ex. Veo)
+          let vidBuf = force ? null : await downloadBuffer(i2vKey).catch(() => null);
           if (!vidBuf) {
-            const imageUrl = await presignedGetUrl(`${base}/${variant}/${INSTAGRAM_VIDEO.SCENE_PREFIX}/scene-${i}.png`);
+            const imageUrl = await presignedGetUrl(`${vbase}/${INSTAGRAM_VIDEO.SCENE_PREFIX}/scene-${i}.png`);
+            // i2v só anima a imagem: o prompt descreve MOVIMENTO, não conteúdo. Mandar o
+            // imagePrompt (tema, figuras) faz o Veo barrar na moderação → deixa o default.
             vidBuf = await generateHookClip({
               imageUrl,
-              prompt: scene.imagePrompt,
               durationMs: durMs,
               aspect: INSTAGRAM_VIDEO.VARIANTS[variant].aspect,
             });
@@ -268,9 +277,9 @@ export const renderVariant = async ({ post, channel, handle, variant }) => {
           await writeFile(vidFile, vidBuf);
           await ff.renderSceneFromVideo({ video: vidFile, durationMs: durMs, variant, assFile, output: clip });
           clipDone = true;
-          logger.info({ index: i, variant }, 'hook animado via i2v');
+          logger.info({ index: i, variant, model: activeModelKey() }, 'hook animado via i2v');
         } catch (err) {
-          logger.warn({ err: err.message, index: i }, 'i2v falhou — fallback Ken Burns');
+          logger.warn({ err: err.message, index: i, model: activeModelKey() }, 'i2v falhou — fallback Ken Burns');
         }
       }
 
@@ -311,8 +320,8 @@ export const renderVariant = async ({ post, channel, handle, variant }) => {
 
     const url = await uploadFile(final, `${base}/${v.file}`, INSTAGRAM_VIDEO.VIDEO_CONTENT_TYPE);
     const durationMs = await ff.probeDurationMs(final);
-    logger.info({ variant, durationMs, scenes: scenes.length }, 'video v2 render finished');
-    return { url, durationMs, scenes: scenes.length };
+    logger.info({ variant, durationMs, scenes: scenes.length, targetSeconds: secs }, 'video v2 render finished');
+    return { url, durationMs, scenes: scenes.length, targetSeconds: secs };
   } finally {
     await rm(tmp, { recursive: true, force: true }).catch(() => {});
   }

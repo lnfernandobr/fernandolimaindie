@@ -18,13 +18,21 @@ const resolveVariants = (variant) => {
   throw badRequest(INSTAGRAM_ERRORS.VIDEO_VARIANT_INVALID);
 };
 
-const runVariant = async ({ post, channel, variant }) => {
+const runVariant = async ({ post, channel, variant, targetSeconds, force }) => {
   try {
-    const result = await renderVariant({ post, channel, handle: channel.handle, variant });
+    const result = await renderVariant({
+      post,
+      channel,
+      handle: channel.handle,
+      variant,
+      targetSeconds,
+      force,
+    });
     await updatePostVideoVariant(post._id, variant, {
       status: STATUS.READY,
       url: result.url,
       durationMs: result.durationMs ?? 0,
+      targetSeconds: result.targetSeconds ?? null,
       scenes: result.scenes ?? 0,
       error: null,
       generatedAt: new Date(),
@@ -38,19 +46,19 @@ const runVariant = async ({ post, channel, variant }) => {
   }
 };
 
-const runJob = async ({ postId, variants }) => {
+const runJob = async ({ postId, variants, targetSeconds, force }) => {
   const post = await findPostById(postId);
   if (!post) return;
   const channel = await ensureChannelById(post.channelId);
   for (const variant of variants) {
     // sequencial: variantes pesadas não competem por CPU/render no host
     // eslint-disable-next-line no-await-in-loop
-    await runVariant({ post, channel, variant });
+    await runVariant({ post, channel, variant, targetSeconds, force });
   }
 };
 
 // Dispara a geração assíncrona das variantes pedidas (short | long | both).
-export const startVideoGeneration = async ({ postId, variant = 'short' }) => {
+export const startVideoGeneration = async ({ postId, variant = 'short', targetSeconds, force = false }) => {
   const post = await findPostById(postId);
   if (!post) throw notFound(INSTAGRAM_ERRORS.POST_NOT_FOUND);
   const variants = resolveVariants(variant);
@@ -65,7 +73,7 @@ export const startVideoGeneration = async ({ postId, variant = 'short' }) => {
     await updatePostVideoVariant(postId, v, { status: STATUS.GENERATING, error: null });
   }
 
-  runJob({ postId, variants }).catch((err) =>
+  runJob({ postId, variants, targetSeconds, force }).catch((err) =>
     logger.error({ err: err.message, postId }, 'video v2 job crashed'),
   );
   return { postId, variants, status: STATUS.GENERATING };

@@ -60,6 +60,12 @@ export const INSTAGRAM_VIDEO = Object.freeze({
   }),
   VARIANT_KEYS: Object.freeze(['short', 'long']),
   REQUEST_VARIANTS: Object.freeze(['short', 'long', 'both']),
+  // Duração-alvo configurável por geração (segundos). A duração final é aproximada:
+  // quem manda é o tamanho da narração de cada cena. Quando o usuário define uma
+  // duração explícita, o piso de cenas cai pra MIN_SCENES_CUSTOM (vídeos bem curtos).
+  DURATION_MIN_S: 15,
+  DURATION_MAX_S: 600,
+  MIN_SCENES_CUSTOM: 3,
   // Render
   XFADE_MS: 750, // duração da transição entre cenas (mais longa = mais fluida)
   ZOOM_MAX: 1.12, // zoom final do Ken Burns (movimento contínuo, sem corte agressivo)

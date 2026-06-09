@@ -34,6 +34,7 @@ const videoVariantSchema = new Schema(
     status: { type: String, default: INSTAGRAM_VIDEO.STATUS.IDLE },
     url: { type: String, default: null },
     durationMs: { type: Number, default: 0 },
+    targetSeconds: { type: Number, default: null }, // duração-alvo pedida (aprox.)
     scenes: { type: Number, default: 0 },
     error: { type: String, default: null },
     generatedAt: { type: Date, default: null },

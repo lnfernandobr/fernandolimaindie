@@ -310,6 +310,9 @@ function VariantCard({ label, aspect, data }) {
       <div className="lbl">
         <strong>{label}</strong>
         {status === 'ready' && data?.durationMs ? ` · ${Math.round(data.durationMs / 1000)}s` : ''}
+        {status === 'ready' && data?.targetSeconds ? (
+          <span style={{ color: 'var(--muted)', fontWeight: 400 }}> (alvo {data.targetSeconds}s)</span>
+        ) : ''}
       </div>
       {status === 'generating' && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--muted)', fontSize: '0.76rem' }}>
@@ -330,9 +333,14 @@ function VariantCard({ label, aspect, data }) {
   );
 }
 
+// Duração-alvo padrão de cada variante (só pra placeholder; o servidor decide se vazio).
+const VARIANT_DEFAULT_SECONDS = { short: 75, long: 300, both: 75 };
+
 function VideoBlock({ session, postId }) {
   const [video, setVideo] = useState(null);
   const [variant, setVariant] = useState('short');
+  const [seconds, setSeconds] = useState('');
+  const [force, setForce] = useState(false);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState(null);
 
@@ -361,9 +369,12 @@ function VideoBlock({ session, postId }) {
     setBusy(true);
     setErr(null);
     try {
+      const secs = Number(seconds);
+      const body = { variant, force };
+      if (Number.isFinite(secs) && secs > 0) body.targetSeconds = Math.round(secs);
       await coreFetch(session, `/posts/${postId}/video`, {
         method: 'POST',
-        body: JSON.stringify({ variant }),
+        body: JSON.stringify(body),
       });
       await load();
     } catch (e) {
@@ -375,7 +386,7 @@ function VideoBlock({ session, postId }) {
 
   return (
     <div className="ig-post-block">
-      <div className="ig-post-label">
+      <div className="ig-post-label" style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 6 }}>
         Vídeo <span style={{ color: 'var(--muted)', fontWeight: 400 }}>roteiro IA · imagens novas</span>
         <select
           value={variant}
@@ -387,6 +398,26 @@ function VideoBlock({ session, postId }) {
           <option value="long">Longo 16:9</option>
           <option value="both">Ambos</option>
         </select>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 4, fontWeight: 400 }}>
+          <input
+            type="number"
+            min="15"
+            max="600"
+            step="5"
+            value={seconds}
+            onChange={(e) => setSeconds(e.target.value)}
+            placeholder={`${VARIANT_DEFAULT_SECONDS[variant]}s`}
+            className="btn-sm"
+            style={{ width: 78 }}
+            title="Duração-alvo em segundos (aproximada). Vazio = padrão da variante."
+          />
+          <span style={{ color: 'var(--muted)', fontSize: '0.72rem' }}>seg (aprox.)</span>
+        </label>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 4, fontWeight: 400, fontSize: '0.74rem' }}
+          title="Ignora o cache do take animado e refaz o hook com o modelo i2v atual (ex.: Veo)">
+          <input type="checkbox" checked={force} onChange={(e) => setForce(e.target.checked)} />
+          ↻ refazer take animado
+        </label>
         <button className="btn-sm" style={{ marginLeft: 6 }} disabled={busy || generating} onClick={generate}>
           🎬 {busy ? 'Enviando…' : generating ? 'Gerando…' : 'Gerar vídeo'}
         </button>
