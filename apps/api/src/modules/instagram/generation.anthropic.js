@@ -3,6 +3,7 @@ import { env } from '../../config/env.js';
 import { logger } from '../../config/logger.js';
 import { badRequest } from '../../errors/factories.js';
 import { INSTAGRAM_ERRORS } from '../../constants/instagram.js';
+import { stripDashesIn } from '../../lib/strip-dashes.js';
 import { prompts } from './prompts.js';
 
 const MAX_TOKENS = 8000;
@@ -82,5 +83,9 @@ export const generateCarouselPlan = async ({ channel, topic, brief, slidesCount 
     logger.warn({ topic, stopReason: message?.stop_reason }, 'carousel plan: sem tool_use no retorno');
     throw badRequest(INSTAGRAM_ERRORS.ANTHROPIC_INVALID_OUTPUT);
   }
-  return toolUse.input;
+  const plan = stripDashesIn(toolUse.input, ['title', 'youtubeTitle', 'designConcept', 'caption']);
+  if (Array.isArray(plan.slides)) {
+    plan.slides = plan.slides.map((slide) => stripDashesIn(slide, ['text']));
+  }
+  return plan;
 };

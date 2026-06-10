@@ -3,6 +3,7 @@ import { env } from '../../config/env.js';
 import { logger } from '../../config/logger.js';
 import { badRequest } from '../../errors/factories.js';
 import { INSTAGRAM_ERRORS, INSTAGRAM_VIDEO } from '../../constants/instagram.js';
+import { stripDashes } from '../../lib/strip-dashes.js';
 import { prompts } from './prompts.js';
 
 const MAX_TOKENS = 8000; // roteiro longo (até ~36 cenas) com folga
@@ -103,14 +104,14 @@ const validateScript = (raw, sceneCount) => {
   const scenes = raw.scenes
     .slice(0, sceneCount)
     .map((s) => ({
-      narration: truncate(s?.narration, 600),
+      narration: stripDashes(truncate(s?.narration, 600)),
       imagePrompt: truncate(s?.imagePrompt, 1000),
-      onScreenText: truncate(s?.onScreenText, 80),
+      onScreenText: stripDashes(truncate(s?.onScreenText, 80)),
     }))
     .filter((s) => s.imagePrompt || s.narration);
   if (!scenes.length) throw badRequest(INSTAGRAM_ERRORS.ANTHROPIC_INVALID_OUTPUT);
   return {
-    title: truncate(raw.title, 100),
+    title: stripDashes(truncate(raw.title, 100)),
     bgColor: normalizeColor(raw.bgColor),
     musicMood: truncate(raw.musicMood, 120),
     visualAnchors: normalizeAnchors(raw.visualAnchors),

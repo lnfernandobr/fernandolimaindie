@@ -22,6 +22,7 @@ import {
   generatedContentSchema,
   buildContentJsonSchema,
 } from './generation.schema.js';
+import { stripDashes, stripDashesIn } from '../../lib/strip-dashes.js';
 import { buildMockContent } from './generation.mock.js';
 import { findSeedBySlug, loadAllSeeds, loadSeedsByKind } from './generation.seeds.js';
 import { appendRunLogEntry, updateSeedBySlug } from './generation.seed.repository.js';
@@ -129,8 +130,16 @@ const generateContent = async (seed, model) => {
   });
   const parsed = generatedContentSchema.safeParse(raw);
   if (!parsed.success) throw badRequest(GENERATION_ERRORS.ANTHROPIC_INVALID_OUTPUT, parsed.error.flatten());
-  return parsed.data;
+  return sanitizeContent(parsed.data);
 };
+
+// Rede de segurança: o prompt já proíbe travessão, mas se o modelo escapar a regra
+// o texto é corrigido aqui. Versículos ficam intactos (não se altera citação bíblica).
+const sanitizeContent = (content) => ({
+  ...stripDashesIn(content, ['title', 'answer', 'summary', 'bodyHtml']),
+  chunks: content.chunks.map((c) => ({ ...c, html: stripDashes(c.html) })),
+  faq: content.faq.map((f) => stripDashesIn(f, ['question', 'answer'])),
+});
 
 const executeRun = async ({ seed, model, force, startMs }) => {
   const track = trackStep(seed.seedSlug);

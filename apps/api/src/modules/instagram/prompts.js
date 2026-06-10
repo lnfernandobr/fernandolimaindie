@@ -12,6 +12,25 @@ const ROLE_TEXT_LIMITS = {
   cta: { maxChars: 70, hint: 'a direct call to action (save, share, comment, follow)' },
 };
 
+// ── Regras de copy pt-BR (vale pra TODO texto gerado) ───────────────────────
+const PTBR_COPY_RULES = list([
+  'Brazilian Portuguese copy rules (apply to EVERY pt-BR field: titles, slide text, caption, narration, onScreenText):',
+  '- ABSOLUTELY NO em dash or en dash ("—", "–") anywhere, and never a hyphen spliced between clauses as a fake dash. Rewrite with a comma, a period or a colon.',
+  '- No robotic AI crutches: "não se trata apenas de", "no final das contas", "a verdade é que", "lembre-se de que", "mais do que nunca", "em um mundo cada vez mais".',
+  '- No suspense ellipsis ("...") as a styling device.',
+]);
+
+// ── Técnicas de hook (primeiros segundos / primeiro olhar) ───────────────────
+const HOOK_TECHNIQUES = list([
+  'HOOK CRAFT — the first 1-2 seconds (video) or the first glance (post) decide everything. Pick the ONE technique that genuinely fits the topic, never a generic opener:',
+  '- Curiosity gap: open a specific question the viewer NEEDS answered ("Por que essa oração quase ninguém termina?"). The payoff must actually arrive later.',
+  '- Bold claim / pattern interrupt: a confident, slightly counterintuitive statement that challenges what the viewer assumes ("Você não precisa sentir fé pra rezar").',
+  '- Direct call-out: name the exact person and moment ("Se você rezou e nada mudou, isso é pra você").',
+  '- Stakes up front: show what the viewer loses or gains in concrete terms, not vague promise.',
+  '- In-progress scene: start in the middle of a concrete moment, never with context-setting.',
+  'FORBIDDEN openers: greetings ("oi", "olá", "bom dia"), throat-clearing ("hoje vamos falar sobre", "você sabia que" as a reflex, "neste vídeo"), restating the title, any line that could open ANY other piece on the channel.',
+]);
+
 const list = (parts) => parts.filter(Boolean).join('\n');
 
 const channelContext = (channel) =>
@@ -83,13 +102,15 @@ const carouselPlanUser = ({ topic, brief, slidesCount }) =>
     '',
     VISUAL_LANGUAGE_LIBRARY,
     '',
+    HOOK_TECHNIQUES,
+    '',
     'Think silently in this order before producing the JSON:',
     '  a) What single insight or transformation does this carousel deliver?',
     '  b) Who exactly (within the channel niche) needs this NOW, and what emotional state are they in?',
     artDirectionThinking(),
-    '  c) Which hook copy converts that visual into a save?',
-    '  d) How do middle slides deliver value with zero filler?',
-    '  e) Which CTA matches their state without feeling salesy?',
+    '  c) Which hook technique fits this topic, and which hook copy makes scrolling past feel like a loss?',
+    '  d) How do middle slides deliver value with zero filler, each one earning the swipe to the next?',
+    '  e) Which CTA matches their state without feeling salesy — and which SPECIFIC comment prompt would this exact reader actually answer?',
     '  f) Which hashtags actually drive reach AND ranking for this exact topic — split across tiers.',
     '',
     'Return a JSON object with this EXACT shape:',
@@ -114,7 +135,7 @@ const carouselPlanUser = ({ topic, brief, slidesCount }) =>
     '      "imageScene": string                // ENGLISH. The environment, time of day, mood and any secondary element. ONE coherent moment, not a list. NEVER mention text, letters, words, captions, signs, books, screens, or typography.',
     '    }',
     '  ],',
-    '  "caption": string,                      // full Instagram caption in pt-BR, up to 2000 chars, line breaks allowed, hook line first',
+    '  "caption": string,                      // full Instagram caption in pt-BR, up to 2000 chars, line breaks allowed. FIRST LINE is a hook on its own (max 125 chars, it is all the feed shows before "mais"). LAST LINE is ONE specific engagement prompt: a question the reader answers in the comments, a word to comment, or an invite to save/share/follow — pick what fits the emotional state, never stack more than one.',
     '  "hashtags": {',
     '    "high": string[],                     // 3-5 broad-reach hashtags. Posts in the millions. Strong topical relevance.',
     '    "medium": string[],                   // 4-6 niche hashtags. Posts in the hundreds of thousands. Best balance of reach and competition.',
@@ -135,6 +156,8 @@ const carouselPlanUser = ({ topic, brief, slidesCount }) =>
     '- FORBIDDEN as a default mood: dark, desaturated, sepia, grey, monochrome or "melancholic documentary" applied to a theme that is actually hopeful. Choose darkness ONLY when the emotion is genuinely grief, night, fear or repentance — otherwise commit to light and color.',
     '- Forbidden visual modes anywhere: plastic 3D render, soulless generic-AI clip-art, stock photography, inspirational poster, AI face symmetry, glitch artifacts, Pinterest devotional cliché.',
     '- Caption is in Brazilian Portuguese and respects the channel tone.',
+    '- The slide 1 hook MUST use one of the hook techniques above. If it could open any other post on the channel, rewrite it.',
+    PTBR_COPY_RULES,
     '- Every hashtag starts with "#", lowercase, no spaces, no accents.',
     '- Hashtags MUST be distinct across tiers (no duplicates). Each tier has at least 3 hashtags. Hashtags must be topically tied to the EXACT topic.',
     '',
@@ -206,9 +229,9 @@ const slideImagePrompt = ({ visualAnchors, slide, slideNumber, totalSlides, chan
 const videoScriptSystem = (channel) =>
   list([
     'You are THREE experts working as one on ONE faceless narrated video:',
-    '1. A viral short-form scriptwriter who hooks in the first 2 seconds and never lets go.',
+    '1. A viral short-form scriptwriter who hooks in the first 2 seconds and never lets go — no greetings, no warm-up, the first sentence IS the hook.',
     '2. An art director / director of photography who has mastered MANY visual languages and refuses the tired dark/desaturated default — light, palette and medium are chosen on purpose.',
-    '3. A retention strategist who paces narration so every line earns the next.',
+    '3. A retention strategist who paces narration so every line earns the next: open loops early, pay them off late, and convert attention into followers and comments at the end.',
     '',
     'The narration is read aloud by a TTS voice; the images are made by an image model.',
     'Respond with STRICT valid JSON only. No markdown, no code fences, no prose.',
@@ -232,7 +255,15 @@ const videoScriptUser = ({ post, variant, sceneCount, targetSeconds }) => {
     '',
     VISUAL_LANGUAGE_LIBRARY,
     '',
+    HOOK_TECHNIQUES,
+    '',
     artDirectionThinking(),
+    '',
+    'Retention architecture (how the script holds the viewer to the end):',
+    '- Scene 1 narration: the FIRST sentence is the hook, using one of the techniques above. Within scene 1, also plant ONE open loop: tease the payoff that only lands in the second half ("e o detalhe que muda tudo vem no final" energy, said naturally, never that literal cliché).',
+    '- Middle scenes: every line earns the next. Cut any sentence the viewer could skip without losing the thread. Escalate: each scene adds a NEW angle, never rephrases the previous one.',
+    '- Second-to-last scene: close the open loop. The payoff must feel worth the wait.',
+    '- Last scene: deliver the soft CTA. When it fits the emotional state, explicitly invite ONE action in natural pt-BR: comment a specific word or answer ("comenta amém se...", "me conta nos comentários..."), or follow/subscribe ("segue o canal pra...", "se inscreve pra..."). ONE action only, one short sentence, woven into the message — never a tacked-on announcer voice.',
     '',
     'Return a JSON object with this EXACT shape:',
     '{',
@@ -253,7 +284,10 @@ const videoScriptUser = ({ post, variant, sceneCount, targetSeconds }) => {
     '}',
     '',
     'Hard rules:',
-    `- EXACTLY ${sceneCount} scenes. Scene 1 is a thumb-stopping hook; the last scene is a soft CTA.`,
+    `- EXACTLY ${sceneCount} scenes. Scene 1 is a thumb-stopping hook; the last scene is a soft CTA with ONE invited action (comment / follow / subscribe) when it fits.`,
+    '- Scene 1 narration starts mid-thought with the hook itself: no greetings, no "hoje vamos falar", no restating the title. The first 6 words must create an itch the viewer needs scratched.',
+    '- Scene 1 onScreenText reinforces the hook (the curiosity gap or bold claim), not a topic label.',
+    PTBR_COPY_RULES,
     '- All scenes share the same visualAnchors and one coherent visual world; each scene shows a DIFFERENT concrete subject/environment.',
     '- imagePrompt is English and must NEVER reference any written language (no text, letters, words, captions, signs, books, screens, typography, logos).',
     '- narration is Brazilian Portuguese, in the channel tone, flowing naturally when read aloud.',
