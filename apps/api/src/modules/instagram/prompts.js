@@ -12,6 +12,8 @@ const ROLE_TEXT_LIMITS = {
   cta: { maxChars: 70, hint: 'a direct call to action (save, share, comment, follow)' },
 };
 
+const list = (parts) => parts.filter(Boolean).join('\n');
+
 // ── Regras de copy pt-BR (vale pra TODO texto gerado) ───────────────────────
 const PTBR_COPY_RULES = list([
   'Brazilian Portuguese copy rules (apply to EVERY pt-BR field: titles, slide text, caption, narration, onScreenText):',
@@ -30,8 +32,6 @@ const HOOK_TECHNIQUES = list([
   '- In-progress scene: start in the middle of a concrete moment, never with context-setting.',
   'FORBIDDEN openers: greetings ("oi", "olá", "bom dia"), throat-clearing ("hoje vamos falar sobre", "você sabia que" as a reflex, "neste vídeo"), restating the title, any line that could open ANY other piece on the channel.',
 ]);
-
-const list = (parts) => parts.filter(Boolean).join('\n');
 
 const channelContext = (channel) =>
   list([
