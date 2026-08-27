@@ -16,8 +16,6 @@ import { AdSlot } from '@/components/AdSlot.jsx';
 import { SemanticFAQ } from '@/components/SemanticFAQ.jsx';
 import { ShareButton } from '@/components/ShareButton.jsx';
 import { IntentNav } from '@/components/IntentNav.jsx';
-import { AudioPlayer } from '@/components/AudioPlayer.jsx';
-import { isTtsConfigured } from '@/lib/media/elevenlabs.js';
 
 export const dynamic = 'force-dynamic';
 
@@ -170,17 +168,6 @@ export default async function BlogPostPage({ params }) {
 
         {/* Corpo do artigo (com IDs nos H2 pra ancoragem do TOC) */}
         <section className="chunk post-body" itemProp="articleBody" dangerouslySetInnerHTML={{ __html: bodyWithIds }} />
-
-        {isTtsConfigured() && post.audioEnabled !== false && (
-          <section id="audio" className="chunk">
-            <h2>Ouça este artigo</h2>
-            <AudioPlayer
-              title={post.title}
-              src={`/api/tts/${slug}`}
-              variant="feature"
-            />
-          </section>
-        )}
 
         <SemanticFAQ entries={post.faq} />
 

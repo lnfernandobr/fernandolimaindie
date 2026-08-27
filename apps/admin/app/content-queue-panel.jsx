@@ -177,28 +177,6 @@ function InlineSignalInfo({ session, slug }) {
         </div>
       )}
 
-      {(signal.imageUrl || signal.audioUrl) && (
-        <div className="ig-post-block">
-          <div className="ig-post-label">Mídia</div>
-          <div className="ig-asset-grid">
-            {signal.imageUrl && (
-              <div className="ig-asset">
-                <img src={signal.imageUrl} alt={signal.title} />
-                <div className="lbl">imagem</div>
-                <a href={signal.imageUrl} target="_blank" rel="noreferrer">abrir asset</a>
-              </div>
-            )}
-            {signal.audioUrl && (
-              <div className="ig-asset" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                <audio controls src={signal.audioUrl} style={{ width: '100%' }} />
-                <div className="lbl">áudio</div>
-                <a href={signal.audioUrl} target="_blank" rel="noreferrer">abrir asset</a>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
       {signal.bodyHtml && (
         <div className="ig-post-block">
           <div className="ig-post-label">

@@ -61,7 +61,6 @@ export const LIMITS = Object.freeze({
   VERSE_TEXT_MAX: 800,
   VERSES_MAX: 20,
   CATEGORY_MAX: 60,
-  IMAGE_PROMPT_MAX: 1500,
 });
 
 export const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;

@@ -15,8 +15,6 @@ import { AdSlot } from '@/components/AdSlot.jsx';
 import { SemanticFAQ } from '@/components/SemanticFAQ.jsx';
 import { ShareButton } from '@/components/ShareButton.jsx';
 import { IntentNav } from '@/components/IntentNav.jsx';
-import { AudioPlayer } from '@/components/AudioPlayer.jsx';
-import { isTtsConfigured } from '@/lib/media/elevenlabs.js';
 
 export const dynamic = 'force-dynamic';
 
@@ -136,17 +134,6 @@ export default async function VerseTopicPage({ params }) {
 
         {topic.bodyHtml && (
           <section className="chunk" dangerouslySetInnerHTML={{ __html: topic.bodyHtml }} />
-        )}
-
-        {isTtsConfigured() && topic.audioEnabled !== false && (
-          <section id="audio" className="chunk">
-            <h2>Ouça estes versículos</h2>
-            <AudioPlayer
-              title={topic.title}
-              src={`/api/tts/${topic.slug}`}
-              variant="feature"
-            />
-          </section>
         )}
 
         <SemanticFAQ entries={topic.faq} />

@@ -11,7 +11,6 @@ export const PATHS = Object.freeze({
   TOPICS: '/topics',
   ENTITIES: '/entities',
   GENERATION: '/generation',
-  MEDIA: '/media',
   SLUG_PARAM: '/:slug',
   SIGNAL_RELATED: '/:slug/related',
 });

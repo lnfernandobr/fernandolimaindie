@@ -1,7 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { Glyph } from './Glyph.jsx';
-import { AudioPlayer } from './AudioPlayer.jsx';
 import { signalUrl } from '@/lib/content/signal-url.js';
 import { INTENT_LABELS } from '@/lib/content/intents.js';
 
@@ -9,7 +8,7 @@ import { INTENT_LABELS } from '@/lib/content/intents.js';
  * Orações em destaque na home. Recebe signals (kind=prayer) da API — só linka o
  * que existe. Se não houver nenhum, a home esconde a seção (ver app/page.jsx).
  */
-export function PrayersList({ prayers = [], audioEnabled = false }) {
+export function PrayersList({ prayers = [] }) {
   const router = useRouter();
   if (!prayers.length) return null;
 
@@ -40,15 +39,6 @@ export function PrayersList({ prayers = [], audioEnabled = false }) {
                 <h3 className="prayer-title">{pr.title}</h3>
                 <p className="prayer-line scripture">&ldquo;{pr.answer}&rdquo;</p>
               </div>
-              {audioEnabled && (
-                <div className="prayer-player" onClick={(e) => e.stopPropagation()}>
-                  <AudioPlayer
-                    title={pr.title}
-                    src={`/api/tts/${pr.slug}`}
-                    variant="row"
-                  />
-                </div>
-              )}
             </article>
           ))}
         </div>

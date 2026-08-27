@@ -6,8 +6,6 @@
 # Build:  docker build -t umsinaldefe -f apps/umsinaldefe/Dockerfile .
 # Run:    docker run -d --restart=always --name umsinaldefe -p 3001:3001 \
 #           -e UMSINALDEFE_API_URL=https://api.fazedorismo.com/api/v1 \
-#           -e ELEVENLABS_API_KEY=sk_... \
-#           -e ELEVENLABS_VOICE_ID=49Tv7p2Lhmi23Edp9DOI \
 #           umsinaldefe
 
 # ── Stage 1: deps ────────────────────────────────────────────────────

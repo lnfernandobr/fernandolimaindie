@@ -31,15 +31,6 @@ const DEPTH = [
   '- Densidade: prefira sempre o exemplo exato ao conselho genérico. Uma boa imagem concreta vale mais que três adjetivos.',
 ].join('\n');
 
-// Briefing da imagem de capa (o Claude preenche o campo "imagePrompt", em inglês).
-const IMAGE_DIRECTION = [
-  'Campo "imagePrompt" (ESCREVA EM INGLÊS) — o briefing da imagem de capa, lido por um modelo de imagem para gerar uma capa editorial impactante:',
-  '- Escolha UMA cena ou objeto simbólico CONCRETO ligado ao tema (ex.: "hands cupping the first morning light", "an empty chair beside a sunlit window", "torn bread on a worn wooden table", "a child\'s small shoes left by the front door", "a single candle lit at dawn"). Nada de clichê religioso literal: no glowing cross, no praying-hands stock pose, no godrays kitsch, no open Bible with sparkles.',
-  '- Direção de arte de capa de revista: cinematic natural light, an intentional color palette that fits the emotion, shallow depth of field, real tactile texture. Avoid the generic-AI / stock-photo look entirely.',
-  '- Numa única cena coerente, descreva subject + environment + light + color + framing. Seja específico e visual. Compose for a wide landscape (3:2) hero with one strong focal subject.',
-  '- The image carries NO text: never mention text, letters, words, captions, watermark, logo, frame or UI.',
-].join('\n');
-
 const REFERENCES_RULE = [
   'Sempre que citar um versículo: dê a referência completa (livro, capítulo, versículo) no formato "João 3,16" e use uma tradução católica usual no Brasil (Bíblia de Aparecida, Ave-Maria ou Pastoral). Não invente versículos.',
   'Não cite o mesmo versículo duas vezes na mesma peça.',
@@ -92,8 +83,6 @@ const systemFor = (signalKind) =>
     '',
     'Regras de formato (obrigatórias):',
     `- ${[...COMMON_RULES.split('\n- '), ...rulesFor(signalKind)].join('\n- ')}`,
-    '',
-    IMAGE_DIRECTION,
   ].join('\n');
 
 const ctx = ({ subject, intent }) => {

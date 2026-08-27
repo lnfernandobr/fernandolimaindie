@@ -23,8 +23,6 @@ import { EntityLinks } from '@/components/EntityLinks.jsx';
 import { IntentNav } from '@/components/IntentNav.jsx';
 import { FavoriteButton } from '@/components/FavoriteButton.jsx';
 import { ShareButton } from '@/components/ShareButton.jsx';
-import { AudioPlayer } from '@/components/AudioPlayer.jsx';
-import { isTtsConfigured } from '@/lib/media/elevenlabs.js';
 
 export const dynamic = 'force-dynamic';
 
@@ -153,17 +151,6 @@ export default async function PrayerPage({ params }) {
         )}
 
         <SemanticFAQ entries={signal.faq} />
-
-        {isTtsConfigured() && signal.audioEnabled !== false && (
-          <section id="audio" className="chunk">
-            <h2>Ouça esta oração</h2>
-            <AudioPlayer
-              title={signal.title}
-              src={signal.audioUrl ?? `/api/tts/${slug}`}
-              variant="feature"
-            />
-          </section>
-        )}
 
         <EntityLinks entitySlugs={signal.entitySlugs} />
 

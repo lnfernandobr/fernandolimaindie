@@ -4,7 +4,6 @@ import { Hero } from '../components/Hero.jsx';
 import { Intentions } from '../components/Intentions.jsx';
 import { FeaturedPsalms } from '../components/FeaturedPsalms.jsx';
 import { PrayersList } from '../components/PrayersList.jsx';
-import { isTtsConfigured } from '../lib/media/elevenlabs.js';
 import { listSignals } from '../lib/content/api.js';
 import { getVerseOfDay } from '../lib/content/verse-of-day.js';
 
@@ -40,8 +39,6 @@ const FAQ = [
 const pageGraph = ldGraph(faqLd(FAQ), speakableLd(['#devocional', '#intencoes']));
 
 export default async function HomePage() {
-  const audioEnabled = isTtsConfigured();
-
   // Tudo vem da API. Só renderiza o que existe (nada de conteúdo estático ou link morto).
   let verse = null;
   let psalms = [];
@@ -68,7 +65,7 @@ export default async function HomePage() {
       <Hero verse={verse} />
       <Intentions />
       {psalms.length > 0 && <FeaturedPsalms psalms={psalms} />}
-      {prayers.length > 0 && <PrayersList prayers={prayers} audioEnabled={audioEnabled} />}
+      {prayers.length > 0 && <PrayersList prayers={prayers} />}
       {/* Formulário de inscrição escondido por enquanto (reativar: <SubscribeForm />). */}
     </>
   );

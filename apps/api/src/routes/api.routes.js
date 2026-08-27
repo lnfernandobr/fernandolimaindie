@@ -6,7 +6,6 @@ import { createSignalsRouter } from '../modules/signals/index.js';
 import { createTopicsRouter } from '../modules/topics/index.js';
 import { createEntitiesRouter } from '../modules/entities/index.js';
 import { createGenerationRouter } from '../modules/generation/index.js';
-import { createMediaRouter } from '../modules/media/index.js';
 
 export const createApiRouter = () => {
   const router = Router();
@@ -16,6 +15,5 @@ export const createApiRouter = () => {
   router.use(PATHS.TOPICS, createTopicsRouter());
   router.use(PATHS.ENTITIES, createEntitiesRouter());
   router.use(PATHS.GENERATION, createGenerationRouter());
-  router.use(PATHS.MEDIA, createMediaRouter());
   return router;
 };
