@@ -6,9 +6,10 @@ import {
   INTENT_DESCRIPTIONS,
   INTENT_SLUGS,
 } from '@/lib/content/intents.js';
-import { signalUrl } from '@/lib/content/signal-url.js';
 import { buildMetadata } from '@/lib/seo/metadata.js';
-import { breadcrumbLd, ldGraph, jsonLdScript } from '@/lib/seo/jsonld.js';
+import { Breadcrumbs } from '@/components/Breadcrumbs.jsx';
+import { CardGrid, ContentCard } from '@/components/ContentCard.jsx';
+import { Glyph } from '@/components/Glyph.jsx';
 import { AdSlot } from '@/components/AdSlot.jsx';
 import { IntentNav } from '@/components/IntentNav.jsx';
 
@@ -22,11 +23,15 @@ export async function generateMetadata({ params }) {
   const { intent: intentSlug } = await params;
   const intentKey = slugToKey(intentSlug);
   if (!intentKey) return {};
-  const label = INTENT_LABELS[intentKey];
+
+  const { items } = await listSignals({ intent: intentKey, limit: 1 });
+
   return buildMetadata({
-    title: `${label}: orações e reflexões`,
+    title: `${INTENT_LABELS[intentKey]}: orações e reflexões`,
     description: INTENT_DESCRIPTIONS[intentKey],
     path: `/${intentSlug}`,
+    // Sem conteúdo ainda, a página fica fora do índice pra não virar página fina.
+    noIndex: items.length === 0,
   });
 }
 
@@ -37,66 +42,43 @@ export default async function IntentHubPage({ params }) {
 
   const label = INTENT_LABELS[intentKey];
   const description = INTENT_DESCRIPTIONS[intentKey];
-
-  let signals = [];
-  try {
-    const result = await listSignals({ intent: intentKey, limit: 20 });
-    signals = result.items;
-  } catch {
-    // Sem conteúdo: mostra a casca do hub sem listagem
-  }
-
-  const breadcrumbs = [
-    { name: 'Início', path: '/' },
-    { name: label, path: `/${intentSlug}` },
-  ];
+  const { items: signals } = await listSignals({ intent: intentKey, limit: 40 });
 
   return (
-    <main>
-      <script {...jsonLdScript(ldGraph(breadcrumbLd(breadcrumbs)))} />
+    <main className="hub">
+      <Breadcrumbs
+        trail={[
+          { name: 'Início', path: '/' },
+          { name: label, path: `/${intentSlug}` },
+        ]}
+      />
 
-      <nav aria-label="Navegação estrutural" className="breadcrumb">
-        <ol>
-          {breadcrumbs.map((crumb, i) => (
-            <li key={crumb.path}>
-              {i < breadcrumbs.length - 1 ? (
-                <a href={crumb.path}>{crumb.name}</a>
-              ) : (
-                <span aria-current="page">{crumb.name}</span>
-              )}
-            </li>
-          ))}
-        </ol>
-      </nav>
-
-      <header style={{ marginBottom: 'var(--space-6)' }}>
-        <h1>{label}</h1>
-        <p className="lede">{description}</p>
+      <header className="hub-head">
+        <span className="hub-icon" aria-hidden="true">
+          <Glyph name="heart" size={26} />
+        </span>
+        <h1 className="display hub-title">{label}</h1>
+        <p className="lede hub-lead">{description}</p>
+        {signals.length > 0 && (
+          <p className="hub-count t-faint">
+            {signals.length} {signals.length === 1 ? 'conteúdo' : 'conteúdos'}
+          </p>
+        )}
       </header>
 
       <AdSlot slot="hub-top" />
 
       {signals.length > 0 ? (
-        <section aria-label={`Conteúdo sobre ${label}`}>
-          <div className="signal-grid">
+        <section aria-label={`Conteúdo sobre ${label}`} className="hub-block">
+          <CardGrid label={label}>
             {signals.map((signal) => (
-              <a
-                key={signal.slug}
-                href={signalUrl(signal)}
-                className="signal-card"
-              >
-                <span className="tag" style={{ marginBottom: 'var(--space-3)', display: 'inline-block' }}>
-                  {signal.kind}
-                </span>
-                <h3>{signal.title}</h3>
-                <p>{signal.answer}</p>
-              </a>
+              <ContentCard key={signal.slug} signal={signal} />
             ))}
-          </div>
+          </CardGrid>
         </section>
       ) : (
-        <p style={{ color: 'var(--ink-mute)' }}>
-          Conteúdo em breve.
+        <p className="hub-empty t-soft">
+          Ainda não temos conteúdo sobre {label.toLowerCase()}. Está a caminho.
         </p>
       )}
 

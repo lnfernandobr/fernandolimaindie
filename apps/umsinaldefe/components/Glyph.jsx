@@ -26,6 +26,15 @@ const paths = {
   mail:    <><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M4 7l8 6 8-6"/></>,
   check:   <path d="M5 12.5l4.5 4.5L19 7"/>,
   youtube:   <><rect x="2.5" y="6" width="19" height="12" rx="3.6"/><path d="M10.5 9.3l5 2.7-5 2.7Z" fill="currentColor" stroke="none"/></>,
+  book:      <><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5Z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H19v3H6.5A2.5 2.5 0 0 1 4 20.5Z" opacity=".5"/><path d="M11.5 6.5v6M9 9h5" opacity=".7"/></>,
+  scroll:    <><path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6"/><path d="M6 4a2 2 0 0 0-2 2v1h4"/><path d="M6 20a2 2 0 0 0 2-2V7"/><path d="M11 9h5M11 13h5" opacity=".6"/></>,
+  people:    <><circle cx="9" cy="8.5" r="3"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M16 6.2a3 3 0 0 1 0 5.6"/><path d="M17 14.4a5.5 5.5 0 0 1 3.5 4.6" opacity=".6"/></>,
+  bookmark:  <><path d="M7 4h10a1 1 0 0 1 1 1v15l-6-3.6L6 20V5a1 1 0 0 1 1-1Z"/><path d="M9.5 9.5h5" opacity=".6"/></>,
+  quote:     <><path d="M9.5 6.5C7 7.6 5.5 9.8 5.5 12.5v5h5v-6h-3c0-1.8.8-3.2 2.6-4Z"/><path d="M18 6.5c-2.5 1.1-4 3.3-4 6v5h5v-6h-3c0-1.8.8-3.2 2.6-4Z"/></>,
+  grid:      <><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6" opacity=".55"/></>,
+  chevron:   <path d="M8.5 5l7 7-7 7"/>,
+  chevronDown: <path d="M5 8.5l7 7 7-7"/>,
+  clock:     <><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></>,
 };
 
 export function Glyph({ name, size = 24, stroke = 1.5, style, className, ...rest }) {

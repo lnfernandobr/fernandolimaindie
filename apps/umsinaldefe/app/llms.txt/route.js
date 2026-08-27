@@ -1,5 +1,6 @@
 import { siteConfig, absoluteUrl } from '@/lib/site-config.js';
 import { INTENT_SLUGS, INTENT_LABELS } from '@/lib/content/intents.js';
+import { SECTIONS, CONTENT_SECTIONS } from '@/lib/content/taxonomy.js';
 
 export async function GET() {
   const lines = [
@@ -7,34 +8,24 @@ export async function GET() {
     '',
     `> ${siteConfig.brandTagline}: ${siteConfig.description}`,
     '',
-    `${siteConfig.name} é uma plataforma de conteúdo devocional cristão em português brasileiro. Orações, salmos, reflexões e versículos organizados por intenção espiritual, publicados diariamente.`,
+    `${siteConfig.name} é uma plataforma de conteúdo devocional cristão em português brasileiro. Orações, salmos, versículos, estudos bíblicos e reflexões organizados por seção e por intenção espiritual, publicados diariamente.`,
     '',
     '## Seções principais',
     '',
     `- [Início](${absoluteUrl('/')}): Página principal`,
-    `- [Devocional](${absoluteUrl('/devocional')}): Devocional diário`,
-    `- [Salmos](${absoluteUrl('/salmo')}): Orações baseadas nos Salmos`,
-    `- [Orações](${absoluteUrl('/oracao')}): Orações para diversas intenções`,
-    `- [Bíblia](${absoluteUrl('/biblia')}): Versículos bíblicos organizados por tema`,
-    `- [Versículo do dia](${absoluteUrl('/versiculo-do-dia')}): Versículo bíblico diário`,
+    // A lista sai do registro de seções: seção nova aparece aqui sozinha.
+    ...SECTIONS.map((s) => `- [${s.label}](${absoluteUrl(`/${s.slug}`)}): ${s.navNote}`),
+    `- [Mapa do site](${absoluteUrl('/mapa')}): Índice de tudo que existe no site`,
     '',
     '## Intenções disponíveis',
     '',
     ...Object.entries(INTENT_SLUGS).map(
-      ([key, slug]) =>
-        `- [${INTENT_LABELS[key]}](${absoluteUrl(`/${slug}`)})`
+      ([key, slug]) => `- [${INTENT_LABELS[key]}](${absoluteUrl(`/${slug}`)})`,
     ),
     '',
     '## Tipos de conteúdo',
     '',
-    '- **prayer** (oração): Orações tradicionais e contemporâneas',
-    '- **psalm** (salmo): Orações baseadas nos Salmos bíblicos',
-    '- **reflection** (reflexão): Reflexões espirituais curtas',
-    '- **verse** (versículo): Versículos bíblicos comentados',
-    '- **verse_collection** (coletânea bíblica): Versículos agrupados por tema',
-    '- **devotional** (devocional): Devocionais diários',
-    '- **novena** (novena): Novenas aos santos e invocações',
-    '- **article** (artigo): Textos de blog sobre fé, família e vida cristã',
+    ...CONTENT_SECTIONS.map((s) => `- **${s.kind}** (${s.itemLabel.toLowerCase()}): ${s.lead}`),
     '',
     '## Idioma e público',
     '',
@@ -45,7 +36,7 @@ export async function GET() {
     `Conteúdo disponível para indexação por assistentes de IA e LLMs. Ver ${absoluteUrl('/robots.txt')} para detalhes.`,
     `Conteúdo completo disponível em ${absoluteUrl('/llms-full.txt')}.`,
     '',
-    `## Contato`,
+    '## Contato',
     '',
     `- E-mail: ${siteConfig.organization.email}`,
   ];

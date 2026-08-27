@@ -1,15 +1,11 @@
 import { z } from 'zod';
+import { KINDS } from './taxonomy.js';
 
-export const SIGNAL_KINDS = [
-  'prayer',
-  'psalm',
-  'reflection',
-  'verse',
-  'devotional',
-  'novena',
-  'article',
-  'verse_collection',
-];
+/**
+ * Os kinds válidos são derivados do registro de seções (taxonomy.js). Pra criar
+ * um kind novo, declare a seção lá: esta lista se atualiza sozinha.
+ */
+export const SIGNAL_KINDS = KINDS;
 
 export const INTENT_KEYS = [
   'anxiety',

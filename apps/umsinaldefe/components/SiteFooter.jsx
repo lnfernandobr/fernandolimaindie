@@ -1,37 +1,13 @@
 import Link from 'next/link';
 import { Glyph } from './Glyph.jsx';
 import { siteConfig } from '@/lib/site-config.js';
+import { navTree } from '@/lib/content/taxonomy.js';
+import { INTENT_SLUGS, INTENT_LABELS } from '@/lib/content/intents.js';
 
-// Só hubs e páginas de sentimento (sempre renderizam). Nada de deep-link pra
-// conteúdo específico, que pode ainda não ter sido gerado pelo cron (evita 404).
-const COLS = [
-  {
-    h: 'Conteúdo',
-    items: [
-      { label: 'Versículo do dia', href: '/versiculo-do-dia' },
-      { label: 'Devocional',       href: '/devocional'       },
-      { label: 'Salmos',           href: '/salmo'            },
-      { label: 'Orações',          href: '/oracao'           },
-    ],
-  },
-  {
-    h: 'Explorar',
-    items: [
-      { label: 'Versículos por tema', href: '/biblia' },
-      { label: 'Blog',                href: '/blog'   },
-    ],
-  },
-  {
-    h: 'Por sentimento',
-    items: [
-      { label: 'Ansiedade', href: '/ansiedade' },
-      { label: 'Medo',      href: '/medo'      },
-      { label: 'Proteção',  href: '/protecao'  },
-      { label: 'Gratidão',  href: '/gratidao'  },
-      { label: 'Família',   href: '/familia'   },
-    ],
-  },
-];
+// As colunas saem do registro de seções: seção nova aparece aqui sozinha.
+const GROUPS = navTree();
+
+const FOOTER_INTENTS = ['anxiety', 'protection', 'gratitude', 'family', 'healing', 'grief'];
 
 export function SiteFooter() {
   return (
@@ -55,21 +31,37 @@ export function SiteFooter() {
             </a>
           </div>
         </div>
+
         <div className="footer-cols">
-          {COLS.map((c) => (
-            <div key={c.h} className="footer-col">
-              <h4>{c.h}</h4>
+          {GROUPS.map((group) => (
+            <div key={group.id} className="footer-col">
+              <h4>{group.label}</h4>
               <ul>
-                {c.items.map((item) => (
-                  <li key={item.href}>
-                    <Link href={item.href}>{item.label}</Link>
+                {group.sections.map((s) => (
+                  <li key={s.slug}>
+                    <Link href={`/${s.slug}`}>{s.label}</Link>
                   </li>
                 ))}
               </ul>
             </div>
           ))}
+
+          <div className="footer-col">
+            <h4>Por sentimento</h4>
+            <ul>
+              {FOOTER_INTENTS.map((key) => (
+                <li key={key}>
+                  <Link href={`/${INTENT_SLUGS[key]}`}>{INTENT_LABELS[key]}</Link>
+                </li>
+              ))}
+              <li>
+                <Link href="/mapa">Mapa do site</Link>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
+
       <div className="wrap footer-bottom">
         <span className="t-faint">© {new Date().getFullYear()} Um Sinal de Fé · pt-BR</span>
         <span className="t-faint">Gratuito · interconfessional · feito com cuidado</span>

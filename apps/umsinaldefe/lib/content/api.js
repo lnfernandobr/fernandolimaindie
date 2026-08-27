@@ -17,9 +17,11 @@ export const getSignal = async (slug) => {
   return signalSchema.parse(found);
 };
 
-export const listSignals = async ({ kind, intent, topicSlug, entitySlug, page = 1, limit = 20 } = {}) => {
+export const listSignals = async ({ kind, kinds, intent, topicSlug, entitySlug, page = 1, limit = 20 } = {}) => {
   let items = getPublishedSignals();
   if (kind) items = items.filter((s) => s.kind === kind);
+  // `kinds` atende seções que abrigam mais de um kind (ver extraKinds na taxonomy)
+  if (kinds?.length) items = items.filter((s) => kinds.includes(s.kind));
   if (intent) items = items.filter((s) => s.intent === intent);
   if (topicSlug) items = items.filter((s) => s.topicSlug === topicSlug);
   if (entitySlug) items = items.filter((s) => (s.entitySlugs ?? []).includes(entitySlug));

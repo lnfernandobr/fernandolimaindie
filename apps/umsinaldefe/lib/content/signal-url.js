@@ -1,18 +1,22 @@
+import { sectionForKind } from './taxonomy.js';
+
 /**
- * Builds a kind-based URL for a signal.
- *   psalm            → /salmo/{numero}      (slug: salmo-{numero})
- *   devotional       → /devocional/{rest}   (slug: devocional-{rest})
- *   article          → /blog/{slug}         (slug sem prefixo)
- *   verse_collection → /biblia/{tema}       (slug: biblia-{tema})
- *   everything else  → /oracao/{rest}       (slug: oracao-{rest})
+ * Monta a URL de um conteúdo a partir da seção dona do seu kind.
  *
- * Works with both full signalSchema and signalSummarySchema objects.
+ * A regra vive no registro (taxonomy.js), não aqui: a seção declara o próprio
+ * slug e o prefixo que deve ser removido do slug do signal.
+ *   psalm  + "salmo-91"      → /salmo/91
+ *   article + "fe-no-escuro" → /blog/fe-no-escuro
+ *
+ * Funciona tanto com signalSchema quanto com signalSummarySchema.
  */
 export const signalUrl = (signal) => {
   const { kind, slug } = signal;
-  if (kind === 'psalm') return `/salmo/${slug.replace(/^salmo-/, '')}`;
-  if (kind === 'devotional') return `/devocional/${slug.replace(/^devocional-/, '')}`;
-  if (kind === 'article') return `/blog/${slug}`;
-  if (kind === 'verse_collection') return `/biblia/${slug.replace(/^biblia-/, '')}`;
-  return `/oracao/${slug.replace(/^oracao-/, '')}`;
+  const section = sectionForKind(kind);
+  const prefix = section.slugPrefix ?? '';
+  const rest = prefix && slug.startsWith(prefix) ? slug.slice(prefix.length) : slug;
+  return `/${section.slug}/${rest}`;
 };
+
+/** URL de um item que ainda está na pauta (roadmap.js), pra montar links futuros. */
+export const plannedUrl = (item) => `/${item.section}/${item.slug}`;
