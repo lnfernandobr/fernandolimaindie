@@ -1,0 +1,60 @@
+{
+  "id": "salmo-1",
+  "slug": "salmo-1",
+  "kind": "psalm",
+  "intent": "faith",
+  "topicSlug": "salmos-de-confianca",
+  "entitySlugs": [],
+  "title": "Salmo 1: o caminho do justo e o da maldade",
+  "answer": "O Salmo 1 apresenta dois caminhos possíveis para a vida humana: o de quem se nutre da Palavra de Deus e cresce como árvore plantada junto às águas, e o de quem se afasta dela e se dispersa como palha ao vento.",
+  "summary": "É um salmo de abertura, quase um portal para todo o saltério. Ele não promete uma vida sem dificuldade, mas aponta onde está o fundamento que sustenta quando tudo balança. Quem chega a ele com a fé vacilante encontra não uma cobrança, mas um convite a enraizar.",
+  "bodyHtml": "<p><strong>\"Feliz o homem que não segue o conselho dos ímpios, não se detém no caminho dos pecadores, nem se assenta na roda dos zombadores, mas encontra sua delícia na lei do Senhor e medita em sua lei dia e noite.\"</strong> (Salmo 1,1-2). Esse começo não é uma ameaça, é uma declaração de onde nasce a felicidade real — não no que se evita, mas no que se escolhe habitar.</p><p>O Salmo 1 foi colocado no início do livro dos Salmos como uma soleira. Antes de qualquer lamento, qualquer grito de socorro, qualquer canto de vitória, o saltério pergunta: onde você está plantado? Não é uma pergunta de julgamento. É a pergunta de quem sabe que a raiz decide tudo. Você pode rezar esse salmo num dia de dúvida sobre a própria fé, quando não sabe se acredita de verdade ou só por hábito, quando o caminho parece sem sentido e você olha ao redor e vê gente que não reza, não se preocupa com nada disso, e parece ir bem.</p><p>A imagem da árvore plantada junto às águas (versículo 3) não é decorativa. Uma árvore assim não depende da chuva de cada dia, porque suas raízes chegam onde a água nunca seca. Ela dá fruto no tempo certo, não no tempo que a ansiedade exige. O salmo não diz que o justo nunca seca por fora, nunca passa por estações duras. Diz que suas folhas não murcham porque há algo mais fundo sustentando. O ímpio, por contraste, é palha: leve, solta, levada por qualquer vento. Não é uma condenação, é uma descrição de fragilidade — a fragilidade de quem não tem onde se segurar quando o vento vem.</p><p>Se você chegou até aqui com a fé pesando mais como dúvida do que como certeza, talvez este salmo seja exatamente o lugar onde ficar parado um momento, deixando que a imagem da árvore e das águas faça seu trabalho silencioso em você.</p>",
+  "chunks": [
+    {
+      "id": "arvore-junto-as-aguas",
+      "html": "<p><strong>A árvore que não depende da chuva de cada dia</strong></p><p>O Salmo 1 usa uma imagem precisa: a árvore plantada junto às correntes de água (Salmo 1,3). Não uma árvore em campo aberto, dependente do tempo que faz. Uma árvore com raízes que chegam onde a água não some. Ela frutifica no tempo certo, não no tempo da pressa. Quando a fé parece seca por fora, a pergunta que esse salmo faz não é \"você está sentindo?\" mas \"onde você está plantado?\"</p>"
+    },
+    {
+      "id": "dois-caminhos",
+      "html": "<p><strong>Dois caminhos, não dois tipos de pessoa</strong></p><p>O salmo descreve o caminho do justo e o caminho do ímpio, mas não divide a humanidade em dois grupos fixos. Descreve duas direções que qualquer pessoa pode tomar, às vezes no mesmo dia. O caminho do justo começa na meditação da Palavra — não em desempenho moral, não em perfeição. Começa em quem se volta, mesmo devagar, mesmo sem certeza, para o que sustenta. \"O Senhor conhece o caminho dos justos, mas o caminho dos ímpios se perde\" (Salmo 1,6): não é ameaça, é constatação de onde cada raiz leva.</p>"
+    },
+    {
+      "id": "palha-ao-vento",
+      "html": "<p><strong>A palha não é vilã, é frágil</strong></p><p>\"Os ímpios não são assim: são como a palha que o vento dispersa\" (Salmo 1,4). A imagem da palha não carrega ódio. Carrega tristeza. A palha é leve demais para se segurar quando o vento vem — e o vento sempre vem. Não ter raiz não é um crime, é uma vulnerabilidade. O salmo não condena quem está à deriva; mostra o que acontece quando não há onde se agarrar. É um convite, não uma sentença.</p>"
+    },
+    {
+      "id": "meditacao-dia-e-noite",
+      "html": "<p><strong>Meditar dia e noite não é obrigação, é respiração</strong></p><p>\"Encontra sua delícia na lei do Senhor e medita em sua lei dia e noite\" (Salmo 1,2). A palavra \"delícia\" não é acidental. Não diz \"cumpre\" nem \"estuda por dever\". Diz que há prazer nisso, que a Palavra pode ser lugar de descanso e não só de exigência. Meditar dia e noite é a imagem de quem volta sempre ao mesmo ponto, como a língua que volta ao dente que dói, mas aqui voltando ao que cura. É o ritmo de quem quer enraizar, não de quem quer cumprir meta.</p>"
+    }
+  ],
+  "faq": [
+    {
+      "question": "O Salmo 1 é uma promessa de que as coisas vão dar certo para quem é fiel?",
+      "answer": "Não exatamente. O salmo fala de fundamento, não de ausência de dificuldade. A árvore plantada junto às águas ainda enfrenta estações secas — o que muda é que ela tem raiz funda o suficiente para não murchar por dentro. A fidelidade não garante vida fácil, garante que você não está à deriva quando o difícil chega."
+    },
+    {
+      "question": "Posso rezar o Salmo 1 mesmo sentindo que minha fé está fraca?",
+      "answer": "Especialmente então. O salmo não exige fé plena para ser rezado, ele é o lugar onde a fé fraca vai buscar chão. Rezá-lo com dúvida é diferente de rezá-lo com certeza, mas os dois são válidos. A árvore não precisa saber que tem raiz para tê-la."
+    },
+    {
+      "question": "O que significa \"meditar na lei do Senhor dia e noite\" na prática?",
+      "answer": "Não significa ficar o dia todo lendo Bíblia. Significa deixar a Palavra entrar no ritmo da vida: uma frase que você carrega, um versículo que volta enquanto você lava a louça ou espera o ônibus. É menos sobre quantidade de tempo e mais sobre deixar que algo de Deus habite seu pensamento ao longo do dia."
+    },
+    {
+      "question": "Por que o Salmo 1 está no começo do saltério?",
+      "answer": "Porque funciona como uma porta de entrada para todo o livro dos Salmos. Antes dos gritos de socorro, dos lamentos e dos cânticos de vitória, o saltério pergunta em que solo você está. É uma orientação inicial: o que você vai ler aqui faz sentido diferente dependendo de onde você está enraizado."
+    }
+  ],
+  "verses": [],
+  "category": null,
+  "relatedIntents": [
+    "hope",
+    "morning",
+    "anxiety"
+  ],
+  "audioUrl": null,
+  "imageUrl": null,
+  "lang": "pt-BR",
+  "status": "published",
+  "publishedAt": "2026-06-06T03:01:24.769Z"
+}

@@ -1,0 +1,80 @@
+{
+  "id": "biblia-amizade",
+  "slug": "biblia-amizade",
+  "kind": "verse_collection",
+  "intent": "faith",
+  "topicSlug": "versiculos-da-biblia",
+  "entitySlugs": [],
+  "title": "Versículos sobre amizade verdadeira: o que a Bíblia diz sobre o amigo leal",
+  "answer": "A Bíblia ensina que o amigo verdadeiro é aquele que permanece nos momentos difíceis, que diz a verdade com cuidado e que reflete, mesmo sem perceber, o amor fiel de Deus por você.",
+  "summary": "A Escritura não romantiza a amizade: ela a descreve como aliança, como presença concreta no dia ruim. Quem tem um amigo assim carrega uma graça rara. E quem está sem esse amigo agora pode encontrar nessas palavras tanto consolo quanto direção.",
+  "bodyHtml": "<p>Há um fio que atravessa todos esses textos e que vale a pena nomear: a amizade, para a Bíblia, não é sentimento passageiro nem conveniência de temporada. Ela é fidelidade que se prova na adversidade. Provérbios insiste nisso com uma clareza quase desconfortável: o amigo de verdade aparece quando a situação piora, não só quando está tudo bem. Isso exige de quem ama uma espécie de firmeza interior que vai além da simpatia.</p><p>Eclesiastes, com seu olhar cansado e honesto sobre a vida, acrescenta uma dimensão prática que ninguém deveria ignorar: sozinho, você cai e não tem quem levante. Dois é melhor que um não porque seja mais bonito, mas porque a vida pesa, e o peso dividido se torna suportável. João e Paulo completam esse quadro mostrando que o próprio Jesus se colocou dentro dessa lógica: ele não ficou à distância chamando os discípulos de servos. Ele os chamou de amigos, e deu a vida por eles. A amizade humana, quando é boa, ecoa algo desse amor que não recua.</p><p>Se você está passando por um momento em que a fé parece distante ou os vínculos parecem frágeis, esses versículos não oferecem uma fórmula. Eles oferecem uma companhia: a certeza de que Deus mesmo entende o que é precisar de alguém ao lado, e que isso nunca foi fraqueza.</p>",
+  "chunks": [],
+  "faq": [
+    {
+      "question": "Existe algum exemplo de amizade verdadeira na Bíblia além dos versículos?",
+      "answer": "Sim. Davi e Jônatas são o exemplo mais citado: Jônatas abriu mão de seus próprios interesses para proteger Davi, mesmo contrariando o próprio pai. Essa história está em 1 Samuel 18 a 20 e mostra na prática o que os Provérbios descrevem em princípio."
+    },
+    {
+      "question": "O que fazer quando sinto que não tenho amigos verdadeiros?",
+      "answer": "Esse sentimento é mais comum do que parece e não é sinal de falha sua. A Bíblia não promete que todo mundo terá muitos amigos, mas mostra que um só amigo fiel já muda tudo. Vale olhar ao redor com mais atenção: às vezes a pessoa está perto, mas a pressa do dia impede que o vínculo se aprofunde."
+    },
+    {
+      "question": "Posso ser amigo de alguém que não tem a mesma fé que eu?",
+      "answer": "A tradição católica não proíbe isso. O que a Escritura pede é discernimento: observe se a amizade o leva a ser uma pessoa melhor ou pior. Amizades que nos desafiam a crescer em honestidade e cuidado costumam ser saudáveis, independentemente da crença do outro."
+    },
+    {
+      "question": "Amizade e amor ao próximo são a mesma coisa na Bíblia?",
+      "answer": "São relacionados, mas não idênticos. O amor ao próximo é universal: vale para quem você nem conhece. A amizade é um vínculo específico, construído no tempo, com escolha mútua. Jesus distingue isso em João 15 quando fala em escolher os amigos, algo que não fazemos com o próximo em geral."
+    }
+  ],
+  "verses": [
+    {
+      "ref": "Provérbios 17,17",
+      "text": "O amigo ama em todo tempo, e na adversidade se torna um irmão."
+    },
+    {
+      "ref": "Provérbios 18,24",
+      "text": "Há amigos que levam à ruína, mas existe um amigo mais chegado do que um irmão."
+    },
+    {
+      "ref": "Eclesiastes 4,9-10",
+      "text": "Melhor são dois do que um, porque têm boa recompensa no seu trabalho. Pois se caírem, um levanta o companheiro; mas ai do que estiver só: se cair, não haverá quem o levante."
+    },
+    {
+      "ref": "Sirácides 6,14-15",
+      "text": "O amigo fiel é um abrigo seguro; quem o encontra, encontrou um tesouro. O amigo fiel não tem preço, e não há balança que pese o seu valor."
+    },
+    {
+      "ref": "João 15,13",
+      "text": "Ninguém tem amor maior do que aquele que dá a vida pelos seus amigos."
+    },
+    {
+      "ref": "João 15,15",
+      "text": "Já não vos chamo servos, porque o servo não sabe o que faz o seu senhor; mas chamei-vos amigos, porque tudo o que ouvi de meu Pai vos dei a conhecer."
+    },
+    {
+      "ref": "Romanos 12,10",
+      "text": "Amai-vos uns aos outros com amor fraterno, preferindo-vos mutuamente na honra."
+    },
+    {
+      "ref": "Gálatas 6,2",
+      "text": "Levai os fardos uns dos outros e assim cumprireis a lei de Cristo."
+    },
+    {
+      "ref": "1 Samuel 18,1",
+      "text": "Quando Davi acabou de falar com Saul, a alma de Jônatas ficou unida à alma de Davi, e Jônatas o amou como a si mesmo."
+    }
+  ],
+  "category": "biblia-explicada",
+  "relatedIntents": [
+    "hope",
+    "gratitude",
+    "grief"
+  ],
+  "audioUrl": null,
+  "imageUrl": null,
+  "lang": "pt-BR",
+  "status": "published",
+  "publishedAt": "2026-06-05T03:00:38.133Z"
+}

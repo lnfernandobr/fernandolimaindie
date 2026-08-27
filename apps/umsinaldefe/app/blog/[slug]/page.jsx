@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getSignal } from '@/lib/content/api.js';
+import { getSignal, listSignals } from '@/lib/content/api.js';
 import { categoryLabel } from '@/lib/content/categories.js';
 import { INTENT_SLUGS, INTENT_LABELS } from '@/lib/content/intents.js';
 import { buildMetadata } from '@/lib/seo/metadata.js';
@@ -17,7 +17,10 @@ import { SemanticFAQ } from '@/components/SemanticFAQ.jsx';
 import { ShareButton } from '@/components/ShareButton.jsx';
 import { IntentNav } from '@/components/IntentNav.jsx';
 
-export const dynamic = 'force-dynamic';
+export async function generateStaticParams() {
+  const { items } = await listSignals({ kind: 'article', limit: 1000 });
+  return items.map((s) => ({ slug: s.slug }));
+}
 
 /** Extrai os H2s do bodyHtml pra montar o índice (TOC). */
 function extractHeadings(html) {

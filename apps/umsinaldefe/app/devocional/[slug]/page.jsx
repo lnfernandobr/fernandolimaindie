@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getSignal } from '@/lib/content/api.js';
+import { getSignal, listSignals } from '@/lib/content/api.js';
 import { INTENT_LABELS } from '@/lib/content/intents.js';
 import { buildMetadata } from '@/lib/seo/metadata.js';
 import {
@@ -24,7 +24,10 @@ import { IntentNav } from '@/components/IntentNav.jsx';
 import { FavoriteButton } from '@/components/FavoriteButton.jsx';
 import { ShareButton } from '@/components/ShareButton.jsx';
 
-export const dynamic = 'force-dynamic';
+export async function generateStaticParams() {
+  const { items } = await listSignals({ kind: 'devotional', limit: 1000 });
+  return items.map((s) => ({ slug: s.slug.replace(/^devocional-/, '') }));
+}
 
 export async function generateMetadata({ params }) {
   const { slug: slugParam } = await params;

@@ -1,0 +1,84 @@
+{
+  "id": "biblia-dinheiro",
+  "slug": "biblia-dinheiro",
+  "kind": "verse_collection",
+  "intent": "faith",
+  "topicSlug": "versiculos-da-biblia",
+  "entitySlugs": [],
+  "title": "Versículos sobre dinheiro e prosperidade com sabedoria: o que a Bíblia realmente diz",
+  "answer": "A Bíblia não condena o dinheiro, mas avisa com seriedade sobre o amor excessivo a ele. O caminho que a Escritura propõe é contentamento, generosidade e confiança em Deus, não acúmulo nem miséria.",
+  "summary": "Há uma diferença enorme entre depender de Deus para viver e usar Deus como instrumento para enriquecer. Os versículos sobre dinheiro na Bíblia apontam para uma liberdade interior que o saldo bancário não consegue dar nem tirar. É sobre onde está o coração, não o extrato.",
+  "bodyHtml": "<p>O fio que atravessa esses textos não é uma promessa de conta cheia nem uma condenação de quem tem bens. É algo mais incômodo e mais libertador do que os dois extremos: a pergunta sobre onde o coração foi ancorar. Paulo escreve de dentro de uma prisão que o dinheiro não comprou nem o dinheiro estava faltando para resolver, e mesmo assim diz que aprendeu a viver na abundância e na necessidade. Esse \"aprendi\" é importante. Não veio de graça. Custou noites, perdas, humilhações. E o resultado não foi indiferença ao sofrimento material, mas uma paz que não dependia do que tinha no bolso.</p><p>O Eclesiastes olha para o trabalho e o acúmulo com olhos cansados de quem já tentou tudo e percebeu que a satisfação nunca chegava junto com o próximo ganho. Não é pessimismo. É honestidade sobre como o ser humano funciona quando o dinheiro vira o centro organizador da vida. Jesus, no Sermão da Montanha, não diz que dinheiro é sujo. Diz que o coração não consegue servir a dois senhores ao mesmo tempo, e que quem tenta acaba amando um e desprezando o outro. A escolha não é entre riqueza e pobreza. É entre onde você busca segurança de verdade.</p><p>Provérbios não romantiza a pobreza nem glorifica o rico. Pede uma coisa estranha: a medida certa, o suficiente, para que Deus não seja esquecido na fartura nem blasfemado na miséria. Esse pedido tem cheiro de cozinha, de conta de luz no vencimento, de decisão ordinária de segunda-feira. A sabedoria bíblica sobre dinheiro não mora nos grandes discursos. Mora no gesto miúdo de quem escolhe, mais uma vez, não deixar o medo ou a ganância decidirem.</p>",
+  "chunks": [],
+  "faq": [
+    {
+      "question": "A Bíblia diz que Deus quer que todo cristão seja rico?",
+      "answer": "Não. Essa leitura seleciona alguns textos e ignora dezenas de outros. Jesus elogiou a viúva que deu tudo o que tinha, não quem acumulou mais. Paulo diz explicitamente que a piedade com contentamento é grande ganho, e que os que querem enriquecer a qualquer custo caem em tentações que os destroem."
+    },
+    {
+      "question": "Ter dinheiro é pecado para a Bíblia?",
+      "answer": "Não. Abraão, Jó e José eram homens de bens. O problema que a Escritura aponta é o amor desordenado ao dinheiro, a ganância, e a confiança nele como se fosse Deus. O que você faz com o que tem, e o que o dinheiro faz com você por dentro, é o que importa."
+    },
+    {
+      "question": "O que fazer quando estou com dificuldade financeira e sinto que Deus não está respondendo?",
+      "answer": "Essa sensação é real e não precisa ser negada. Filipenses 4,6 convida a trazer a necessidade a Deus com oração e súplica, sem fingir que está bem. A paz que Paulo menciona não é ausência de problema, é a presença de Deus dentro do problema. Busque também ajuda concreta: comunidade, orientação, não enfrente sozinho."
+    },
+    {
+      "question": "Como equilibrar confiar em Deus e tomar decisões financeiras responsáveis?",
+      "answer": "Confiar em Deus não dispensa planejamento. Provérbios está cheio de elogios à prudência, à formiga que guarda no verão para o inverno. Fé e responsabilidade não competem. O que a fé impede é a ansiedade paralisante e a ganância que justifica qualquer meio."
+    }
+  ],
+  "verses": [
+    {
+      "ref": "1 Timóteo 6,6-8",
+      "text": "A verdadeira riqueza é a piedade unida ao contentamento. Porque nada trouxemos para o mundo, e nada podemos levar. Tendo alimentação e roupa, fiquemos satisfeitos com isso."
+    },
+    {
+      "ref": "1 Timóteo 6,10",
+      "text": "O amor ao dinheiro é a raiz de todos os males. Alguns, por se deixarem dominar por ele, se desviaram da fé e se transpassaram com muitas dores."
+    },
+    {
+      "ref": "Filipenses 4,19",
+      "text": "O meu Deus suprirá todas as vossas necessidades, segundo as suas riquezas, com magnificência, em Cristo Jesus."
+    },
+    {
+      "ref": "Filipenses 4,11-12",
+      "text": "Aprendi a contentar-me com o que tenho. Sei viver na pobreza e sei viver na abundância. Em tudo e em todas as circunstâncias, aprendi o segredo de estar saciado e de ter fome, de ter em abundância e de passar necessidade."
+    },
+    {
+      "ref": "Mateus 6,24",
+      "text": "Ninguém pode servir a dois senhores: ou vai odiar um e amar o outro, ou vai se dedicar a um e desprezar o outro. Não podeis servir a Deus e ao dinheiro."
+    },
+    {
+      "ref": "Provérbios 30,8-9",
+      "text": "Afasta de mim a falsidade e a mentira. Não me dês nem pobreza nem riqueza; dá-me apenas o necessário para viver, para que, saciado, eu não te rejeite e diga: Quem é o Senhor? Ou, reduzido à miséria, não roube e profane o nome do meu Deus."
+    },
+    {
+      "ref": "Eclesiastes 5,9",
+      "text": "Quem ama o dinheiro, do dinheiro nunca se farta; quem ama a riqueza, nunca tem rendimentos suficientes. Também isso é vaidade."
+    },
+    {
+      "ref": "Lucas 12,15",
+      "text": "Cuidai-vos e guardai-vos de toda espécie de avareza, porque a vida de um homem não depende da abundância dos seus bens."
+    },
+    {
+      "ref": "Salmo 37,16",
+      "text": "Vale mais o pouco do justo do que a abundância dos ímpios."
+    },
+    {
+      "ref": "2 Coríntios 9,7",
+      "text": "Cada um dê conforme decidiu em seu coração, não com tristeza nem por obrigação, porque Deus ama quem dá com alegria."
+    }
+  ],
+  "category": "biblia-explicada",
+  "relatedIntents": [
+    "anxiety",
+    "hope",
+    "gratitude"
+  ],
+  "audioUrl": null,
+  "imageUrl": null,
+  "lang": "pt-BR",
+  "status": "published",
+  "publishedAt": "2026-06-11T03:00:47.831Z"
+}

@@ -1,0 +1,84 @@
+{
+  "id": "biblia-aniversario",
+  "slug": "biblia-aniversario",
+  "kind": "verse_collection",
+  "intent": "faith",
+  "topicSlug": "versiculos-da-biblia",
+  "entitySlugs": [],
+  "title": "Versículos de aniversário para abençoar quem você ama",
+  "answer": "Versículos de aniversário são formas concretas de dizer a alguém que Deus o conhece pelo nome e cuida dos seus dias, Números 6,24-26, Salmo 91,16 e Jeremias 29,11 estão entre os mais usados em cartões e mensagens.",
+  "summary": "Um aniversário não é só festa: é o dia em que você para e diz a alguém que a vida dele importa. Escolher um versículo para esse momento é um gesto de fé, você está pedindo a Deus que cubra aquela pessoa de um jeito que você sozinho não consegue. Estes versículos foram escolhidos porque falam de proteção, de futuro e de presença, não de conquistas.",
+  "bodyHtml": "<p>Existe um gesto muito simples que as pessoas fazem e que quase ninguém para para analisar: escrever um versículo num cartão de aniversário. Parece automático, mas não é. Quando você escolhe uma palavra da Escritura para colocar ali, ao lado do nome de quem você ama, você está fazendo uma coisa teologicamente séria, está reconhecendo que aquela vida tem uma origem e um destino que escapam do que qualquer presente embrulhado pode cobrir. O versículo no cartão é, no fundo, uma oração que o outro vai carregar no bolso.</p><p>O fio que atravessa esses textos é o da iniciativa de Deus. Em Números, é o próprio Senhor que manda Aarão abençoar o povo com palavras precisas, não uma fórmula mágica, mas um rosto voltado para alguém. Em Jeremias, a promessa de futuro é dada justamente a quem está exilado, longe de casa, sem plano claro. Em nenhum desses textos Deus espera que a pessoa esteja bem para agir. Ele age primeiro. Isso muda o tom do aniversário: não é só comemorar o que foi bom, é confiar o que ainda está por vir a quem conhece o fim desde o começo.</p><p>Quando você escreve um versículo para alguém que está completando anos num momento difícil, depois de uma perda, no meio de uma doença, com o casamento rachado, esses textos ganham peso diferente. Não são decoração. São o reconhecimento honesto de que você não tem como garantir o próximo ano da vida daquela pessoa, mas conhece Alguém que tem. E isso, dito com cuidado, é o melhor presente que um ser humano pode dar a outro.</p>",
+  "chunks": [],
+  "faq": [
+    {
+      "question": "Qual versículo de aniversário é mais indicado para uma pessoa que está passando por um momento difícil?",
+      "answer": "Jeremias 29,11 é o mais indicado nesses casos. Ele foi escrito para pessoas em exílio, sem perspectiva clara, e fala de planos de paz e de futuro, não de conquista, mas de cuidado. É um versículo que acolhe quem está no meio do caminho, não só quem chegou."
+    },
+    {
+      "question": "Posso usar Números 6,24-26 em cartão de aniversário mesmo sendo uma bênção sacerdotal?",
+      "answer": "Sim. Essa bênção foi dada por Deus ao povo para ser dita pelos sacerdotes, mas o próprio texto é uma oração, qualquer pessoa pode usá-la para interceder por outra. Colocá-la num cartão é pedir a Deus que faça por aquela pessoa o que você não consegue fazer sozinho."
+    },
+    {
+      "question": "Tem versículo de aniversário para criança?",
+      "answer": "Salmo 91,16 e Números 6,24-26 funcionam bem para crianças. O Salmo 91,16 fala de longa vida e salvação de um jeito simples e direto. Para adolescentes, Jeremias 29,11 costuma ressoar bem, a ideia de que o futuro tem sentido mesmo quando parece nebuloso."
+    },
+    {
+      "question": "Como escrever uma mensagem de aniversário com versículo sem soar forçado ou religioso demais?",
+      "answer": "Coloque o versículo depois de uma frase pessoal, não antes. Escreva primeiro o que você sente por aquela pessoa, algo específico, um detalhe real, e então deixe o versículo completar o que as suas palavras não alcançam. O versículo vira um presente, não um sermão."
+    }
+  ],
+  "verses": [
+    {
+      "ref": "Números 6,24-26",
+      "text": "O Senhor te abençoe e te guarde. O Senhor faça brilhar o seu rosto sobre você e te seja favorável. O Senhor volte o seu rosto para você e te dê a paz."
+    },
+    {
+      "ref": "Salmo 91,16",
+      "text": "Vou saciá-lo de longa vida e lhe mostrarei a minha salvação."
+    },
+    {
+      "ref": "Jeremias 29,11",
+      "text": "Pois eu conheço os planos que tenho para vocês, diz o Senhor, planos de paz e não de desgraça, para dar a vocês um futuro e uma esperança."
+    },
+    {
+      "ref": "Salmo 23,1",
+      "text": "O Senhor é o meu pastor, nada me faltará."
+    },
+    {
+      "ref": "João 10,10",
+      "text": "Eu vim para que tenham vida e a tenham em abundância."
+    },
+    {
+      "ref": "Romanos 8,28",
+      "text": "Sabemos que tudo coopera para o bem daqueles que amam a Deus, daqueles que são chamados segundo o seu desígnio."
+    },
+    {
+      "ref": "Filipenses 4,7",
+      "text": "E a paz de Deus, que supera todo entendimento, guardará os seus corações e os seus pensamentos em Cristo Jesus."
+    },
+    {
+      "ref": "Isaías 43,1",
+      "text": "Não temas, porque eu te resgatei, eu te chamei pelo teu nome, você é meu."
+    },
+    {
+      "ref": "Salmo 139,14",
+      "text": "Eu te louvo porque sou uma criatura admirável; admiráveis são as tuas obras, e eu o sei muito bem."
+    },
+    {
+      "ref": "Gálatas 6,9",
+      "text": "Não nos cansemos de fazer o bem, pois no tempo certo colheremos, se não desanimarmos."
+    }
+  ],
+  "category": "biblia-explicada",
+  "relatedIntents": [
+    "hope",
+    "gratitude",
+    "family"
+  ],
+  "audioUrl": null,
+  "imageUrl": null,
+  "lang": "pt-BR",
+  "status": "published",
+  "publishedAt": "2026-06-17T03:00:41.431Z"
+}

@@ -1,0 +1,84 @@
+{
+  "id": "biblia-alegria",
+  "slug": "biblia-alegria",
+  "kind": "verse_collection",
+  "intent": "faith",
+  "topicSlug": "versiculos-da-biblia",
+  "entitySlugs": [],
+  "title": "Versículos sobre a alegria do Senhor",
+  "answer": "A alegria cristã não depende de circunstância boa nem de sentimento estável, ela nasce do contato com Deus, que é fonte e não consequência do que você está vivendo.",
+  "summary": "Nos momentos em que a fé parece seca e o ânimo some, a Escritura não manda fingir que está tudo bem. Ela aponta para uma alegria que tem raiz mais funda que o humor do dia. Esses versículos mostram onde essa alegria mora e como ela sustenta quem está com pouco fôlego.",
+  "bodyHtml": "<p>Existe uma diferença que a gente sente mas nem sempre sabe nomear: a diferença entre estar feliz e ter alegria. Felicidade depende de algo acontecer, a conta fechar no azul, a família reunida sem briga, o corpo sem dor. Alegria, no sentido bíblico, é outra coisa. Ela aparece em Neemias num dia de luto coletivo, quando o povo chorava ouvindo a Lei lida em voz alta depois de décadas de exílio. Não era um dia bonito. Era um dia pesado. E é exatamente nesse dia que Esdras diz: a alegria do Senhor é a sua força. Não a alegria que você fabrica. A alegria que pertence a Deus e que Ele oferece como sustento, não como prêmio.</p><p>Paulo escreve Filipenses de dentro de uma prisão. Quando ele diz \"alegrai-vos sempre no Senhor\", não está num retiro espiritual com vista para o mar. Está acorrentado, incerto sobre o próprio futuro, dependendo da generosidade de uma comunidade distante. A repetição, \"e repito: alegrai-vos\", não é entusiasmo de palco. É teimosia teológica. É alguém que aprendeu, na própria pele, que a alegria cristã não é espontânea: ela é uma escolha de onde você ancora a atenção, mesmo quando o cenário não colabora. O Salmo 16 fecha esse fio com precisão: na presença de Deus há plenitude de alegria. Não numa técnica, não numa conquista, não num estado emocional cultivado. Na presença. O que muda quando você se coloca diante de Deus não é o problema, é quem está com você enquanto o problema existe.</p>",
+  "chunks": [],
+  "faq": [
+    {
+      "question": "E se eu não consigo sentir alegria nenhuma, nem tentando? Isso significa que minha fé está fraca?",
+      "answer": "Não. A ausência de sentimento não é ausência de Deus. Muitos santos descreveram períodos longos de secura interior sem perder a fé. O que a Escritura pede não é que você sinta algo intenso, mas que você continue se voltando para Deus mesmo quando não sente nada. A alegria pode voltar como consequência, não como condição."
+    },
+    {
+      "question": "Qual a diferença entre alegria e otimismo cristão?",
+      "answer": "Otimismo é uma disposição de temperamento, alguns têm mais, outros menos, e não há mérito nisso. Alegria bíblica é uma orientação: ela aponta para Deus como fonte de sentido mesmo quando a situação é objetivamente ruim. Você pode ser uma pessoa séria, introvertida e até triste por temperamento, e ainda assim ter alegria no sentido que Paulo descreve."
+    },
+    {
+      "question": "Como usar esses versículos no dia a dia sem virar repetição vazia?",
+      "answer": "Escolha um versículo por vez e leve ele para uma situação concreta sua. Não para \"decretar\" nada, mas para perguntar: o que esse texto tem a ver com o que estou vivendo agora? Um versículo que você mastigou devagar vale mais do que dez lidos por obrigação."
+    },
+    {
+      "question": "A alegria do Senhor serve para quem está de luto ou em depressão?",
+      "answer": "Serve, mas não como anestésico. A Bíblia não manda apagar a dor, Jesus chorou diante do túmulo de Lázaro. A alegria do Senhor coexiste com o sofrimento; ela não o cancela. Para quem está em depressão clínica, o cuidado médico e psicológico é necessário e não contradiz a fé."
+    }
+  ],
+  "verses": [
+    {
+      "ref": "Neemias 8,10",
+      "text": "Não fiqueis tristes, porque a alegria do Senhor é a vossa força."
+    },
+    {
+      "ref": "Salmo 16,11",
+      "text": "Você me ensinará o caminho da vida; na sua presença há plenitude de alegria, à sua direita, delícias para sempre."
+    },
+    {
+      "ref": "Filipenses 4,4",
+      "text": "Alegrai-vos sempre no Senhor. Repito: alegrai-vos!"
+    },
+    {
+      "ref": "João 15,11",
+      "text": "Disse-vos isso para que a minha alegria esteja em vós e a vossa alegria seja completa."
+    },
+    {
+      "ref": "Romanos 15,13",
+      "text": "Que o Deus da esperança vos encha de toda alegria e paz na fé, para que transbordeis de esperança pelo poder do Espírito Santo."
+    },
+    {
+      "ref": "Salmo 30,6",
+      "text": "O choro pode durar uma noite, mas a alegria vem de manhã."
+    },
+    {
+      "ref": "Isaías 61,10",
+      "text": "Exulto de alegria no Senhor, minha alma se regozija no meu Deus, porque ele me revestiu de vestes de salvação."
+    },
+    {
+      "ref": "1 Pedro 1,8",
+      "text": "Sem o terdes visto, amais-o; sem o verdes agora, credes nele e exultais com uma alegria indizível e gloriosa."
+    },
+    {
+      "ref": "Gálatas 5,22",
+      "text": "O fruto do Espírito, porém, é: amor, alegria, paz, longanimidade, benignidade, bondade, fidelidade."
+    },
+    {
+      "ref": "Habacuc 3,18",
+      "text": "Ainda assim, eu me alegro no Senhor e me regozijo no Deus da minha salvação."
+    }
+  ],
+  "category": "biblia-explicada",
+  "relatedIntents": [
+    "hope",
+    "healing",
+    "gratitude"
+  ],
+  "audioUrl": null,
+  "imageUrl": null,
+  "lang": "pt-BR",
+  "status": "published",
+  "publishedAt": "2026-06-13T03:00:41.864Z"
+}

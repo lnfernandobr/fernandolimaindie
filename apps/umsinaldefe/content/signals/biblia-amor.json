@@ -1,0 +1,84 @@
+{
+  "id": "biblia-amor",
+  "slug": "biblia-amor",
+  "kind": "verse_collection",
+  "intent": "family",
+  "topicSlug": "versiculos-da-biblia",
+  "entitySlugs": [],
+  "title": "Versículos sobre o amor: o que a Bíblia diz",
+  "answer": "A Bíblia descreve o amor não como um sentimento que vai e vem, mas como uma escolha que se renova a cada dia — paciente, concreto e capaz de suportar o que parece insuportável.",
+  "summary": "Do Antigo Testamento aos Evangelhos, a Escritura mostra um amor que não depende de condições perfeitas nem de família sem conflito. É exatamente no desgaste do cotidiano — na discussão que ficou sem resolução, no silêncio à mesa — que esse amor é convocado a aparecer.",
+  "bodyHtml": "<p>Existe um fio que atravessa todos esses versículos e que não é óbvio à primeira leitura: o amor bíblico quase nunca é descrito no momento bonito. Ele aparece na hora de aguentar, de perdoar de novo, de ficar quando seria mais fácil ir embora. Paulo escreve para uma comunidade que estava brigando entre si, não para um casal em lua de mel. João fala do amor ao irmão para pessoas que tinham motivo real de mágoa umas com as outras. A Bíblia não romantiza o amor — ela o coloca exatamente onde ele dói mais e exige mais.</p><p>Dentro de uma família, isso tem peso concreto. Você conhece de perto os defeitos de quem ama, e eles conhecem os seus. Não tem como fingir. E é justamente aí que o amor evangélico se distingue: ele não precisa de ilusão para funcionar. O mandamento de amar o próximo, que Jesus retoma em Marcos, foi dito para pessoas que conviviam com vizinhos difíceis, com parentes que decepcionavam, com histórias que não terminavam bem. O amor que a Escritura propõe não é cego — ele vê o que é feio e escolhe ficar.</p><p>O que sustenta essa escolha não é força de vontade. É a consciência de que fomos amados primeiro, como João deixa claro, num amor que não esperou a gente melhorar para agir. Quem entende isso de verdade não ama para receber de volta. Ama porque já recebeu o que não merecia. Essa é a raiz. O resto — a paciência com o filho adolescente, a palavra gentil depois de um dia exaustivo, o perdão que ainda está sendo construído — é fruto dessa raiz, não a condição para ela existir.</p>",
+  "chunks": [],
+  "faq": [
+    {
+      "question": "Por que 1 Coríntios 13 é tão citado em casamentos se foi escrito para uma comunidade com conflitos?",
+      "answer": "Exatamente por isso. Paulo escreveu para uma comunidade que estava se desentendendo por causa de dons espirituais e divisões internas. O capítulo não é um poema romântico — é uma correção fraterna. Quando lido num casamento, ele lembra que o amor conjugal também vai enfrentar conflito, e que a resposta não é o sentimento, mas a escolha descrita ali."
+    },
+    {
+      "question": "Como amar alguém da família que me machucou de verdade?",
+      "answer": "A Bíblia não pede que você finja que a dor não existe. Amar não é o mesmo que ignorar o que aconteceu ou se colocar em situação de risco. O amor que a Escritura descreve cabe dentro de um processo de cura, que tem ritmo próprio e pode precisar de ajuda — de um padre, de um conselheiro, de tempo. Perdoar é diferente de normalizar o que foi errado."
+    },
+    {
+      "question": "Existe diferença entre o amor a Deus e o amor ao próximo na Bíblia?",
+      "answer": "Jesus os une num único mandamento duplo em Mateus 22, mas João vai além: diz que quem não ama o irmão que vê não pode amar a Deus que não vê. Na prática, os dois se alimentam. O amor a Deus sem o amor concreto ao próximo vira abstração; o amor ao próximo sem raiz em Deus tende a se esgotar quando o próximo decepciona."
+    },
+    {
+      "question": "O que fazer quando o amor dentro da família parece ter secado?",
+      "answer": "Sentir que o amor secou não significa que ele acabou — pode ser sinal de cansaço, de mágoa acumulada ou de uma fase de seca que toda relação longa atravessa. A Bíblia conhece esse lugar: os Salmos estão cheios de pessoas que não sentiam nada de Deus e continuavam falando com Ele. Às vezes o amor começa pelo gesto pequeno antes do sentimento voltar."
+    }
+  ],
+  "verses": [
+    {
+      "ref": "1 Coríntios 13,4-7",
+      "text": "O amor é paciente, o amor é bondoso. O amor não tem inveja, não se ostenta, não se incha de orgulho. Não age com indecência, não procura o seu próprio interesse, não se irrita, não guarda rancor. Não se alegra com a injustiça, mas se alegra com a verdade. Tudo sofre, tudo crê, tudo espera, tudo suporta."
+    },
+    {
+      "ref": "João 13,34-35",
+      "text": "Dou-vos um mandamento novo: que vos ameis uns aos outros. Como eu vos amei, amai-vos também uns aos outros. Por isso todos conhecerão que sois meus discípulos: se tiverdes amor uns pelos outros."
+    },
+    {
+      "ref": "1 João 4,19",
+      "text": "Nós amamos porque ele nos amou primeiro."
+    },
+    {
+      "ref": "Deuteronômio 6,5",
+      "text": "Amarás o Senhor teu Deus com todo o teu coração, com toda a tua alma e com todas as tuas forças."
+    },
+    {
+      "ref": "Romanos 8,38-39",
+      "text": "Pois estou convicto de que nem a morte nem a vida, nem os anjos nem os principados, nem o presente nem o futuro, nem as potestades, nem a altura nem a profundidade, nem qualquer outra criatura poderá separar-nos do amor de Deus que está em Cristo Jesus, nosso Senhor."
+    },
+    {
+      "ref": "Marcos 12,31",
+      "text": "O segundo mandamento é este: Amarás o teu próximo como a ti mesmo. Não há outro mandamento maior do que estes."
+    },
+    {
+      "ref": "Cântico dos Cânticos 8,7",
+      "text": "As grandes águas não podem apagar o amor, nem os rios o submergirão. Se alguém oferecesse todos os bens de sua casa pelo amor, seria completamente desprezado."
+    },
+    {
+      "ref": "Efésios 4,2",
+      "text": "Com toda a humildade e mansidão, com longanimidade, suportai-vos uns aos outros com amor."
+    },
+    {
+      "ref": "1 João 3,18",
+      "text": "Filhinhos, não amemos de palavra nem de boca, mas por obras e em verdade."
+    },
+    {
+      "ref": "Jeremias 31,3",
+      "text": "Apareço-te de longe: Eu te amei com amor eterno, por isso te conservei a minha benevolência."
+    }
+  ],
+  "category": "biblia-explicada",
+  "relatedIntents": [
+    "forgiveness",
+    "hope",
+    "healing"
+  ],
+  "audioUrl": null,
+  "imageUrl": null,
+  "lang": "pt-BR",
+  "status": "published",
+  "publishedAt": "2026-06-07T03:00:45.615Z"
+}

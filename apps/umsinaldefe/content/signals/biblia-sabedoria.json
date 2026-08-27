@@ -1,0 +1,84 @@
+{
+  "id": "biblia-sabedoria",
+  "slug": "biblia-sabedoria",
+  "kind": "verse_collection",
+  "intent": "faith",
+  "topicSlug": "versiculos-da-biblia",
+  "entitySlugs": [],
+  "title": "Versículos sobre sabedoria para boas decisões",
+  "answer": "A Bíblia ensina que sabedoria começa em reconhecer que você não sabe tudo, e pedir a Deus sem vergonha. Tiago 1,5 garante que Ele dá a quem pede, sem cobrar o preço da humilhação.",
+  "summary": "Quem chega a uma decisão difícil carrega um peso que não some com uma lista de dicas. Os versículos sobre sabedoria na Escritura não prometem clareza instantânea, mas apontam uma direção: confiar mais do que calcular, ouvir mais do que resolver sozinho.",
+  "bodyHtml": "<p>Existe uma diferença entre saber muito e ter sabedoria. Você pode ter pesquisado todas as opções, consultado todo mundo no grupo da família, dormido mal três noites seguidas pensando no assunto, e ainda assim sentir que falta alguma coisa para decidir. Esse vazio não é fraqueza nem falta de inteligência. A tradição bíblica chama isso de reconhecimento: a consciência de que certas decisões pedem mais do que cálculo. Pedem orientação. E orientação, segundo Tiago, é o tipo de coisa que Deus dá sem fazer você se sentir idiota por ter pedido.</p><p>O fio que atravessa esses versículos não é o da competência, mas o da confiança. Provérbios não diz para você parar de pensar, diz para não se apoiar só no seu próprio entendimento. Há uma diferença enorme entre as duas coisas. Você continua responsável pela decisão, continua usando sua cabeça, mas abre mão da ilusão de que precisa enxergar tudo antes de dar o próximo passo. O temor do Senhor, que Provérbios 9,10 chama de começo da sabedoria, não é medo paralisante, é reverência, é reconhecer que existe uma perspectiva maior do que a sua tela de celular às onze da noite.</p><p>Pedir sabedoria a Deus não é uma fórmula mágica que elimina a dificuldade da escolha. É um ato de honestidade: você admite que não dá conta sozinho, e isso, curiosamente, já é o começo de decidir melhor.</p>",
+  "chunks": [],
+  "faq": [
+    {
+      "question": "Pedir sabedoria a Deus funciona mesmo quando a decisão é urgente e não dá tempo de esperar?",
+      "answer": "Funciona, mas não necessariamente do jeito que você espera. Pedir sabedoria não garante uma resposta imediata em voz audível. O que costuma acontecer é um assentamento interior, uma clareza que vem quando você para de girar em círculos e se dispõe a ouvir. Às vezes isso leva minutos, às vezes dias. Quando a urgência é real, ore com brevidade e honestidade, e então decida com o que você tem, confiando que Deus age também no meio das decisões imperfeitas."
+    },
+    {
+      "question": "E se eu pedir sabedoria e mesmo assim errar a decisão?",
+      "answer": "Errar não prova que Deus não respondeu. Sabedoria não é infalibilidade. A Escritura mostra personagens que buscaram a Deus de verdade e ainda assim tomaram caminhos que precisaram ser corrigidos. O que muda quando você busca sabedoria não é a garantia de acertar sempre, mas a disposição de aprender com o que acontece e de não carregar sozinho o peso do erro."
+    },
+    {
+      "question": "Como distinguir a voz de Deus da minha própria vontade na hora de decidir?",
+      "answer": "Essa é uma das perguntas mais honestas da vida espiritual, e não tem resposta simples. Alguns critérios práticos ajudam: o que você sente vai na direção do amor ao próximo ou só do seu conforto? Está de acordo com o que a Escritura ensina? Pessoas de confiança e oração validam essa direção? A sabedoria raramente chega em forma de certeza absoluta, mas de uma paz que não depende de tudo dar certo."
+    },
+    {
+      "question": "Existe diferença entre pedir sabedoria e pedir que Deus decida por mim?",
+      "answer": "Sim, e é uma diferença importante. Pedir que Deus decida por você pode ser, às vezes, um jeito de fugir da responsabilidade. Pedir sabedoria é diferente: você assume a decisão, mas pede discernimento para tomá-la bem. Deus respeita sua liberdade e raramente a atropela. Ele ilumina, não substitui."
+    }
+  ],
+  "verses": [
+    {
+      "ref": "Tiago 1,5",
+      "text": "Se algum de vocês tem falta de sabedoria, peça a Deus, que a todos dá generosamente e sem recriminar, e lhe será concedida."
+    },
+    {
+      "ref": "Provérbios 3,5-6",
+      "text": "Confia no Senhor de todo o teu coração e não te apoies na tua própria inteligência. Reconhece-o em todos os teus caminhos, e ele endireitará as tuas veredas."
+    },
+    {
+      "ref": "Provérbios 9,10",
+      "text": "O temor do Senhor é o princípio da sabedoria, e o conhecimento do Santo é a inteligência."
+    },
+    {
+      "ref": "Provérbios 2,6",
+      "text": "Porque o Senhor é quem dá a sabedoria, da sua boca procedem o conhecimento e a inteligência."
+    },
+    {
+      "ref": "Salmo 25,9",
+      "text": "Ele guia os humildes na justiça, ensina o seu caminho aos que são mansos."
+    },
+    {
+      "ref": "Salmo 111,10",
+      "text": "O temor do Senhor é o início da sabedoria; todos os que o praticam têm bom entendimento. O seu louvor permanece para sempre."
+    },
+    {
+      "ref": "Lucas 21,15",
+      "text": "Pois eu mesmo vos darei uma eloquência e uma sabedoria a que nenhum dos vossos adversários poderá resistir nem contradizer."
+    },
+    {
+      "ref": "1 Coríntios 1,30",
+      "text": "Por ele estais em Cristo Jesus, que se tornou para nós sabedoria da parte de Deus, justiça, santificação e redenção."
+    },
+    {
+      "ref": "Colossenses 3,16",
+      "text": "Que a palavra de Cristo habite em vós com toda a riqueza, em toda a sabedoria. Instruí-vos e exortai-vos mutuamente com salmos, hinos e cânticos espirituais, cantando a Deus com gratidão no coração."
+    },
+    {
+      "ref": "Isaías 30,21",
+      "text": "E os teus ouvidos ouvirão atrás de ti uma voz que dirá: Este é o caminho, andai por ele, quer vos desvieis para a direita, quer para a esquerda."
+    }
+  ],
+  "category": "biblia-explicada",
+  "relatedIntents": [
+    "hope",
+    "anxiety",
+    "morning"
+  ],
+  "audioUrl": null,
+  "imageUrl": null,
+  "lang": "pt-BR",
+  "status": "published",
+  "publishedAt": "2026-06-12T03:00:43.587Z"
+}

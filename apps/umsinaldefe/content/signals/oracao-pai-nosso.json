@@ -1,0 +1,60 @@
+{
+  "id": "oracao-pai-nosso",
+  "slug": "oracao-pai-nosso",
+  "kind": "prayer",
+  "intent": "faith",
+  "topicSlug": "oracoes-essenciais",
+  "entitySlugs": [],
+  "title": "Oração do Pai Nosso: a oração que Jesus ensinou",
+  "answer": "O Pai Nosso é a oração ensinada pelo próprio Jesus em Mateus 6,9-13. Em poucas linhas, ela louva a Deus, pede o pão de cada dia, o perdão das ofensas e a proteção contra o mal.",
+  "summary": "Jesus não deu uma lista de regras para rezar, deu uma oração. O Pai Nosso atravessa dois mil anos porque fala do que toda pessoa carrega: a necessidade de sustento, o peso das ofensas e o medo do que vem por aí. Rezá-la com atenção é diferente de recitá-la no piloto automático.",
+  "bodyHtml": "<p>Você pode rezar o Pai Nosso de manhã cedo, antes de sair de casa, ou à noite, quando o dia pesou mais do que o esperado. Pode rezar sozinho no carro parado no sinal, ou em voz alta com a família antes do jantar. Ela cabe em qualquer hora porque foi feita para a vida real, não para o momento perfeito.</p><p>Pai nosso que estais nos céus,<br>santificado seja o vosso nome;<br>venha a nós o vosso reino;<br>seja feita a vossa vontade,<br>assim na terra como no céu.<br>O pão nosso de cada dia nos dai hoje;<br>perdoai-nos as nossas ofensas,<br>assim como nós perdoamos<br>a quem nos tem ofendido;<br>e não nos deixeis cair em tentação,<br>mas livrai-nos do mal.<br>Amém.</p><p>Quem reza o Pai Nosso com presença, não na pressa, mas parando em cada pedido, sai com algo difícil de nomear: não é euforia, é mais parecido com chão firme sob os pés.</p>",
+  "chunks": [
+    {
+      "id": "origem-da-oracao",
+      "html": "<p><strong>A oração que veio de um pedido real</strong></p><p>Os discípulos de Jesus não chegaram a ele com uma questão teológica. Chegaram com algo muito mais simples: \"Senhor, ensina-nos a rezar\" (Lucas 11,1). Era um pedido de gente que via o mestre rezar e queria entender o que ele fazia quando ficava a sós com o Pai. A resposta de Jesus foi o Pai Nosso, não um tratado, uma oração. Curta, direta, sem enfeite. Mateus registra a versão mais completa em Mateus 6,9-13, dentro do Sermão da Montanha, num contexto em que Jesus acabava de criticar quem reza para aparecer. A oração que ele ensina vai na direção oposta: é íntima, filial, e começa pelo nome de Deus antes de chegar a qualquer pedido pessoal.</p>"
+    },
+    {
+      "id": "pao-e-perdao",
+      "html": "<p><strong>Pão e perdão no mesmo fôlego</strong></p><p>Tem uma coisa estranha no meio do Pai Nosso que a gente costuma passar rápido: Jesus coloca o pão do dia e o perdão das ofensas lado a lado, como se fossem da mesma ordem de necessidade. O pão é concreto, é a conta que vence, o almoço que precisa aparecer. O perdão também é concreto, só que dói de outro jeito: é aquela pessoa do grupo da família no WhatsApp que você não consegue nem ver o nome sem apertar o peito. Jesus não separa as duas coisas. Pedir o pão sem pedir o perdão seria rezar só metade da vida. E a condição que ele coloca é séria: \"assim como nós perdoamos a quem nos tem ofendido\". Não é ameaça. É uma descrição de como o coração funciona, fechado para o outro, ele também não recebe bem.</p>"
+    },
+    {
+      "id": "nao-nos-deixeis",
+      "html": "<p><strong>O pedido que a gente entende quando está no limite</strong></p><p>\"Não nos deixeis cair em tentação, mas livrai-nos do mal.\" Essa última parte do Pai Nosso costuma soar abstrata até o dia em que não soa mais. Quando a pessoa está exausta e o caminho mais fácil é o errado, quando a raiva está grande demais e a boca quer dizer o que não devia, quando o desânimo convence que não vale a pena continuar tentando, aí esse pedido ganha peso. Não é pedir para não ser testado. É pedir para não ser abandonado dentro do teste. A diferença é enorme. Jesus mesmo foi tentado no deserto (Mateus 4,1-11) e não foi poupado da provação. Mas não ficou sozinho nela.</p>"
+    },
+    {
+      "id": "rezar-com-presenca",
+      "html": "<p><strong>Rezar no piloto automático e o que fazer com isso</strong></p><p>Quase todo mundo que cresceu católico já recitou o Pai Nosso sem pensar em nenhuma palavra. É honesto admitir isso. A boca vai, a cabeça está na louça que ainda está na pia ou no e-mail que não respondeu. Isso não é falta de fé, é falta de pausa. Uma prática simples que padres mais velhos costumam sugerir: rezar o Pai Nosso uma vez, devagar, parando em cada linha como se fosse a primeira vez que você lê aquilo. Não precisa entender tudo. Precisa estar presente. \"Pai nosso\" já é o suficiente para começar, reconhecer que existe um Pai e que você não está sozinho nessa herança.</p>"
+    }
+  ],
+  "faq": [
+    {
+      "question": "Qual é o texto oficial do Pai Nosso na missa católica no Brasil?",
+      "answer": "O texto usado na liturgia católica brasileira é: \"Pai nosso que estais nos céus, santificado seja o vosso nome; venha a nós o vosso reino; seja feita a vossa vontade, assim na terra como no céu. O pão nosso de cada dia nos dai hoje; perdoai-nos as nossas ofensas, assim como nós perdoamos a quem nos tem ofendido; e não nos deixeis cair em tentação, mas livrai-nos do mal. Amém.\" Essa versão segue a tradição litúrgica aprovada pela CNBB."
+    },
+    {
+      "question": "Por que o Pai Nosso católico termina diferente do protestante?",
+      "answer": "A versão protestante costuma acrescentar ao final: \"porque vosso é o reino, o poder e a glória para sempre\". Esse acréscimo vem de um manuscrito grego tardio e foi incorporado às tradições reformadas. A liturgia católica preserva o texto de Mateus 6,9-13 sem essa doxologia final, embora ela exista em algumas orações católicas fora da missa."
+    },
+    {
+      "question": "Quantas vezes por dia devo rezar o Pai Nosso?",
+      "answer": "Não existe obrigação de número. A tradição católica inclui o Pai Nosso na missa, no terço (uma vez por mistério) e nas Liturgia das Horas. Mas rezá-lo uma vez ao dia, com atenção, vale mais do que dez vezes no automático. O que importa é a presença, não a contagem."
+    },
+    {
+      "question": "O Pai Nosso serve para rezar em momentos de angústia ou só na missa?",
+      "answer": "Serve em qualquer momento. Justamente porque não pede circunstâncias ideais, o Pai Nosso funciona no meio do trânsito, numa sala de espera de hospital, antes de uma conversa difícil. É uma oração feita para a vida cotidiana, não para o altar."
+    }
+  ],
+  "verses": [],
+  "category": null,
+  "relatedIntents": [
+    "hope",
+    "morning",
+    "forgiveness"
+  ],
+  "audioUrl": null,
+  "imageUrl": null,
+  "lang": "pt-BR",
+  "status": "published",
+  "publishedAt": "2026-06-18T03:02:32.015Z"
+}

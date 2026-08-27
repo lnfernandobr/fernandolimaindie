@@ -1,0 +1,60 @@
+{
+  "id": "devocional-descansar-a-sombra",
+  "slug": "devocional-descansar-a-sombra",
+  "kind": "devotional",
+  "intent": "protection",
+  "topicSlug": "salmos-de-protecao",
+  "entitySlugs": [],
+  "title": "Descansar à sombra: devocional do Salmo 91",
+  "answer": "Quando tudo pesa, o Salmo 91 oferece uma imagem simples: Deus como sombra — não um escudo de batalha, mas um lugar onde você pode parar de lutar por um momento e simplesmente respirar.",
+  "summary": "O Salmo 91 não promete que o sol vai sumir. Promete que existe sombra. Este devocional é curto porque o cansaço já é longo — ele serve para manhã ou para a hora em que você deita e ainda não consegue soltar o dia.",
+  "bodyHtml": "<p><strong>\"Aquele que habita no abrigo do Altíssimo e descansa à sombra do Todo-Poderoso diz ao Senhor: meu refúgio e minha fortaleza, meu Deus, nele confio.\"</strong></p><p>Salmo 91, 1-2 — Bíblia de Aparecida</p><p>Tem uma cena que muita gente do interior conhece: meio de agosto, sol de rachar, e o trabalhador que para embaixo de uma árvore. Ele não derrotou o calor. Ele só encontrou onde ficar enquanto o calor passa. Essa é a imagem que o Salmo 91 usa para falar de Deus. Não um general que elimina o inimigo antes de você chegar. Uma sombra. Um lugar onde você para.</p><p>O dia pode ter sido pesado de um jeito que não dá nem para explicar direito. Não foi uma tragédia, foi o acúmulo: a mensagem sem resposta, a conta que venceu, a sensação de que você está sustentando coisas demais com força de menos. Esse cansaço não tem nome bonito, mas é real. E o Salmo não pede que você chegue inteiro. Ele começa com quem <em>habita</em> no abrigo, não com quem conquistou o abrigo. Habitar é diferente de visitar. É chegar do jeito que está.</p><p>A palavra hebraica usada aqui para sombra é <em>tzel</em>, e ela aparece em outros lugares da Bíblia para descrever proteção íntima, próxima, quase corporal. Como a sombra de uma asa, que pressupõe que alguém está perto o suficiente para cobrir. Não é proteção à distância. É proteção de quem se inclina sobre você. Quando o medo aperta ou a ansiedade não deixa dormir, essa imagem pode ser mais útil do que qualquer argumento: existe um lugar que é sombra, e você pode ir até lá agora.</p><p>Carregue esta frase hoje, só esta: <strong>\"Posso parar aqui por um momento.\"</strong> Não é rendição. É saber onde fica a sombra.</p>",
+  "chunks": [
+    {
+      "id": "versiculo-base",
+      "html": "<p><strong>\"Aquele que habita no abrigo do Altíssimo e descansa à sombra do Todo-Poderoso diz ao Senhor: meu refúgio e minha fortaleza, meu Deus, nele confio.\"</strong></p><p>Salmo 91, 1-2 — Bíblia de Aparecida</p>"
+    },
+    {
+      "id": "sombra-real",
+      "html": "<p><strong>A sombra não some com o sol</strong></p><p>O Salmo 91 não promete que o dia vai ficar mais fácil. Promete que existe um lugar onde você para enquanto o dia passa. Como o trabalhador debaixo da árvore em agosto: ele não derrotou o calor, só encontrou onde ficar. Às vezes a fé funciona exatamente assim.</p>"
+    },
+    {
+      "id": "pratica-um-minuto",
+      "html": "<p><strong>Um minuto antes de começar ou antes de dormir</strong></p><p>Sente. Respira fundo uma vez. Repita em voz baixa, ou só dentro de você: <em>\"Meu refúgio, meu Deus, nele confio.\"</em> Não precisa sentir nada especial. Não precisa estar bem. Fique trinta segundos assim, sem fazer mais nada. Isso já é oração.</p>"
+    },
+    {
+      "id": "habitar-nao-visitar",
+      "html": "<p><strong>Habitar é diferente de visitar</strong></p><p>O Salmo diz que quem <em>habita</em> no abrigo descansa. Habitar é chegar do jeito que está, com o cansaço que tem, sem precisar se arrumar antes. A sombra de Deus não exige que você esteja inteiro para entrar.</p>"
+    }
+  ],
+  "faq": [
+    {
+      "question": "Posso usar este devocional tanto de manhã quanto antes de dormir?",
+      "answer": "Sim. De manhã, ele ajuda a começar o dia com uma âncora antes do peso chegar. À noite, ajuda a soltar o que ficou acumulado. A prática do chunk de um minuto funciona nos dois momentos sem precisar de adaptação."
+    },
+    {
+      "question": "E se eu rezar o Salmo 91 e ainda sentir medo ou ansiedade?",
+      "answer": "Isso não significa que a oração falhou. O Salmo não é um anestésico. Ele oferece companhia dentro do medo, não a ausência do medo. Sentir o versículo sem sentir alívio imediato ainda é oração válida."
+    },
+    {
+      "question": "Preciso rezar o Salmo 91 inteiro para funcionar?",
+      "answer": "Não. Um versículo carregado com atenção vale mais do que quarenta lidos com pressa. Se os dois primeiros versículos já dizem algo para onde você está agora, fique neles."
+    },
+    {
+      "question": "Como transformar esse devocional em hábito sem virar obrigação?",
+      "answer": "Amarre a prática a algo que você já faz: o primeiro gole de café, o momento em que apaga a luz. Não crie uma liturgia nova do zero. Encaixe em um gesto que já existe no seu dia."
+    }
+  ],
+  "verses": [],
+  "category": null,
+  "relatedIntents": [
+    "anxiety",
+    "sleep",
+    "fear"
+  ],
+  "audioUrl": null,
+  "imageUrl": null,
+  "lang": "pt-BR",
+  "status": "published",
+  "publishedAt": "2026-06-06T03:02:38.036Z"
+}

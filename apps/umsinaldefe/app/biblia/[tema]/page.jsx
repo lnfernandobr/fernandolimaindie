@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getSignal } from '@/lib/content/api.js';
+import { getSignal, listSignals } from '@/lib/content/api.js';
 import { INTENT_SLUGS, INTENT_LABELS } from '@/lib/content/intents.js';
 import { buildMetadata } from '@/lib/seo/metadata.js';
 import {
@@ -16,7 +16,10 @@ import { SemanticFAQ } from '@/components/SemanticFAQ.jsx';
 import { ShareButton } from '@/components/ShareButton.jsx';
 import { IntentNav } from '@/components/IntentNav.jsx';
 
-export const dynamic = 'force-dynamic';
+export async function generateStaticParams() {
+  const { items } = await listSignals({ kind: 'verse_collection', limit: 1000 });
+  return items.map((s) => ({ tema: s.slug.replace(/^biblia-/, '') }));
+}
 
 const temaLabel = (tema) => (tema ?? '').replace(/-/g, ' ');
 

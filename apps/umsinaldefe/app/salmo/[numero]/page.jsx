@@ -24,7 +24,10 @@ import { IntentNav } from '@/components/IntentNav.jsx';
 import { FavoriteButton } from '@/components/FavoriteButton.jsx';
 import { ShareButton } from '@/components/ShareButton.jsx';
 
-export const dynamic = 'force-dynamic';
+export async function generateStaticParams() {
+  const { items } = await listSignals({ kind: 'psalm', limit: 1000 });
+  return items.map((s) => ({ numero: s.slug.replace(/^salmo-/, '') }));
+}
 
 export async function generateMetadata({ params }) {
   const { numero } = await params;

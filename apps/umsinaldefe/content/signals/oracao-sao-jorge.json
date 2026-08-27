@@ -1,0 +1,60 @@
+{
+  "id": "oracao-sao-jorge",
+  "slug": "oracao-sao-jorge",
+  "kind": "prayer",
+  "intent": "faith",
+  "topicSlug": "oracoes-essenciais",
+  "entitySlugs": [],
+  "title": "Oração de São Jorge: a oração forte do guerreiro de Deus",
+  "answer": "A oração de São Jorge é rezada por proteção diante de ameaças, medos e batalhas da vida — invocando o santo guerreiro que venceu o mal com fé e coragem, celebrado em 23 de abril.",
+  "summary": "São Jorge é um dos santos mais invocados por proteção no Brasil, especialmente em momentos de perigo, injustiça ou medo. Rezar essa oração não é buscar magia — é colocar sua vida sob a guarda de alguém que já passou pelo fogo e não recuou. Quem chega até ela geralmente carrega um peso real, e essa oração acolhe esse peso com seriedade.",
+  "bodyHtml": "<p>Essa oração é rezada quando a vida aperta de verdade — quando há uma ameaça concreta, um inimigo visível ou invisível, um medo que não passa nem com o dia claro. São Jorge não é invocado por devoção superficial; é invocado por quem precisa de um guerreiro ao lado.</p><p><strong>Oração de São Jorge</strong></p><p>São Jorge, guerreiro de Deus, vós que fostes escolhido entre os anjos e os homens para ser o defensor da fé e o protetor dos que em vós confiam, eu vos peço que intercedais por mim junto a Nosso Senhor Jesus Cristo.<br>Que a vossa lança poderosa afaste de mim todos os males, os perigos visíveis e invisíveis, os inimigos da alma e do corpo.<br>São Jorge, que domais o dragão com a força de Deus, dominai também os meus medos, as minhas fraquezas e tudo que me impede de seguir o caminho do bem.<br>Protegei a minha família, a minha casa e todos que estão sob minha guarda.<br>Intercedei por mim junto ao Pai, ao Filho e ao Espírito Santo, para que eu tenha coragem de viver com honra, de defender a verdade e de nunca trair a minha fé.<br>São Jorge, rogai por mim.<br>Amém.</p><p>Rezar essa oração não garante que a vida ficará fácil — garante que você não enfrenta o que vem sozinho. Isso, por si só, já muda alguma coisa por dentro.</p>",
+  "chunks": [
+    {
+      "id": "quem-foi-sao-jorge",
+      "html": "<p><strong>Quem foi São Jorge</strong></p><p>São Jorge foi um soldado romano de origem capadócia, martirizado por volta do ano 303 d.C. por recusar-se a renegar a fé cristã sob o imperador Diocleciano. A tradição o apresenta como o cavaleiro que venceu o dragão — imagem que a Igreja usa para falar da vitória da fé sobre o mal. É invocado como protetor dos soldados, dos perseguidos, dos que enfrentam injustiça e de todos que precisam de coragem em situações de perigo real. Sua festa é celebrada em 23 de abril.</p>"
+    },
+    {
+      "id": "texto-da-oracao",
+      "html": "<p><strong>O texto da oração</strong></p><p>São Jorge, guerreiro de Deus, vós que fostes escolhido entre os anjos e os homens para ser o defensor da fé e o protetor dos que em vós confiam, eu vos peço que intercedais por mim junto a Nosso Senhor Jesus Cristo. Que a vossa lança poderosa afaste de mim todos os males, os perigos visíveis e invisíveis, os inimigos da alma e do corpo. São Jorge, que domais o dragão com a força de Deus, dominai também os meus medos, as minhas fraquezas e tudo que me impede de seguir o caminho do bem. Protegei a minha família, a minha casa e todos que estão sob minha guarda. Intercedei por mim junto ao Pai, ao Filho e ao Espírito Santo, para que eu tenha coragem de viver com honra, de defender a verdade e de nunca trair a minha fé. São Jorge, rogai por mim. Amém.</p>"
+    },
+    {
+      "id": "quando-rezar",
+      "html": "<p><strong>Quando rezar essa oração</strong></p><p>Reze quando sentir que há uma ameaça real — um conflito que não se resolve, um medo que não passa, uma situação de injustiça que pesa. Pode ser de manhã, antes de enfrentar um dia difícil, ou à noite, quando o silêncio traz de volta tudo que você tentou afastar durante o dia. Não precisa de ritual especial: basta parar, respirar e falar com São Jorge como quem pede ajuda a alguém de confiança.</p>"
+    },
+    {
+      "id": "fe-e-coragem",
+      "html": "<p><strong>Fé não é ausência de medo</strong></p><p>São Paulo escreveu em Efésios 6,13: <em>\"Tomai a armadura de Deus, para que possais resistir no dia mau e, depois de terdes combatido tudo, permanecer de pé.\"</em> São Jorge não é invocado porque a vida vai ficar sem perigo — é invocado porque a fé precisa de um rosto concreto quando o medo é concreto. O santo guerreiro lembra que resistir também é um ato de fé.</p>"
+    }
+  ],
+  "faq": [
+    {
+      "question": "Essa oração de São Jorge é reconhecida pela Igreja Católica?",
+      "answer": "Sim. São Jorge é santo canonizado pela Igreja Católica, com festa em 23 de abril. A devoção a ele é legítima e antiga. Orações de intercessão aos santos fazem parte da tradição católica desde os primeiros séculos."
+    },
+    {
+      "question": "Posso rezar essa oração todo dia ou só em momentos de perigo?",
+      "answer": "Pode rezar todo dia. Muitos fiéis a rezam de manhã como proteção para o dia. Não há restrição de horário ou frequência — o que importa é a disposição interior de quem reza."
+    },
+    {
+      "question": "Qual a diferença entre rezar para São Jorge e rezar a Deus diretamente?",
+      "answer": "Quando você pede a São Jorge, está pedindo a intercessão dele — como pedir a um amigo que ore por você. A oração vai a Deus; São Jorge é o intercessor. A Igreja Católica distingue claramente adoração, que é só de Deus, de veneração e intercessão dos santos."
+    },
+    {
+      "question": "Existe uma novena de São Jorge para situações mais graves?",
+      "answer": "Sim, existe a novena de São Jorge, rezada por nove dias consecutivos, geralmente em situações de conflito prolongado, proteção da família ou enfrentamento de injustiças. Cada dia repete a oração com intenção específica. A prática é antiga e reconhecida na devoção popular católica."
+    }
+  ],
+  "verses": [],
+  "category": null,
+  "relatedIntents": [
+    "protection",
+    "fear",
+    "hope"
+  ],
+  "audioUrl": null,
+  "imageUrl": null,
+  "lang": "pt-BR",
+  "status": "published",
+  "publishedAt": "2026-06-04T03:00:39.545Z"
+}

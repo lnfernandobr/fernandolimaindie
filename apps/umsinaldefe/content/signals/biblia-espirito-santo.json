@@ -1,0 +1,84 @@
+{
+  "id": "biblia-espirito-santo",
+  "slug": "biblia-espirito-santo",
+  "kind": "verse_collection",
+  "intent": "faith",
+  "topicSlug": "versiculos-da-biblia",
+  "entitySlugs": [],
+  "title": "Versículos sobre o Espírito Santo: o Consolador que habita em você",
+  "answer": "O Espírito Santo é o Consolador enviado por Jesus para habitar em você, guiar seus passos, fortalecer sua fé quando ela vacila e produzir em você frutos que nenhum esforço próprio consegue gerar sozinho.",
+  "summary": "Não é uma força distante nem uma experiência reservada a poucos. O Espírito Santo age no ordinário: no silêncio depois do choro, na palavra certa que aparece na hora errada, na calma que não tem explicação racional. Esses versículos mostram quem Ele é e o que Ele faz em quem se abre para recebê-Lo.",
+  "bodyHtml": "<p>Há um fio que atravessa todos esses textos e que muita gente não percebe à primeira leitura: o Espírito Santo não é prometido como recompensa para quem já está bem. Ele é enviado exatamente para o momento em que o discípulo está desorientado, com medo, sem saber o que dizer nem para onde ir. João 14 foi escrito na véspera da Paixão, quando os apóstolos estavam prestes a ver tudo desmoronar. É nesse contexto de quase desespero que Jesus faz a promessa do Consolador. Não como prêmio, mas como socorro.</p><p>Quando Paulo lista os frutos do Espírito em Gálatas 5, ele está escrevendo para uma comunidade em conflito interno, dividida por rivalidades e doutrinas disputadas. O amor, a paciência, a mansidão que ele descreve não são virtudes que se conquistam por disciplina pessoal. São sinais de que algo maior do que a força humana está operando por dentro. A diferença é sutil, mas decisiva: você não produz esses frutos, você os recebe à medida que se deixa habitar. É como uma árvore que não fabrica a seiva, apenas a conduz.</p><p>E Atos 1,8 fecha esse arco com uma imagem que surpreende: o Espírito não é dado para experiências privadas de consolação, mas para que o testemunho alcance lugares que os discípulos jamais imaginariam chegar. O que começa em Jerusalém, numa sala fechada por medo, termina nos confins da terra. O mesmo Espírito que aquieta a angústia interior é o que move para fora, para o outro, para o mundo. Não são dois movimentos separados. É um só, com direções diferentes.</p>",
+  "chunks": [],
+  "faq": [
+    {
+      "question": "O Espírito Santo ainda age hoje da mesma forma que no tempo dos apóstolos?",
+      "answer": "Sim, segundo a fé católica. A forma pode ser diferente, mas a presença é a mesma. Ele age nos sacramentos, na oração, na consciência, na comunidade da Igreja e nos momentos em que você sente uma força ou uma clareza que não veio de você mesmo. Não é necessário um fenômeno extraordinário para que o Espírito esteja presente."
+    },
+    {
+      "question": "Como saber se o que estou sentindo é o Espírito Santo ou só emoção minha?",
+      "answer": "É uma pergunta honesta e não tem resposta simplista. Um critério clássico da tradição católica é o discernimento pelos frutos: o que esse movimento interior produz ao longo do tempo? Paz duradoura, abertura ao outro, humildade, caridade concreta? Ou agitação, isolamento, orgulho? O Espírito Santo raramente grita. Ele costuma chegar como brisa."
+    },
+    {
+      "question": "Existe diferença entre rezar ao Espírito Santo e rezar ao Pai ou a Jesus?",
+      "answer": "Na fé católica, as três Pessoas da Trindade são um só Deus. Rezar ao Espírito Santo é rezar a Deus. A diferença está no acento: ao invocar o Espírito, você está pedindo especificamente por iluminação, força interior, discernimento e consolação. A oração Veni Sancte Spiritus é um bom ponto de partida para quem quer começar."
+    },
+    {
+      "question": "Por que sinto o Espírito Santo mais em alguns momentos do que em outros?",
+      "answer": "Porque a percepção espiritual depende também do nosso estado interior. Barulho, pressa e ansiedade não apagam o Espírito, mas dificultam ouvi-Lo. Não é que Ele se afaste. É que você fica menos disponível para percebê-Lo. Momentos de silêncio, mesmo que curtos, tendem a abrir esse canal."
+    }
+  ],
+  "verses": [
+    {
+      "ref": "João 14,26",
+      "text": "O Consolador, o Espírito Santo, que o Pai enviará em meu nome, ele vos ensinará tudo e vos recordará tudo o que vos disse."
+    },
+    {
+      "ref": "Gálatas 5,22",
+      "text": "O fruto do Espírito, porém, é: amor, alegria, paz, paciência, afabilidade, bondade, fidelidade, mansidão, domínio de si mesmo."
+    },
+    {
+      "ref": "Atos 1,8",
+      "text": "Mas recebereis a força do Espírito Santo, que descerá sobre vós, e sereis minhas testemunhas em Jerusalém, em toda a Judeia e Samaria, e até os confins da terra."
+    },
+    {
+      "ref": "Romanos 8,26",
+      "text": "Da mesma forma, o Espírito também vem em socorro da nossa fraqueza. Pois não sabemos pedir como convém, mas o próprio Espírito intercede por nós com gemidos inefáveis."
+    },
+    {
+      "ref": "João 16,13",
+      "text": "Quando vier o Espírito da verdade, ele vos guiará em toda a verdade, pois não falará de si mesmo, mas dirá tudo o que ouvir e vos anunciará as coisas que hão de vir."
+    },
+    {
+      "ref": "1 Coríntios 12,3",
+      "text": "Por isso, vos declaro que ninguém que fala pelo Espírito de Deus diz: 'Jesus é anátema!' E ninguém pode dizer 'Jesus é Senhor!' a não ser pelo Espírito Santo."
+    },
+    {
+      "ref": "Ezequiel 36,27",
+      "text": "Porei o meu Espírito dentro de vós e farei com que caminheis segundo os meus estatutos, que observeis e pratiqueis os meus decretos."
+    },
+    {
+      "ref": "Atos 2,4",
+      "text": "Todos ficaram cheios do Espírito Santo e começaram a falar em outras línguas, conforme o Espírito lhes concedia que se exprimissem."
+    },
+    {
+      "ref": "Romanos 8,14",
+      "text": "Pois todos os que são guiados pelo Espírito de Deus são filhos de Deus."
+    },
+    {
+      "ref": "Sabedoria 1,7",
+      "text": "O Espírito do Senhor enche o universo, e ele, que tudo mantém unido, conhece cada palavra pronunciada."
+    }
+  ],
+  "category": "biblia-explicada",
+  "relatedIntents": [
+    "hope",
+    "healing",
+    "morning"
+  ],
+  "audioUrl": null,
+  "imageUrl": null,
+  "lang": "pt-BR",
+  "status": "published",
+  "publishedAt": "2026-06-16T03:00:45.276Z"
+}

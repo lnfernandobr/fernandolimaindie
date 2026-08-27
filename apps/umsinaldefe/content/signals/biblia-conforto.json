@@ -1,0 +1,79 @@
+{
+  "id": "biblia-conforto",
+  "slug": "biblia-conforto",
+  "kind": "verse_collection",
+  "intent": "grief",
+  "topicSlug": "versiculos-da-biblia",
+  "entitySlugs": [],
+  "title": "Versículos de conforto pra dias de dor e tristeza",
+  "answer": "A Bíblia mostra um Deus que não fica de longe quando você está partido: Ele se aproxima, carrega junto e não abandona quem chora.",
+  "summary": "Esses versículos não prometem que a dor vai sumir rápido. Prometem companhia no meio dela. O Deus que o Salmo 34 chama de 'perto dos que têm o coração quebrantado' é o mesmo que, no Evangelho, chorou diante do túmulo de Lázaro antes de qualquer milagre.",
+  "bodyHtml": "<p>Existe um fio que atravessa todos esses textos e que não é óbvio à primeira leitura: Deus não consola de longe. Ele não manda uma mensagem de apoio e fica esperando você melhorar. O movimento que a Escritura descreve é sempre de aproximação. Paulo escreve aos Coríntios que Deus é o Pai das misericórdias e o Deus de todo o consolo, mas logo em seguida diz que esse consolo tem uma finalidade concreta: que quem foi consolado possa consolar outros na mesma aflição. Não é teologia abstrata. É a lógica de quem passou pela dor e por isso sabe onde ela dói.</p><p>O que mais surpreende nesses versículos é a honestidade. O Salmo não diz que o justo não vai sofrer. Diz que o Senhor está perto do coração quebrantado. A diferença é enorme. Um Deus que impede toda dor seria um Deus que nos trataria como crianças que não podem tocar em nada quente. O Deus da Bíblia é outro: é aquele que desce até onde você está, senta no chão com você, e não vai embora antes de você. Isaías usa a imagem de uma mãe que não esquece o filho que amamentou. É uma das comparações mais físicas e viscerais do Antigo Testamento, e não é por acaso. Deus escolhe essa imagem justamente quando o povo sente que foi esquecido.</p><p>Se você está lendo isso com o coração pesado, com aquela dor que não cabe em palavras e que ninguém ao redor parece entender completamente, esses versículos não são um roteiro de recuperação. São uma presença. A fé cristã não resolve o luto com uma lista de passos. Ela oferece um Deus que já esteve na beira de um túmulo, que já sentiu o peso da perda humana, e que mesmo assim saiu do outro lado. Isso não tira a sua dor agora. Mas significa que ela não é a última palavra.</p>",
+  "chunks": [],
+  "faq": [
+    {
+      "question": "Tem algum versículo específico pra quem perdeu alguém que amava?",
+      "answer": "O Salmo 34,19 é um dos mais diretos: 'O Senhor está perto dos que têm o coração quebrantado.' Não promete ausência de dor, mas presença de Deus no meio dela. Para o luto por uma pessoa amada, Apocalipse 21,4 também traz consolo real: a promessa de que um dia Deus enxugará toda lágrima."
+    },
+    {
+      "question": "Como usar esses versículos sem parecer que estou forçando consolo que não sinto?",
+      "answer": "Não force. Você pode ler um versículo como quem lê uma carta de alguém que se importa, sem precisar sentir alívio imediato. A fé não exige que você finja estar bem. Rezar 'Senhor, não estou sentindo nada disso agora, mas preciso que seja verdade' já é oração honesta e suficiente."
+    },
+    {
+      "question": "Posso rezar esses versículos por alguém que está sofrendo, mesmo que eu não saiba o que dizer?",
+      "answer": "Sim, e muitas vezes é o melhor que se pode fazer. Sentar ao lado de alguém em silêncio e rezar interiormente um desses textos é mais honesto do que encher o ar com palavras de consolo que a pessoa já ouviu e que não chegam onde dói."
+    },
+    {
+      "question": "E se eu estiver com raiva de Deus por causa da dor que estou sentindo?",
+      "answer": "Os Salmos inteiros são escritos assim, com raiva, com acusação, com 'por que me abandonaste?' Jesus citou um desses Salmos na cruz. Sua raiva não afasta Deus. Ela é, ela mesma, uma forma de relação. Fale com Ele exatamente do jeito que você está."
+    }
+  ],
+  "verses": [
+    {
+      "ref": "Salmo 34,19",
+      "text": "O Senhor está perto dos que têm o coração quebrantado e salva os de espírito abatido."
+    },
+    {
+      "ref": "Isaías 49,15-16",
+      "text": "Pode uma mãe esquecer-se de seu filho de peito, deixar de ter compaixão do filho de suas entranhas? Mesmo que ela se esquecesse, eu não me esqueceria de você. Eis que eu te gravei nas palmas das minhas mãos."
+    },
+    {
+      "ref": "Mateus 5,4",
+      "text": "Felizes os que choram, porque serão consolados."
+    },
+    {
+      "ref": "João 11,35",
+      "text": "Jesus chorou."
+    },
+    {
+      "ref": "2 Coríntios 1,3-4",
+      "text": "Bendito seja o Deus e Pai de nosso Senhor Jesus Cristo, o Pai das misericórdias e o Deus de todo consolo, que nos consola em toda a nossa tribulação, para que possamos consolar os que estão em qualquer tribulação, com o consolo com que nós mesmos somos consolados por Deus."
+    },
+    {
+      "ref": "Salmo 23,4",
+      "text": "Mesmo que eu atravesse o vale da sombra da morte, não temerei mal algum, porque tu estás comigo; o teu bastão e o teu cajado me consolam."
+    },
+    {
+      "ref": "Romanos 8,38-39",
+      "text": "Pois estou convicto de que nem a morte, nem a vida, nem os anjos, nem os principados, nem o presente, nem o futuro, nem as potestades, nem a altura, nem a profundidade, nem qualquer outra criatura poderá nos separar do amor de Deus em Cristo Jesus, nosso Senhor."
+    },
+    {
+      "ref": "Apocalipse 21,4",
+      "text": "Ele enxugará toda lágrima dos seus olhos. Não haverá mais morte, nem luto, nem choro, nem dor, porque o primeiro mundo passou."
+    },
+    {
+      "ref": "Lamentações 3,22-23",
+      "text": "As misericórdias do Senhor não têm fim, as suas compaixões não se esgotam. Renovam-se cada manhã. Grande é a tua fidelidade!"
+    }
+  ],
+  "category": "biblia-explicada",
+  "relatedIntents": [
+    "hope",
+    "healing"
+  ],
+  "audioUrl": null,
+  "imageUrl": null,
+  "lang": "pt-BR",
+  "status": "published",
+  "publishedAt": "2026-06-08T03:00:44.904Z"
+}

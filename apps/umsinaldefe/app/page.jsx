@@ -25,11 +25,6 @@ const FAQ = [
     answer: 'Não. O Um Sinal de Fé é gratuito. O site é mantido por anúncios discretos.',
   },
   {
-    question: 'Tem áudio das orações?',
-    answer:
-      'Sim. As orações e devocionais têm versão em áudio pra você ouvir enquanto se prepara, dirige ou descansa.',
-  },
-  {
     question: 'É de alguma igreja específica?',
     answer:
       'Não. O Um Sinal de Fé é interconfessional cristão, com conteúdo respeitoso à tradição católica e cristã em geral, em linguagem brasileira simples.',
@@ -37,6 +32,8 @@ const FAQ = [
 ];
 
 const pageGraph = ldGraph(faqLd(FAQ), speakableLd(['#devocional', '#intencoes']));
+
+export const revalidate = 86400;
 
 export default async function HomePage() {
   // Tudo vem da API. Só renderiza o que existe (nada de conteúdo estático ou link morto).

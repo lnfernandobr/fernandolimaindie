@@ -1,0 +1,60 @@
+{
+  "id": "oracao-para-dormir",
+  "slug": "oracao-para-dormir",
+  "kind": "prayer",
+  "intent": "faith",
+  "topicSlug": "oracoes-essenciais",
+  "entitySlugs": [],
+  "title": "Oração para dormir: descanse em paz nas mãos de Deus",
+  "answer": "A oração para dormir é rezada no momento em que você se deita, entregando o dia — com tudo que pesou e tudo que alegrou — nas mãos de Deus, para que o sono venha como descanso verdadeiro e não como fuga.",
+  "summary": "Deitar-se sem rezar é como fechar uma conversa no meio. A oração noturna não exige palavras bonitas: exige honestidade sobre o dia que passou e confiança de que Deus vela enquanto você dorme. Quem reza antes de dormir não dorme menos preocupado por esforço próprio, mas porque colocou o peso em quem pode carregá-lo.",
+  "bodyHtml": "<p>Tem gente que chega à cama exausta, com o pensamento ainda rodando nos problemas do dia, e não sabe bem como parar. A oração para dormir existe exatamente para esse momento: não para resolver o que ficou pendente, mas para soltar o que você não consegue resolver sozinho e confiar que a noite está nas mãos de Deus.</p><p>Senhor, a noite chegou e eu me deito diante de você com o dia que vivi — o que foi bom e o que deixou a desejar. Obrigado por cada hora em que esteve ao meu lado, mesmo quando eu não percebi. Perdoa os momentos em que errei, em que fui impaciente, em que deixei de amar como devia. Carrega no seu colo as preocupações que ainda pesam no meu peito, porque eu não consigo resolvê-las agora e sei que você pode guardá-las por mim. Cobre com a sua paz este lugar onde eu durmo. Guarda quem eu amo. Renova minhas forças para o dia que vai chegar. Nas suas mãos entrego o meu espírito. Amém.</p><p>Quem reza assim antes de dormir não acorda necessariamente sem problemas, mas acorda tendo descansado de verdade — porque passou a noite em companhia, não sozinho.</p>",
+  "chunks": [
+    {
+      "id": "entrega-noturna",
+      "html": "<p><strong>Por que rezar antes de dormir faz diferença</strong></p><p>O dia deixa resíduos: uma palavra que machucou, uma conta que não fecha, uma saudade que não passa. Rezar antes de dormir não apaga esses resíduos, mas os coloca no lugar certo. O Salmo 31 diz: <em>Nas suas mãos entrego o meu espírito</em> (Salmo 31,6). Essa frase, rezada em voz baixa ou só no coração, é o gesto mais simples de fé que existe: reconhecer que você não precisa carregar tudo enquanto dorme.</p>"
+    },
+    {
+      "id": "gesto-concreto",
+      "html": "<p><strong>Um gesto para ajudar o corpo a entrar na oração</strong></p><p>Antes de rezar, faça o sinal da cruz devagar — não por hábito mecânico, mas como quem marca o corpo com o nome de Deus. Depois coloque a mão espalmada no peito por um instante. Respire fundo uma vez. Esse gesto físico ajuda o pensamento agitado a perceber que chegou a hora de parar. O melhor momento é logo depois de deitar, antes de pegar o celular ou deixar a mente vagar. Dois minutos são suficientes.</p>"
+    },
+    {
+      "id": "quando-a-noite-pesa",
+      "html": "<p><strong>Quando a noite é difícil e as palavras não saem</strong></p><p>Tem noites em que você não consegue rezar direito. A dor é grande, o cansaço é fundo, a fé parece distante. Nesses momentos, não force palavras elaboradas. São Pedro escreveu: <em>Lançai sobre ele todas as vossas preocupações, porque ele tem cuidado de vós</em> (1 Pedro 5,7). Basta dizer isso com a sua voz: <em>Senhor, estou com este peso. Cuida de mim.</em> Isso já é oração. Isso já é fé.</p>"
+    },
+    {
+      "id": "noite-e-confianca",
+      "html": "<p><strong>O sono como ato de confiança</strong></p><p>Dormir exige que você solte o controle. Não dá para vigiar tudo enquanto dorme, e isso pode assustar quem carrega muita responsabilidade. Mas o Salmo 127 lembra com simplicidade: <em>Em vão vocês se levantam cedo e se deitam tarde, comendo o pão com sofrimento; pois ele dá o sono a seus amados</em> (Salmo 127,2). O descanso não é preguiça nem descuido — é confiança de que Deus não dorme e pode guardar o que você precisa largar por algumas horas.</p>"
+    }
+  ],
+  "faq": [
+    {
+      "question": "Existe uma oração católica específica para rezar antes de dormir?",
+      "answer": "Não há uma única oração obrigatória. Muitos católicos rezam o Exame de Consciência, o Ato de Contrição ou simplesmente as Completas, que é a oração da Igreja para o fim do dia. O mais importante é que a oração seja honesta e feita com atenção, não por automatismo."
+    },
+    {
+      "question": "E se eu adormecer no meio da oração?",
+      "answer": "Não é falta de respeito. Santo Afonso Maria de Ligório dizia que adormecer orando é como uma criança que dorme no colo do pai. Deus não se ofende com seu cansaço."
+    },
+    {
+      "question": "Preciso rezar em voz alta ou pode ser em silêncio?",
+      "answer": "Pode ser das duas formas. Rezar em voz baixa ajuda a manter o foco quando a mente está agitada. O silêncio interior também é oração. O que importa é a presença, não o volume."
+    },
+    {
+      "question": "Como incluir as pessoas que amo na oração para dormir?",
+      "answer": "Basta nomeá-las. Não precisa de fórmula: diga o nome de cada um e peça a Deus que os guarde. Esse gesto simples de interceder pelos outros antes de dormir é uma das formas mais antigas de oração cristã."
+    }
+  ],
+  "verses": [],
+  "category": null,
+  "relatedIntents": [
+    "night",
+    "anxiety",
+    "hope"
+  ],
+  "audioUrl": null,
+  "imageUrl": null,
+  "lang": "pt-BR",
+  "status": "published",
+  "publishedAt": "2026-06-06T03:02:03.429Z"
+}

@@ -24,7 +24,14 @@ import { IntentNav } from '@/components/IntentNav.jsx';
 import { FavoriteButton } from '@/components/FavoriteButton.jsx';
 import { ShareButton } from '@/components/ShareButton.jsx';
 
-export const dynamic = 'force-dynamic';
+const OTHER_ROUTE_KINDS = new Set(['psalm', 'devotional', 'article', 'verse_collection']);
+
+export async function generateStaticParams() {
+  const { items } = await listSignals({ limit: 1000 });
+  return items
+    .filter((s) => !OTHER_ROUTE_KINDS.has(s.kind))
+    .map((s) => ({ slug: s.slug.replace(/^oracao-/, '') }));
+}
 
 export async function generateMetadata({ params }) {
   const { slug: slugParam } = await params;

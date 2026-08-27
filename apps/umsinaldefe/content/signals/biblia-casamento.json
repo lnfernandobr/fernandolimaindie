@@ -1,0 +1,84 @@
+{
+  "id": "biblia-casamento",
+  "slug": "biblia-casamento",
+  "kind": "verse_collection",
+  "intent": "family",
+  "topicSlug": "versiculos-da-biblia",
+  "entitySlugs": [],
+  "title": "Versículos sobre o casamento e a vida a dois",
+  "answer": "A Bíblia apresenta o casamento como uma aliança sagrada entre duas pessoas que se tornam uma só carne, sustentada por amor, respeito mútuo e perdão constante.",
+  "summary": "Desde o Gênesis até as cartas de Paulo, a Escritura mostra que o casamento não é apenas um contrato social, mas um vínculo que reflete o amor de Deus pela humanidade. Não é uma vida sem atrito, mas uma vida escolhida dia após dia, com ternura e paciência.",
+  "bodyHtml": "<p>O fio que atravessa todos esses versículos é simples e exigente ao mesmo tempo: o amor conjugal não é um sentimento que aparece e desaparece conforme o humor do dia. É uma decisão renovada, um ato de vontade que se apoia em algo maior do que os dois. Quando Gênesis diz que o homem deixa pai e mãe para se unir à mulher, está falando de uma ruptura corajosa, de uma escolha que cria uma nova realidade no mundo. E o Evangelho de Mateus confirma que essa união não é apenas cultural, é teológica: o que Deus uniu, o ser humano não deve separar.</p><p>Paulo, na carta aos Efésios, não distribui papéis para humilhar ninguém, mas convida os dois a uma entrega mútua que imita a entrega de Cristo. E o Cântico dos Cânticos, com sua linguagem de amor apaixonado, lembra que a Igreja sempre reconheceu o desejo e a beleza como partes legítimas do amor conjugal, não como ameaças à fé. O amor que os versículos descrevem é paciente, não se irrita à toa, suporta tudo, não porque seja fraco, mas porque é forte o suficiente para não desistir.</p><p>Se você está rezando pelo seu casamento hoje, seja ele novo ou já marcado pelo tempo e pelo cansaço, esses textos não são cobranças. São convites. A Escritura não idealiza a vida a dois, ela a acompanha, com realismo e com esperança ao mesmo tempo.</p>",
+  "chunks": [],
+  "faq": [
+    {
+      "question": "Tem algum versículo bom para usar nos votos de casamento?",
+      "answer": "Rute 1,16 é uma das escolhas mais bonitas e honestas: 'Para onde você for, eu irei; onde você pousar, eu pousar ei.' Também 1 Coríntios 13,4-7 sobre o amor que é paciente e não se irrita é muito usado em cerimônias católicas."
+    },
+    {
+      "question": "A Bíblia fala algo sobre casamentos que estão passando por dificuldades?",
+      "answer": "Sim. Colossenses 3,13 fala diretamente em suportar uns aos outros e perdoar, como o Senhor perdoou. O casamento em crise não está fora do alcance da graça, e a Escritura não ignora que a vida a dois exige perdão repetido."
+    },
+    {
+      "question": "Posso rezar com versículos pelo casamento de outra pessoa, como o de um filho ou amigo?",
+      "answer": "Pode e é uma forma bela de intercessão. Usar Eclesiastes 4,12 em oração, pedindo que o 'cordão de três fios' que é Deus, o marido e a esposa, seja forte, é uma prece concreta e cheia de sentido."
+    },
+    {
+      "question": "O casamento católico e o casamento descrito na Bíblia são a mesma coisa?",
+      "answer": "A base é a mesma: uma aliança permanente, fiel e aberta à vida, como descreve o Gênesis e o Evangelho de Mateus. O sacramento do matrimônio na Igreja aprofunda esse sentido, entendendo que o amor conjugal reflete a relação de Cristo com a Igreja."
+    }
+  ],
+  "verses": [
+    {
+      "ref": "Gênesis 2,24",
+      "text": "Por isso, o homem deixa seu pai e sua mãe, se une à sua mulher, e eles se tornam uma só carne."
+    },
+    {
+      "ref": "Mateus 19,6",
+      "text": "Assim, eles já não são dois, mas uma só carne. Portanto, o que Deus uniu, o homem não separe."
+    },
+    {
+      "ref": "1 Coríntios 13,4-7",
+      "text": "O amor é paciente, o amor é prestativo, não é invejoso, não se ostenta, não se incha de orgulho. Não age com indecência, não procura seus próprios interesses, não se irrita, não guarda rancor. Não se alegra com a injustiça, mas se alegra com a verdade. Tudo suporta, tudo crê, tudo espera, tudo tolera."
+    },
+    {
+      "ref": "Efésios 5,25",
+      "text": "Maridos, amai vossas mulheres, como Cristo amou a Igreja e se entregou por ela."
+    },
+    {
+      "ref": "Rute 1,16",
+      "text": "Para onde você for, eu irei; onde você pousar, eu pousarei. O seu povo será o meu povo, e o seu Deus será o meu Deus."
+    },
+    {
+      "ref": "Eclesiastes 4,12",
+      "text": "Um cordão de três fios não se rompe facilmente."
+    },
+    {
+      "ref": "Cântico dos Cânticos 3,4",
+      "text": "Encontrei o amado da minha alma, segurei-o e não o soltarei."
+    },
+    {
+      "ref": "Colossenses 3,13-14",
+      "text": "Suportai-vos uns aos outros e perdoai-vos mutuamente, se alguém tiver queixa de outro. Como o Senhor vos perdoou, assim também vós perdoai. Acima de tudo isso, porém, revesti-vos do amor, que é o vínculo da perfeição."
+    },
+    {
+      "ref": "Provérbios 5,18",
+      "text": "Seja bendita a tua fonte, e alegra-te com a mulher da tua juventude."
+    },
+    {
+      "ref": "1 Pedro 4,8",
+      "text": "Acima de tudo, tende um amor intenso uns pelos outros, porque o amor cobre uma multidão de pecados."
+    }
+  ],
+  "category": "biblia-explicada",
+  "relatedIntents": [
+    "forgiveness",
+    "hope",
+    "healing"
+  ],
+  "audioUrl": null,
+  "imageUrl": null,
+  "lang": "pt-BR",
+  "status": "published",
+  "publishedAt": "2026-06-06T03:00:39.602Z"
+}

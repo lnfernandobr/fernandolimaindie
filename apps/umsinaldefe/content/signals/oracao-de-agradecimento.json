@@ -1,0 +1,60 @@
+{
+  "id": "oracao-de-agradecimento",
+  "slug": "oracao-de-agradecimento",
+  "kind": "prayer",
+  "intent": "faith",
+  "topicSlug": "oracoes-essenciais",
+  "entitySlugs": [],
+  "title": "Oração de agradecimento a Deus por tudo, pela vida, família e saúde",
+  "answer": "Reze esta oração de agradecimento a Deus reconhecendo, com palavras simples e honestas, o que você recebeu hoje, não só as alegrias, mas também a força para atravessar o que foi difícil.",
+  "summary": "Agradecer não é fingir que está tudo bem. É parar um instante e reconhecer que, mesmo no meio do cansaço, você ainda está aqui. São Paulo escreveu aos tessalonicenses: 'Em tudo dai graças' (1 Tessalonicenses 5,18), não por tudo, mas em tudo. A diferença é enorme.",
+  "bodyHtml": "<p>Essa oração cabe em qualquer hora do dia, mas costuma encontrar seu lugar certo no fim da tarde ou antes de dormir, quando o barulho baixa e você percebe, quase sem querer, o quanto aconteceu desde a manhã.</p><p>Senhor e Pai,<br>Chego até você não com uma lista de pedidos, mas com o que tenho nas mãos agora: um dia vivido, com tudo o que ele trouxe de bom e de pesado.<br>Obrigado pela vida que ainda pulsa em mim, por cada respiração que eu nem percebi que estava dando.<br>Obrigado pela minha família, pelas pessoas que me esperam, que me ligam, que às vezes me cansam e que, mesmo assim, são o que eu tenho de mais concreto neste mundo.<br>Obrigado pela saúde que sustentou meu corpo hoje, e também pelos momentos em que ela vacilou e eu aprendi que não me basto sozinho.<br>Obrigado pelo trabalho, mesmo quando ele pesou. Pelo pão, mesmo quando foi pouco. Pelo teto, mesmo quando o silêncio dentro dele doeu.<br>Eu sei que nem sempre consigo enxergar suas mãos no meio dos dias difíceis. Mas hoje eu escolho parar e reconhecer: você esteve aqui. Em tudo isso, você esteve aqui.<br>Que eu não precise de um momento perfeito para agradecer. Que o agradecimento se torne, aos poucos, o jeito como eu olho para a vida.<br>Amém.</p><p>Rezar assim não resolve o que está pendente, não apaga o que dói. Mas faz algo mais discreto e mais real: abre um espaço interior onde você se lembra de que não está carregando tudo sozinho.</p>",
+  "chunks": [
+    {
+      "id": "quando-rezar",
+      "html": "<p><strong>O melhor momento para rezar essa oração</strong></p><p>Não precisa ser de joelhos, com vela acesa e silêncio perfeito. Essa oração funciona na volta do trabalho, no trânsito parado, com o motor desligado antes de entrar em casa. Coloque a mão no peito por um segundo, sinta o coração batendo, e deixe esse gesto físico ser o começo. O corpo também ora. Quando você pousa a mão sobre o peito antes de falar com Deus, está dizendo, sem palavras, que o que vem a seguir sai de dentro.</p>"
+    },
+    {
+      "id": "agradecer-no-peso",
+      "html": "<p><strong>Agradecer quando o dia foi ruim de verdade</strong></p><p>São Paulo não escreveu 'dai graças por tudo', como se fosse obrigação de fingir alegria. Ele escreveu 'em tudo dai graças' (1 Tessalonicenses 5,18), dentro do que está acontecendo, mesmo dentro do que machuca. Isso muda a oração inteira. Você não precisa chamar de bênção o que foi perda. Pode agradecer com a dor ainda presente, sem precisar resolvê-la antes de falar com Deus.</p>"
+    },
+    {
+      "id": "familia-concreta",
+      "html": "<p><strong>A família que aparece na oração não é a família ideal</strong></p><p>Quando você agradece pela família, não está agradecendo por uma foto de domingo. Está agradecendo pela mãe que manda mensagem no grupo às 7h da manhã, pelo filho que não ligou essa semana, pelo irmão com quem a conversa travou. Essa é a família real, e é por ela que vale agradecer, não pela versão arrumada, mas pela que existe de fato, com tudo o que ainda está por resolver.</p>"
+    },
+    {
+      "id": "efeito-interior",
+      "html": "<p><strong>O que muda em você depois de agradecer</strong></p><p>Não é euforia, não é certeza de que vai melhorar. O que muda é mais parecido com isso: você para de segurar tudo com as duas mãos por um instante. Agradecer é um gesto de soltar, mesmo que seja por poucos minutos. E às vezes poucos minutos são suficientes para você conseguir dormir.</p>"
+    }
+  ],
+  "faq": [
+    {
+      "question": "Posso rezar essa oração mesmo quando não estou sentindo gratidão?",
+      "answer": "Sim, e talvez seja exatamente aí que ela mais vale. A gratidão não precisa ser um sentimento que já está presente para você rezar. Às vezes você reza primeiro, e o sentimento vem depois, ou não vem, e tudo bem. O ato de parar e reconhecer o que você recebeu já é, por si só, uma forma de oração honesta."
+    },
+    {
+      "question": "Essa oração serve para rezar em família, em voz alta?",
+      "answer": "Serve bem. Se for rezar com outras pessoas, leia devagar, com pausas. Deixe cada frase pousar antes de passar para a próxima. Em família, o simples fato de parar juntos para agradecer já é um gesto que faz diferença, mesmo que alguém esteja distraído ou sem vontade."
+    },
+    {
+      "question": "Preciso rezar todo dia para ter efeito?",
+      "answer": "Regularidade ajuda, mas não é uma regra de pontuação. Rezar três vezes por semana com presença real vale mais do que rezar todo dia no piloto automático. Comece com o que você consegue sustentar de verdade."
+    },
+    {
+      "question": "E se eu não tiver palavras? Posso usar só essa oração pronta?",
+      "answer": "Pode, sem nenhum problema. Usar palavras que outra pessoa escreveu não torna a oração menos sua. A liturgia católica inteira é feita de palavras que outros escreveram antes de nós. O que importa é que você as traga como suas."
+    }
+  ],
+  "verses": [],
+  "category": null,
+  "relatedIntents": [
+    "morning",
+    "night",
+    "hope"
+  ],
+  "audioUrl": null,
+  "imageUrl": null,
+  "lang": "pt-BR",
+  "status": "published",
+  "publishedAt": "2026-06-16T03:02:21.936Z"
+}

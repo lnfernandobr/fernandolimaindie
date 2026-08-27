@@ -1,0 +1,60 @@
+{
+  "id": "oracao-da-manha",
+  "slug": "oracao-da-manha",
+  "kind": "prayer",
+  "intent": "morning",
+  "topicSlug": "oracoes-da-manha",
+  "entitySlugs": [],
+  "title": "Oração da manhã para começar o dia com Deus",
+  "answer": "Reze essa oração ao acordar, antes de pegar o celular: agradeça pelo novo dia, peça fé para o que vier e bondade para quem você encontrar.",
+  "summary": "A manhã tem um silêncio que não dura muito. Antes da correria tomar conta, há um momento breve em que você ainda é só você — e é exatamente aí que essa oração encontra o seu lugar. Rezar ao acordar não muda a agenda do dia, mas muda de onde você parte para enfrentá-la.",
+  "bodyHtml": "<p>Essa oração é para rezar logo ao acordar, ainda na beira da cama, antes de qualquer tela ou pressa. É um gesto pequeno que diz: este dia começa com Deus, não com a notificação que chegou durante a noite.</p><p>Senhor, obrigado por este dia que começa. Obrigado pelo sono que tive, pelo corpo que respira, pela vida que continua. Não sei o que me espera nas próximas horas, e tudo bem não saber. Peço só que você vá na minha frente. Que eu tenha fé quando as coisas pesarem, leveza quando eu quiser controlar tudo, e bondade com as pessoas que vou encontrar pelo caminho. Guarda minha família. Guarda quem eu amo e quem não consigo amar direito. Se eu tropeçar hoje, me ajuda a levantar sem me destruir. E no fim do dia, que eu possa dizer que tentei viver bem. Amém.</p><p>Quem reza assim não sai do quarto com todas as respostas, mas sai orientado, com o coração um pouco mais firme do que estava.</p>",
+  "chunks": [
+    {
+      "id": "antes-da-tela",
+      "html": "<p><strong>Por que rezar antes de pegar o celular</strong></p><p>O celular traz o mundo inteiro em dois segundos: notícia ruim, mensagem urgente, comparação. A oração da manhã não compete com isso, ela só precisa vir antes. Quando você ora primeiro, não está fugindo do dia, está escolhendo de onde parte para enfrentá-lo. É uma decisão de dois minutos que reorganiza tudo por dentro.</p>"
+    },
+    {
+      "id": "gesto-de-inicio",
+      "html": "<p><strong>Um gesto concreto para começar</strong></p><p>Antes de rezar, sente na beira da cama com os pés no chão. Coloque a mão direita no peito, sobre o coração. Faça o sinal da cruz devagar, sem pressa. Esse gesto físico não é ritual vazio: ele avisa o seu corpo que algo diferente vai acontecer agora. Respire fundo uma vez. Depois reze. O silêncio de trinta segundos antes da oração já é, por si só, uma forma de orar.</p>"
+    },
+    {
+      "id": "gratidao-simples",
+      "html": "<p><strong>Agradecer sem lista de conquistas</strong></p><p>A oração começa com obrigado, e isso tem peso. Não obrigado por ter saúde perfeita ou dinheiro no banco, mas obrigado pelo dia que abriu, pelo ar que entrou, pela chance de tentar de novo. São Lucas 17,17 lembra que dos dez leprosos curados, só um voltou para agradecer. Voltar é o gesto que faz diferença. Você pode ser esse um.</p>"
+    },
+    {
+      "id": "pedir-bondade",
+      "html": "<p><strong>Pedir bondade para o dia</strong></p><p>A parte da oração que pede bondade para quem você vai encontrar é, na prática, a mais difícil de viver. Não é difícil pedir, é difícil fazer. Mas pedir já é um começo honesto. O Salmo 90,14 diz: <em>Sacia-nos de manhã com o teu amor, para que cantemos de alegria todos os nossos dias.</em> Esse amor que você pede de manhã é o mesmo que você vai precisar distribuir durante o dia, especialmente para quem te irrita.</p>"
+    }
+  ],
+  "faq": [
+    {
+      "question": "Preciso rezar em voz alta ou pode ser só no pensamento?",
+      "answer": "Pode ser do jeito que sair. Em voz baixa ajuda a concentrar, porque você ouve as próprias palavras e elas ficam mais reais. Mas se você tem alguém dormindo do lado ou simplesmente prefere o silêncio interior, rezar mentalmente tem o mesmo valor. Deus não depende do volume."
+    },
+    {
+      "question": "E se eu esquecer de rezar de manhã? O dia fica sem graça?",
+      "answer": "Não. Deus não funciona por pontuação. Se você chegou ao meio-dia e lembrou, reze no meio-dia. Se lembrou só à noite, reze à noite. O que importa é a intenção de voltar, não a perfeição do horário. A oração da manhã é um hábito bom, não uma obrigação que te condena se falhar."
+    },
+    {
+      "question": "Posso usar essa oração todo dia ou preciso variar?",
+      "answer": "Pode repetir todo dia sem problema. As orações tradicionais da Igreja são rezadas há séculos exatamente porque a repetição aprofunda, não esvazia. Com o tempo, as palavras deixam de ser texto decorado e passam a ser sua própria voz falando com Deus."
+    },
+    {
+      "question": "Quanto tempo preciso reservar para essa oração?",
+      "answer": "Dois a cinco minutos são suficientes. Não é necessário um altar, vela acesa ou caderno de anotações, embora tudo isso possa ajudar se você quiser. O mínimo honesto é sentar, respirar e falar com Deus antes de falar com o resto do mundo."
+    }
+  ],
+  "verses": [],
+  "category": null,
+  "relatedIntents": [
+    "gratitude",
+    "faith",
+    "hope"
+  ],
+  "audioUrl": null,
+  "imageUrl": null,
+  "lang": "pt-BR",
+  "status": "published",
+  "publishedAt": "2026-06-04T03:01:15.120Z"
+}

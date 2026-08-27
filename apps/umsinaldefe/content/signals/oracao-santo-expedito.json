@@ -1,0 +1,56 @@
+{
+  "id": "oracao-santo-expedito",
+  "slug": "oracao-santo-expedito",
+  "kind": "prayer",
+  "intent": "faith",
+  "topicSlug": "oracoes-essenciais",
+  "entitySlugs": [],
+  "title": "Oração a Santo Expedito: o santo das causas urgentes",
+  "answer": "Santo Expedito é invocado nas causas urgentes e justas. A oração a ele pede intercessão para situações que não podem esperar, uma decisão, uma dívida, uma crise que chegou de repente.",
+  "summary": "Mártir do século IV, Santo Expedito é o padroeiro das causas urgentes e dos que precisam de uma resposta agora. Sua festa é celebrada em 19 de abril. Rezar a ele é levar a Deus aquilo que está pesando demais para esperar até amanhã.",
+  "bodyHtml": "<p>Você reza a Santo Expedito quando a situação chegou ao limite e o tempo não está do seu lado. Pode ser uma conta com vencimento amanhã, uma decisão que não pode ser adiada, uma crise que entrou pela porta sem avisar. Essa oração existe para esses momentos.</p><p>Santo Expedito, mártir glorioso, que escolhestes morrer a fim de não adiar a vossa conversão, intercedei por mim nesta hora de necessidade. Vós que sois o patrono das causas urgentes e justas, apresentai ao Senhor Jesus Cristo o meu pedido: <em>[mencione aqui sua intenção]</em>. Alcançai-me a graça de que tanto necessito, para que eu possa glorificar a Deus e viver segundo a Sua vontade. Que vossa intercessão me dê força para enfrentar o que me oprime, confiança para não ceder ao desespero e clareza para agir com justiça. Amém.</p><p>Quem reza essa oração com sinceridade não sai do mesmo jeito que entrou. Não porque o problema some, mas porque algo dentro de você se organiza, a urgência ainda está lá, mas você já não está sozinho nela.</p>",
+  "chunks": [
+    {
+      "id": "quem-foi",
+      "html": "<p><strong>Quem foi Santo Expedito</strong></p><p>Santo Expedito foi um oficial do exército romano martirizado por volta do ano 303 d.C. durante as perseguições do imperador Diocleciano, na região da Armênia. A tradição conta que, no momento em que decidiu se converter ao cristianismo, o demônio apareceu a ele na forma de um corvo gritando \"cras, cras\", em latim, \"amanhã, amanhã\", tentando fazê-lo adiar a decisão. Expedito esmagou o pássaro sob o pé e declarou: \"Hoje.\" Esse gesto o tornou o símbolo de quem não adia o que é urgente e justo. Sua festa é celebrada em 19 de abril. Ele é invocado por quem enfrenta situações que exigem uma resposta rápida: dívidas, processos, decisões difíceis, crises que não dão trégua.</p>"
+    },
+    {
+      "id": "urgencia-real",
+      "html": "<p><strong>Quando a urgência não é exagero</strong></p><p>Tem gente que chega a Santo Expedito com vergonha, achando que o pedido é pequeno demais ou mundano demais para levar a Deus. A conta de luz cortada, o prazo do banco, o resultado do exame que vai sair amanhã. Mas a fé católica não divide o mundo entre o sagrado e o cotidiano como se fossem coisas separadas. O Salmo 55 já dizia: \"Lança sobre o Senhor o teu fardo, e ele te sustentará\" (Salmo 55,23). O que pesa de verdade merece ser levado de verdade. Santo Expedito é exatamente o intercessor para quem não tem o luxo de esperar.</p>"
+    },
+    {
+      "id": "hoje-nao-amanha",
+      "html": "<p><strong>O corvo que gritava amanhã</strong></p><p>A imagem do corvo esmagado sob o pé de Expedito diz algo que vai além da devoção popular. Existe um corvo dentro de cada um de nós que vive adiando o que importa: a conversa que precisa acontecer, o pedido de perdão que fica engasgado, a decisão que a gente empurra para a semana que vem. Santo Expedito não é só o santo da urgência externa. Ele também fala àquele ponto interno onde a gente procrastina o que é essencial por medo ou por cansaço. Rezar a ele é também pedir coragem para não deixar para amanhã o que Deus está pedindo hoje.</p>"
+    }
+  ],
+  "faq": [
+    {
+      "question": "Qual é o dia de Santo Expedito e por que se reza a ele especificamente?",
+      "answer": "A festa de Santo Expedito é em 19 de abril. Ele é invocado nas causas urgentes e justas porque a tradição conta que escolheu se converter ao cristianismo imediatamente, sem adiar, mesmo diante da ameaça de morte. Por isso virou o padroeiro de quem precisa de uma resposta que não pode esperar."
+    },
+    {
+      "question": "Posso rezar a Santo Expedito por causas financeiras?",
+      "answer": "Sim. Dívidas, prazos, decisões financeiras urgentes estão entre as intenções mais comuns levadas a Santo Expedito. O que a Igreja pede é que a causa seja justa, ou seja, que você não esteja pedindo algo que prejudique outra pessoa. Uma dívida legítima, um emprego necessário, uma negociação honesta: tudo isso cabe nessa oração."
+    },
+    {
+      "question": "Preciso fazer alguma promessa para rezar a Santo Expedito?",
+      "answer": "Não existe obrigação de promessa. A devoção a Santos não funciona como contrato. Você pode rezar livremente, com fé, sem condicionar a oração a uma oferta. Se quiser agradecer depois com uma vela acesa ou uma visita à igreja, isso é um gesto bonito, mas não é requisito."
+    },
+    {
+      "question": "E se a graça não vier no tempo que eu espero?",
+      "answer": "Essa é a pergunta mais honesta que existe. A oração de intercessão não é um mecanismo automático. Às vezes o que pedimos não chega como esperamos, ou chega de outro jeito, ou chega mais tarde. O que a oração faz com certeza é mudar a forma como você atravessa a espera, com menos desespero, com mais presença. Isso já é muito."
+    }
+  ],
+  "verses": [],
+  "category": null,
+  "relatedIntents": [
+    "hope",
+    "anxiety",
+    "finances"
+  ],
+  "audioUrl": null,
+  "imageUrl": null,
+  "lang": "pt-BR",
+  "status": "published",
+  "publishedAt": "2026-07-02T03:02:26.043Z"
+}

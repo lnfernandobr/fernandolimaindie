@@ -1,0 +1,84 @@
+{
+  "id": "biblia-trabalho",
+  "slug": "biblia-trabalho",
+  "kind": "verse_collection",
+  "intent": "faith",
+  "topicSlug": "versiculos-da-biblia",
+  "entitySlugs": [],
+  "title": "Versículos sobre o trabalho: esforço, propósito e descanso",
+  "answer": "O trabalho, na Bíblia, não é punição nem simples meio de sobrevivência: é lugar onde a fé se torna concreta, onde o esforço honesto tem dignidade, e onde Deus mesmo convida ao descanso como ato de confiança.",
+  "summary": "Trabalhar com dedicação não é virtude de quem aguenta tudo calado, é resposta a um chamado. Os versículos sobre trabalho mostram que Deus se importa com o que você faz de segunda a sexta, não só no domingo. E que o descanso não é fraqueza, é obediência.",
+  "bodyHtml": "<p>Tem um momento que muita gente conhece: são quase onze da noite, a louça ainda está na pia, o relatório não fechou, e você se pergunta pra quê tudo isso. Não é fraqueza existencial, é uma pergunta legítima que o cansaço traz à tona. A tradição bíblica não finge que o trabalho é sempre leve. Gênesis já mostra o suor no rosto antes de qualquer versículo de encorajamento. O que a Escritura faz é recusar que esse suor seja vazio: desde o artesão Bezalel chamado pelo nome para construir o Tabernáculo até Paulo costurando tendas em Corinto para não ser peso a ninguém, o trabalho humano aparece como lugar de presença, não de ausência de Deus.</p><p>O fio que atravessa esses versículos não é o da produtividade, é o do propósito. Colossenses 3,23 não diz para trabalhar mais, diz para trabalhar de outro jeito, com outra orientação interna. A diferença entre fazer algo para ser visto e fazer algo porque aquilo tem valor em si mesmo muda a qualidade do esforço e, mais ainda, a qualidade da vida. Provérbios valoriza o trabalho diligente sem transformar o trabalhador em máquina. O Eclesiastes, com sua honestidade cortante, admite que muito trabalho pode ser vaidade se não houver quem coma e beba e encontre satisfação no que faz. Há uma sobriedade aí que o otimismo fácil não alcança.</p><p>E o descanso. Não o descanso de quem não tem mais nada a fazer, mas o descanso do sábado, que é mandamento antes de ser benefício. Mateus 11,28 é um convite de quem conhece o peso real de carregar algo por tempo demais. Não é promessa de que o trabalho vai sumir, é promessa de companhia no meio dele. Quem aprende a parar uma vez por semana não está sendo improdutivo, está praticando a fé de que o mundo não depende só dos seus braços. Isso, para quem carrega família, conta no banco e prazo no trabalho, é talvez o ato de confiança mais difícil e mais necessário.</p>",
+  "chunks": [],
+  "faq": [
+    {
+      "question": "A Bíblia diz que trabalhar muito é sinal de fé ou pode ser pecado?",
+      "answer": "Trabalhar com dedicação é valorizado, mas o excesso que destrói o descanso, a família e a saúde não é fidelidade, é desconfiança de que Deus sustenta o que você não consegue controlar. O próprio mandamento do sábado existe para cortar esse ciclo."
+    },
+    {
+      "question": "E quando o trabalho não tem sentido nenhum, só paga as contas?",
+      "answer": "O Eclesiastes é honesto sobre isso: muito esforço pode virar vaidade. Mas mesmo um trabalho sem glamour pode ser feito com integridade, e essa integridade tem valor diante de Deus, independente do cargo ou do salário."
+    },
+    {
+      "question": "Como rezar quando estou esgotado do trabalho e não consigo sentir nada?",
+      "answer": "Não precisa sentir. Uma frase curta antes de dormir, ou só o silêncio de sentar por dois minutos sem o celular, já é oração. Deus não exige eloquência de quem está no limite."
+    },
+    {
+      "question": "Posso pedir a Deus por uma promoção ou por um emprego melhor?",
+      "answer": "Pode, sem cerimônia. O salmo 37,4 diz que Deus atende aos desejos do coração de quem caminha com ele. Pedir trabalho digno, salário justo e reconhecimento não é ganância, é necessidade humana legítima."
+    }
+  ],
+  "verses": [
+    {
+      "ref": "Colossenses 3,23",
+      "text": "Tudo o que fizerem, façam de todo o coração, como se fosse para o Senhor e não para os homens."
+    },
+    {
+      "ref": "Mateus 11,28",
+      "text": "Venham a mim todos os que estão cansados e sobrecarregados, e eu lhes darei descanso."
+    },
+    {
+      "ref": "Provérbios 14,23",
+      "text": "Em todo trabalho há lucro, mas a palavra vã só traz pobreza."
+    },
+    {
+      "ref": "Gênesis 2,2",
+      "text": "No sétimo dia, Deus tinha concluído a obra que fizera, e descansou de toda a sua obra."
+    },
+    {
+      "ref": "Eclesiastes 3,13",
+      "text": "Também é dom de Deus que todo homem coma e beba e encontre satisfação em todo o seu trabalho."
+    },
+    {
+      "ref": "Salmo 128,2",
+      "text": "Comerás do fruto do teu trabalho; serás feliz e tudo te correrá bem."
+    },
+    {
+      "ref": "2 Tessalonicenses 3,10",
+      "text": "Quando estávamos entre vocês, nós lhes ordenávamos: quem não quer trabalhar, não deve comer."
+    },
+    {
+      "ref": "Provérbios 16,3",
+      "text": "Confia ao Senhor as tuas obras, e teus projetos serão realizados."
+    },
+    {
+      "ref": "João 5,17",
+      "text": "Meu Pai trabalha sempre, e eu também trabalho."
+    },
+    {
+      "ref": "Isaías 40,31",
+      "text": "Os que esperam no Senhor renovam as suas forças, sobem com asas como águias, correm sem se cansar, caminham sem se fatigar."
+    }
+  ],
+  "category": "biblia-explicada",
+  "relatedIntents": [
+    "hope",
+    "morning",
+    "gratitude"
+  ],
+  "audioUrl": null,
+  "imageUrl": null,
+  "lang": "pt-BR",
+  "status": "published",
+  "publishedAt": "2026-06-10T03:00:42.409Z"
+}

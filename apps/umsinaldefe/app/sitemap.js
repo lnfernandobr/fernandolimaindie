@@ -31,8 +31,8 @@ export default async function sitemap() {
     priority: 0.8,
   }));
 
-  // Todo conteúdo (salmo, oração, devocional, reflexão, blog, bíblia) vem da API
-  // como signals. URLs ausentes (ainda não geradas pelo cron) ficam de fora.
+  // Todo conteúdo (salmo, oração, devocional, reflexão, blog, bíblia) vem dos
+  // arquivos estáticos em content/signals/.
   let signalEntries = [];
   try {
     const allSignals = [];

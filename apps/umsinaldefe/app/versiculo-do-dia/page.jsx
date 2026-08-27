@@ -14,7 +14,7 @@ import { SemanticFAQ } from '@/components/SemanticFAQ.jsx';
 import { ShareButton } from '@/components/ShareButton.jsx';
 import { IntentNav } from '@/components/IntentNav.jsx';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 86400;
 
 export const metadata = buildMetadata({
   title: 'Versículo do dia de hoje: uma palavra da Bíblia pra hoje',
