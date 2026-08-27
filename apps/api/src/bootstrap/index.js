@@ -1,7 +1,6 @@
 import { bootstrapAdmin } from './bootstrap-admin.js';
-import { bootstrapSeeds } from './bootstrap-seeds.js';
 
-const bootstrapTasks = Object.freeze([bootstrapAdmin, bootstrapSeeds]);
+const bootstrapTasks = Object.freeze([bootstrapAdmin]);
 
 export const runBootstrapTasks = async () => {
   for (const task of bootstrapTasks) {

@@ -5,7 +5,6 @@ import { createWaitlistRouter } from '../modules/waitlist/index.js';
 import { createSignalsRouter } from '../modules/signals/index.js';
 import { createTopicsRouter } from '../modules/topics/index.js';
 import { createEntitiesRouter } from '../modules/entities/index.js';
-import { createGenerationRouter } from '../modules/generation/index.js';
 
 export const createApiRouter = () => {
   const router = Router();
@@ -14,6 +13,5 @@ export const createApiRouter = () => {
   router.use(PATHS.SIGNALS, createSignalsRouter());
   router.use(PATHS.TOPICS, createTopicsRouter());
   router.use(PATHS.ENTITIES, createEntitiesRouter());
-  router.use(PATHS.GENERATION, createGenerationRouter());
   return router;
 };

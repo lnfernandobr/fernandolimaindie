@@ -18,29 +18,4 @@ export const envSchema = z.object({
   ADMIN_BOOTSTRAP_USERNAME: z.string().default(ENV_DEFAULTS.ADMIN_BOOTSTRAP_USERNAME),
   ADMIN_BOOTSTRAP_PASSWORD: z.string().default(ENV_DEFAULTS.ADMIN_BOOTSTRAP_PASSWORD),
   ALLOWED_ORIGINS: z.string().default(ENV_DEFAULTS.ALLOWED_ORIGINS),
-  OPENAI_MOCK_MODE: z
-    .union([z.literal('true'), z.literal('false')])
-    .default(ENV_DEFAULTS.OPENAI_MOCK_MODE)
-    .transform((v) => v === 'true'),
-  ANTHROPIC_API_KEY: z.string().default(ENV_DEFAULTS.ANTHROPIC_API_KEY),
-  ANTHROPIC_MODEL: z.string().default(ENV_DEFAULTS.ANTHROPIC_MODEL),
-  CRON_ENABLED: z
-    .union([z.literal('true'), z.literal('false')])
-    .default(ENV_DEFAULTS.CRON_ENABLED)
-    .transform((v) => v === 'true'),
-  CRON_GENERATION_SCHEDULE: z.string().default(ENV_DEFAULTS.CRON_GENERATION_SCHEDULE),
-  CRON_GENERATION_DAILY_LIMIT: z.coerce
-    .number()
-    .int()
-    .min(1)
-    .max(20)
-    .default(ENV_DEFAULTS.CRON_GENERATION_DAILY_LIMIT),
-  UMSINALDEFE_REVALIDATE_URL: z.string().default(ENV_DEFAULTS.UMSINALDEFE_REVALIDATE_URL),
-  UMSINALDEFE_REVALIDATE_TOKEN: z.string().default(ENV_DEFAULTS.UMSINALDEFE_REVALIDATE_TOKEN),
-  UMSINALDEFE_SITE_URL: z.string().default(ENV_DEFAULTS.UMSINALDEFE_SITE_URL),
-  INDEXNOW_KEY: z.string().default(ENV_DEFAULTS.INDEXNOW_KEY),
-  INDEXNOW_MOCK_MODE: z
-    .union([z.literal('true'), z.literal('false')])
-    .default(ENV_DEFAULTS.INDEXNOW_MOCK_MODE)
-    .transform((v) => v === 'true'),
 });

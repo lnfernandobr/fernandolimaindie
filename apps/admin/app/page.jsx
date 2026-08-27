@@ -1,6 +1,5 @@
 'use client';
-import { useState, useEffect, useCallback, Fragment } from 'react';
-import ContentQueuePanel from './content-queue-panel.jsx';
+import { useState, useEffect, useCallback } from 'react';
 
 // ── API hook ─────────────────────────────────────────────────────────
 
@@ -312,129 +311,6 @@ function PostsTable({ posts }) {
 
 // ── Main ─────────────────────────────────────────────────────────────
 
-// Cotas por tipo (seedKind), na ordem/rótulos que o admin mostra.
-const QUOTA_KINDS = [
-  ['verse-collection', 'Bíblia'],
-  ['psalm', 'Salmo'],
-  ['prayer', 'Oração'],
-  ['devotional', 'Devocional'],
-  ['reflection', 'Reflexão'],
-  ['article', 'Blog'],
-];
-
-const QUOTA_INPUT_STYLE = {
-  width: 64, padding: '6px 8px', borderRadius: 6,
-  border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.05)',
-  color: 'inherit', fontSize: '1rem', textAlign: 'center',
-};
-
-function CronConfigPanel({ session }) {
-  const base = session?.coreApiUrl;
-  const token = session?.coreApiToken;
-  const [quotas, setQuotas] = useState(null);
-  const [status, setStatus] = useState(null);
-  const [saving, setSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const [error, setError] = useState('');
-
-  const load = async () => {
-    if (!base || !token) return;
-    try {
-      const [cfgRes, stRes] = await Promise.all([
-        fetch(`${base}/api/v1/generation/config`, { headers: { Authorization: `Bearer ${token}` } }),
-        fetch(`${base}/api/v1/generation/status`),
-      ]);
-      if (cfgRes.ok) setQuotas((await cfgRes.json()).dailyQuotas ?? {});
-      if (stRes.ok) setStatus(await stRes.json());
-    } catch { setError('Falha ao carregar a config do cron.'); }
-  };
-
-  useEffect(() => { load(); }, [base, token]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  if (!base || !token) {
-    return (
-      <div className="section">
-        <div className="section-title">Geração automática (cron)</div>
-        <p style={{ color: 'var(--muted)', fontSize: '0.82rem' }}>
-          Sessão sem acesso à API. Refaça o login pra editar a geração.
-        </p>
-      </div>
-    );
-  }
-  if (quotas === null) return null;
-
-  const total = QUOTA_KINDS.reduce((a, [k]) => a + (quotas[k] ?? 0), 0);
-
-  const setQuota = (k, v) => {
-    const n = Math.max(0, Math.min(20, parseInt(v, 10) || 0));
-    setQuotas((q) => ({ ...q, [k]: n }));
-    setSaved(false);
-  };
-
-  const save = async () => {
-    setSaving(true);
-    setSaved(false);
-    setError('');
-    try {
-      const res = await fetch(`${base}/api/v1/generation/config`, {
-        method: 'PATCH',
-        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ dailyQuotas: quotas }),
-      });
-      if (res.ok) { setSaved(true); load(); } else { setError('Não foi possível salvar.'); }
-    } catch { setError('Não foi possível salvar.'); }
-    setSaving(false);
-  };
-
-  return (
-    <div className="section">
-      <div className="section-title">
-        Geração automática (cron) <span className="badge">{total} por dia</span>
-      </div>
-      <p style={{ color: 'var(--muted)', fontSize: '0.82rem', marginBottom: 14 }}>
-        Quantos conteúdos o cron gera por dia, por tipo. Cota 0 = tipo desligado (ainda dá pra gerar manual na fila).
-      </p>
-      {status && (
-        <div style={{ display: 'flex', gap: 18, flexWrap: 'wrap', marginBottom: 16, fontSize: '0.85rem', color: 'var(--muted)' }}>
-          <span>Cron: <strong style={{ color: status.enabled ? '#46a758' : '#e5484d' }}>{status.enabled ? 'ativado' : 'desativado'}</strong></span>
-          <span>Agenda: <strong>{status.schedule}</strong> UTC</span>
-          <span>Pendentes: <strong>{status.pendingSeeds}</strong></span>
-        </div>
-      )}
-      <div
-        style={{
-          display: 'grid', gridTemplateColumns: 'auto 64px auto',
-          gap: '8px 14px', alignItems: 'center', maxWidth: 360, marginBottom: 16,
-        }}
-      >
-        {QUOTA_KINDS.map(([k, label]) => (
-          <Fragment key={k}>
-            <label htmlFor={`quota-${k}`} style={{ fontSize: '0.9rem' }}>{label}</label>
-            <input
-              id={`quota-${k}`}
-              type="number" min="0" max="20"
-              value={quotas[k] ?? 0}
-              onChange={(e) => setQuota(k, e.target.value)}
-              style={QUOTA_INPUT_STYLE}
-            />
-            <span style={{ fontSize: '0.78rem', color: 'var(--muted)' }}>
-              {status?.pendingByKind?.[k] ?? 0} pendentes
-            </span>
-          </Fragment>
-        ))}
-        <strong style={{ fontSize: '0.9rem', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 8 }}>Total/dia</strong>
-        <strong style={{ textAlign: 'center', fontSize: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 8 }}>{total}</strong>
-        <span style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }} />
-      </div>
-      <button className="btn-sm" disabled={saving} onClick={save}>
-        {saving ? 'Salvando...' : 'Salvar'}
-      </button>
-      {saved && <span style={{ color: '#46a758', marginLeft: 10, fontSize: '0.82rem' }}>Salvo ✓</span>}
-      {error && <span style={{ color: '#e5484d', marginLeft: 10, fontSize: '0.82rem' }}>{error}</span>}
-    </div>
-  );
-}
-
 export default function AdminPage() {
   const [session, setSession] = useState(null);
 
@@ -477,7 +353,6 @@ const CONTENT_KINDS = [
 
 function ContentDashboard({ session }) {
   const base = session?.coreApiUrl;
-  const [status, setStatus] = useState(null);
   const [counts, setCounts] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -489,15 +364,13 @@ function ContentDashboard({ session }) {
       setLoading(true);
       setError('');
       try {
-        const results = await Promise.all([
-          fetch(`${base}/api/v1/generation/status`).then((r) => (r.ok ? r.json() : null)),
-          ...CONTENT_KINDS.map(([k]) =>
+        const results = await Promise.all(
+          CONTENT_KINDS.map(([k]) =>
             fetch(`${base}/api/v1/signals?kind=${k}&limit=1`).then((r) => (r.ok ? r.json() : { total: 0 })),
           ),
-        ]);
+        );
         if (cancel) return;
-        setStatus(results[0]);
-        setCounts(CONTENT_KINDS.map(([k, label], i) => ({ k, label, total: results[i + 1]?.total ?? 0 })));
+        setCounts(CONTENT_KINDS.map(([k, label], i) => ({ k, label, total: results[i]?.total ?? 0 })));
       } catch {
         if (!cancel) setError('Erro ao conectar na API.');
       }
@@ -507,7 +380,6 @@ function ContentDashboard({ session }) {
   }, [base]);
 
   const totalSignals = counts ? counts.reduce((a, c) => a + c.total, 0) : null;
-  const lastRun = status?.recentRuns?.[0];
 
   return (
     <>
@@ -518,20 +390,8 @@ function ContentDashboard({ session }) {
         <div className="stats">
           <StatCard label="Conteúdos publicados" value={totalSignals} color="green" />
           {counts.map((c) => <StatCard key={c.k} label={c.label} value={c.total} />)}
-          <StatCard label="Pendentes (cron)" value={status?.pendingSeeds} color="yellow" />
         </div>
       )}
-
-      {lastRun && (
-        <p style={{ color: 'var(--muted)', fontSize: '0.82rem', margin: '10px 0 4px' }}>
-          Última geração: {new Date(lastRun.ranAt).toLocaleString('pt-BR')} — {lastRun.created} criados
-          {lastRun.failed ? `, ${lastRun.failed} falhas` : ''}.
-        </p>
-      )}
-
-      <CronConfigPanel session={session} />
-
-      <ContentQueuePanel session={session} />
     </>
   );
 }

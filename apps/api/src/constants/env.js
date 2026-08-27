@@ -12,17 +12,6 @@ export const ENV_DEFAULTS = Object.freeze({
   ADMIN_BOOTSTRAP_USERNAME: 'fernando',
   ADMIN_BOOTSTRAP_PASSWORD: 'Fz9mPx7Kq2vRtY8n',
   ALLOWED_ORIGINS: '*',
-  OPENAI_MOCK_MODE: 'false',
-  ANTHROPIC_API_KEY: '',
-  ANTHROPIC_MODEL: 'claude-sonnet-4-6',
-  CRON_ENABLED: 'false',
-  CRON_GENERATION_SCHEDULE: '0 3 * * *',
-  CRON_GENERATION_DAILY_LIMIT: 5,
-  UMSINALDEFE_REVALIDATE_URL: '',
-  UMSINALDEFE_REVALIDATE_TOKEN: '',
-  UMSINALDEFE_SITE_URL: 'https://umsinaldefe.com.br',
-  INDEXNOW_KEY: '',
-  INDEXNOW_MOCK_MODE: 'true',
 });
 
 export const ENV_CONSTRAINTS = Object.freeze({

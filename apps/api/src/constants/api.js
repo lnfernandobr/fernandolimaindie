@@ -10,20 +10,8 @@ export const PATHS = Object.freeze({
   SIGNALS: '/signals',
   TOPICS: '/topics',
   ENTITIES: '/entities',
-  GENERATION: '/generation',
   SLUG_PARAM: '/:slug',
   SIGNAL_RELATED: '/:slug/related',
-});
-
-export const GENERATION_PATHS = Object.freeze({
-  SEEDS: '/seeds',
-  RUN: '/run',
-  BATCH: '/batch',
-  STATUS: '/status',
-  TRIGGER: '/trigger',
-  CONFIG: '/config',
-  SEED_SLUG: '/seeds/:slug',
-  SEED_RUN: '/seeds/:slug/run',
 });
 
 export const PUBLIC_ENDPOINTS = Object.freeze([
