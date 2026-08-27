@@ -6,14 +6,11 @@ export const PATHS = Object.freeze({
   AUTH: '/auth',
   AUTH_LOGIN: '/login',
   AUTH_ME: '/me',
-  ENTITIES: '/entities',
-  SLUG_PARAM: '/:slug',
 });
 
 export const PUBLIC_ENDPOINTS = Object.freeze([
   { method: 'GET', path: PATHS.HEALTH, description: 'status + uptime + version' },
   { method: '·', path: `${API_VERSION_PREFIX}${PATHS.AUTH}`, description: 'login / me' },
-  { method: '·', path: `${API_VERSION_PREFIX}${PATHS.ENTITIES}`, description: 'list / read entities' },
 ]);
 
 export const ERROR_NAMES = Object.freeze({

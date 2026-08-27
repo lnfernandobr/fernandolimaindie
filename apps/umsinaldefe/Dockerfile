@@ -1,11 +1,9 @@
 # syntax=docker/dockerfile:1.7
 # Imagem pra rodar o Um Sinal de Fé (Next.js) em produção.
-# O conteúdo é servido em SSR a partir da API (apps/api); a geração roda no
-# cron da API, não aqui. Este container apenas serve o site.
+# Conteúdo 100% estático (content/signals/*.json, bakeado no build). Sem API.
 #
 # Build:  docker build -t umsinaldefe -f apps/umsinaldefe/Dockerfile .
 # Run:    docker run -d --restart=always --name umsinaldefe -p 3001:3001 \
-#           -e UMSINALDEFE_API_URL=https://api.fazedorismo.com/api/v1 \
 #           umsinaldefe
 
 # ── Stage 1: deps ────────────────────────────────────────────────────

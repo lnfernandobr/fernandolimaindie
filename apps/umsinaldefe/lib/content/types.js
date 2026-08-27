@@ -28,8 +28,6 @@ export const INTENT_KEYS = [
   'forgiveness',
 ];
 
-export const ENTITY_KINDS = ['saint', 'bible_book', 'concept', 'place', 'person'];
-
 const chunkSchema = z.object({
   id: z.string(),
   html: z.string(),
@@ -80,17 +78,6 @@ export const signalSummarySchema = z.object({
   imageUrl: z.string().nullable(),
   audioUrl: z.string().nullable(),
   publishedAt: z.coerce.date(),
-});
-
-export const entitySchema = z.object({
-  id: z.string(),
-  slug: z.string(),
-  name: z.string(),
-  kind: z.enum(ENTITY_KINDS),
-  description: z.string(),
-  synonyms: z.array(z.string()),
-  imageUrl: z.string().nullable(),
-  lang: z.string(),
 });
 
 export const paginatedSchema = (itemSchema) =>

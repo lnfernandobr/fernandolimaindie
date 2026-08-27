@@ -1,37 +1,11 @@
 import { z } from 'zod';
-import {
-  entitySchema,
-  paginatedSchema,
-  signalSchema,
-  signalSummarySchema,
-} from './types.js';
-import { env } from '@/lib/env.js';
+import { paginatedSchema, signalSchema, signalSummarySchema } from './types.js';
 import { getPublishedSignals } from './signals-store.js';
 
 /**
  * Posts (signals) vêm de arquivos estáticos em content/signals/ (ver
- * signals-store.js) — sem API, sem banco. Entities continuam vindo da API
- * (apps/api, https://api.fazedorismo.com/api/v1).
+ * signals-store.js). Sem API, sem banco: o site é 100% estático.
  */
-
-const BASE = env.UMSINALDEFE_API_URL;
-
-async function apiGet(path, params) {
-  const qs = params
-    ? Object.entries(params)
-        .filter(([, v]) => v != null && v !== '')
-        .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
-        .join('&')
-    : '';
-  const url = `${BASE}${path}${qs ? `?${qs}` : ''}`;
-  const res = await fetch(url, { cache: 'no-store', headers: { Accept: 'application/json' } });
-  if (!res.ok) {
-    const err = new Error(`API ${res.status} em ${path}`);
-    err.status = res.status;
-    throw err;
-  }
-  return res.json();
-}
 
 export const getSignal = async (slug) => {
   const found = getPublishedSignals().find((s) => s.slug === slug);
@@ -81,9 +55,3 @@ export const getRelatedSignals = async (slug) => {
 
   return z.array(signalSummarySchema).parse(related);
 };
-
-export const getEntity = async (slug) =>
-  entitySchema.parse(await apiGet(`/entities/${encodeURIComponent(slug)}`));
-
-export const listEntities = async (params = {}) =>
-  paginatedSchema(entitySchema).parse(await apiGet('/entities', params));

@@ -19,7 +19,6 @@ import { SemanticFAQ } from '@/components/SemanticFAQ.jsx';
 import { AdSlot } from '@/components/AdSlot.jsx';
 import { RelatedSignals } from '@/components/RelatedSignals.jsx';
 import { TopicSignals } from '@/components/TopicSignals.jsx';
-import { EntityLinks } from '@/components/EntityLinks.jsx';
 import { IntentNav } from '@/components/IntentNav.jsx';
 import { FavoriteButton } from '@/components/FavoriteButton.jsx';
 import { ShareButton } from '@/components/ShareButton.jsx';
@@ -155,7 +154,6 @@ export default async function PsalmPage({ params }) {
 
         <SemanticFAQ entries={signal.faq} />
 
-        <EntityLinks entitySlugs={signal.entitySlugs} />
 
         <RelatedSignals slug={slug} />
 
