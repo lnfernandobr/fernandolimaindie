@@ -1,66 +1,7 @@
 import { connectDatabase, disconnectDatabase } from '../src/config/database.js';
 import { logger } from '../src/config/logger.js';
-import { TopicModel } from '../src/modules/topics/topics.model.js';
 import { EntityModel } from '../src/modules/entities/entities.model.js';
 
-const TOPICS = [
-  {
-    slug: 'fe',
-    name: 'Fé',
-    intent: 'faith',
-    description: 'Salmos, orações e devocionais pra fortalecer a fé no dia a dia — na dúvida, na espera e na alegria.',
-    answer: 'Fé não é ausência de dúvida — é confiar mesmo sem ver tudo. Salmos, orações curtas e devocionais ajudam a manter o coração firme quando a vida aperta.',
-    bodyHtml: '<p>A fé se alimenta de prática: uma oração pela manhã, um salmo à noite, um momento de silêncio no meio do dia. Aqui você encontra textos curtos pra rezar e voltar a confiar.</p>',
-  },
-  {
-    slug: 'cura',
-    name: 'Cura',
-    intent: 'healing',
-    description: 'Orações e salmos de cura pro corpo, pra alma e pras feridas que ninguém vê.',
-    answer: 'Pedir cura é entregar a Deus o que dói — no corpo e no coração. A oração caminha junto com o tratamento médico, nunca no lugar dele.',
-    bodyHtml: '<p>Cura é processo. Salmos como o 41 e o 147, orações a Jesus e a entrega diária sustentam quem atravessa a doença — a própria ou a de quem ama.</p>',
-  },
-  {
-    slug: 'protecao',
-    name: 'Proteção',
-    intent: 'protection',
-    description: 'Salmos, orações e devocionais pra pedir proteção pra você, sua casa e quem você ama.',
-    answer: 'A proteção espiritual passa por oração diária, salmos como o 91 e a fé de que Deus te cobre como sombra. Aqui você encontra preces curtas, antigas e novas, pra esses momentos.',
-    bodyHtml: '<p>Em momentos de medo, ameaça ou cansaço, pedir proteção é um gesto simples — e antigo. Salmos como o 91, orações a São Miguel Arcanjo e o sinal da cruz acompanham gerações de famílias brasileiras.</p>',
-  },
-  {
-    slug: 'ansiedade',
-    name: 'Ansiedade',
-    intent: 'anxiety',
-    description: 'Orações curtas, salmos e respirações pra acalmar o coração quando a ansiedade aperta.',
-    answer: 'Pra ansiedade, comece respirando devagar e diga uma oração curta — Filipenses 4, "Deus está comigo", um pai-nosso. A oração não cura sozinha, mas ancora você no agora.',
-    bodyHtml: '<p>A ansiedade rouba o presente. Oração e respiração trazem você de volta. Você não precisa rezar bonito — só precisa rezar verdadeiro.</p>',
-  },
-  {
-    slug: 'sono',
-    name: 'Sono',
-    intent: 'sleep',
-    description: 'Orações da noite pra dormir em paz, agradecer pelo dia e entregar amanhã.',
-    answer: 'Antes de dormir, respire fundo, agradeça pelo dia e entregue o que te preocupa. Uma oração curta — pai-nosso, salmo 4, "Senhor, fica comigo" — basta pra encerrar o dia em paz.',
-    bodyHtml: '<p>A noite é hora de soltar. Não de resolver tudo, mas de entregar. Oração antes de dormir não é tarefa — é cuidado.</p>',
-  },
-  {
-    slug: 'gratidao',
-    name: 'Gratidão',
-    intent: 'gratitude',
-    description: 'Devocionais e orações de agradecimento pra começar e terminar o dia.',
-    answer: 'Gratidão é a primeira oração. Dizer obrigado pelo dia, pela saúde, por quem te ama — antes de pedir qualquer coisa — muda como você atravessa o que vem depois.',
-    bodyHtml: '<p>"Em tudo dai graças" (1 Tessalonicenses 5:18) não é ingenuidade — é prática. Agradecer no meio do difícil é o que separa fé de superstição.</p>',
-  },
-  {
-    slug: 'familia',
-    name: 'Família',
-    intent: 'family',
-    description: 'Orações pela família, pelos filhos, pelo casamento e pela casa.',
-    answer: 'Rezar pela família é guardar quem você ama mesmo quando vocês estão longe. Uma oração curta pela manhã ou antes de dormir vale por horas de preocupação.',
-    bodyHtml: '<p>Família se constrói no dia a dia — e na oração também. Pedir bênção pelos filhos, pelo casamento, pelos pais é uma prática que carrega gerações.</p>',
-  },
-];
 
 const ENTITIES = [
   {
@@ -187,7 +128,6 @@ const upsertMany = async (Model, docs, label) => {
 const run = async () => {
   await connectDatabase();
   try {
-    await upsertMany(TopicModel, TOPICS, 'topics');
     await upsertMany(EntityModel, ENTITIES, 'entities');
     logger.info('umsinaldefe seed complete');
   } finally {

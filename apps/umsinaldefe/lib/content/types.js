@@ -82,27 +82,6 @@ export const signalSummarySchema = z.object({
   publishedAt: z.coerce.date(),
 });
 
-export const topicSchema = z.object({
-  id: z.string(),
-  slug: z.string(),
-  name: z.string(),
-  intent: z.enum(INTENT_KEYS),
-  description: z.string(),
-  answer: z.string(),
-  bodyHtml: z.string(),
-  relatedTopicSlugs: z.array(z.string()),
-  heroImageUrl: z.string().nullable(),
-  lang: z.string(),
-});
-
-export const topicSummarySchema = z.object({
-  slug: z.string(),
-  name: z.string(),
-  intent: z.enum(INTENT_KEYS),
-  description: z.string(),
-  heroImageUrl: z.string().nullable(),
-});
-
 export const entitySchema = z.object({
   id: z.string(),
   slug: z.string(),

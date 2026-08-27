@@ -4,16 +4,14 @@ import {
   paginatedSchema,
   signalSchema,
   signalSummarySchema,
-  topicSchema,
-  topicSummarySchema,
 } from './types.js';
 import { env } from '@/lib/env.js';
 import { getPublishedSignals } from './signals-store.js';
 
 /**
  * Posts (signals) vêm de arquivos estáticos em content/signals/ (ver
- * signals-store.js) — sem API, sem banco. Topics e entities continuam vindo
- * da API (apps/api, https://api.fazedorismo.com/api/v1).
+ * signals-store.js) — sem API, sem banco. Entities continuam vindo da API
+ * (apps/api, https://api.fazedorismo.com/api/v1).
  */
 
 const BASE = env.UMSINALDEFE_API_URL;
@@ -83,12 +81,6 @@ export const getRelatedSignals = async (slug) => {
 
   return z.array(signalSummarySchema).parse(related);
 };
-
-export const getTopic = async (slug) =>
-  topicSchema.parse(await apiGet(`/topics/${encodeURIComponent(slug)}`));
-
-export const listTopics = async (params = {}) =>
-  paginatedSchema(topicSummarySchema).parse(await apiGet('/topics', params));
 
 export const getEntity = async (slug) =>
   entitySchema.parse(await apiGet(`/entities/${encodeURIComponent(slug)}`));

@@ -63,7 +63,6 @@ export default async function HomePage() {
       <Intentions />
       {psalms.length > 0 && <FeaturedPsalms psalms={psalms} />}
       {prayers.length > 0 && <PrayersList prayers={prayers} />}
-      {/* Formulário de inscrição escondido por enquanto (reativar: <SubscribeForm />). */}
     </>
   );
 }
