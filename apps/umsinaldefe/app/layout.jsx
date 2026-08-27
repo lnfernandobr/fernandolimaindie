@@ -1,4 +1,5 @@
 import Script from 'next/script';
+import { Newsreader, Spectral, Schibsted_Grotesk } from 'next/font/google';
 import './globals.css';
 import { siteConfig } from '../lib/site-config.js';
 import { buildMetadata } from '../lib/seo/metadata.js';
@@ -26,6 +27,27 @@ export const viewport = {
   viewportFit: 'cover',
 };
 
+const newsreader = Newsreader({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-display-nf',
+  display: 'swap',
+});
+const spectral = Spectral({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  style: ['normal', 'italic'],
+  variable: '--font-serif-nf',
+  display: 'swap',
+});
+const schibstedGrotesk = Schibsted_Grotesk({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-sans-nf',
+  display: 'swap',
+});
+
 const rootGraph = ldGraph(organizationLd(), websiteLd());
 
 /* Inline script applied before first paint to avoid theme flash */
@@ -33,15 +55,14 @@ const themeScript = `(function(){try{var t=localStorage.getItem("usdf-theme");if
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="pt-BR" data-theme="day" suppressHydrationWarning>
+    <html
+      lang="pt-BR"
+      data-theme="day"
+      suppressHydrationWarning
+      className={`${newsreader.variable} ${spectral.variable} ${schibstedGrotesk.variable}`}
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500;1,6..72,600&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=Schibsted+Grotesk:wght@400;500;600;700&display=swap"
-        />
         <script {...jsonLdScript(rootGraph)} />
       </head>
       <body>

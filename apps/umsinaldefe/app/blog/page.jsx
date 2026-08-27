@@ -7,21 +7,20 @@ import { IntentNav } from '@/components/IntentNav.jsx';
 
 export const revalidate = 86400;
 
-export const metadata = buildMetadata({
-  title: 'Blog: vida com fé, família e superação',
-  description:
-    'Artigos de ajuda com base bíblica: família, casamento, superação da ansiedade, vida cristã e finanças com fé. Conversa de gente pra gente, sem moralismo.',
-  path: '/blog',
-});
+export async function generateMetadata() {
+  const { items } = await listSignals({ kind: 'article', limit: 1 });
+  return buildMetadata({
+    title: 'Blog: vida com fé, família e superação',
+    description:
+      'Artigos de ajuda com base bíblica: família, casamento, superação da ansiedade, vida cristã e finanças com fé. Conversa de gente pra gente, sem moralismo.',
+    path: '/blog',
+    noIndex: items.length === 0,
+  });
+}
 
 export default async function BlogIndexPage() {
-  let posts = [];
-  try {
-    const result = await listSignals({ kind: 'article', limit: 100 });
-    posts = result.items;
-  } catch {
-    // API indisponível: mostra a casca sem listagem
-  }
+  const result = await listSignals({ kind: 'article', limit: 100 });
+  const posts = result.items;
 
   const breadcrumbs = [
     { name: 'Início', path: '/' },

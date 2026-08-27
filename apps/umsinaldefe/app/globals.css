@@ -39,9 +39,9 @@
   --pine-line:    rgba(203,169,104,0.22);
   --on-pine:      #EFE7D6;
   --on-pine-soft: #B7B6A1;
-  --font-display: "Newsreader", Georgia, serif;
-  --font-serif:   "Spectral", Georgia, serif;
-  --font-sans:    "Schibsted Grotesk", system-ui, sans-serif;
+  --font-display: var(--font-display-nf), Georgia, serif;
+  --font-serif:   var(--font-serif-nf), Georgia, serif;
+  --font-sans:    var(--font-sans-nf), system-ui, sans-serif;
   --r-sm:   10px;
   --r-md:   16px;
   --r-lg:   22px;
