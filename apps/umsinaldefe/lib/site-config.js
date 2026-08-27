@@ -1,7 +1,6 @@
 import { env } from './env.js';
 
 const social = {
-  instagram: 'https://www.instagram.com/umsinaldefe/',
   youtube: 'https://www.youtube.com/@umsinaldefe',
 };
 

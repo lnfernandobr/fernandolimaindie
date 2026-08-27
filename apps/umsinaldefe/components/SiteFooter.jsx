@@ -45,15 +45,6 @@ export function SiteFooter() {
           <p className="footer-tag t-soft">um sinal de fé todo dia</p>
           <div className="footer-social">
             <a
-              href={siteConfig.social.instagram}
-              target="_blank"
-              rel="me noopener noreferrer"
-              aria-label="Instagram do Um Sinal de Fé"
-              title="Instagram"
-            >
-              <Glyph name="instagram" size={20} />
-            </a>
-            <a
               href={siteConfig.social.youtube}
               target="_blank"
               rel="me noopener noreferrer"

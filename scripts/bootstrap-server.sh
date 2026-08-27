@@ -24,11 +24,6 @@ fi
 command -v pnpm >/dev/null 2>&1 || sudo npm i -g pnpm
 command -v pm2  >/dev/null 2>&1 || sudo npm i -g pm2
 
-log "Installing ffmpeg + DejaVu font (Instagram video render)"
-if ! command -v ffmpeg >/dev/null 2>&1; then
-  sudo apt-get update && sudo apt-get install -y ffmpeg fonts-dejavu-core
-fi
-
 log "Installing Doppler CLI"
 if ! command -v doppler >/dev/null 2>&1; then
   curl -sLf --tlsv1.2 --proto '=https' --retry 3 \

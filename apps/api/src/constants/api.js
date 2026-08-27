@@ -12,7 +12,6 @@ export const PATHS = Object.freeze({
   ENTITIES: '/entities',
   GENERATION: '/generation',
   MEDIA: '/media',
-  INSTAGRAM: '/instagram',
   SLUG_PARAM: '/:slug',
   SIGNAL_RELATED: '/:slug/related',
 });

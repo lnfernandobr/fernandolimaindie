@@ -15,15 +15,11 @@ RUN pnpm install --filter @fernandolimaindie/api... --frozen-lockfile
 FROM node:24-alpine
 WORKDIR /app
 RUN corepack enable
-# ffmpeg + fonte (DejaVu) para renderizar os vídeos do Instagram
-RUN apk add --no-cache ffmpeg ttf-dejavu
 COPY --from=deps /app /app
 COPY pnpm-workspace.yaml package.json ./
 COPY apps/api apps/api
 
 WORKDIR /app/apps/api
 ENV NODE_ENV=production
-# no Alpine a fonte fica neste caminho (no Ubuntu/WSL local é truetype/dejavu)
-ENV INSTAGRAM_VIDEO_FONT_FILE=/usr/share/fonts/ttf-dejavu/DejaVuSans-Bold.ttf
 EXPOSE 4000
 CMD ["pnpm", "start"]

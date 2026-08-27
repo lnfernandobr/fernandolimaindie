@@ -1,6 +1,5 @@
 'use client';
 import { useState, useEffect, useCallback, Fragment } from 'react';
-import InstagramPanel from './instagram-panel.jsx';
 import ContentQueuePanel from './content-queue-panel.jsx';
 
 // ── API hook ─────────────────────────────────────────────────────────
@@ -538,8 +537,6 @@ function ContentDashboard({ session }) {
 }
 
 function Dashboard({ session, onLogout }) {
-  const [tab, setTab] = useState('content');
-
   return (
     <>
       <div className="header">
@@ -551,23 +548,8 @@ function Dashboard({ session, onLogout }) {
         </span>
         <button className="btn-sm" onClick={onLogout}>Sair</button>
       </div>
-      <div className="nav-tabs">
-        <button
-          className={`nav-tab ${tab === 'content' ? 'active' : ''}`}
-          onClick={() => setTab('content')}
-        >
-          Um Sinal de Fé
-        </button>
-        <button
-          className={`nav-tab ${tab === 'instagram' ? 'active' : ''}`}
-          onClick={() => setTab('instagram')}
-        >
-          Instagram
-        </button>
-      </div>
       <div className="container">
-        {tab === 'content' && <ContentDashboard session={session} />}
-        {tab === 'instagram' && <InstagramPanel session={session} />}
+        <ContentDashboard session={session} />
       </div>
     </>
   );
