@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Glyph } from './Glyph.jsx';
 import { signalUrl } from '@/lib/content/signal-url.js';
 import { INTENT_LABELS } from '@/lib/content/intents.js';
+import { BrandMark } from './BrandMark.jsx';
 
 const psalmNumber = (slug) => slug.replace(/^salmo-/, '');
 
@@ -40,7 +41,7 @@ export function FeaturedPsalms({ psalms = [] }) {
       <div className="wrap">
         <div className="sec-head reveal">
           <div>
-            <p className="eyebrow"><span className="star">✦</span> Salmos</p>
+            <p className="eyebrow"><BrandMark size={13} className="star" /> Salmos</p>
             <h2 className="display sec-title">Salmos para rezar devagar</h2>
           </div>
           <p className="sec-lead t-soft">

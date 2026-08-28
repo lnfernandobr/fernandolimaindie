@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { BrandMark } from './BrandMark.jsx';
 
 function getTodayLabel() {
   return new Date().toLocaleDateString('pt-BR', {
@@ -21,7 +22,7 @@ export function Hero({ verse = null }) {
       <div className="wrap hero-in">
         <div className="hero-text reveal">
           <p className="eyebrow hero-eyebrow">
-            <span className="star">✦</span> Versículo de hoje
+            <BrandMark size={13} className="star" /> Versículo de hoje
             <span className="hero-date">· {dateStr}</span>
           </p>
 
@@ -64,7 +65,7 @@ export function Hero({ verse = null }) {
             </div>
             <figcaption className="dcard-in">
               <span className="dcard-kicker">Versículo do dia</span>
-              <span className="dcard-star">✦</span>
+              <BrandMark size={22} className="dcard-star" />
               {verse ? (
                 <>
                   <p className="dcard-theme">{verse.ref}</p>

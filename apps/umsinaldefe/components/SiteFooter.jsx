@@ -3,6 +3,7 @@ import { Glyph } from './Glyph.jsx';
 import { siteConfig } from '@/lib/site-config.js';
 import { navTree } from '@/lib/content/taxonomy.js';
 import { INTENT_SLUGS, INTENT_LABELS } from '@/lib/content/intents.js';
+import { BrandMark } from './BrandMark.jsx';
 
 // As colunas saem do registro de seções: seção nova aparece aqui sozinha.
 const GROUPS = navTree();
@@ -15,7 +16,7 @@ export function SiteFooter() {
       <div className="wrap footer-in">
         <div className="footer-brand">
           <Link className="brand" href="/">
-            <span className="brand-star">✦</span>
+            <BrandMark size={19} className="brand-star" />
             <span className="brand-name">Um Sinal de Fé</span>
           </Link>
           <p className="footer-tag t-soft">um sinal de fé todo dia</p>

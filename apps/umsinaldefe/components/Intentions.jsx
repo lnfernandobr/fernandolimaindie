@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Glyph } from './Glyph.jsx';
 import { INTENTIONS } from '@/lib/design-data.js';
+import { BrandMark } from './BrandMark.jsx';
 
 const norm = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 
@@ -16,7 +17,7 @@ export function Intentions() {
       <div className="wrap">
         <div className="sec-head reveal">
           <div>
-            <p className="eyebrow"><span className="star">✦</span> Por intenção</p>
+            <p className="eyebrow"><BrandMark size={13} className="star" /> Por intenção</p>
             <h2 className="display sec-title">Onde está seu coração hoje?</h2>
           </div>
           <p className="sec-lead t-soft">

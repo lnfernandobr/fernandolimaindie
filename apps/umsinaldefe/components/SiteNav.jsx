@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { Glyph } from './Glyph.jsx';
 import { navTree } from '@/lib/content/taxonomy.js';
 import { INTENT_SLUGS, INTENT_LABELS } from '@/lib/content/intents.js';
+import { BrandMark } from './BrandMark.jsx';
 
 const GROUPS = navTree();
 
@@ -90,7 +91,7 @@ export function SiteNav() {
     <header className={`nav ${scrolled ? 'is-scrolled' : ''}`} ref={navRef}>
       <div className="wrap nav-in">
         <Link className="brand" href="/">
-          <span className="brand-star">✦</span>
+          <BrandMark size={19} className="brand-star" />
           <span className="brand-name">Um Sinal de Fé</span>
         </Link>
 
@@ -218,7 +219,7 @@ export function SiteNav() {
           })}
 
           <Link href="/mapa" className="sheet-plain">Mapa do site</Link>
-          <Link className="btn btn-gold sheet-cta" href="/versiculo-do-dia">
+          <Link className="btn btn-accent sheet-cta" href="/versiculo-do-dia">
             Versículo de hoje
           </Link>
         </div>

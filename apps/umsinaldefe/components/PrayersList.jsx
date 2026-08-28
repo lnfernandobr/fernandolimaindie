@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { Glyph } from './Glyph.jsx';
 import { signalUrl } from '@/lib/content/signal-url.js';
 import { INTENT_LABELS } from '@/lib/content/intents.js';
+import { BrandMark } from './BrandMark.jsx';
 
 /**
  * Orações em destaque na home. Recebe signals (kind=prayer) da API — só linka o
@@ -13,14 +14,14 @@ export function PrayersList({ prayers = [] }) {
   if (!prayers.length) return null;
 
   return (
-    <section className="section prayers pine" id="oracoes">
+    <section className="section prayers deep" id="oracoes">
       <div className="wrap">
         <div className="sec-head reveal">
           <div>
-            <p className="eyebrow on-pine"><span className="star">✦</span> Orações</p>
-            <h2 className="display sec-title on-pine">Pra ter na ponta da língua</h2>
+            <p className="eyebrow on-deep"><BrandMark size={13} className="star" /> Orações</p>
+            <h2 className="display sec-title on-deep">Pra ter na ponta da língua</h2>
           </div>
-          <p className="sec-lead on-pine-soft">
+          <p className="sec-lead on-deep-soft">
             Orações curtas pra rezar de cor, antes de dormir, ao acordar, ou quando a causa
             parece impossível.
           </p>
@@ -45,7 +46,7 @@ export function PrayersList({ prayers = [] }) {
 
         <div className="sec-more reveal">
           <button
-            className="btn btn-gold"
+            className="btn btn-accent"
             onClick={() => router.push('/oracao')}
           >
             Ver todas as orações <Glyph name="arrow" size={16} />

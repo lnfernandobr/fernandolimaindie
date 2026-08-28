@@ -1,5 +1,5 @@
 import Script from 'next/script';
-import { Newsreader, Spectral, Schibsted_Grotesk } from 'next/font/google';
+import { Fraunces, Source_Serif_4 } from 'next/font/google';
 import './globals.css';
 import { siteConfig } from '../lib/site-config.js';
 import { buildMetadata } from '../lib/seo/metadata.js';
@@ -21,30 +21,26 @@ export const metadata = {
 };
 
 export const viewport = {
-  themeColor: '#FBF6EE',
+  themeColor: '#FAF8F5',
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
 };
 
-const newsreader = Newsreader({
+// Duas famílias, não três: Fraunces nos títulos, Source Serif no texto e na
+// interface. Menos bytes na rede e uma voz tipográfica só.
+const fraunces = Fraunces({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+  weight: ['400', '600', '700'],
   style: ['normal', 'italic'],
   variable: '--font-display-nf',
   display: 'swap',
 });
-const spectral = Spectral({
+const sourceSerif = Source_Serif_4({
   subsets: ['latin'],
-  weight: ['400', '500', '600'],
+  weight: ['400', '600', '700'],
   style: ['normal', 'italic'],
   variable: '--font-serif-nf',
-  display: 'swap',
-});
-const schibstedGrotesk = Schibsted_Grotesk({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-sans-nf',
   display: 'swap',
 });
 
@@ -59,7 +55,7 @@ export default function RootLayout({ children }) {
       lang="pt-BR"
       data-theme="day"
       suppressHydrationWarning
-      className={`${newsreader.variable} ${spectral.variable} ${schibstedGrotesk.variable}`}
+      className={`${fraunces.variable} ${sourceSerif.variable}`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
