@@ -6,7 +6,7 @@ import { INTENT_LABELS } from '@/lib/content/intents.js';
 import { BrandMark } from './BrandMark.jsx';
 
 /**
- * Orações em destaque na home. Recebe signals (kind=prayer) da API — só linka o
+ * Orações em destaque na home. Recebe signals (kind=prayer) da API, só linka o
  * que existe. Se não houver nenhum, a home esconde a seção (ver app/page.jsx).
  */
 export function PrayersList({ prayers = [] }) {

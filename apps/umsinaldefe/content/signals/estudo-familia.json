@@ -1,0 +1,60 @@
+{
+  "id": "bbd2c960",
+  "slug": "estudo-familia",
+  "kind": "study",
+  "intent": "family",
+  "topicSlug": "casa-e-familia",
+  "entitySlugs": [],
+  "title": "Estudo bíblico sobre família: o que a Palavra diz sobre a sua casa",
+  "answer": "A Bíblia trata a casa como o primeiro lugar onde a fé é aprendida, e não esconde que família dá trabalho. As famílias que ela narra são cheias de ciúme, mentira e reconciliação difícil, e Deus trabalha dentro delas assim mesmo.",
+  "summary": "Se você procura na Bíblia um modelo de família sem conflito, não vai achar. O que existe lá é gente real, casa bagunçada e um Deus que insiste em construir alguma coisa no meio disso.",
+  "bodyHtml": "<p><strong>As famílias da Bíblia são um desastre, e isso conforta</strong></p><p>Abraão mente sobre a esposa duas vezes pra salvar a própria pele. Isaque escolhe abertamente um filho, e Rebeca escolhe o outro. Jacó engana o pai e depois é enganado pelo sogro. Os filhos de Jacó vendem o irmão mais novo como escravo e mentem sobre isso por vinte anos. Davi perde completamente o controle da própria casa.</p><p>Nada disso está lá por acidente. A Bíblia poderia ter editado essas histórias e não editou. O recado é útil: se a sua casa tem briga antiga, silêncio pesado, filho que não fala com irmão, você não está fora do alcance do que Deus faz. Você está exatamente no material com que Ele costuma trabalhar.</p><p>Isso não é permissão pra desistir de melhorar. É permissão pra parar de comparar sua família com uma foto que nunca existiu.</p><p><strong>O lugar onde a fé é aprendida</strong></p><p>Deuteronômio 6,6 e 7 é o texto mais direto sobre isso. Depois de mandar que as palavras estejam no coração, o texto manda ensiná-las aos filhos \"falando delas assentado em tua casa, andando pelo caminho, ao deitar e ao levantar\".</p><p>Repare no cenário: sentado, andando, deitando, levantando. Não é aula, é convivência. A fé passa nos intervalos, no carro a caminho da escola, na cozinha, na hora de apagar a luz.</p><p>Isso alivia e cobra ao mesmo tempo. Alivia porque você não precisa ser professor de teologia. Cobra porque a criança aprende mais do que ela vê você fazer com raiva, dinheiro e erro do que de qualquer coisa que você explique.</p><p><strong>O ponto em que quase toda casa trava</strong></p><p>Colossenses 3,13 dá uma instrução curta e difícil: \"suportando-vos uns aos outros e perdoando-vos\". A palavra traduzida por suportar, no grego, tem o sentido de aguentar, tolerar o que incomoda. Não é elogio, é realismo. Conviver inclui aturar.</p><p>E o versículo continua com uma medida perigosa: perdoar \"assim como o Senhor vos perdoou\". Não é perdoar quando o outro merecer, nem quando ele pedir direito. É a medida de quem perdoou primeiro.</p><p>Vale dizer o que isso não é. Perdoar não é fingir que não doeu, não é voltar a confiar de imediato, e não é permanecer em situação de violência. Perdão desarma o seu rancor, não obriga você a se colocar de novo no alcance de quem machuca.</p><p><strong>Quando você é o único que crê</strong></p><p>É uma situação comum e pouco falada. Pedro escreve sobre isso na primeira carta, capítulo 3, dirigindo-se a mulheres casadas com homens que não compartilhavam a fé. O conselho dele não é pregar mais. É viver de um jeito que fale sozinho, \"sem palavra\".</p><p>Na prática, quem tenta converter a casa por argumento costuma conseguir o contrário: a fé vira motivo de briga e a pessoa passa a associar Deus a cobrança. Já quem vive com mais paciência do que tinha antes provoca uma pergunta que nenhum sermão provoca.</p><p>Enquanto isso, reze pela sua casa em silêncio e sem prazo. Agostinho demorou décadas pra se converter, e a mãe dele rezou esse tempo todo sem ver resultado.</p>",
+  "chunks": [
+    {
+      "id": "familia-real",
+      "html": "<p><strong>As famílias da Bíblia são um desastre, e isso conforta</strong></p><p>Abraão mente sobre a esposa duas vezes pra salvar a própria pele. Isaque escolhe abertamente um filho, e Rebeca escolhe o outro. Jacó engana o pai e depois é enganado pelo sogro. Os filhos de Jacó vendem o irmão mais novo como escravo e mentem sobre isso por vinte anos. Davi perde completamente o controle da própria casa.</p><p>Nada disso está lá por acidente. A Bíblia poderia ter editado essas histórias e não editou. O recado é útil: se a sua casa tem briga antiga, silêncio pesado, filho que não fala com irmão, você não está fora do alcance do que Deus faz. Você está exatamente no material com que Ele costuma trabalhar.</p><p>Isso não é permissão pra desistir de melhorar. É permissão pra parar de comparar sua família com uma foto que nunca existiu.</p>"
+    },
+    {
+      "id": "onde-a-fe-se-aprende",
+      "html": "<p><strong>O lugar onde a fé é aprendida</strong></p><p>Deuteronômio 6,6 e 7 é o texto mais direto sobre isso. Depois de mandar que as palavras estejam no coração, o texto manda ensiná-las aos filhos \"falando delas assentado em tua casa, andando pelo caminho, ao deitar e ao levantar\".</p><p>Repare no cenário: sentado, andando, deitando, levantando. Não é aula, é convivência. A fé passa nos intervalos, no carro a caminho da escola, na cozinha, na hora de apagar a luz.</p><p>Isso alivia e cobra ao mesmo tempo. Alivia porque você não precisa ser professor de teologia. Cobra porque a criança aprende mais do que ela vê você fazer com raiva, dinheiro e erro do que de qualquer coisa que você explique.</p>"
+    },
+    {
+      "id": "casamento-e-perdao",
+      "html": "<p><strong>O ponto em que quase toda casa trava</strong></p><p>Colossenses 3,13 dá uma instrução curta e difícil: \"suportando-vos uns aos outros e perdoando-vos\". A palavra traduzida por suportar, no grego, tem o sentido de aguentar, tolerar o que incomoda. Não é elogio, é realismo. Conviver inclui aturar.</p><p>E o versículo continua com uma medida perigosa: perdoar \"assim como o Senhor vos perdoou\". Não é perdoar quando o outro merecer, nem quando ele pedir direito. É a medida de quem perdoou primeiro.</p><p>Vale dizer o que isso não é. Perdoar não é fingir que não doeu, não é voltar a confiar de imediato, e não é permanecer em situação de violência. Perdão desarma o seu rancor, não obriga você a se colocar de novo no alcance de quem machuca.</p>"
+    },
+    {
+      "id": "quando-a-casa-nao-e-crista",
+      "html": "<p><strong>Quando você é o único que crê</strong></p><p>É uma situação comum e pouco falada. Pedro escreve sobre isso na primeira carta, capítulo 3, dirigindo-se a mulheres casadas com homens que não compartilhavam a fé. O conselho dele não é pregar mais. É viver de um jeito que fale sozinho, \"sem palavra\".</p><p>Na prática, quem tenta converter a casa por argumento costuma conseguir o contrário: a fé vira motivo de briga e a pessoa passa a associar Deus a cobrança. Já quem vive com mais paciência do que tinha antes provoca uma pergunta que nenhum sermão provoca.</p><p>Enquanto isso, reze pela sua casa em silêncio e sem prazo. Agostinho demorou décadas pra se converter, e a mãe dele rezou esse tempo todo sem ver resultado.</p>"
+    }
+  ],
+  "faq": [
+    {
+      "question": "O que a Bíblia diz sobre a família hoje?",
+      "answer": "Ela trata a casa como o primeiro lugar de formação da fé (Deuteronômio 6) e como um espaço de perdão constante (Colossenses 3,13). Não apresenta um modelo único de arranjo familiar sem conflito: as famílias que narra são cheias de erro, e é justamente dentro delas que a história continua."
+    },
+    {
+      "question": "Como ter um culto ou momento de oração em família?",
+      "answer": "Comece curto e no mesmo horário, de preferência ligado a uma refeição ou à hora de dormir. Cinco minutos com um versículo, um agradecimento de cada um e uma oração curta sustentam por anos. Encontro longo demais no começo costuma durar duas semanas."
+    },
+    {
+      "question": "O que fazer quando a família está brigada há anos?",
+      "answer": "Comece pela parte que depende só de você, que é parar de alimentar. Romanos 12,18 diz \"no que depender de vós, tende paz com todos\", e esse \"no que depender de vós\" reconhece que existe parte que não depende. Reconciliação leva tempo e às vezes não vem, e ainda assim vale tirar o peso do seu lado."
+    },
+    {
+      "question": "A Bíblia manda a mulher ser submissa ao marido?",
+      "answer": "Efésios 5 é o texto citado, e ele começa no versículo 21 com \"sujeitando-vos uns aos outros\", dirigido aos dois. Em seguida pede ao marido que ame a esposa como Cristo amou a Igreja, que no contexto significa dar a própria vida. Ler só o versículo da esposa e ignorar os que vêm antes e depois inverte o sentido do texto."
+    }
+  ],
+  "verses": [],
+  "category": null,
+  "relatedIntents": [
+    "forgiveness",
+    "gratitude",
+    "finances"
+  ],
+  "audioUrl": null,
+  "imageUrl": null,
+  "lang": "pt-BR",
+  "status": "published",
+  "publishedAt": "2026-08-28T09:00:00.000Z"
+}

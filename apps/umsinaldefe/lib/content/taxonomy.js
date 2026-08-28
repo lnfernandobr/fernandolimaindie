@@ -67,7 +67,9 @@ export const SECTIONS = [
     label: 'Livros da Bíblia',
     navNote: 'Ordem, divisão e abreviaturas',
     title: 'Os livros da Bíblia',
-    lead: 'Os 66 livros da Bíblia explicados: a ordem certa, a divisão entre Antigo e Novo Testamento, as abreviaturas e o que cada livro conta.',
+    // O site é interconfessional: 66 é o cânon protestante, o católico tem 73.
+    // Falar em "66 livros" como se fosse o único número exclui metade do público.
+    lead: 'Os livros da Bíblia explicados: a ordem certa, a divisão entre Antigo e Novo Testamento, as abreviaturas das citações e a diferença entre a Bíblia católica e a evangélica.',
     itemLabel: 'Livro',
     glyph: 'scroll',
     priority: 0.8,

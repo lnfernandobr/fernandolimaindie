@@ -29,7 +29,7 @@ function PsalmCard({ s, featured }) {
 }
 
 /**
- * Salmos em destaque na home. Recebe signals (kind=psalm) da API — só linka o
+ * Salmos em destaque na home. Recebe signals (kind=psalm) da API, só linka o
  * que existe. Se não houver nenhum, a home esconde a seção (ver app/page.jsx).
  */
 export function FeaturedPsalms({ psalms = [] }) {

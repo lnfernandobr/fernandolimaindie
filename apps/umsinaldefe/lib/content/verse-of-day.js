@@ -1,7 +1,7 @@
 /**
  * "Versículo do dia": derivado das coletâneas (kind=verse_collection) que o cron
  * gera. Escolha determinística pelo dia (muda à meia-noite UTC). SEM pool
- * estático — a página enche conforme o cron gera a Bíblia por tema, e mostra
+ * estático, a página enche conforme o cron gera a Bíblia por tema, e mostra
  * "em breve" enquanto não houver nada.
  */
 import { listSignals, getSignal } from './api.js';

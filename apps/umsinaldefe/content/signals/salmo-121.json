@@ -5,14 +5,14 @@
   "intent": "protection",
   "topicSlug": "salmos-de-protecao",
   "entitySlugs": [],
-  "title": "Salmo 121: o socorro vem do Senhor — o salmo de quem levanta os olhos",
+  "title": "Salmo 121: o socorro vem do Senhor, o salmo de quem levanta os olhos",
   "answer": "O Salmo 121 responde a quem pergunta de onde vem a ajuda: o socorro vem do Senhor que fez o céu e a terra, e Ele não cochila nem dorme enquanto você está no caminho.",
   "summary": "É o salmo de quem está em movimento e sente o peso da estrada, mas também de quem fica em casa esperando alguém voltar. Deus é apresentado aqui não como um símbolo distante, mas como alguém que guarda a sua saída e a sua entrada, agora e para sempre.",
-  "bodyHtml": "<p><em>\"Elevo os olhos para os montes: de onde me virá o socorro? O meu socorro vem do Senhor, que fez o céu e a terra.\"</em> (Salmo 121,1-2). Esse início não é uma declaração tranquila — é uma pergunta real, feita por alguém que está olhando para o horizonte e ainda não sabe o que encontrará pela frente. O salmo começa com os olhos levantados, não com as mãos dadas.</p><p>Na tradição judaica, esse era um dos salmos cantados pelos peregrinos que subiam a Jerusalém para as grandes festas. A estrada era longa, os montes eram reais, e os perigos do caminho também. Mas o salmo não foi guardado só para quem viaja de sandálias numa trilha de pedra. Ele é para você que vai encarar uma cirurgia amanhã, que embarcou num voo com o coração apertado, que mandou um filho para longe e ficou olhando a porta fechada. É para quem sente que o chão pode falhar.</p><p>O que o salmo afirma com firmeza é simples e vai fundo: Deus não cochila. <em>\"Não deixará vacilar o teu pé, não dormirá o teu guardião. Não, não dormirá nem cochilará o guardião de Israel.\"</em> (Salmo 121,3-4). Isso não é promessa de que nada vai doer. É a certeza de que, no meio do que dói, você não está sozinho e sem testemunha. Ele guarda a sua saída e a sua entrada — o momento em que você parte e o momento em que você chega — hoje e em todos os dias que ainda virão.</p><p>Se você chegou até aqui com algo pesado, talvez este salmo já esteja rezando por você antes mesmo de você abrir a boca.</p>",
+  "bodyHtml": "<p><em>\"Elevo os olhos para os montes: de onde me virá o socorro? O meu socorro vem do Senhor, que fez o céu e a terra.\"</em> (Salmo 121,1-2). Esse início não é uma declaração tranquila: é uma pergunta real, feita por alguém que está olhando para o horizonte e ainda não sabe o que encontrará pela frente. O salmo começa com os olhos levantados, não com as mãos dadas.</p><p>Na tradição judaica, esse era um dos salmos cantados pelos peregrinos que subiam a Jerusalém para as grandes festas. A estrada era longa, os montes eram reais, e os perigos do caminho também. Mas o salmo não foi guardado só para quem viaja de sandálias numa trilha de pedra. Ele é para você que vai encarar uma cirurgia amanhã, que embarcou num voo com o coração apertado, que mandou um filho para longe e ficou olhando a porta fechada. É para quem sente que o chão pode falhar.</p><p>O que o salmo afirma com firmeza é simples e vai fundo: Deus não cochila. <em>\"Não deixará vacilar o teu pé, não dormirá o teu guardião. Não, não dormirá nem cochilará o guardião de Israel.\"</em> (Salmo 121,3-4). Isso não é promessa de que nada vai doer. É a certeza de que, no meio do que dói, você não está sozinho e sem testemunha. Ele guarda a sua saída e a sua entrada (o momento em que você parte e o momento em que você chega) hoje e em todos os dias que ainda virão.</p><p>Se você chegou até aqui com algo pesado, talvez este salmo já esteja rezando por você antes mesmo de você abrir a boca.</p>",
   "chunks": [
     {
       "id": "olhos-levantados",
-      "html": "<p><strong>Os olhos levantados para os montes</strong></p><p>O salmo começa com um gesto físico: alguém para no meio do caminho e levanta os olhos. Não é contemplação serena — é a pergunta de quem está em movimento e sente o peso do que ainda falta percorrer. \"De onde me virá o socorro?\" (Salmo 121,1). A resposta não demora: vem do Senhor que fez o céu e a terra. Não de um deus regional, não de um protetor de uma tribo só. Quem criou tudo isso é quem guarda você.</p>"
+      "html": "<p><strong>Os olhos levantados para os montes</strong></p><p>O salmo começa com um gesto físico: alguém para no meio do caminho e levanta os olhos. Não é contemplação serena: é a pergunta de quem está em movimento e sente o peso do que ainda falta percorrer. \"De onde me virá o socorro?\" (Salmo 121,1). A resposta não demora: vem do Senhor que fez o céu e a terra. Não de um deus regional, não de um protetor de uma tribo só. Quem criou tudo isso é quem guarda você.</p>"
     },
     {
       "id": "nao-cochila",
@@ -20,21 +20,21 @@
     },
     {
       "id": "sombra-protecao",
-      "html": "<p><strong>A sombra do Senhor</strong></p><p>\"O Senhor é a tua sombra, à tua direita\" (Salmo 121,5). Sombra, no mundo antigo do Oriente Médio, não era detalhe poético — era proteção real contra um sol que matava. Estar à sombra de alguém significava estar sob o cuidado de alguém mais forte. O salmo coloca Deus exatamente ali: do seu lado, entre você e o que pode queimar. Não na frente abrindo caminho como um general, mas ao lado, como quem caminha junto.</p>"
+      "html": "<p><strong>A sombra do Senhor</strong></p><p>\"O Senhor é a tua sombra, à tua direita\" (Salmo 121,5). Sombra, no mundo antigo do Oriente Médio, não era detalhe poético: era proteção real contra um sol que matava. Estar à sombra de alguém significava estar sob o cuidado de alguém mais forte. O salmo coloca Deus exatamente ali: do seu lado, entre você e o que pode queimar. Não na frente abrindo caminho como um general, mas ao lado, como quem caminha junto.</p>"
     },
     {
       "id": "saida-entrada",
-      "html": "<p><strong>A saída e a entrada</strong></p><p>O salmo termina com uma frase que abraça o movimento inteiro da vida: \"O Senhor guardará a tua saída e a tua entrada, desde agora e para sempre\" (Salmo 121,8). Saída e entrada — o partir e o chegar, o começo e o fim, o dia em que você embarca e o dia em que você volta. Não há momento fora desse cuidado. Você não precisa escolher qual pedaço da jornada entregar a Deus. Ele já está nos dois extremos e em tudo que há no meio.</p>"
+      "html": "<p><strong>A saída e a entrada</strong></p><p>O salmo termina com uma frase que abraça o movimento inteiro da vida: \"O Senhor guardará a tua saída e a tua entrada, desde agora e para sempre\" (Salmo 121,8). Saída e entrada, o partir e o chegar, o começo e o fim, o dia em que você embarca e o dia em que você volta. Não há momento fora desse cuidado. Você não precisa escolher qual pedaço da jornada entregar a Deus. Ele já está nos dois extremos e em tudo que há no meio.</p>"
     }
   ],
   "faq": [
     {
       "question": "Quando é mais indicado rezar o Salmo 121?",
-      "answer": "Antes de uma viagem, de uma cirurgia, de um momento que você sente que está saindo de um lugar seguro para o desconhecido. Também é muito rezado por quem fica em casa esperando alguém voltar — mãe que mandou filho para longe, cônjuge que espera o parceiro chegar. O salmo serve para os dois lados da despedida."
+      "answer": "Antes de uma viagem, de uma cirurgia, de um momento que você sente que está saindo de um lugar seguro para o desconhecido. Também é muito rezado por quem fica em casa esperando alguém voltar, mãe que mandou filho para longe, cônjuge que espera o parceiro chegar. O salmo serve para os dois lados da despedida."
     },
     {
       "question": "O Salmo 121 garante que nada de ruim vai acontecer comigo na viagem?",
-      "answer": "Não. O salmo não é um amuleto e a fé católica não promete ausência de sofrimento. O que o salmo afirma é que você não estará sozinho no que acontecer, e que Deus está atento — de dia e de noite, na saída e na chegada. Isso é diferente de uma garantia de conforto, e é muito mais sólido."
+      "answer": "Não. O salmo não é um amuleto e a fé católica não promete ausência de sofrimento. O que o salmo afirma é que você não estará sozinho no que acontecer, e que Deus está atento, de dia e de noite, na saída e na chegada. Isso é diferente de uma garantia de conforto, e é muito mais sólido."
     },
     {
       "question": "Posso rezar esse salmo por outra pessoa que está viajando ou em perigo?",
@@ -42,7 +42,7 @@
     },
     {
       "question": "Por que o salmo fala em montes se hoje não viajamos por montanhas perigosas?",
-      "answer": "Os montes eram o horizonte real dos peregrinos que iam a Jerusalém — e também lugar de emboscadas e de incerteza. Hoje o seu monte pode ser um corredor de hospital, uma estrada de madrugada ou uma decisão que você não sabe como vai terminar. A imagem é antiga, mas a pergunta que ela carrega é a mesma: de onde vem a minha ajuda?"
+      "answer": "Os montes eram o horizonte real dos peregrinos que iam a Jerusalém, e também lugar de emboscadas e de incerteza. Hoje o seu monte pode ser um corredor de hospital, uma estrada de madrugada ou uma decisão que você não sabe como vai terminar. A imagem é antiga, mas a pergunta que ela carrega é a mesma: de onde vem a minha ajuda?"
     }
   ],
   "verses": [],

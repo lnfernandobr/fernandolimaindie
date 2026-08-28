@@ -827,3 +827,8 @@ a.ccard:hover .ccard-arrow { color: var(--accent); transform: translateX(3px); }
    (BrandMark). O tamanho vem da prop; aqui fica só o alinhamento. */
 .brand-star, .star { display: block; flex: none; color: var(--accent); }
 .on-deep .star { color: var(--accent-soft); }
+
+/* ---------- Cabeçalho de conteúdo ---------- */
+.read-head { margin-bottom: var(--space-5); }
+.read-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: var(--space-3); }
+.read-head h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(30px, 4vw, 46px); line-height: 1.1; margin: 0; }
