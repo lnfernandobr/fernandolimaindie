@@ -15,7 +15,6 @@ function getTodayLabel() {
  */
 export function Hero({ verse = null }) {
   const dateStr = getTodayLabel();
-  const shortVerse = verse && verse.text.length > 64 ? `${verse.text.slice(0, 64)}…` : verse?.text;
 
   return (
     <section className="hero">
@@ -52,29 +51,18 @@ export function Hero({ verse = null }) {
         </div>
 
         <div className="hero-art reveal">
-          <figure className="dcard">
-            <div className="dcard-glow" aria-hidden="true" />
-            <div className="dcard-rays" aria-hidden="true">
-              <span /><span /><span /><span />
-            </div>
-            <div className="dcard-stars" aria-hidden="true">
-              <i style={{ top: '16%', left: '20%' }} />
-              <i style={{ top: '26%', left: '78%' }} />
-              <i style={{ top: '70%', left: '14%' }} />
-              <i style={{ top: '82%', left: '82%' }} />
-            </div>
-            <figcaption className="dcard-in">
-              <span className="dcard-kicker">Versículo do dia</span>
-              <BrandMark size={22} className="dcard-star" />
-              {verse ? (
-                <>
-                  <p className="dcard-theme">{verse.ref}</p>
-                  <p className="dcard-verse">&ldquo;{shortVerse}&rdquo;</p>
-                </>
-              ) : (
-                <p className="dcard-verse">um sinal de fé todo dia</p>
-              )}
+          {/* Lâmina de rosto, no mesmo desenho da imagem de compartilhamento:
+              fios, marca e a referência em destaque. Não repete o texto do
+              versículo, que já é o H1 ao lado. */}
+          <figure className="plate">
+            <hr className="plate-rule" />
+            <figcaption className="plate-in">
+              <span className="plate-kicker">Versículo do dia</span>
+              <p className="plate-ref">{verse ? verse.ref : 'Um Sinal de Fé'}</p>
+              <BrandMark size={20} className="plate-mark" />
+              <p className="plate-date">{dateStr}</p>
             </figcaption>
+            <hr className="plate-rule" />
           </figure>
         </div>
       </div>
