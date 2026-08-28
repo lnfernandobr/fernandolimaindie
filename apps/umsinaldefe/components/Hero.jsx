@@ -18,52 +18,44 @@ export function Hero({ verse = null }) {
 
   return (
     <section className="hero">
-      <div className="wrap hero-in">
-        <div className="hero-text reveal">
-          <p className="eyebrow hero-eyebrow">
-            <BrandMark size={13} className="star" /> Versículo de hoje
-            <span className="hero-date">· {dateStr}</span>
-          </p>
+      <div className="wrap">
+        <p className="eyebrow hero-eyebrow">
+          <BrandMark size={13} className="star" /> Versículo de hoje
+          <span className="hero-date">· {dateStr}</span>
+        </p>
+        <hr className="hero-rule" />
 
-          {verse ? (
-            <>
-              <h1 className="scripture hero-scripture">&ldquo;{verse.text}&rdquo;</h1>
-              <p className="hero-ref">{verse.ref}</p>
-              {verse.thought && <p className="hero-reflection t-soft">{verse.thought}</p>}
-            </>
-          ) : (
-            <>
+        {/* Duas colunas de conteúdo real: o versículo à esquerda, o comentário
+            e as ações à direita. A versão anterior enchia a coluna da direita
+            com um enfeite que repetia a referência e a data, e que no celular
+            ainda aparecia ANTES do versículo. */}
+        <div className="hero-in reveal">
+          <div className="hero-quote">
+            {verse ? (
+              <>
+                <h1 className="scripture hero-scripture">&ldquo;{verse.text}&rdquo;</h1>
+                <p className="hero-ref">{verse.ref}</p>
+              </>
+            ) : (
               <h1 className="scripture hero-scripture">Um sinal de fé, todo dia.</h1>
-              <p className="hero-reflection t-soft">
-                Salmos, orações e versículos chegando, uma palavra por dia. Volte amanhã pra uma nova.
-              </p>
-            </>
-          )}
-
-          <div className="hero-cta">
-            <Link className="btn btn-primary" href={verse ? '/versiculo-do-dia' : '/biblia'}>
-              {verse ? 'Ver o versículo de hoje' : 'Explorar a Bíblia por tema'}
-            </Link>
-            <a className="btn btn-ghost" href="#intencoes">
-              Onde está seu coração?
-            </a>
+            )}
           </div>
-        </div>
 
-        <div className="hero-art reveal">
-          {/* Lâmina de rosto, no mesmo desenho da imagem de compartilhamento:
-              fios, marca e a referência em destaque. Não repete o texto do
-              versículo, que já é o H1 ao lado. */}
-          <figure className="plate">
-            <hr className="plate-rule" />
-            <figcaption className="plate-in">
-              <span className="plate-kicker">Versículo do dia</span>
-              <p className="plate-ref">{verse ? verse.ref : 'Um Sinal de Fé'}</p>
-              <BrandMark size={20} className="plate-mark" />
-              <p className="plate-date">{dateStr}</p>
-            </figcaption>
-            <hr className="plate-rule" />
-          </figure>
+          <div className="hero-aside">
+            <p className="hero-reflection t-soft">
+              {verse?.thought
+                ? verse.thought
+                : 'Salmos, orações e versículos chegando, uma palavra por dia. Volte amanhã pra uma nova.'}
+            </p>
+            <div className="hero-cta">
+              <Link className="btn btn-primary" href={verse ? '/versiculo-do-dia' : '/biblia'}>
+                {verse ? 'Ver o versículo de hoje' : 'Explorar a Bíblia por tema'}
+              </Link>
+              <a className="btn btn-ghost" href="#intencoes">
+                Onde está seu coração?
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>
